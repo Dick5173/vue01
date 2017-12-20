@@ -1,0 +1,54 @@
+.small-el-form {
+  width: 400px;
+}
+
+.large-el-form {
+  width: 700px;
+}
+
+.x-large-el-form {
+  width: 1000px;
+}
+
+.show-validate-el-form {
+  margin-bottom: 11px !important;
+}
+
+.hide-validate-el-form {
+  margin-bottom: 0 !important;
+}
+
+.small-el-input {
+  width: 400px;
+}
+
+.large-el-input {
+  width: 700px;
+}
+
+.list-el-table {
+  margin-top: 12px;
+}
+
+.common-dialog {
+}
+
+.icon-el-button {
+  margin-right: 6px;
+}
+
+.full-content-dialog {
+  margin: $header-height 0 0 $side-width !important;
+  width: auto;
+  height: 90%;
+  height: calc(100% - 60px);
+
+  .el-dialog__body {
+    height: calc(100% - 60px - 65px - 65px);
+    overflow-y: auto;
+  }
+
+  .el-dialog__footer {
+    text-align: left;
+  }
+}
