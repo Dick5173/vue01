@@ -3,10 +3,14 @@
 > 优品平销平台系统管理后台
 
 ## 第三方库
+
+``` bash
 # CSS预处理
 sass
+
 # 模板引擎
 pug
+```
 
 ## Build Setup
 
