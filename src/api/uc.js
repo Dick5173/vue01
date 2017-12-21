@@ -11,10 +11,10 @@ export const getMe = (config) => {
   })
 }
 
-export const updatePassword = ({old_password, new_password}) => {
+export const updatePassword = ({old_passwd, new_passwd}) => {
   const params = {
-    old_password,
-    new_password
+    old_passwd,
+    new_passwd
   }
-  return Axios.post('/admin/uc/password', params)
+  return Axios.post('/admin/uc/passwd', params)
 }

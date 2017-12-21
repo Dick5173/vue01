@@ -8,8 +8,8 @@
             | {{ profileName }}
             i.el-icon-arrow-down.el-icon--right
           el-dropdown-menu(slot="dropdown")
-            el-dropdown-item(command="profile") 个人设置
-            el-dropdown-item(command="logout") 登出
+            el-dropdown-item(command="password") 修改密码
+            el-dropdown-item(command="logout") 退出登录
     div.side-wrapper
       side.side-content
     div.body-wrapper
@@ -22,16 +22,19 @@
                   el-breadcrumb-item(:to="item.to", :replace="!!item.replace") {{ item.text }}
           div.mid-wrapper
             router-view
+    change-password-dialog(ref="dlgChangePassword")
 </template>
 
 <script>
   import Side from 'src/ui/layout/home/Side'
+  import ChangePasswordDialog from 'src/ui/user/change-password/Index.vue'
   import { mapState } from 'vuex'
   import * as AuthApi from 'src/api/auth'
 
   export default {
     components: {
-      Side
+      Side,
+      ChangePasswordDialog
     },
     data () {
       return {
@@ -59,8 +62,8 @@
       },
       handleMenuCommand (command) {
         switch (command) {
-          case 'profile':
-            this.$router.push({name: 'ProfileSetting'})
+          case 'password':
+            this.$refs.dlgChangePassword.show()
             break
           case 'logout':
             this.logout()

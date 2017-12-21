@@ -18,6 +18,14 @@
   margin-bottom: 0 !important;
 }
 
+.top-el-form-fix {
+
+  & > label {
+    padding: 0 !important;
+  }
+
+}
+
 .small-el-input {
   width: 400px;
 }
