@@ -6,17 +6,24 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "local": "PROXY=http://localhost:5000 npm run dev",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "babel-polyfill": "^6.26.0",
+    "dropzone": "^5.2.0",
     "element-ui": "^2.0.8",
     "normalize.css": "^7.0.0",
     "qs": "^6.5.1",
+    "ramda": "^0.25.0",
+    "ramda-adjunct": "^2.1.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-lazyload": "^1.1.4",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

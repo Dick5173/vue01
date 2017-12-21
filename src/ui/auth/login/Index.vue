@@ -6,10 +6,10 @@
         div.icon
           svg-icon(icon="account")
         el-input(type="text", placeholder="手机号", v-model="form.mobile")
-      el-form-item(prop="password")
+      el-form-item(prop="passwd")
         div.icon
           svg-icon(icon="key")
-        el-input(type="password", placeholder="密码", v-model="form.password")
+        el-input(type="password", placeholder="密码", v-model="form.passwd")
       el-form-item
         el-button(type="primary", @click="handleLogin", :loading="loading") 登录
 </template>
@@ -23,7 +23,7 @@
         loading: false,
         form: {
           mobile: '',
-          password: ''
+          passwd: ''
         },
         rules: {
           mobile: [
@@ -31,7 +31,7 @@
               required: true, trigger: 'blur', message: '请输入手机号'
             }
           ],
-          password: [
+          passwd: [
             {
               required: true, trigger: 'blur', message: '请输入密码'
             }
@@ -47,7 +47,7 @@
             try {
               await login(this.form)
               this.$router.replace({
-                name: 'Welcome'
+                name: 'Dashboard'
               })
             } finally {
               this.loading = false
