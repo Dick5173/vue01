@@ -1,6 +1,6 @@
-# youpindp_admin
+# meishi_admin
 
-> 优品平销平台系统管理后台
+> 美市分销平台系统管理后台
 
 ## 第三方库
 
