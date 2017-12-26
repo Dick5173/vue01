@@ -6,8 +6,8 @@ Vue.use(Router)
 
 const homeGroups = [
   {
-    name: 'Other',
-    title: '其它',
+    name: 'Administrator',
+    title: '管理员',
     path: '/'
   }
 ]
@@ -51,8 +51,8 @@ export default new Router({
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),
           meta: {
-            group: 'Other',
-            title: '管理员',
+            group: 'Administrator',
+            title: '管理员列表',
             showInSide: true
           }
         }
