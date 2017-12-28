@@ -9,6 +9,11 @@ const homeGroups = [
     name: 'Administrator',
     title: '管理员',
     path: '/'
+  },
+  {
+    name: 'Other',
+    title: '其他',
+    path: '/'
   }
 ]
 
@@ -47,6 +52,34 @@ export default new Router({
           }
         },
         {
+          path: 'tenantuser',
+          name: 'TenantUser',
+          component: () => import('src/ui/user/tenant-user/Index.vue'),
+          meta: {
+            group: 'Other',
+            title: '店铺管理员',
+            showInSide: true
+          }
+        },
+        {
+          path: 'create',
+          name: 'CreateTenantUser',
+          component: () => import('src/ui/user/tenant-user/create.vue'),
+          meta: {
+            title: '创建店铺管理员',
+            showInSide: false
+          }
+        },
+        {
+          path: 'edit/:id',
+          name: 'EditTenantUser',
+          component: () => import('src/ui/user/tenant-user/edit.vue'),
+          meta: {
+            title: '编辑店铺管理员',
+            showInSide: false
+          }
+        },
+        {
           path: 'sysuser',
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),
@@ -60,8 +93,10 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'Login',
-      component: () => import('src/ui/auth/login/Index.vue')
+      name:
+        'Login',
+      component:
+        () => import('src/ui/auth/login/Index.vue')
     }
   ]
 })

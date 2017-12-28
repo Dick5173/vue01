@@ -1,0 +1,75 @@
+<template lang="pug">
+  div(v-loading="loading")
+    div
+      search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="_search")
+    div
+      el-button(size="medium", type="primary", @click="createItem") 创建
+    div
+      el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
+        el-table-column(prop="id", label="店铺管理员ID")
+        el-table-column(prop="name", label="名字")
+        el-table-column(prop="mobile", label="手机号")
+        el-table-column(prop="app_name", label="店铺")
+        el-table-column(width="100" label="操作")
+          template(slot-scope="scope")
+            el-button(size="mini", @click="editItem(scope.row)") 编辑
+    el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+
+</template>
+
+<script>
+  import LoadPagerData from 'src/mixins/load-pager-data'
+  import * as TenantUserApi from 'src/api/tenant-user'
+  import SearchToolbar from 'src/ui/user/tenant-user/search-toolbar.vue'
+  import * as Obj from 'src/util/obj'
+
+  export default {
+    mixins: [
+      LoadPagerData
+    ],
+    props: {},
+    components: {SearchToolbar},
+    data () {
+      return {
+        queryParams: {
+          tenantId: '',
+          tenant_user: ''
+        }
+      }
+    },
+    computed: {},
+    watch: {},
+    methods: {
+      getQueryApi (params) {
+        return TenantUserApi.getList(params)
+      },
+      _search (model) {
+        this.queryParams = Object.assign(this.queryParams, model)
+        let query = Obj.filterEmpty(this.queryParams)
+        query._t = new Date().getTime()
+        this.$router.push({
+          path: '/tenantuser',
+          query: query
+        })
+      },
+      createItem () {
+        this.$router.push({
+          name: 'CreateTenantUser'
+        })
+      },
+      editItem (row) {
+        this.$router.push({
+          name: 'EditTenantUser',
+          params: {
+            id: row.id
+          }
+        })
+      }
+    }
+  }
+</script>
+
+
+<style lang="scss" scoped>
+
+</style>
