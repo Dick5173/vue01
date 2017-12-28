@@ -103,7 +103,9 @@
             {validator: validatePass2, trigger: 'blur'},
             {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
           ],
-          company_name: [{min: 0, max: 30, message: '公司名称最长30个字符', trigger: 'blur'}],
+          company_name: [
+            {required: true, message: '请输入公司名称', trigger: 'blur'},
+            {min: 0, max: 30, message: '公司名称最长30个字符', trigger: 'blur'}],
           company_addr: [{min: 0, max: 100, message: '公司地址最长100个字符', trigger: 'blur'}],
           company_website: [{min: 0, max: 100, message: '公司官网最长100个字符', trigger: 'blur'}],
           company_desc: [{min: 0, max: 200, message: '公司描述最长200个字符', trigger: 'blur'}],

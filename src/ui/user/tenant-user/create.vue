@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    tenant-user-form(:mode="0")
+    tenant-user-form(:mode="create")
 </template>
 
 <script>
@@ -10,7 +10,9 @@
     props: {},
     components: {tenantUserForm},
     data () {
-      return {}
+      return {
+        create: 0
+      }
     },
     computed: {},
     watch: {},

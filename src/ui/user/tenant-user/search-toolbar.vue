@@ -44,30 +44,33 @@
     methods: {
       _submit () {
         this.$emit('submit', this.model)
+      },
+      async getTenantList () {
+        let params = {
+          limit: 30
+        }
+        try {
+          let res = await TenantApi.getList(params)
+          res = res.data.data
+          let arr = res.map((i) => {
+            let merge = []
+            merge.push(i.app_id)
+            merge.push(i.principal_name)
+            let str = merge.join('--')
+            let data = {
+              app_id: i.app_id,
+              principal_name_id: str
+            }
+            return data
+          })
+          this.tenantList = arr
+        } catch (err) {
+          this.$my.ErrorPlugin(this, err)
+        }
       }
     },
     async mounted () {
-      let params = {
-        limit: 30
-      }
-      try {
-        let res = await TenantApi.getList(params)
-        res = res.data.data
-        let arr = res.map((i) => {
-          let merge = []
-          merge.push(i.app_id)
-          merge.push(i.principal_name)
-          let str = merge.join('--')
-          let data = {
-            app_id: i.app_id,
-            principal_name_id: str
-          }
-          return data
-        })
-        this.tenantList = arr
-      } catch (err) {
-        this.$my.ErrorPlugin(this, err)
-      }
+      this.getTenantList()
     }
   }
 </script>
