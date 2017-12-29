@@ -62,21 +62,33 @@ export default new Router({
           }
         },
         {
-          path: 'create',
+          path: 'tenantuser/create',
           name: 'CreateTenantUser',
           component: () => import('src/ui/user/tenant-user/create.vue'),
           meta: {
             title: '创建店铺管理员',
-            showInSide: false
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '店铺管理员',
+              to: {name: 'TenantUser'}
+            }, {
+              text: '创建店铺管理员'
+            }]
           }
         },
         {
-          path: 'edit/:id',
+          path: 'tenantuser/edit/:id',
           name: 'EditTenantUser',
           component: () => import('src/ui/user/tenant-user/edit.vue'),
           meta: {
             title: '编辑店铺管理员',
-            showInSide: false
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '店铺管理员',
+              to: {name: 'TenantUser'}
+            }, {
+              text: '编辑店铺管理员'
+            }]
           }
         },
         {
