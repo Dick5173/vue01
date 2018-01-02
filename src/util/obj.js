@@ -10,7 +10,7 @@ export const syncNewObject = (defaultObj, source) => {
 export const filterEmpty = (params) => {
   let query = {}
   Object.keys(params).map(function (objectKey, index) {
-    var value = params[objectKey]
+    let value = params[objectKey]
     if (value) {
       query[objectKey] = value
     }

@@ -13,8 +13,8 @@
           :label="item.principal_name_id",
           :value="item.app_id")
       el-form-item.input
-        el-input(style="width: 500px", v-model="model.tenant_user", placeholder="名字/手机号/店铺管理员ID")
-          el-button(slot="append" icon="el-icon-search", @click="_submit") 搜索
+        el-input(style="width: 500px", v-model.trim="model.tenant_user", placeholder="名字/手机号/店铺管理员ID")
+          el-button(slot="append" icon="el-icon-search", @click="submit") 搜索
 </template>
 
 <script>
@@ -42,7 +42,7 @@
     computed: {},
     watch: {},
     methods: {
-      _submit () {
+      submit () {
         this.$emit('submit', this.model)
       },
       async getTenantList () {

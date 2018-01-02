@@ -64,7 +64,7 @@ export default new Router({
         {
           path: 'tenantuser/create',
           name: 'CreateTenantUser',
-          component: () => import('src/ui/user/tenant-user/create.vue'),
+          component: () => import('src/ui/user/tenant-user/Create.vue'),
           meta: {
             title: '创建店铺管理员',
             showInSide: false,
@@ -79,7 +79,7 @@ export default new Router({
         {
           path: 'tenantuser/edit/:id',
           name: 'EditTenantUser',
-          component: () => import('src/ui/user/tenant-user/edit.vue'),
+          component: () => import('src/ui/user/tenant-user/Edit.vue'),
           meta: {
             title: '编辑店铺管理员',
             showInSide: false,

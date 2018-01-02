@@ -4,7 +4,7 @@
 </template>
 
 <script>
-  import tenantUserForm from 'src/ui/user/tenant-user/form.vue'
+  import tenantUserForm from 'src/ui/user/tenant-user/Form.vue'
 
   export default {
     props: {},

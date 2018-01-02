@@ -1,7 +1,7 @@
 <template lang="pug">
   div(v-loading="loading")
     div
-      search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="_search")
+      search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="search")
     div
       el-button(size="medium", type="primary", @click="createItem") 创建
     div
@@ -20,7 +20,7 @@
 <script>
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantUserApi from 'src/api/tenant-user'
-  import SearchToolbar from 'src/ui/user/tenant-user/search-toolbar.vue'
+  import SearchToolbar from 'src/ui/user/tenant-user/SearchToolbar.vue'
   import * as Obj from 'src/util/obj'
 
   export default {
@@ -43,7 +43,7 @@
       getQueryApi (params) {
         return TenantUserApi.getList(params)
       },
-      _search (model) {
+      search (model) {
         this.queryParams = Object.assign(this.queryParams, model)
         let query = Obj.filterEmpty(this.queryParams)
         query._t = new Date().getTime()
