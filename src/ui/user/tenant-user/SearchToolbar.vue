@@ -6,7 +6,7 @@
         filterable,
         clearable,
         :loading="selectLoading",
-        placeholder="请输入关键词"
+        placeholder="店铺/ID"
         )
           el-option(v-for="item in tenantList",
           :key="item.app_id",
