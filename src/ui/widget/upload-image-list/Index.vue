@@ -1,25 +1,20 @@
 <template lang="pug">
   div
     div.image-item-list
-      div.image-item(v-for!="item in uploadImageList", v-lazy:background-image="showImage(item)", :style="sizeStyle")
-        button(@click="handleReplaceImage(item)") replace
-    div.add-image(:style="sizeStyle", @click="handleAddImage")
+      div.image-item(v-for!="(item,index) in imageList", v-loading="item.updating", v-lazy:background-image="showImage(item)", :style="sizeStyle")
+        transition(name="el-fade-in-linear")
+          div.action-wrapper(v-show="showActionBar")
+            div(v-show!="showEdit", @click="handleReplaceImage(item)")
+              i.el-icon-edit-outline(:style="iconStyle")
+            div(v-if!="showDelete", @click="handleDeleteImage(item)")
+              i.el-icon-delete(:style="iconStyle")
+            div(v-if!="showPreview", @click="handlePreviewImage(item)")
+              i.el-icon-zoom-in(:style="iconStyle")
+    div.add-image(v-if="showAddAction", :style="sizeStyle", @click="handleAddImage")
       i.el-icon-plus
     div(ref="dropZone")
-  //
-    div.upload-image(ref="dropZone", v-loading="loading", v-lazy:background-image="showImage", :style="sizeStyle")
-      transition(name="el-fade-in-linear")
-        div.action-wrapper(v-show="showActionBar")
-          div(ref="editFile", v-show!="showEdit")
-            i.el-icon-edit-outline(:style="iconStyle")
-          div(v-if!="showDelete", @click="deleteImage")
-            i.el-icon-delete(:style="iconStyle")
-          div(v-if!="showPreview", @click="previewImage")
-            i.el-icon-zoom-in(:style="iconStyle")
-      div.add-wrapper(ref="addFile", v-show="!showImage", :style="addIconStyle")
-        i.el-icon-plus
     el-dialog(:visible.sync="previewVisible", :appendToBody="true")
-      img(width="100%", :src="showImage")
+      img(width="100%", :src="previewImage")
 </template>
 
 <script>
@@ -43,7 +38,7 @@
       },
       enableDelete: {
         type: Boolean,
-        default: false
+        default: true
       },
       enablePreview: {
         type: Boolean,
@@ -59,7 +54,7 @@
       },
       size: {
         type: String,
-        default: '100px'
+        default: '130px'
       },
       maxFiles: {
         type: Number,
@@ -73,8 +68,8 @@
         host: '',
         previewVisible: false,
         replaceImage: null,
-        uploadImageList: [],
-        replaceImageList: []
+        replaceImageList: [],
+        previewImage: ''
       }
     },
     computed: {
@@ -105,6 +100,9 @@
           'width': this.size,
           'height': this.size
         }
+      },
+      showAddAction () {
+        return this.imageList.length < this.maxFiles
       }
     },
     methods: {
@@ -124,33 +122,47 @@
         if (!this.myDropzone) {
           return
         }
-        if (item.file) {
-          this.myDropzone.removeFile(item.file)
-          console.log('this.myDropzone.removeFile')
-        }
         this.replaceImage = item
         this.myDropzone.hiddenFileInput.removeAttribute('multiple')
         this.myDropzone.hiddenFileInput.click()
+      },
+      handleDeleteImage (item) {
+        const findIndex = this.imageList.indexOf(item)
+        if (findIndex !== -1) {
+          this.imageList.splice(findIndex, 1)
+        }
+        if (item.file) {
+          this.myDropzone.removeFile(item.file)
+        }
+        if (item.replaceFile) {
+          this.myDropzone.removeFile(item.replaceFile)
+        }
+      },
+      handlePreviewImage (item) {
+        this.previewImage = this.showImage(item)
+        this.previewVisible = true
       },
       dzAddThumbnail (file, dataUrl) {
         if (this.replaceImage) {
           this.$set(this.replaceImage, 'replaceFile', file)
           this.$set(this.replaceImage, 'replaceThumbnail', dataUrl)
+          this.$set(this.replaceImage, 'updating', true)
           return
         }
-        const findItem = this.uploadImageList.find(item => {
+        const findItem = this.imageList.find(item => {
           return item.file === file
         })
         if (findItem) {
           findItem.thumbnail = dataUrl
         } else {
-          if (this.uploadImageList.length >= this.maxFiles) {
+          if (this.imageList.length >= this.maxFiles) {
             this.myDropzone.removeFile(file)
             return
           }
-          this.uploadImageList.push({
+          this.imageList.push({
             file: file,
-            thumbnail: dataUrl
+            thumbnail: dataUrl,
+            updating: true
           })
         }
       },
@@ -159,47 +171,50 @@
           this.$set(item, 'url', url)
           this.$set(item, 'width', width)
           this.$set(item, 'height', height)
+          this.$delete(item, 'file')
+          this.$delete(item, 'replaceFile')
+          this.$delete(item, 'replaceThumbnail')
+          this.$delete(item, 'updating')
         }
 
-        const findReplaceItem = this.uploadImageList.find(item => {
+        const findReplaceItem = this.imageList.find(item => {
           return item.replaceFile === file
         })
         if (findReplaceItem) {
           setImageFn(findReplaceItem)
-          findReplaceItem.replaceFile = null
-          findReplaceItem.replaceThumbnail = null
           return
         }
-        const findItem = this.uploadImageList.find(item => {
+        const findItem = this.imageList.find(item => {
           return item.file === file
         })
         if (findItem) {
           setImageFn(findItem)
         } else {
-          if (this.uploadImageList.length >= this.maxFiles) {
+          if (this.imageList.length >= this.maxFiles) {
             this.myDropzone.removeFile(file)
             return
           }
-          this.uploadImageList.push({
+          this.imageList.push({
             file: file,
             image: {url, width, height}
           })
         }
       },
       dzDelErrorFile (file) {
-        const findReplaceItem = this.uploadImageList.find(item => {
+        const findReplaceItem = this.imageList.find(item => {
           return item.replaceFile === file
         })
         if (findReplaceItem) {
-          findReplaceItem.replaceFile = null
-          findReplaceItem.replaceThumbnail = null
+          this.$delete(findReplaceItem, 'replaceFile')
+          this.$delete(findReplaceItem, 'replaceThumbnail')
+          this.$delete(findReplaceItem, 'updating')
           return
         }
-        const findIndex = this.uploadImageList.findIndex(item => {
+        const findIndex = this.imageList.findIndex(item => {
           return item.file === file
         })
         if (findIndex !== -1) {
-          this.uploadImageList.splice(findIndex, 1)
+          this.imageList.splice(findIndex, 1)
         }
       },
       showImage (item) {
@@ -229,9 +244,6 @@
         this.$emit('update:image', this.image)
         this.$emit('change', this.image)
         this.dispatch('ElFormItem', 'el.form.change', [this.image])
-      },
-      previewImage () {
-        this.previewVisible = true
       }
     },
     created () {
@@ -250,7 +262,7 @@
         thumbnailWidth: null,
         thumbnailHeight: null,
         accept: async (file, done) => {
-          if (!this.replaceImage && this.uploadImageList.length >= this.maxFiles) {
+          if (!this.replaceImage && this.imageList.length >= this.maxFiles) {
             done('超出最大文件数量')
             return
           }
@@ -314,7 +326,6 @@
       if (this.myDropzone) {
         this.myDropzone.destroy()
       }
-      console.log('beforeDestroy')
     }
 
   }
@@ -340,6 +351,31 @@
       display: inline-block;
       margin-right: 10px;
       margin-bottom: 10px;
+
+      .action-wrapper {
+        display: flex;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        transition: background-color .3s;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        height: 30%;
+
+        & > div {
+          flex: 1;
+          cursor: pointer;
+          @include center-layout();
+
+          & > i {
+            display: block;
+            color: white;
+          }
+        }
+
+      }
     }
 
   }
