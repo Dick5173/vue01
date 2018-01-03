@@ -108,6 +108,14 @@
       },
       showAddAction () {
         return this.imageList.length < this.maxFiles
+      },
+      isUpdating () {
+        for (const item of this.imageList) {
+          if (item.isUpdating) {
+            return true
+          }
+        }
+        return false
       }
     },
     methods: {
