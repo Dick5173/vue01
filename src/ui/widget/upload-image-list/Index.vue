@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    div.image-item-list
+    draggable.image-item-list(element="div", :value='imageList', :options="{draggable:'.image-item',disabled: !isDraggable}", @input="handleDragChange")
       div.image-item(v-for!="(item,index) in imageList", v-loading="item.updating", v-lazy:background-image="showImage(item)", :style="sizeStyle")
         transition(name="el-fade-in-linear")
           div.action-wrapper(v-show="showActionBar")
@@ -20,11 +20,15 @@
 <script>
   import emitter from 'element-ui/src/mixins/emitter'
   import Dropzone from 'dropzone'
+  import Draggable from 'vuedraggable'
 
   import * as AliyunApi from 'src/api/aliyun'
 
   export default {
     mixins: [emitter],
+    components: {
+      Draggable
+    },
     props: {
       imageList: {
         type: Array,
@@ -69,7 +73,8 @@
         previewVisible: false,
         replaceImage: null,
         replaceImageList: [],
-        previewImage: ''
+        previewImage: '',
+        isDraggable: true
       }
     },
     computed: {
@@ -141,6 +146,9 @@
       handlePreviewImage (item) {
         this.previewImage = this.showImage(item)
         this.previewVisible = true
+      },
+      handleDragChange (e) {
+        this.$emit('update:imageList', e)
       },
       dzAddThumbnail (file, dataUrl) {
         if (this.replaceImage) {
@@ -341,6 +349,7 @@
     display: inline;
 
     .image-item {
+      cursor: move;
       position: relative;
       border: solid $border-color-level1 1px;
       background-size: cover;
