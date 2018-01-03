@@ -198,6 +198,11 @@
           formData.append('success_action_status', 200)
         }
       })
+    },
+    beforeDestroy () {
+      if (this.myDropzone) {
+        this.myDropzone.destroy()
+      }
     }
 
   }
