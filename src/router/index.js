@@ -14,6 +14,11 @@ const homeGroups = [
     name: 'Other',
     title: '其他',
     path: '/'
+  },
+  {
+    name: 'Product',
+    title: '商品管理',
+    path: '/'
   }
 ]
 
@@ -49,6 +54,58 @@ export default new Router({
           meta: {
             title: '首页',
             showInSide: true
+          }
+        },
+        {
+          path: 'pfproduct',
+          name: 'PlatformProductIndex',
+          component: () => import('src/ui/product/platform/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '平台商品',
+            showInSide: true
+          }
+        },
+        {
+          path: 'pfproduct/create',
+          name: 'PlatformProductCreate',
+          component: () => import('src/ui/product/platform/Create.vue'),
+          meta: {
+            group: 'Product',
+            title: '添加平台商品',
+            breadcrumbItems: [
+              {
+                text: '平台商品',
+                to: {
+                  name: 'PlatformProductIndex'
+                }
+              },
+              {
+                text: '添加平台商品'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
+          path: 'pfproduct/edit/:id',
+          name: 'PlatformProductEdit',
+          component: () => import('src/ui/product/platform/Edit.vue'),
+          meta: {
+            group: 'Product',
+            title: '编辑平台商品',
+            breadcrumbItems: [
+              {
+                text: '平台商品',
+                to: {
+                  name: 'PlatformProductIndex'
+                }
+              },
+              {
+                text: '编辑平台商品'
+              }
+            ],
+            customBreadcrumb: false
           }
         },
         {
