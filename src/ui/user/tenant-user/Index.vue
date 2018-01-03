@@ -3,7 +3,7 @@
     div
       search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="search")
     div
-      el-button(size="medium", type="primary", @click="createItem") 创建
+      el-button(size="medium", icon="el-icon-plus", type="primary", @click="createItem") 创建
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="id", label="店铺管理员ID")

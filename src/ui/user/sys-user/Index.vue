@@ -1,6 +1,6 @@
 <template lang="pug">
   div(v-loading="loading")
-    el-button(type="primary", icon="el-icon-plus", @click="handleCreate") 添加
+    el-button(type="primary", icon="el-icon-plus", @click="handleCreate") 创建
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="name", label="名字")
