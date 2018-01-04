@@ -24,9 +24,9 @@
             upload-image(:image.sync="props.row.image", size="50px", addIconSize="20px")
       table-column(label="", width="80px")
         div(slot-scope="props")
-          el-button(type="danger", size="mini", plain) 删除
+          el-button(type="danger", size="mini", plain, @click="handleDelSku(props.index)") 删除
     div
-      el-button(type="primary", size="mini", plain, @click="addSku") 添加商品规格
+      el-button(type="primary", size="mini", plain, @click="handleAddSku") 添加商品规格
 </template>
 
 <script>
@@ -81,12 +81,13 @@
           })
         }
       },
-      addSku () {
+      handleAddSku () {
         this.skus.push(
           {
             name: '',
             suggest_price: '',
             stock: '',
+            code: '',
             image: {
               url: '',
               width: 0,
@@ -94,6 +95,9 @@
             }
           }
         )
+      },
+      handleDelSku (index) {
+        this.skus.splice(index, 1)
       }
     }
   }

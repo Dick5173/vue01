@@ -35,6 +35,9 @@
         if (this.$refs.uploadImage && this.$refs.uploadImage.updating) {
           callback(new Error('图片正在上传中'))
         }
+        if (!value || !value.url) {
+          callback(new Error('请上传图片'))
+        }
         callback()
       }
       return {

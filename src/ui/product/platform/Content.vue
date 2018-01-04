@@ -8,7 +8,7 @@
         el-input(v-model.trim="props.row.text",  :maxlength="26")
 
   div
-    smart-table.large-el-table(ref="contentTable", :dataList="content", @drag-change="handleDragChange",  @drag-end="handleDragEnd")
+    smart-table.large-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")
       table-column(type="drag")
       table-column(label="内容")
         div(slot-scope="props")
@@ -16,9 +16,9 @@
           +textContent
       table-column(label="", width="250px")
         div(slot-scope="props")
-          el-button(type="primary", size="mini", icon="el-icon-plus", plain) 上面
-          el-button(type="primary", size="mini",  icon="el-icon-plus", plain) 下面
-          el-button(type="danger", size="mini", plain) 删除
+          el-button(type="primary", size="mini", icon="el-icon-plus", plain, @click="handleCreateAbove(props.index)") 上面
+          el-button(type="primary", size="mini",  icon="el-icon-plus", plain, @click="handleCreateBelow(props.index)") 下面
+          el-button(type="danger", size="mini", plain, @click="handleDel(props.index)") 删除
     div
       el-button(type="primary", size="mini", plain, @click="handleCreate") 添加描述
     create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess")
@@ -53,6 +53,7 @@
             {required: true, message: '不能为空', trigger: 'blur'}
           ]
         },
+        createAtPos: -1,
         ...$global.$mapConst({
           'allContentTp': ResourceService.allTp
         })
@@ -70,15 +71,26 @@
         }
       },
       handleCreate () {
+        this.createAtPos = this.content.length
+        this.$refs.dlgCreateContent.show()
+      },
+      handleCreateAbove (index) {
+        this.createAtPos = index
+        this.$refs.dlgCreateContent.show()
+      },
+      handleCreateBelow (index) {
+        this.createAtPos = index + 1
         this.$refs.dlgCreateContent.show()
       },
       handleCreateSuccess (data) {
-        this.content.push(
-          {
-            ...data
-          }
-        )
-        console.log(' this.content', this.content)
+        if (this.createAtPos < 0 || this.createAtPos >= this.content.length) {
+          this.content.push({...data})
+        } else {
+          this.content.splice(this.createAtPos, 0, {...data})
+        }
+      },
+      handleDel (index) {
+        this.content.splice(index, 1)
       }
     }
   }
