@@ -1,10 +1,10 @@
 export const allTp = {
   text: {
-    value: 1,
+    value: 2,
     text: '文本'
   },
   img: {
-    value: 2,
+    value: 1,
     text: '图片'
   }
 }

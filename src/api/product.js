@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import * as ProductService from 'src/service/product'
 
 export const getList = (params) => {
   return Axios.get('/a/Product', {
@@ -18,7 +19,8 @@ export const getItem = (id) => {
 }
 
 export const create = (form) => {
-  return Axios.post('/admin/product', {...form})
+  const params = ProductService.convertFromToParam(form)
+  return Axios.post('/admin/product', params)
 }
 
 export const update = (id, form) => {

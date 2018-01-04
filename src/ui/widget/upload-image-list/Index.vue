@@ -193,6 +193,7 @@
           this.$delete(item, 'replaceFile')
           this.$delete(item, 'replaceThumbnail')
           this.$delete(item, 'updating')
+          this.$delete(item, 'thumbnail')
         }
 
         const findReplaceItem = this.imageList.find(item => {
@@ -226,6 +227,7 @@
           this.$delete(findReplaceItem, 'replaceFile')
           this.$delete(findReplaceItem, 'replaceThumbnail')
           this.$delete(findReplaceItem, 'updating')
+          this.$delete(findReplaceItem, 'thumbnail')
           return
         }
         const findIndex = this.imageList.findIndex(item => {

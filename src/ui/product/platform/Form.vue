@@ -48,9 +48,9 @@
         initialData: {},
         formData: {
           id: 0,
+          status: 1,
           head: [],
           cover: {
-            tp: 2,
             url: '',
             width: 0,
             height: 0

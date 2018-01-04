@@ -43,13 +43,12 @@
       return {
         loading: false,
         formData: {
-          tp: 1,
+          tp: ResourceService.allTp.text.value,
           text: '',
           image: {
             url: '',
             width: 0,
-            height: 0,
-            tp: 2
+            height: 0
           }
         },
         formRules: {
@@ -82,8 +81,7 @@
         this.formData.image = {
           url: '',
           width: 0,
-          height: 0,
-          tp: 2
+          height: 0
         }
       },
       async submit () {

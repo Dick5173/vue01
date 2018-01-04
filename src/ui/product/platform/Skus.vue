@@ -4,8 +4,8 @@
       table-column(type="drag")
       table-column(label="规格")
         div(slot-scope="props")
-          el-form-item.show-validate-el-form(:ref="`name${props.index}`", :prop="'skus.' + props.index + '.name'", :rules="formRules.name")
-            el-input(v-model.trim="props.row.name")
+          el-form-item.show-validate-el-form(:ref="`spec{props.index}`", :prop="'skus.' + props.index + '.spec'", :rules="formRules.spec")
+            el-input(v-model.trim="props.row.spec")
       table-column(label="建议售价")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`suggest_price${props.index}`", :prop="'skus.' + props.index + '.suggest_price'", :rules="formRules.suggest_price")
@@ -51,7 +51,7 @@
     data () {
       return {
         formRules: {
-          name: [
+          spec: [
             {required: true, message: '不能为空', trigger: 'blur'}
           ],
           suggest_price: [
@@ -84,7 +84,7 @@
       handleAddSku () {
         this.skus.push(
           {
-            name: '',
+            spec: '',
             suggest_price: '',
             stock: '',
             code: '',
