@@ -50,6 +50,7 @@
           id: 0,
           head: [],
           cover: {
+            tp: 2,
             url: '',
             width: 0,
             height: 0

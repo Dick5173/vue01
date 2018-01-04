@@ -18,7 +18,7 @@ export const getItem = (id) => {
 }
 
 export const create = (form) => {
-  return Axios.post('/a/Product', {...form})
+  return Axios.post('/admin/product', {...form})
 }
 
 export const update = (id, form) => {
