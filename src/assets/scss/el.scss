@@ -2,7 +2,15 @@
   width: 400px;
 }
 
+.medium-el-form {
+  width: 550px;
+}
+
 .large-el-form {
+  width: 700px;
+}
+
+.large-el-table {
   width: 700px;
 }
 
@@ -26,12 +34,26 @@
 
 }
 
+.tiny-el-input {
+  width: 100px;
+}
+
 .small-el-input {
   width: 400px;
 }
 
+.medium-el-input {
+  width: 500px;
+}
+
 .large-el-input {
   width: 700px;
+}
+
+.input-text-count {
+  margin-left: 10px;
+  color: $font-color-place-holder;
+  font-size: $font-size-content-small;
 }
 
 .list-el-table {

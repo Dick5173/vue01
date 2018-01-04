@@ -10,7 +10,7 @@
               i.el-icon-delete(:style="iconStyle")
             div(v-if!="showPreview", @click="handlePreviewImage(item)")
               i.el-icon-zoom-in(:style="iconStyle")
-    div.add-image(v-if="showAddAction", :style="sizeStyle", @click="handleAddImage")
+    div.add-image(v-if="showAddAction", :style="addIconStyle", @click="handleAddImage")
       i.el-icon-plus
     div(ref="dropZone")
     el-dialog(:visible.sync="previewVisible", :appendToBody="true")
@@ -58,7 +58,7 @@
       },
       size: {
         type: String,
-        default: '130px'
+        default: '100px'
       },
       maxFiles: {
         type: Number,
@@ -97,6 +97,8 @@
       },
       addIconStyle () {
         return {
+          'width': this.size,
+          'height': this.size,
           'font-size': this.addIconSize
         }
       },
@@ -409,6 +411,7 @@
     @include center-layout();
     display: inline-flex;
     vertical-align: top;
+    color: $font-color-secondary;
 
     &:hover {
       border-color: $color-primary;
@@ -430,7 +433,6 @@
 
     .add-wrapper {
       height: 100%;
-      color: $font-color-secondary;
       cursor: pointer;
       @include center-layout();
     }
