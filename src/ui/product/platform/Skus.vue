@@ -21,12 +21,13 @@
       table-column(label="图片", width="80px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`image${props.index}`", :prop="'skus.' + props.index + '.image'", :rules="formRules.image")
-            upload-image(:image.sync="props.row.image", size="50px", addIconSize="20px")
+            upload-image(:ref="`uploadImage${props.index}`", :image.sync="props.row.image", size="50px", addIconSize="20px")
       table-column(label="", width="80px")
         div(slot-scope="props")
           el-button(type="danger", size="mini", plain, @click="handleDelSku(props.index)") 删除
     div
       el-button(type="primary", size="mini", plain, @click="handleAddSku") 添加商品规格
+      span.input-right-desc 商品编码不能重复，且必须首先在ERP系统上线，否则将无法发货
 </template>
 
 <script>
@@ -34,6 +35,7 @@
   import SmartTable from 'src/ui/widget/smart-table/Table.vue'
   import TableColumn from 'src/ui/widget/smart-table/TableColumn.jsx'
   import UploadImage from 'src/ui/widget/upload-image/Index.vue'
+  import { nonZeroIntegerValidator } from 'src/util/validator'
 
   export default {
     mixins: [emitter],
@@ -46,19 +48,51 @@
       skus: {
         type: Array,
         required: true
+      },
+      supplyPrice: {
+        type: String,
+        required: true
+      },
+      stPrice: {
+        type: String,
+        required: true
       }
     },
     data () {
+      const suggestPriceValidator = (rule, value, callback) => {
+        if (!this.R_.isPrice(value)) {
+          callback(new Error('不正确的价格'))
+          return
+        }
+        const suggestPrice = this.R_.convertYuanToFen(value)
+        if (this.R_.isPrice(this.supplyPrice)) {
+          const sp = this.R_.convertYuanToFen(this.supplyPrice)
+          if (suggestPrice < sp) {
+            callback(new Error('不能小于供货价'))
+            return
+          }
+        }
+        if (this.R_.isPrice(this.stPrice)) {
+          const st = this.R_.convertYuanToFen(this.stPrice)
+          if (suggestPrice > st) {
+            callback(new Error('不能大于划线价'))
+            return
+          }
+        }
+        callback()
+      }
       return {
         formRules: {
           spec: [
             {required: true, message: '不能为空', trigger: 'blur'}
           ],
           suggest_price: [
-            {required: true, message: '不能为空', trigger: 'blur'}
+            {required: true, message: '不能为空', trigger: 'blur'},
+            {validator: suggestPriceValidator, trigger: 'blur'}
           ],
           stock: [
-            {required: true, message: '不能为空', trigger: 'blur'}
+            {required: true, message: '不能为空', trigger: 'blur'},
+            {validator: nonZeroIntegerValidator, trigger: 'blur'}
           ],
           code: [
             {required: true, message: '不能为空', trigger: 'blur'}
@@ -81,7 +115,7 @@
           })
         }
       },
-      handleAddSku () {
+      async handleAddSku () {
         this.skus.push(
           {
             spec: '',
@@ -95,9 +129,21 @@
             }
           }
         )
+        await this.$nextTick()
+        this.dispatch('ElFormItem', 'el.form.change', [this.skus])
       },
-      handleDelSku (index) {
+      async handleDelSku (index) {
         this.skus.splice(index, 1)
+        await this.$nextTick()
+        this.dispatch('ElFormItem', 'el.form.change', [this.skus])
+      },
+      isUpdating () {
+        for (const i in this.skus) {
+          if (this.$refs[`uploadImage${i}`] && this.$refs[`uploadImage${i}`].isUpdating) {
+            return true
+          }
+        }
+        return false
       }
     }
   }

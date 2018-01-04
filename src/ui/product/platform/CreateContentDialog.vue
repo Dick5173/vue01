@@ -3,7 +3,7 @@
     el-form-item.show-validate-el-form(ref="fiShowText", v-if!="formData.tp === allContentTp.text.value", label="", prop="text")
       div.input-text-wrapper
         el-input(v-model.trim="formData.text", :maxlength="26")
-        div.input-text-count {{ formData.text.length }} / 26
+        div.input-right-desc {{ formData.text.length }} / 26
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="image")
       upload-image(ref="uploadImage", :image.sync="formData.image")
@@ -130,7 +130,7 @@
   .input-text-wrapper {
     display: flex;
 
-    .input-text-count {
+    .input-right-desc {
       width: 60px;
     }
   }

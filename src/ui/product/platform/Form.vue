@@ -1,21 +1,25 @@
 <template lang="pug">
-  el-form(ref="form", :model="formData", :rules="formRules", labelWidth="70px")
-    el-form-item(label="商品图片", prop="head")
-      upload-image-list(:imageList.sync="formData.head")
+  el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px")
+    el-form-item(label="商品图片", prop="head", :required="true")
+      upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT')
+      div.input-bottom-desc 还能上传 {{ remainHeadCount }} 张，建议尺寸750×750像素
     el-form-item(label="列表图", prop="cover")
-      upload-image(:image.sync="formData.cover")
+      upload-image(ref="uploadCover", :image.sync="formData.cover")
+      div.input-bottom-desc 建议尺寸750×750像素
     el-form-item(label="商品名称", prop="name")
       el-input.medium-el-input(v-model="formData.name", :maxlength="50")
-      span.input-text-count {{ formData.name.length }} / 50
+      span.input-right-desc {{ formData.name.length }} / 50
     el-form-item(label="卖点", prop="sell_point")
-      el-input.medium-el-input(v-model="formData.sell_point", :maxlength="50")
-      span.input-text-count {{ formData.sell_point.length }} / 50
+      el-input.medium-el-input(v-model="formData.sell_point", :maxlength="30")
+      span.input-right-desc {{ formData.sell_point.length }} / 30
     el-form-item(label="商品规格", prop="skus")
-      skus(:skus.sync="formData.skus")
+      skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supplyPrice="this.formData.supply_price")
     el-form-item(label="划线价", prop="st_price")
       el-input.tiny-el-input(v-model="formData.st_price")
+      span.input-right-desc 元
     el-form-item(label="供货价", prop="supply_price")
       el-input.tiny-el-input(v-model="formData.supply_price")
+      span.input-right-desc 元
     el-form-item(label="商品分类", prop="category_id")
       el-select(v-model="formData.category_id", placeholder="请选择")
         el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
@@ -34,8 +38,12 @@
   import ContentComp from './Content.vue'
   import * as FormApi from 'src/api/product'
   import * as CategoryApi from 'src/api/category'
+  import { priceValidator } from 'src/util/validator'
+
+  const MAX_HEAD_COUNT = 5
 
   export default {
+    MAX_HEAD_COUNT,
     components: {
       UploadImageList,
       UploadImage,
@@ -43,6 +51,55 @@
       ContentComp
     },
     data () {
+      const headValidator = (rule, value, callback) => {
+        if (this.$refs.uploadHead.isUpdating) {
+          callback(new Error('正在上传图片'))
+          return
+        }
+        if (value) {
+          if (value.length <= 0) {
+            callback(new Error('请选择图片'))
+          } else if (value.length > MAX_HEAD_COUNT) {
+            callback(new Error(`最多选择${MAX_HEAD_COUNT}图片`))
+          } else {
+            callback()
+          }
+        }
+        callback(new Error('请选择图片'))
+      }
+      const coverValidator = (rule, value, callback) => {
+        if (this.$refs.uploadCover.isUpdating) {
+          callback(new Error('正在上传图片'))
+          return
+        }
+        callback()
+      }
+      const skuValidator = (rule, value, callback) => {
+        if (!value || value.length <= 0) {
+          callback(new Error('Sku不能为空'))
+          return
+        }
+        if (this.$refs.skus.isUpdating()) {
+          callback(new Error('正在上传图片'))
+          return
+        }
+        callback()
+      }
+      const supplyPriceValidator = (rule, value, callback) => {
+        if (!this.R_.isPrice(value)) {
+          callback(new Error('不正确的价格'))
+          return
+        }
+        const supplyPrice = this.R_.convertYuanToFen(value)
+        if (this.R_.isPrice(this.formData.st_price)) {
+          const st = this.R_.convertYuanToFen(this.formData.st_price)
+          if (supplyPrice > st) {
+            callback(new Error('不能大于划线价'))
+            return
+          }
+        }
+        callback()
+      }
       return {
         loading: false,
         initialData: {},
@@ -63,8 +120,43 @@
           category_id: '',
           content: []
         },
-        formRules: {},
+        formRules: {
+          head: [
+            {validator: headValidator, trigger: 'change'}
+          ],
+          cover: [
+            {validator: coverValidator, trigger: 'change'}
+          ],
+          name: [
+            {required: true, message: '不能为空', trigger: 'blur'},
+            {max: 50, message: '最多可以输入50个字符', trigger: 'blur'}
+          ],
+          sell_point: [
+            {required: true, message: '不能为空', trigger: 'blur'},
+            {max: 30, message: '最多可以输入30个字符', trigger: 'blur'}
+          ],
+          skus: [
+            {validator: skuValidator, trigger: 'change'}
+          ],
+          st_price: [
+            {validator: priceValidator, trigger: 'blur'}
+          ],
+          supply_price: [
+            {validator: supplyPriceValidator, trigger: 'blur'}
+          ],
+          category_id: [
+            {required: true, message: '分类不能为空', trigger: 'change'}
+          ]
+        },
         allCategories: []
+      }
+    },
+    computed: {
+      isEditMode () {
+        return this.$route.name === 'PlatformProductEdit'
+      },
+      remainHeadCount () {
+        return MAX_HEAD_COUNT - this.formData.head.length
       }
     },
     methods: {
@@ -101,11 +193,6 @@
           }
         })
         this.loading = false
-      }
-    },
-    computed: {
-      isEditMode () {
-        return this.$route.name === 'PlatformProductEdit'
       }
     },
     async mounted () {

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.upload-image-list
     draggable.image-item-list(element="div", :value='imageList', :options="{draggable:'.image-item',disabled: !isDraggable}", @input="handleDragChange")
       div.image-item(v-for!="(item,index) in imageList", v-loading="item.updating", v-lazy:background-image="showImage(item)", :style="sizeStyle")
         transition(name="el-fade-in-linear")
@@ -152,6 +152,7 @@
         if (item.replaceFile) {
           this.myDropzone.removeFile(item.replaceFile)
         }
+        this.notifyUpdateImage()
       },
       handlePreviewImage (item) {
         this.previewImage = this.showImage(item)
@@ -165,6 +166,7 @@
           this.$set(this.replaceImage, 'replaceFile', file)
           this.$set(this.replaceImage, 'replaceThumbnail', dataUrl)
           this.$set(this.replaceImage, 'updating', true)
+          this.notifyUpdateImage()
           return
         }
         const findItem = this.imageList.find(item => {
@@ -183,6 +185,7 @@
             updating: true
           })
         }
+        this.notifyUpdateImage()
       },
       dzAddImage (file, url, width, height) {
         const setImageFn = (item) => {
@@ -218,6 +221,7 @@
             image: {url, width, height}
           })
         }
+        this.notifyUpdateImage()
       },
       dzDelErrorFile (file) {
         const findReplaceItem = this.imageList.find(item => {
@@ -247,11 +251,10 @@
           return item.thumbnail
         }
       },
-      updateImage (image) {
-        Object.assign(this.image, image)
-        this.$emit('update:image', this.image)
-        this.$emit('change', this.image)
-        this.dispatch('ElFormItem', 'el.form.change', [this.image])
+      notifyUpdateImage () {
+        this.$emit('update:imageList', this.imageList)
+        this.$emit('change', this.imageList)
+        this.dispatch('ElFormItem', 'el.form.change', [this.imageList])
       },
       deleteImage () {
         this.myDropzone.removeAllFiles()
@@ -261,7 +264,7 @@
           height: 0
         }
         Object.assign(this.image, emptyImg)
-        this.$emit('update:image', this.image)
+        this.$emit('update:imageList', this.image)
         this.$emit('change', this.image)
         this.dispatch('ElFormItem', 'el.form.change', [this.image])
       }
@@ -357,6 +360,10 @@
     background-size: cover;
   }
 
+  .upload-image-list {
+    line-height: 1;
+  }
+
   .image-item-list {
     display: inline;
 
@@ -371,7 +378,7 @@
       transition: border-color .3s;
       display: inline-block;
       margin-right: 10px;
-      margin-bottom: 10px;
+      /*margin-bottom: 10px;*/
 
       .action-wrapper {
         display: flex;

@@ -50,10 +50,17 @@
   width: 700px;
 }
 
-.input-text-count {
+.input-right-desc {
   margin-left: 10px;
   color: $font-color-place-holder;
   font-size: $font-size-content-small;
+}
+
+.input-bottom-desc {
+  margin-top: 8px;
+  color: $font-color-place-holder;
+  font-size: $font-size-content-small;
+  line-height: 1;
 }
 
 .list-el-table {

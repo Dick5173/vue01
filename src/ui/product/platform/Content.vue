@@ -50,7 +50,8 @@
       return {
         formRules: {
           text: [
-            {required: true, message: '不能为空', trigger: 'blur'}
+            {required: true, message: '不能为空', trigger: 'blur'},
+            {max: 26, message: '最多可以输入26个字符', trigger: 'blur'}
           ]
         },
         createAtPos: -1,

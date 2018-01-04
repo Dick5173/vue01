@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     div(ref="dropZone", v-show="false")
-    div.upload-image(v-loading="updating", v-lazy:background-image="showImage", :style="sizeStyle")
+    div.upload-image(v-loading="isUpdating", v-lazy:background-image="showImage", :style="sizeStyle")
       transition(name="el-fade-in-linear")
         div.action-wrapper(v-show="showActionBar")
           div(v-show!="showEdit", @click="handleChooseFile")
@@ -41,7 +41,7 @@
       },
       enableDelete: {
         type: Boolean,
-        default: false
+        default: true
       },
       enablePreview: {
         type: Boolean,
@@ -62,7 +62,7 @@
     },
     data () {
       return {
-        updating: false,
+        isUpdating: false,
         thumbnail: '',
         ossToken: {},
         host: '',
@@ -172,13 +172,13 @@
             type: 'error',
             message: '图片上传失败'
           })
-          this.updating = false
+          this.isUpdating = false
         },
         success: (file, responseText) => {
           if (file) {
             this.myDropzone.removeFile(file)
           }
-          this.updating = false
+          this.isUpdating = false
           this.onUpdateImage({url: file.downloadUrl, width: file.width, height: file.height})
         },
         // 生成缩略图片
@@ -188,7 +188,7 @@
           }
         },
         sending: (file, xhr, formData) => {
-          this.updating = true
+          this.isUpdating = true
           const key = `${this.ossToken.dir}${this.ossToken.key}/${file.name}`
           file.downloadUrl = `${this.host}/${key}`
           formData.append('key', key)

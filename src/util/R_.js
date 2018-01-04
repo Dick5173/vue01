@@ -58,6 +58,22 @@ Number.prototype.div = function (arg) {
 }
 
 /**
+ * 检查是否为整数
+ */
+const isInteger = R.curry((val) => {
+  const reg = /^(0|[1-9][0-9]*|-[1-9][0-9]*)$/
+  return reg.test(val)
+})
+
+/**
+ * 是否为为价格
+ */
+const isPrice = R.curry((val) => {
+  const reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/
+  return reg.test(val)
+})
+
+/**
  * 接收一个函数和两个对象，遍历第一个对象的key, 优先进行函数处理，如果没有处理，判断第二个对象有key，则拷贝向第一个对象
  *
  * @func
@@ -155,6 +171,8 @@ const convertFenToYuan = R.curry((val) => {
 })
 
 const R_ = {
+  isInteger,
+  isPrice,
   updateWithObjCustom,
   updateWithObj,
   parseInteger,
