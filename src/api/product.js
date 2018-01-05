@@ -2,7 +2,7 @@ import Axios from 'axios'
 import * as ProductService from 'src/service/product'
 
 export const getList = (params) => {
-  return Axios.get('/a/Product', {
+  return Axios.get('/admin/product', {
     params: params
   })
 }

@@ -51,3 +51,20 @@ export const convertFromToParam = R.curry((form) => {
     }
   )(form)
 })
+
+export const showCover = (product) => {
+  if (product.cover && product.cover.url) {
+    return product.cover.url
+  }
+  if (product.head && product.head.length > 0 && product.head[0].url) {
+    return product.head[0].url
+  }
+  return ''
+}
+
+export const showSuggestPriceInterval = (product) => {
+  if (product.prop.min_suggest_price === product.prop.max_suggest_price) {
+    return `${R_.convertFenToYuan(product.prop.min_suggest_price)}`
+  }
+  return `${R_.convertFenToYuan(product.prop.min_suggest_price)}~${R_.convertFenToYuan(product.prop.max_suggest_price)}`
+}
