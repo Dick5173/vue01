@@ -13,10 +13,11 @@
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
         el-table-column(prop="stock", label="库存", sortable, width="100px")
+          div(slot-scope="props") {{ props.row.prop.stock }}
         el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
         el-table-column(prop="pt", label="上架时间", sortable, width="160px")
           div(slot-scope="props", v-if="props.row.pt > 0") {{ props.row.pt | datetime }}
-        el-table-column(type="expand")
+        el-table-column(type="expand", fixed="right")
           div(slot-scope="props")
             el-table.small-el-table(:data="props.row.prop.skus || []", border)
               el-table-column(prop="spec", label="规格")
@@ -24,7 +25,7 @@
                 div(slot-scope="skuProps") {{ skuProps.row.suggest_price | price(false) }}
               el-table-column(prop="sold", label="销量")
               el-table-column(prop="stock", label="库存")
-        el-table-column(label="操作", width="120px")
+        el-table-column(label="操作", width="120px", fixed="right")
           div(slot-scope="props")
             el-dropdown()
               el-button(type="primary", size="medium")
