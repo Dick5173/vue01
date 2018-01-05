@@ -72,7 +72,7 @@ export default new Router({
           component: () => import('src/ui/product/platform/Create.vue'),
           meta: {
             group: 'Product',
-            title: '添加平台商品',
+            title: '创建平台商品',
             breadcrumbItems: [
               {
                 text: '平台商品',
@@ -93,7 +93,7 @@ export default new Router({
           component: () => import('src/ui/product/platform/Edit.vue'),
           meta: {
             group: 'Product',
-            title: '编辑',
+            title: '编辑平台商品',
             breadcrumbItems: [
               {
                 text: '平台商品',
@@ -102,7 +102,7 @@ export default new Router({
                 }
               },
               {
-                text: '编辑平台商品'
+                text: '编辑'
               }
             ],
             customBreadcrumb: false
