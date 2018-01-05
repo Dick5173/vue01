@@ -15,14 +15,15 @@ export const checkExist = (params) => {
 }
 
 export const getItem = (id) => {
-  return Axios.get(`/a/Product/${id}`)
+  return Axios.get(`/admin/product/${id}`)
 }
 
 export const create = (form) => {
-  const params = ProductService.convertFromToParam(form)
+  const params = ProductService.convertFormToParam(form)
   return Axios.post('/admin/product', params)
 }
 
 export const update = (id, form) => {
-  return Axios.post(`/a/Product/${id}`, {...form})
+  const params = ProductService.convertFormToParam(form)
+  return Axios.post(`/admin/product/${id}`, params)
 }

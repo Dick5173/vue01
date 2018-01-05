@@ -32,7 +32,7 @@
                 | 操作
                 i.el-icon-arrow-down.el-icon--right()
               el-dropdown-menu(slot="dropdown")
-                el-dropdown-item &nbsp;&nbsp;编辑&nbsp;&nbsp;
+                el-dropdown-item(@click.native="handleEdit(props.row)") &nbsp;&nbsp;编辑&nbsp;&nbsp;
                 el-dropdown-item &nbsp;&nbsp;复制&nbsp;&nbsp;
                 el-dropdown-item &nbsp;&nbsp;下架&nbsp;&nbsp;
                 el-dropdown-item &nbsp;&nbsp;置顶&nbsp;&nbsp;
@@ -76,6 +76,14 @@
         })
       },
       handleSearch () {
+      },
+      handleEdit (product) {
+        this.$router.push({
+          name: 'PlatformProductEdit',
+          params: {
+            id: product.id
+          }
+        })
       },
       ...$global.$mapMethods({'showCover': showCover})
     }

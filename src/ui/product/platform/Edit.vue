@@ -1,9 +1,19 @@
 <template lang="pug">
-  div edit
+  div
+    form-comp
 </template>
 
 <script>
-  export default {}
+  import FormComp from './Form.vue'
+
+  export default {
+    components: {
+      FormComp
+    },
+    data () {
+      return {}
+    }
+  }
 </script>
 
 <style lang="scss" scoped></style>

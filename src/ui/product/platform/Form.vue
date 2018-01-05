@@ -38,6 +38,7 @@
   import ContentComp from './Content.vue'
   import * as FormApi from 'src/api/product'
   import * as CategoryApi from 'src/api/category'
+  import * as ProductService from 'src/service/product'
   import { priceValidator } from 'src/util/validator'
 
   const MAX_HEAD_COUNT = 5
@@ -165,7 +166,7 @@
         this.allCategories = resCategory.data.data
         if (this.isEditMode) {
           const resItem = await FormApi.getItem(this.$route.params.id)
-          this.formData = resItem.data
+          this.formData = ProductService.convertModelToForm(resItem.data)
         }
         this.initialData = this.R.clone(this.formData)
       },
