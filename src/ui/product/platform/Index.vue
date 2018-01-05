@@ -2,7 +2,7 @@
   div(v-loading="loading")
     search-bar(:queryParams="queryParams", @submit="handleSearch")
     router-link(:to="{name:'PlatformProductCreate'}")
-      el-button(type="primary", icon="el-icon-plus") 添加
+      el-button(type="primary", icon="el-icon-plus") 创建
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(type="selection", width="55px")

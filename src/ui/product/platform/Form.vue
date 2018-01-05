@@ -7,28 +7,32 @@
       upload-image(ref="uploadCover", :image.sync="formData.cover")
       div.input-bottom-desc 建议尺寸750×750像素
     el-form-item(label="商品名称", prop="name")
-      el-input.medium-el-input(v-model="formData.name", :maxlength="50")
+      el-input.medium-el-input(v-model.trim="formData.name", :maxlength="50")
       span.input-right-desc {{ formData.name.length }} / 50
     el-form-item(label="卖点", prop="sell_point")
-      el-input.medium-el-input(v-model="formData.sell_point", :maxlength="30")
+      el-input.medium-el-input(v-model.trim="formData.sell_point", :maxlength="30")
       span.input-right-desc {{ formData.sell_point.length }} / 30
-    el-form-item(label="商品规格", prop="skus")
+    el-form-item(label="商品规格", prop="skus", required)
       skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supplyPrice="this.formData.supply_price")
     el-form-item(label="划线价", prop="st_price")
-      el-input.tiny-el-input(v-model="formData.st_price")
+      el-input.tiny-el-input(v-model.trim="formData.st_price")
       span.input-right-desc 元
     el-form-item(label="供货价", prop="supply_price")
-      el-input.tiny-el-input(v-model="formData.supply_price")
+      el-input.tiny-el-input(v-model.trim="formData.supply_price")
       span.input-right-desc 元
     el-form-item(label="商品分类", prop="category_id")
       el-select(v-model="formData.category_id", placeholder="请选择")
         el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
           el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
+    el-form-item(label="商品设置", prop="oversea")
+      el-checkbox(v-model="formData.oversea") 清关商品
+        span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
     el-form-item(label="商品描述", prop="content")
       content-comp(:content.sync="formData.content")
     el-form-item
       el-button(@click="$router.back()") 取消
-      el-button(type="primary", :loading="loading", @click="save") 确定
+      el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
+      el-button(type="primary", :loading="loading", @click="handleSave") 保存
 </template>
 
 <script>
@@ -119,6 +123,7 @@
           st_price: '',
           supply_price: '',
           category_id: '',
+          oversea: false,
           content: []
         },
         formRules: {
@@ -133,16 +138,17 @@
             {max: 50, message: '最多可以输入50个字符', trigger: 'blur'}
           ],
           sell_point: [
-            {required: true, message: '不能为空', trigger: 'blur'},
             {max: 30, message: '最多可以输入30个字符', trigger: 'blur'}
           ],
           skus: [
             {validator: skuValidator, trigger: 'change'}
           ],
           st_price: [
+            {required: true, message: '价格不能为空', trigger: 'blur'},
             {validator: priceValidator, trigger: 'blur'}
           ],
           supply_price: [
+            {required: true, message: '价格不能为空', trigger: 'blur'},
             {validator: supplyPriceValidator, trigger: 'blur'}
           ],
           category_id: [
@@ -170,13 +176,17 @@
         }
         this.initialData = this.R.clone(this.formData)
       },
-      save () {
+      handleSave (up) {
         this.loading = true
         this.$refs.form.validate(async (valid) => {
           if (valid) {
             try {
               if (!this.isEditMode) {
-                await FormApi.create(this.formData)
+                const frm = Object.assign({}, this.formData)
+                if (up) {
+                  frm.status = ProductService.allStatus.up
+                }
+                await FormApi.create(frm)
                 this.$message({
                   type: 'success',
                   message: '添加成功'
@@ -192,8 +202,8 @@
             } catch (err) {
             }
           }
+          this.loading = false
         })
-        this.loading = false
       }
     },
     async mounted () {

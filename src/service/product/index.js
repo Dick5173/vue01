@@ -2,6 +2,17 @@ import * as R from 'ramda'
 import R_ from 'src/util/R_'
 import * as ResourceService from 'src/service/resource/index'
 
+export const allStatus = {
+  up: {
+    value: 1,
+    text: '上架'
+  },
+  down: {
+    value: 2,
+    text: '下架'
+  }
+}
+
 export const convertFormToParam = R.curry((form) => {
   return R.pipe(
     R.clone,
