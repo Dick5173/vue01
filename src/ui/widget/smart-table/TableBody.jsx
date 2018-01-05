@@ -46,8 +46,7 @@ export default {
                       return (
                         <td class='st-expand-td'>
                           <div class="cell" onClick={() => this.toggleExpand(dataItem, index)}>
-                            <i
-                              class={this.isExpand(dataItem, index) ? 'el-icon el-icon-arrow-right st-expand-arrow-open' : 'el-icon el-icon-arrow-right st-expand-arrow-close'}></i>
+                            <i class={this.isExpand(dataItem, index) ? 'el-icon el-icon-arrow-right st-expand-arrow-open' : 'el-icon el-icon-arrow-right st-expand-arrow-close'}/>
                           </div>
                         </td>
                       )
