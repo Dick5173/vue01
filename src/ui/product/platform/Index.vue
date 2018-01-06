@@ -89,15 +89,7 @@
         })(params))
       },
       shouldResetRouteQuery (to, from) {
-        return from.name === 'ManagerCreate'
-      },
-      handleEditItem (item) {
-        this.$router.push({
-          name: 'ManagerEdit',
-          params: {
-            id: item.id
-          }
-        })
+        return from.name === 'PlatformProductCreate'
       },
       handleSearch (data) {
         this.queryChange(data)
