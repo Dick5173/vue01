@@ -101,6 +101,13 @@ const updateWithObjCustom = R.curry((fn, l, r) => {
         val = parseInt(val)
       } else if (RA.isString(copyObj[key])) {
         val = String(val)
+      } else if (RA.isArrayLike(copyObj[key])) {
+        if (RA.isNilOrEmpty(val)) {
+          return []
+        }
+        if (RA.isNotArray(val)) {
+          val = [val]
+        }
       }
       copyObj[key] = val
     }
