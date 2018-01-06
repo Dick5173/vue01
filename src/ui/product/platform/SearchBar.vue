@@ -10,7 +10,7 @@
           el-radio-button(:label="3") 缺货
           el-radio-button(:label="2") 已下架
       el-form-item(label="", prop="category_id")
-        el-select(v-model="formData.category_id", placeholder="请选择分类")
+        el-select(v-model="formData.category_id", placeholder="请选择分类", clearable)
           el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
             el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
       el-form-item(label="上架:")
@@ -64,11 +64,11 @@
       },
       changeDate (event) {
         if (event && event.length === 2) {
-          this.form.start = event[0].getTime()
-          this.form.end = event[1].getTime()
+          this.formData.start = event[0].getTime()
+          this.formData.end = event[1].getTime()
         } else {
-          this.form.start = 0
-          this.form.end = 0
+          this.formData.start = 0
+          this.formData.end = 0
         }
       },
       handleSearch () {
@@ -77,18 +77,19 @@
       handleReset () {
         this.formData = this.R.clone(this.initialData)
         this.defaultDate = []
+        this.$emit('submit', this.formData)
       },
       convertQueryParamsToForm () {
-        this.form = {
+        this.formData = {
           top: this.queryParams.top,
           category_id: this.queryParams.category_id,
-          status: parseInt(this.queryParams.status),
-          start: this.R_.parseDateTick(0, this.queryParams.start ? this.queryParams.start.replace(/-/, '/') : ''),
-          end: this.R_.parseDateTick(0, this.queryParams.end ? this.queryParams.end.replace(/-/, '/') : ''),
+          status: this.queryParams.status,
+          start: this.R_.parseDateTick(0, this.queryParams.start),
+          end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text
         }
-        if (this.form.start && this.form.end) {
-          this.defaultDate = [this.form.start, this.form.end]
+        if (this.formData.start && this.formData.end) {
+          this.defaultDate = [this.formData.start, this.formData.end]
         } else {
           this.defaultDate = []
         }

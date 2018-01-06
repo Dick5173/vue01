@@ -205,9 +205,13 @@ export default {
     /**
      * 查询数据修改
      */
-    queryChange (newQueryParams, keepPage) {
+    queryChange (newQueryParams, keepSort = true, keepPage = false) {
       let routeQuery = {...newQueryParams}
       routeQuery.timestamp = new Date().getTime()
+      if (keepSort) {
+        routeQuery.sort = this.sortParams.sort
+        routeQuery.order = this.sortParams.order
+      }
       if (keepPage) {
         routeQuery.page = this.queryPager.page
       }

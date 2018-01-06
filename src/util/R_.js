@@ -1,4 +1,5 @@
 const R = require('ramda')
+const RA = require('ramda-adjunct')
 
 // 加法
 // eslint-disable-next-line
@@ -86,16 +87,35 @@ const isPrice = R.curry((val) => {
  */
 const updateWithObjCustom = R.curry((fn, l, r) => {
   let copyObj = {...l}
+
+  const syncFunc = (key) => {
+    if (r.hasOwnProperty(key) && R.not(R.isEmpty(R.prop(key)(r)))) {
+      let val = R.prop(key)(r)
+      if (RA.isBoolean(copyObj[key])) {
+        if (RA.isString(val)) {
+          val = (val === 'true' || (!R.isEmpty(val) && val !== '0' && val !== 'false'))
+        } else if (RA.isInteger(val)) {
+          val = val !== 0
+        }
+      } else if (RA.isInteger(copyObj[key])) {
+        val = parseInt(val)
+      } else if (RA.isString(copyObj[key])) {
+        val = String(val)
+      }
+      copyObj[key] = val
+    }
+  }
+
   R.forEachObjIndexed((value, key, obj) => {
     if (fn) {
       if (!fn(key, copyObj, r)) {
         if (r.hasOwnProperty(key) && R.not(R.isEmpty(R.prop(key)(r)))) {
-          copyObj[key] = R.prop(key)(r)
+          syncFunc(key)
         }
       }
     } else {
       if (r.hasOwnProperty(key) && R.not(R.isEmpty(R.prop(key)(r)))) {
-        copyObj[key] = R.prop(key)(r)
+        syncFunc(key)
       }
     }
   })(l)

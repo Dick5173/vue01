@@ -46,6 +46,7 @@
   import * as ProductApi from 'src/api/product'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { showCover } from 'src/service/product/index'
+  import { dateFormat } from 'src/util/format'
 
   export default {
     name: 'AdminIndex',
@@ -57,13 +58,35 @@
     },
     data () {
       return {
-        queryParams: {}
+        queryParams: {
+          top: false,
+          status: 0,
+          category_id: '',
+          start: 0,
+          end: 0,
+          text: ''
+        }
       }
     },
     watch: {},
     methods: {
       getQueryApi (params) {
-        return ProductApi.getList(params)
+        return ProductApi.getList(this.R.mapObjIndexed((val, key, obj) => {
+          if (key === 'start' || key === 'end') {
+            if (val === 0) {
+              return ''
+            } else {
+              return dateFormat(val, 'YYYY-MM-DD')
+            }
+          } else if (key === 'top') {
+            if (val) {
+              return 1
+            } else {
+              return 0
+            }
+          }
+          return val
+        })(params))
       },
       shouldResetRouteQuery (to, from) {
         return from.name === 'ManagerCreate'
@@ -76,7 +99,8 @@
           }
         })
       },
-      handleSearch () {
+      handleSearch (data) {
+        this.queryChange(data)
       },
       handleEdit (product) {
         this.$router.push({
