@@ -22,3 +22,13 @@ export const create = (form) => {
 export const update = (id, form) => {
   return Axios.post(`/admin/category/${id}`, {...form})
 }
+
+export const deleteItem = (id) => {
+  return Axios.delete(`/admin/category/${id}`)
+}
+
+export const sortCategory = (parentId, categoryIds) => {
+  return Axios.post(`/admin/sort/category/${parentId}`, {
+    val: categoryIds || []
+  })
+}

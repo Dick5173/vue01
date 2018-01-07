@@ -109,6 +109,16 @@ export default new Router({
           }
         },
         {
+          path: 'category',
+          name: 'CategoryIndex',
+          component: () => import('src/ui/product/category/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '分类',
+            showInSide: true
+          }
+        },
+        {
           path: 'tenantuser',
           name: 'TenantUser',
           component: () => import('src/ui/user/tenant-user/Index.vue'),
