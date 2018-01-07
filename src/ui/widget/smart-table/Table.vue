@@ -2,7 +2,7 @@
   div.el-table.list-el-table.el-table--fit.el-table--border.el-table--enable-row-hover.el-table--enable-row-transition.draggable-table()
     slot
     table-header(v-if="showHeader")
-    table-body(v-show="dataList && dataList.length > 0")
+    table-body(ref="tabBody", v-show="dataList && dataList.length > 0")
     empty(v-show="!dataList || dataList.length <= 0")
 
 
@@ -35,12 +35,18 @@
       rowKey: {
         type: String,
         default: ''
-      }
+      },
+      expandChildKey: ''
     },
     data () {
       const store = new TableStore(this)
       return {
         store
+      }
+    },
+    methods: {
+      expandKey (key, isExpand) {
+        this.$refs.tabBody && this.$refs.tabBody.expandKey(key, isExpand)
       }
     }
   }

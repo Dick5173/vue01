@@ -205,13 +205,9 @@ export default {
     /**
      * 查询数据修改
      */
-    queryChange (newQueryParams, keepSort = true, keepPage = false) {
+    queryChange (newQueryParams, keepPage) {
       let routeQuery = {...newQueryParams}
       routeQuery.timestamp = new Date().getTime()
-      if (keepSort) {
-        routeQuery.sort = this.sortParams.sort
-        routeQuery.order = this.sortParams.order
-      }
       if (keepPage) {
         routeQuery.page = this.queryPager.page
       }
@@ -236,7 +232,14 @@ export default {
       vm.isInitPager = true
       if (vm.autoLoadData) {
         if (vm.shouldResetRouteQuery(to, from)) {
-          vm.resetQuery()
+          const routeQuery = {...vm.originalQueryParams}
+          routeQuery.timestamp = new Date().getTime()
+          Object.assign(routeQuery, vm.sortParams)
+          vm.$router.replace({
+            path: vm.$route.path,
+            query: routeQuery,
+            params: vm.$route.params
+          })
           return
         }
         vm.loadDataListByQueryPage()

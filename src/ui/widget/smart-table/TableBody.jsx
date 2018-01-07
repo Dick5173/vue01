@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import './TableBody.scss'
 import Draggable from 'vuedraggable'
+import * as RA from 'ramda-adjunct'
 
 export default {
   name: 'TableBody',
@@ -45,9 +46,14 @@ export default {
                     } else if (column.type === 'expand') {
                       return (
                         <td class='st-expand-td'>
-                          <div class="cell" onClick={() => this.toggleExpand(dataItem, index)}>
-                            <i class={this.isExpand(dataItem, index) ? 'el-icon el-icon-arrow-right st-expand-arrow-open' : 'el-icon el-icon-arrow-right st-expand-arrow-close'}/>
-                          </div>
+                          {
+                            this.enableExpand(dataItem, index) ? (
+                              <div class="cell st-expand-td-handle" onClick={() => this.toggleExpand(dataItem, index)}>
+                                <i
+                                  class={this.isExpand(dataItem, index) ? 'el-icon el-icon-arrow-right st-expand-arrow-open' : 'el-icon el-icon-arrow-right st-expand-arrow-close'}/>
+                              </div>
+                            ) : ''
+                          }
                         </td>
                       )
                     }
@@ -56,7 +62,7 @@ export default {
               }
             </tr>
             {
-              columnExpand ? <tr v-show={this.isExpand(dataItem, index)}>
+              columnExpand ? <tr v-show={this.enableExpand(dataItem, index) && this.isExpand(dataItem, index)}>
                 <td class="cell" colSpan={columns.length}>
                   <div>{columnExpand.renderCell({row: dataItem, index: index})}</div>
                 </td>
@@ -76,6 +82,7 @@ export default {
   },
   methods: {
     handleDragStart () {
+      this.expandInfo = {}
       this.$parent.store.commit('dragStart')
     },
     handleDragEnd () {
@@ -84,13 +91,27 @@ export default {
     handleInput (e) {
       this.$parent.store.commit('dragChange', e)
     },
+    getRowKey (data, index) {
+      return `${this.$parent.rowKey}` ? data[this.$parent.rowKey] : `${index}`
+    },
     toggleExpand (data, index) {
-      const key = `${this.$parent.rowKey}` ? data[this.$parent.rowKey] : `${index}`
+      const key = this.getRowKey(data, index)
       Vue.set(this.expandInfo, key, !this.expandInfo[key])
     },
     isExpand (data, index) {
       const key = `${this.$parent.rowKey}` ? data[this.$parent.rowKey] : `${index}`
       return this.expandInfo[key]
+    },
+    expandKey (key, isExpand) {
+      Vue.set(this.expandInfo, key, isExpand)
+    },
+    enableExpand (data, index) {
+      const expandKey = this.$parent.expandChildKey
+      if (!expandKey) {
+        return true
+      }
+      const expandVal = data[expandKey]
+      return !RA.isNilOrEmpty(expandVal)
     }
   }
 }
