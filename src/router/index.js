@@ -119,6 +119,16 @@ export default new Router({
           }
         },
         {
+          path: 'service',
+          name: 'Service',
+          component: () => import('src/ui/product/service/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '服务',
+            showInSide: true
+          }
+        },
+        {
           path: 'tenantuser',
           name: 'TenantUser',
           component: () => import('src/ui/user/tenant-user/Index.vue'),
