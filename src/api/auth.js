@@ -17,3 +17,7 @@ export const logout = () => {
       return res
     })
 }
+
+export const getCaptcha = () => {
+  return Axios.get(`/admin/pub/captcha`)
+}

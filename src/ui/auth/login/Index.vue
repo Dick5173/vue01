@@ -1,31 +1,42 @@
 <template lang="pug">
   div.login-container
-    el-form(ref="formLogin", :model="form", :rules="rules", labelPosition="left", labelWidth="0")
-      h3.title 诚之优品企业版管理后台
+    el-form(ref="formLogin", :model="formData", :rules="formRules", labelPosition="left", labelWidth="0")
+      h3.title 百宝美市管理后台
       el-form-item(prop="mobile")
         div.icon
           svg-icon(icon="account")
-        el-input(type="text", placeholder="手机号", v-model="form.mobile")
+        el-input(type="text", placeholder="手机号", v-model="formData.mobile")
       el-form-item(prop="passwd")
         div.icon
           svg-icon(icon="key")
-        el-input(type="password", placeholder="密码", v-model="form.passwd")
+        el-input(type="password", placeholder="密码", v-model="formData.passwd")
+      el-form-item(prop="capt_code")
+        div.captcha
+          div.icon.tip
+            svg-icon(icon="captcha")
+          div.code
+            el-input(type="text", placeholder="验证码", v-model="formData.capt_code")
+          div.img
+            img(:src="capt_img", @click="refreshCaptcha")
       el-form-item
         el-button(type="primary", @click="handleLogin", :loading="loading") 登录
 </template>
 
 <script>
-  import { login } from 'src/api/auth'
+  import { login, getCaptcha } from 'src/api/auth'
 
   export default {
     data () {
       return {
         loading: false,
-        form: {
+        capt_img: '',
+        formData: {
           mobile: '',
-          passwd: ''
+          passwd: '',
+          capt_code: '',
+          capt_id: ''
         },
-        rules: {
+        formRules: {
           mobile: [
             {
               required: true, trigger: 'blur', message: '请输入手机号'
@@ -34,6 +45,11 @@
           passwd: [
             {
               required: true, trigger: 'blur', message: '请输入密码'
+            }
+          ],
+          capt_code: [
+            {
+              required: true, trigger: 'blur', message: '请输入验证码'
             }
           ]
         }
@@ -45,16 +61,28 @@
           if (valid) {
             this.loading = true
             try {
-              await login(this.form)
+              await login(this.formData)
               this.$router.replace({
                 name: 'Dashboard'
               })
+            } catch (_) {
+              this.refreshCaptcha()
             } finally {
               this.loading = false
             }
           }
         })
+      },
+      async refreshCaptcha () {
+        this.formData.capt_code = ''
+        this.formData.capt_id = ''
+        const resCaptcha = await getCaptcha()
+        this.formData.capt_id = resCaptcha.data.id
+        this.capt_img = resCaptcha.data.url
       }
+    },
+    async mounted () {
+      await this.refreshCaptcha()
     }
   }
 </script>
@@ -105,12 +133,39 @@
     }
 
     .icon {
+      box-sizing: border-box;
       display: inline-block;
       width: 30px;
       font-size: 20px;
+      padding-left: 10px;
       color: $dark_gray;
-      text-align: right;
       vertical-align: middle;
+      text-align: center;
+
+    }
+
+    .captcha {
+      display: flex;
+      align-items: center;
+
+      .tip {
+        width: 30px;
+        font-size: 15px;
+      }
+
+      .code {
+        flex: 1;
+      }
+
+      .img {
+        height: 47px;
+
+        & > img {
+          height: 100%;
+          background: #fff;
+          cursor: pointer;
+        }
+      }
     }
 
   }
