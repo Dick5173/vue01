@@ -1,25 +1,25 @@
 .small-el-form {
-  width: 400px;
+  width: 400px !important;
 }
 
 .medium-el-form {
-  width: 550px;
+  width: 550px !important;
 }
 
 .large-el-form {
-  width: 700px;
+  width: 700px !important;
 }
 
 .small-el-table {
-  width: 400px;
+  width: 400px !important;
 }
 
 .large-el-table {
-  width: 700px;
+  width: 700px !important;
 }
 
 .x-large-el-form {
-  width: 1000px;
+  width: 1000px !important;
 }
 
 .show-validate-el-form {
@@ -39,36 +39,36 @@
 }
 
 .tiny-el-input {
-  width: 100px;
+  width: 100px !important;
 }
 
 .small-el-input {
-  width: 400px;
+  width: 400px !important;
 }
 
 .medium-el-input {
-  width: 500px;
+  width: 500px !important;
 }
 
 .large-el-input {
-  width: 700px;
+  width: 700px !important;
 }
 
 .input-right-desc {
-  margin-left: 10px;
+  margin-left: 10px !important;
   color: $font-color-place-holder;
   font-size: $font-size-content-small;
 }
 
 .input-bottom-desc {
-  margin-top: 8px;
+  margin-top: 8px !important;
   color: $font-color-place-holder;
   font-size: $font-size-content-small;
   line-height: 1;
 }
 
 .list-el-table {
-  margin-top: 12px;
+  margin-top: 12px !important;
 }
 
 .common-dialog {
