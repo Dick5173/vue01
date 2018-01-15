@@ -2,13 +2,16 @@
   div
     el-button(type="primary", icon="el-icon-plus", @click="create") 添加
     div.list
-      el-table(style="width: 450px;", :data="serviceTagList", row-key="id", border, :show-header="false", v-loading="loading")
-        el-table-column(label="", prop="name", width="299")
+      el-table(style="width: 450px;", :data="serviceTagGroupList", row-key="id", border, :show-header="false", v-loading="loading")
+        el-table-column(label="", prop="name", width="150")
           template(slot-scope="scope")
             el-button(type="text", @click="edit(scope.row)") {{scope.row.name}}
-        el-table-column(label="", width="150")
+        el-table-column(label="", prop="name", width="150")
           template(slot-scope="scope")
-            el-button(size="small", type="danger", @click="del(scope.row)") 删 除
+            div {{scope.row.pc}}款商品
+        el-table-column(label="", width="149")
+          template(slot-scope="scope")
+            el-button(:disabled="scope.row.pc!==0",size="small", type="danger", @click="del(scope.row)") 删 除
     edit-dialog(ref="dlgEdit", @created="submitCreated", @updated="submitEdit")
 </template>
 
@@ -24,7 +27,7 @@
     data () {
       return {
         loading: false,
-        serviceTagList: []
+        serviceTagGroupList: []
       }
     },
     computed: {},
@@ -40,12 +43,16 @@
           type: 'warning'
         }).then(async () => {
           this.loading = true
-          await ServiceTagApi.deleteTagItem(row.id)
+          try {
+            await ServiceTagApi.deleteTagGroupItem(row.id)
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          } catch (err) {
+            this.loading = false
+          }
           this.refresh()
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -59,7 +66,7 @@
       async submitEdit (formData) {
         try {
           this.loading = true
-          await ServiceTagApi.editTagItem(formData)
+          await ServiceTagApi.editTagGroupItem(formData)
           this.$message({
             type: 'success',
             message: '编辑成功'
@@ -72,7 +79,7 @@
       async submitCreated (formData) {
         try {
           this.loading = true
-          await ServiceTagApi.createTagItem(formData)
+          await ServiceTagApi.createTagGroupItem(formData)
           this.$message({
             type: 'success',
             message: '创建成功'
@@ -85,8 +92,8 @@
       async refresh () {
         try {
           this.loading = true
-          let res = await ServiceTagApi.getTagList()
-          this.serviceTagList = res.data.data
+          let res = await ServiceTagApi.getTagGroupList()
+          this.serviceTagGroupList = res.data.data
           this.loading = false
         } catch (err) {
           this.loading = false

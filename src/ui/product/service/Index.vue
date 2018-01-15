@@ -4,16 +4,20 @@
       el-radio-button(label="tag") 服务说明
       el-radio-button(label="group") 服务组合
     div.content(v-show="activeName === 'tag'")
-      ServiceTag
+      service-tag
+    div.content(v-show="activeName === 'group'")
+      service-tag-group
 </template>
 
 <script>
   import ServiceTag from 'src/ui/product/service/tag/Index.vue'
+  import ServiceTagGroup from 'src/ui/product/service/group/Index.vue'
 
   export default {
     props: {},
     components: {
-      ServiceTag
+      ServiceTag,
+      ServiceTagGroup
     },
     data () {
       return {
@@ -28,7 +32,7 @@
 
 
 <style lang="scss" scoped>
-  .content{
+  .content {
     margin-top: 20px;
   }
 
