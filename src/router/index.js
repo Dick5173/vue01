@@ -120,12 +120,64 @@ export default new Router({
         },
         {
           path: 'service',
-          name: 'Service',
+          name: 'ServiceIndex',
           component: () => import('src/ui/product/service/Index.vue'),
           meta: {
             group: 'Product',
             title: '服务',
             showInSide: true
+          }
+        },
+        {
+          path: 'deliveryregion',
+          name: 'DeliveryRegionIndex',
+          component: () => import('src/ui/product/delivery-region/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '配送区域',
+            showInSide: true
+          }
+        },
+        {
+          path: 'deliveryregion/edit/:id',
+          name: 'DeliveryRegionEdit',
+          component: () => import('src/ui/product/delivery-region/Edit.vue'),
+          meta: {
+            group: 'Product',
+            title: '编辑配送区域',
+            breadcrumbItems: [
+              {
+                text: '配送区域',
+                to: {
+                  name: 'DeliveryRegionIndex'
+                }
+              },
+              {
+                text: '编辑'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
+          path: 'deliveryregion/create',
+          name: 'DeliveryRegioncCreate',
+          component: () => import('src/ui/product/delivery-region/Create.vue'),
+          meta: {
+            group: 'Product',
+            title: '创建配送区域',
+            breadcrumbItems: [
+              {
+                text: '配送区域',
+                to: {
+                  name: 'DeliveryRegionIndex'
+                }
+              },
+              {
+                text: '创建'
+              }
+            ],
+            customBreadcrumb: false
           }
         },
         {
