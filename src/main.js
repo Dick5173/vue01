@@ -15,6 +15,7 @@ import GlobalPlugin from 'src/plugin/global/index'
 import FilterPlugin from './filter'
 import 'babel-polyfill'
 import RamdaPlugin from 'src/plugin/ramda/index'
+import eventBus from 'src/plugin/global/EventBus'
 
 Vue.$router = router
 Vue.$store = store
@@ -26,6 +27,7 @@ Vue.use(ErrorPlugin)
 Vue.use(GlobalPlugin)
 Vue.use(FilterPlugin)
 Vue.use(RamdaPlugin)
+Vue.use(eventBus)
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

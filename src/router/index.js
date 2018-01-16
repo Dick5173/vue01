@@ -181,6 +181,58 @@ export default new Router({
           }
         },
         {
+          path: 'afterservice',
+          name: 'AfterServiceIndex',
+          component: () => import('src/ui/product/after-service/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '售后模板',
+            showInSide: true
+          }
+        },
+        {
+          path: 'afterservice/create',
+          name: 'AfterServiceCreate',
+          component: () => import('src/ui/product/after-service/Create.vue'),
+          meta: {
+            group: 'Product',
+            title: '创建售后模板',
+            breadcrumbItems: [
+              {
+                text: '售后模板',
+                to: {
+                  name: 'AfterServiceIndex'
+                }
+              },
+              {
+                text: '创建'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
+          path: 'afterservice/edit/:id',
+          name: 'AfterServiceEdit',
+          component: () => import('src/ui/product/after-service/Edit.vue'),
+          meta: {
+            group: 'Product',
+            title: '编辑售后模板',
+            breadcrumbItems: [
+              {
+                text: '售后模板',
+                to: {
+                  name: 'AfterServiceIndex'
+                }
+              },
+              {
+                text: '编辑'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
           path: 'tenantuser',
           name: 'TenantUser',
           component: () => import('src/ui/user/tenant-user/Index.vue'),
