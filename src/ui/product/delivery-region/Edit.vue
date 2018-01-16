@@ -1,11 +1,14 @@
 <template lang="pug">
-    div
+  div
+    delivery-region-from
 </template>
 
 <script>
+  import DeliveryRegionFrom from 'src/ui/product/delivery-region/Form.vue'
+
   export default {
     props: {},
-    components: {},
+    components: {DeliveryRegionFrom},
     data () {
       return {}
     },
