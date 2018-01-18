@@ -184,7 +184,7 @@
               if (!this.isEditMode) {
                 const frm = Object.assign({}, this.formData)
                 if (up) {
-                  frm.status = ProductService.allStatus.up
+                  frm.status = ProductService.allStatus.up.value
                 }
                 await FormApi.create(frm)
                 this.$message({
