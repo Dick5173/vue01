@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px")
+  el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
     el-form-item(label="商品图片", prop="head", :required="true")
       upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT')
       div.input-bottom-desc 还能上传 {{ remainHeadCount }} 张，建议尺寸750×750像素
@@ -24,15 +24,29 @@
       el-select(v-model="formData.category_id", placeholder="请选择")
         el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
           el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
+    el-form-item(label="配送区域", prop="delivery_region", placeholder="请选择")
+      el-select(v-model="formData.delivery_region", placeholder="请选择")
+        el-option(v-for="item in deliveryRegionList", :key="item.id", :label="item.name", :value="item.id")
     el-form-item(label="商品设置", prop="oversea")
       el-checkbox(v-model="formData.oversea") 清关商品
         span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
+    el-form-item(label="商品标签", prop="tag")
+      div
+        el-tag.ptag(type="primary", v-for="item in formData.tags", :key="item.id") {{item.name}}
+      el-button(type="primary", size="small", icon="el-icon-plus", @click="chooseTag") 选择标签
     el-form-item(label="商品描述", prop="content")
       content-comp(:content.sync="formData.content")
+    el-form-item(label="服务组合", prop="service_tag_group")
+      el-select(v-model="formData.service_tag_group", placeholder="请选择")
+        el-option(v-for="item in serviceGroupList", :key="item.id", :label="item.name", :value="item.id")
+    el-form-item(label="售后模板", prop="after_service")
+      el-select(v-model="formData.after_service", placeholder="请选择")
+        el-option(v-for="item in afterServiceList", :key="item.id", :label="item.name", :value="item.id")
     el-form-item
       el-button(@click="$router.back()") 取消
       el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
       el-button(type="primary", :loading="loading", @click="handleSave") 保存
+    batch-tag-dialog(ref="chooseTagDialog", :origin="oraTags", @submit="chooseTagComplete")
 </template>
 
 <script>
@@ -43,7 +57,11 @@
   import * as FormApi from 'src/api/product'
   import * as CategoryApi from 'src/api/category'
   import * as ProductService from 'src/service/product'
+  import * as ServiceGroupApi from 'src/api/servicetag'
+  import * as AfterServiceApi from 'src/api/after-service'
+  import * as deliveryRegionApi from 'src/api/delivery-region'
   import { priceValidator } from 'src/util/validator'
+  import BatchTagDialog from 'src/ui/product/platform/batch/BatchTagDialog.vue'
 
   const MAX_HEAD_COUNT = 5
 
@@ -53,7 +71,8 @@
       UploadImageList,
       UploadImage,
       Skus,
-      ContentComp
+      ContentComp,
+      BatchTagDialog
     },
     data () {
       const headValidator = (rule, value, callback) => {
@@ -108,6 +127,9 @@
       return {
         loading: false,
         initialData: {},
+        serviceGroupList: [],
+        afterServiceList: [],
+        deliveryRegionList: [],
         formData: {
           id: 0,
           status: 1,
@@ -124,7 +146,11 @@
           supply_price: '',
           category_id: '',
           oversea: false,
-          content: []
+          content: [],
+          tags: [],
+          service_tag_group: '',
+          after_service: '',
+          delivery_region: ''
         },
         formRules: {
           head: [
@@ -164,17 +190,44 @@
       },
       remainHeadCount () {
         return MAX_HEAD_COUNT - this.formData.head.length
+      },
+      oraTags () {
+        return this.formData.tags ? [{tags: this.formData.tags}] : []
       }
     },
     methods: {
       async initData () {
+        try {
+          this.loading = true
+          this.getCategoryList()
+          this.getServiceGroupList()
+          this.getAfterServiceList()
+          this.getDeliveryRegionList()
+          if (this.isEditMode) {
+            const resItem = await FormApi.getItem(this.$route.params.id)
+            this.formData = ProductService.convertModelToForm(resItem.data)
+          }
+          this.initialData = this.R.clone(this.formData)
+          this.loading = false
+        } catch (err) {
+          this.loading = false
+        }
+      },
+      async getCategoryList () {
         const resCategory = await CategoryApi.getList()
         this.allCategories = resCategory.data.data
-        if (this.isEditMode) {
-          const resItem = await FormApi.getItem(this.$route.params.id)
-          this.formData = ProductService.convertModelToForm(resItem.data)
-        }
-        this.initialData = this.R.clone(this.formData)
+      },
+      async getServiceGroupList () {
+        const resServiceGroup = await ServiceGroupApi.getTagGroupList()
+        this.serviceGroupList = resServiceGroup.data.data
+      },
+      async getAfterServiceList () {
+        const resAfterService = await AfterServiceApi.getList()
+        this.afterServiceList = resAfterService.data.data
+      },
+      async getDeliveryRegionList () {
+        const resDeliveryRegion = await deliveryRegionApi.getList()
+        this.deliveryRegionList = resDeliveryRegion.data.data
       },
       handleSave (up) {
         this.loading = true
@@ -204,6 +257,13 @@
           }
           this.loading = false
         })
+      },
+      chooseTag () {
+        this.$refs.chooseTagDialog.show()
+      },
+      chooseTagComplete (result) {
+        this.formData.tags = result.component.chooseTags
+        result.component.hide()
       }
     },
     async mounted () {
@@ -213,4 +273,7 @@
 </script>
 
 <style lang="scss" scoped>
+  .ptag {
+    margin-right: 10px;
+  }
 </style>

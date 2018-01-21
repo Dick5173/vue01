@@ -18,7 +18,7 @@ export const convertFormToParam = R.curry((form) => {
     R.clone,
     (obj) => {
       const priceField = ['st_price', 'supply_price']
-      const intField = ['stock', 'category_id']
+      const intField = ['stock', 'category_id', 'service_tag_group', 'after_service', 'delivery_region']
       return R.mapObjIndexed((val, key) => {
         if (key === 'head') {
           return R.map((headItem) => {
@@ -46,6 +46,10 @@ export const convertFormToParam = R.curry((form) => {
             }
             return skuItem
           })(val)
+        } else if (key === 'tags') {
+          return R.map(tagsItem => {
+            return tagsItem.id
+          })(val)
         }
         return val
       })(obj)
@@ -56,7 +60,11 @@ export const convertFormToParam = R.curry((form) => {
         category_id: obj.category_id,
         oversea: !!obj.oversea,
         supply_price: obj.supply_price,
-        skus: obj.skus
+        skus: obj.skus,
+        tags: obj.tags,
+        service_tag_group: obj.service_tag_group,
+        after_service: obj.after_service,
+        delivery_region: obj.delivery_region
       }
       return R.pickAll(['id', 'status', 'head', 'cover', 'name', 'sell_point', 'st_price', 'content', 'prop'])(obj)
     }
@@ -71,7 +79,11 @@ export const convertModelToForm = R.curry((form) => {
         category_id: ['prop', 'category', 'id'],
         oversea: ['prop', 'ext', 'oversea'],
         supply_price: ['prop', 'ext', 'supply_price'],
-        skus: ['prop', 'skus']
+        skus: ['prop', 'skus'],
+        tags: ['prop', 'tags'],
+        service_tag_group: ['prop', 'ext', 'service_tag_group'],
+        after_service: ['prop', 'ext', 'after_service'],
+        delivery_region: ['prop', 'ext', 'delivery_region']
       }
       R.forEachObjIndexed((val, key) => {
         obj[key] = R.path(val)(obj)
@@ -116,7 +128,7 @@ export const convertModelToForm = R.curry((form) => {
         supply_price: obj.supply_price,
         skus: obj.skus
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content', 'tags', 'service_tag_group', 'after_service', 'delivery_region'])(obj)
     }
   )(form)
 })

@@ -27,3 +27,21 @@ export const update = (id, form) => {
   const params = ProductService.convertFormToParam(form)
   return Axios.post(`/admin/product/${id}`, params)
 }
+export const shelveUp = (id) => {
+  return Axios.post(`/admin/product/${id}/up`)
+}
+export const shelveDown = (id) => {
+  return Axios.delete(`/admin/product/${id}/up`)
+}
+export const top = (id) => {
+  return Axios.post(`/admin/product/${id}/top`)
+}
+export const cancelTop = (id) => {
+  return Axios.delete(`/admin/product/${id}/top`)
+}
+export const deleteProduct = (id) => {
+  return Axios.post(`/admin/product/${id}/trash`)
+}
+export const batchCategory = (formData) => {
+  return Axios.post(`/admin/batch/product/category`, formData)
+}
