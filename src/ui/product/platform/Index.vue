@@ -20,7 +20,9 @@
         el-table-column(prop="sold", label="销量", sortable, width="100px")
         el-table-column(prop="stock", label="库存", sortable, width="100px")
           div(slot-scope="props") {{ props.row.prop.stock }}
-        el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
+        el-table-column(prop="", label="店铺选择", sortable, width="110px")
+          div(slot-scope="props")
+            el-button(type="text", @click="showTenantCountDialog(props.row)") {{props.row.tenant_count}}
         el-table-column(prop="pt", label="上架时间", sortable, width="160px")
           div(slot-scope="props", v-if="props.row.pt > 0") {{ props.row.pt | datetime }}
         el-table-column(type="expand", fixed="right")
@@ -47,6 +49,7 @@
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       batch-category-dialog(ref="batchCategorydlg", @refresh="loadDataListByQueryPage")
       batch-tag-dialog(ref="batchTagdlg", :origin="tagsIdArray", @submit="chooseTagComplete", @refresh="loadDataListByQueryPage")
+      tenant-count-dialog(ref="tenantCountDlg")
 </template>
 
 <script>
@@ -57,6 +60,7 @@
   import { dateFormat } from 'src/util/format'
   import BatchCategoryDialog from 'src/ui/product/platform/dialog/BatchCategoryDialog.vue'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
+  import TenantCountDialog from 'src/ui/product/platform/dialog/TenantCountDialog.vue'
 
   export default {
     name: 'AdminIndex',
@@ -66,7 +70,8 @@
     components: {
       SearchBar,
       BatchCategoryDialog,
-      BatchTagDialog
+      BatchTagDialog,
+      TenantCountDialog
     },
     data () {
       return {
@@ -122,6 +127,9 @@
       },
       shouldResetRouteQuery (to, from) {
         return from.name === 'PlatformProductCreate'
+      },
+      showTenantCountDialog (row) {
+        this.$refs.tenantCountDlg.show(row)
       },
       async chooseTagComplete (result) {
         result.component.hide()
