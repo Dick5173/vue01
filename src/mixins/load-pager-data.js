@@ -248,6 +248,7 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     this.sortParams = Vue.R_.updateWithObj(this.sortParams, to.query)
+    console.log(to.query)
     this.loadDataListByQueryPage(to.query)
     next()
   }

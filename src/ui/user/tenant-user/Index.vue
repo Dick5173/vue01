@@ -51,6 +51,7 @@
           path: '/tenantuser',
           query: query
         })
+        this.$refs.searchtoolbar.getTenantList()
       },
       createItem () {
         this.$router.push({

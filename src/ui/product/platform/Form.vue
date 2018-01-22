@@ -61,7 +61,7 @@
   import * as AfterServiceApi from 'src/api/after-service'
   import * as deliveryRegionApi from 'src/api/delivery-region'
   import { priceValidator } from 'src/util/validator'
-  import BatchTagDialog from 'src/ui/product/platform/batch/BatchTagDialog.vue'
+  import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
 
   const MAX_HEAD_COUNT = 5
 
@@ -130,6 +130,7 @@
         serviceGroupList: [],
         afterServiceList: [],
         deliveryRegionList: [],
+        allCategories: [],
         formData: {
           id: 0,
           status: 1,
@@ -180,11 +181,13 @@
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}
           ]
-        },
-        allCategories: []
+        }
       }
     },
     computed: {
+      isCopy () {
+        return this.$route.name === 'PlatformProductCopyCreate'
+      },
       isEditMode () {
         return this.$route.name === 'PlatformProductEdit'
       },
@@ -203,7 +206,7 @@
           this.getServiceGroupList()
           this.getAfterServiceList()
           this.getDeliveryRegionList()
-          if (this.isEditMode) {
+          if (this.isEditMode || this.isCopy) {
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
           }
@@ -234,7 +237,8 @@
         this.$refs.form.validate(async (valid) => {
           if (valid) {
             try {
-              if (!this.isEditMode) {
+              if (!this.isEditMode || this.isCopy) {
+                this.formData.id = 0
                 const frm = Object.assign({}, this.formData)
                 if (up) {
                   frm.status = ProductService.allStatus.up.value

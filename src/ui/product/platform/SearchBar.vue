@@ -13,6 +13,10 @@
         el-select(v-model="formData.category_id", placeholder="请选择分类", clearable)
           el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
             el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
+      el-form-item(label="", prop="tags")
+        el-select(v-model="formData.tags", placeholder="请选择标签", multiple)
+          el-option-group(v-for="parentItem in allTags", :label="parentItem.name", :key="parentItem.id")
+            el-option(v-for="childItem in parentItem.items", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
       el-form-item(label="上架:")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item(label="")
@@ -24,6 +28,7 @@
 
 <script>
   import * as CategoryApi from 'src/api/category'
+  import * as TagApi from 'src/api/tag'
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
 
   export default {
@@ -42,11 +47,13 @@
           category_id: '',
           start: 0,
           end: 0,
-          text: ''
+          text: '',
+          tags: []
         },
         // endregion
         initialData: null,
         allCategories: [],
+        allTags: [],
         defaultDate: []
       }
     },
@@ -57,8 +64,16 @@
       }
     },
     methods: {
-      async initData () {
+      initData () {
         this.initialData = this.R.clone(this.formData)
+        this.getCategoryList()
+        this.getTagsList()
+      },
+      async getTagsList () {
+        const resTagsList = await TagApi.getTagGroup()
+        this.allTags = resTagsList.data.data
+      },
+      async getCategoryList () {
         const resCategory = await CategoryApi.getList()
         this.allCategories = resCategory.data.data
       },
@@ -86,7 +101,8 @@
           status: this.queryParams.status,
           start: this.R_.parseDateTick(0, this.queryParams.start),
           end: this.R_.parseDateTick(0, this.queryParams.end),
-          text: this.queryParams.text
+          text: this.queryParams.text,
+          tags: this.queryParams.tags
         }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]

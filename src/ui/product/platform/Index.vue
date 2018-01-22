@@ -5,8 +5,9 @@
       el-button(type="primary", icon="el-icon-plus") 创建
     div.batch
       el-button-group
-        el-button(size="mini", @click="batchCategory", :disabled="multipleSelection.length === 0") 批量分类
-        el-button(size="mini", @click="batchTag", :disabled="multipleSelection.length === 0") 批量标签
+        el-button(size="small", @click="batchCategory", :disabled="multipleSelection.length === 0") 批量分类
+        el-button(size="small", @click="batchTag", :disabled="multipleSelection.length === 0") 批量标签
+        el-button(size="small", @click="batchChangeStatus", :disabled="multipleSelection.length === 0") 批量下架
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border, @selection-change="handleSelectionChange")
         el-table-column(type="selection", width="55px")
@@ -38,14 +39,14 @@
                 i.el-icon-arrow-down.el-icon--right()
               el-dropdown-menu(slot="dropdown")
                 el-dropdown-item(@click.native="handleEdit(props.row)") &nbsp;&nbsp;编辑&nbsp;&nbsp;
-                el-dropdown-item &nbsp;&nbsp;复制&nbsp;&nbsp;
+                el-dropdown-item(@click.native="handleCopy(props.row)") &nbsp;&nbsp;复制&nbsp;&nbsp;
                 el-dropdown-item(@click.native="changeStatus(props.row)") &nbsp;&nbsp;{{props.row.status === 1 ? '下架' : '上架'}}&nbsp;&nbsp;
                 el-dropdown-item(@click.native="changeTop(props.row)") &nbsp;&nbsp;{{props.row.top_tick === 0 ? '置顶' : '取消置顶'}}&nbsp;&nbsp;
                 el-dropdown-item(@click.native="deleteProduct(props.row)") &nbsp;&nbsp;删除&nbsp;&nbsp;
-      el-button.recycle(@click="") 回收站
+      el-button.recycle(@click="toRecycle") 回收站
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       batch-category-dialog(ref="batchCategorydlg", @refresh="loadDataListByQueryPage")
-      batch-tag-dialog(ref="batchTagdlg", :origin="multipleSelection", @refresh="loadDataListByQueryPage")
+      batch-tag-dialog(ref="batchTagdlg", :origin="tagsIdArray", @submit="chooseTagComplete", @refresh="loadDataListByQueryPage")
 </template>
 
 <script>
@@ -54,8 +55,8 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { showCover } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
-  import BatchCategoryDialog from 'src/ui/product/platform/batch/BatchCategoryDialog.vue'
-  import BatchTagDialog from 'src/ui/product/platform/batch/BatchTagDialog.vue'
+  import BatchCategoryDialog from 'src/ui/product/platform/dialog/BatchCategoryDialog.vue'
+  import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
 
   export default {
     name: 'AdminIndex',
@@ -75,12 +76,23 @@
           category_id: '',
           start: 0,
           end: 0,
-          text: ''
+          text: '',
+          tags: []
         },
         multipleSelection: []
       }
     },
     watch: {},
+    computed: {
+      tagsIdArray () {
+        return this.multipleSelection.map((i) => {
+          let tagsArr = {
+            tags: i.prop.tags
+          }
+          return tagsArr
+        })
+      }
+    },
     methods: {
       getQueryApi (params) {
         return ProductApi.getList(this.R.mapObjIndexed((val, key, obj) => {
@@ -96,12 +108,74 @@
             } else {
               return 0
             }
+          } else if (key === 'tags') {
+            if (val.length !== 0) {
+              return val.map((i) => {
+                return parseInt(i)
+              })
+            } else {
+              return ''
+            }
           }
           return val
         })(params))
       },
       shouldResetRouteQuery (to, from) {
         return from.name === 'PlatformProductCreate'
+      },
+      async chooseTagComplete (result) {
+        result.component.hide()
+        if (result.add_tags.length === 0 && result.del_tags.length === 0) {
+          return
+        }
+        let formData = {
+          pids: this.multipleSelection.map((i) => {
+            return i.id
+          }),
+          add_tags: result.add_tags,
+          del_tags: result.del_tags
+        }
+        try {
+          this.loading = true
+          await ProductApi.batchChangeTags(formData)
+          this.$message({
+            type: 'success',
+            message: '修改标签成功'
+          })
+        } catch (err) {
+          this.loading = false
+        }
+        this.loadDataListByQueryPage()
+      },
+      batchChangeStatus () {
+        if (this.multipleSelection.length === 0) {
+          this.$message({
+            type: 'warning',
+            message: '请选择商品'
+          })
+        } else {
+          this.$confirm('下架商品？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(async () => {
+            this.loading = true
+            let pidArr = this.multipleSelection.map((i) => {
+              return i.id
+            })
+            await ProductApi.batchShelveDown(pidArr)
+            this.$message({
+              type: 'success',
+              message: '下架成功'
+            })
+            this.loadDataListByQueryPage()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            })
+          })
+        }
       },
       batchTag () {
         if (this.multipleSelection.length === 0) {
@@ -110,7 +184,7 @@
             message: '请选择商品'
           })
         } else {
-          this.$refs.batchTagdlg.show(this.multipleSelection)
+          this.$refs.batchTagdlg.show()
         }
       },
       batchCategory () {
@@ -226,6 +300,19 @@
             id: product.id
           }
         })
+      },
+      toRecycle () {
+        this.$router.push({
+          name: 'PlatformProductCopyCreate'
+        })
+      },
+      handleCopy (product) {
+//        this.$router.push({
+//          name: 'PlatformProductCopyCreate',
+//          params: {
+//            id: product.id
+//          }
+//        })
       },
       ...$global.$mapMethods({'showCover': showCover})
     }

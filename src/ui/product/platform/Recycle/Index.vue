@@ -1,4 +1,7 @@
 <template lang="pug">
+  div
+    div
+
     div
 </template>
 
@@ -7,7 +10,11 @@
     props: {},
     components: {},
     data () {
-      return {}
+      return {
+        queryParams: {
+          text: ''
+        }
+      }
     },
     computed: {},
     watch: {},

@@ -12,21 +12,16 @@
             :indeterminate="tag.indeterminate"
             ) {{tag.name}}
           div.create-tag-wrapper
-            <!--el-input(-->
-            <!--style="width: 120px",-->
-            <!--size="small",-->
-            <!--:value="group.createText",-->
-            <!--@input="_inputCreateText(group, arguments[0])",-->
-            <!--placeholder="输入新标签"-->
-            <!--)-->
             el-button.create-tag(size="small", type="primary", icon="plus", @click="createTag(group)") 添加
       div.dialog-footer
         el-button(@click="dialogVisible = false") 取 消
         el-button(type="primary", @click="submitForm") 确 定
+    edit-tag-dialog(ref="editTagDlg", @refresh="show")
 </template>
 
 <script>
   import * as TagApi from 'src/api/tag'
+  import EditTagDialog from 'src/ui/product/tag/EditDialog.vue'
 
   export default {
     props: {
@@ -37,7 +32,7 @@
         }
       }
     },
-    components: {},
+    components: {EditTagDialog},
     data () {
       return {
         dialogVisible: false,
@@ -51,7 +46,7 @@
     computed: {},
     watch: {},
     methods: {
-      async show (row) {
+      async show () {
         this.dialogVisible = true
         await this.getTagGroupList()
         this.preparePage()
@@ -151,6 +146,9 @@
       },
       changeIndeterminate (tag) {
         tag.indeterminate = false
+      },
+      createTag (group) {
+        this.$refs.editTagDlg.show(undefined, group.id)
       }
     }
   }

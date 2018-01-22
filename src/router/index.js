@@ -109,6 +109,16 @@ export default new Router({
           }
         },
         {
+          path: 'pfproduct',
+          name: 'PlatformProductIndex',
+          component: () => import('src/ui/product/platform/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '平台商品',
+            showInSide: true
+          }
+        },
+        {
           path: 'category',
           name: 'CategoryIndex',
           component: () => import('src/ui/product/category/Index.vue'),

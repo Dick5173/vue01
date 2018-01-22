@@ -9,13 +9,13 @@
         placeholder="店铺/ID"
         )
           el-option(v-for="item in tenantList",
-          :key="item.app_id",
+          :key="item.id",
           :label="item.principal_name_id",
-          :value="item.app_id")
+          :value="item.id")
       el-form-item.input
-        el-input(style="width: 500px", v-model.trim="model.tenant_user", placeholder="名字/手机号/店铺管理员ID")
+        el-input.medium-el-input(v-model.trim="model.tenant_user", placeholder="名字/手机号/店铺管理员ID")
       el-form-item
-        el-button(type="primary",icon="el-icon-search", @click="submit") 搜索
+        el-button(type="primary", icon="el-icon-search", @click="submit") 搜索
 </template>
 
 <script>
@@ -59,18 +59,17 @@
             merge.push(i.principal_name)
             let str = merge.join('--')
             let data = {
-              app_id: i.app_id,
+              id: String(i.id),
               principal_name_id: str
             }
             return data
           })
           this.tenantList = arr
         } catch (err) {
-          this.$my.ErrorPlugin(this, err)
         }
       }
     },
-    async mounted () {
+    mounted () {
       this.getTenantList()
     }
   }
@@ -82,4 +81,5 @@
     margin-left: 20px;
   }
 
+  @import "../../../assets/scss/el";
 </style>

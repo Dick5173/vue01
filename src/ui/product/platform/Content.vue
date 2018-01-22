@@ -29,7 +29,7 @@
   import SmartTable from 'src/ui/widget/smart-table/Table.vue'
   import TableColumn from 'src/ui/widget/smart-table/TableColumn.jsx'
   import UploadImage from 'src/ui/widget/upload-image/Index.vue'
-  import CreateContentDialog from './CreateContentDialog.vue'
+  import CreateContentDialog from './dialog/CreateContentDialog.vue'
   import * as ResourceService from 'src/service/resource/index'
 
   export default {
