@@ -3,7 +3,7 @@
     el-form(:inline="true")
       el-form-item(label="状态：")
         el-select(v-model="formData.status")
-          el-option(v-for="item in statusList", :label="item.name", :value="item.status")
+          el-option(v-for="item in statusList", :key="item.status", :label="item.name", :value="item.status")
       el-form-item(label="首次上线：")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item
