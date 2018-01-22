@@ -109,12 +109,12 @@ export default new Router({
           }
         },
         {
-          path: 'pfproduct',
-          name: 'PlatformProductIndex',
-          component: () => import('src/ui/product/platform/Index.vue'),
+          path: 'tsproduct',
+          name: 'TenantSelfProductIndex',
+          component: () => import('src/ui/product/tenant-self/Index.vue'),
           meta: {
             group: 'Product',
-            title: '平台商品',
+            title: '店铺自营商品',
             showInSide: true
           }
         },

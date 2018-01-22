@@ -114,7 +114,7 @@
                 return parseInt(i)
               })
             } else {
-              return ''
+              return []
             }
           }
           return val
