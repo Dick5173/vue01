@@ -25,22 +25,22 @@ export const create = (form) => {
 
 export const update = (id, form) => {
   const params = ProductService.convertFormToParam(form)
-  return Axios.post(`/admin/product/${id}`, params)
+  return Axios.post(`/admin/product/s/${id}`, params)
 }
 export const shelveUp = (id) => {
-  return Axios.post(`/admin/product/${id}/up`)
+  return Axios.post(`/admin/product/s/${id}/up`)
 }
 export const shelveDown = (id) => {
-  return Axios.delete(`/admin/product/${id}/up`)
+  return Axios.delete(`/admin/product/s/${id}/up`)
 }
 export const top = (id) => {
-  return Axios.post(`/admin/product/${id}/top`)
+  return Axios.post(`/admin/product/s/${id}/top`)
 }
 export const cancelTop = (id) => {
-  return Axios.delete(`/admin/product/${id}/top`)
+  return Axios.delete(`/admin/product/s/${id}/top`)
 }
 export const deleteProduct = (id) => {
-  return Axios.post(`/admin/product/${id}/trash`)
+  return Axios.post(`/admin/product/s/${id}/trash`)
 }
 export const batchCategory = (formData) => {
   return Axios.post(`/admin/batch/product/category`, formData)
