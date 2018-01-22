@@ -20,7 +20,7 @@
 <script>
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantUserApi from 'src/api/tenant-user'
-  import SearchToolbar from 'src/ui/user/tenant-user/SearchToolbar.vue'
+  import SearchToolbar from 'src/ui/other/tenant-user/SearchToolbar.vue'
   import * as Obj from 'src/util/obj'
 
   export default {
