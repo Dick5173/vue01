@@ -38,7 +38,7 @@ export const top = (id) => {
   return Axios.post(`/admin/product/s/${id}/top`)
 }
 export const cancelTop = (id) => {
-  return Axios.delete(`/admin/product/${id}/top`)
+  return Axios.delete(`/admin/product/s/${id}/top`)
 }
 export const deleteProduct = (id) => {
   return Axios.post(`/admin/product/s/${id}/trash`)
