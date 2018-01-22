@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     div.top-wrapper
-      div 诚之优品企业版管理后台
+      div 百宝美市管理后台
       div
         el-dropdown(@command="handleMenuCommand")
           span.dropdown-link
