@@ -7,7 +7,7 @@
       el-form-item(label="首次上线：")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item
-        el-input(v-model="formData.text", placeholder="店铺名称/店铺ID")
+        el-input(v-model.trim="formData.text", placeholder="店铺名称/店铺ID")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
 </template>

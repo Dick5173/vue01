@@ -303,6 +303,31 @@ export default new Router({
           }
         },
         {
+          path: 'user',
+          name: 'User',
+          component: () => import('src/ui/other/user/Index.vue'),
+          meta: {
+            group: 'Other',
+            title: '用户',
+            showInSide: true
+          }
+        },
+        {
+          path: 'userdetail/:id',
+          name: 'UserDetail',
+          component: () => import('src/ui/other/user/Detail.vue'),
+          meta: {
+            title: '用户详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'User'}
+            }, {
+              text: '用户详情'
+            }]
+          }
+        },
+        {
           path: 'sysuser',
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),

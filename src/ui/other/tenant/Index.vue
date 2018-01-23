@@ -46,7 +46,6 @@
     watch: {},
     methods: {
       getQueryApi (params) {
-        console.log(params)
         return TenantApi.getList(this.R.mapObjIndexed((val, key, obj) => {
           if (key === 'start' || key === 'end') {
             if (val === 0) {
