@@ -22,7 +22,8 @@
           div(slot-scope="props") {{ props.row.prop.stock }}
         el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
           div(slot-scope="props")
-            el-button(type="text", @click="showTenantCountDialog(props.row)") {{props.row.tenant_count}}
+            div(v-if="props.row.tenant_count === 0") {{props.row.tenant_count}}
+            el-button(v-else, type="text", @click="showTenantCountDialog(props.row)") {{props.row.tenant_count}}
         el-table-column(prop="pt", label="上架时间", sortable, width="160px")
           div(slot-scope="props", v-if="props.row.pt > 0") {{ props.row.pt | datetime }}
         el-table-column(type="expand", fixed="right")
