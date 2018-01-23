@@ -9,6 +9,8 @@
         el-table-column(prop="id", label="店铺管理员ID")
         el-table-column(prop="name", label="名字")
         el-table-column(prop="mobile", label="手机号")
+        el-table-column(prop="", label="公司")
+          div(slot-scope="scope") {{showCompany(scope.row)}}
         el-table-column(prop="app_name", label="店铺")
         el-table-column(width="100" label="操作")
           template(slot-scope="scope")
@@ -42,6 +44,13 @@
     methods: {
       getQueryApi (params) {
         return TenantUserApi.getList(params)
+      },
+      showCompany (row) {
+        if (row.company) {
+          return row.company.name
+        } else {
+          return '无公司名称'
+        }
       },
       search (model) {
         this.queryParams = Object.assign(this.queryParams, model)

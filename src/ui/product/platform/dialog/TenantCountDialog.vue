@@ -3,10 +3,9 @@
     el-dialog(v-loading="loading", title="上架店铺", :visible.sync="dialogVisible")
       div.name {{name}}
       el-table(:data="tenantSelectList", border)
-        el-table-column(label="店铺ID")
-        el-table-column(label="店铺")
-          div(slot-scope="scope")
-        el-table-column(label="销量")
+        el-table-column(prop="id", label="店铺ID")
+        el-table-column(prop="name", label="店铺")
+        el-table-column(prop="sold", label="销量")
 </template>
 
 <script>

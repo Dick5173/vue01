@@ -206,7 +206,9 @@
           if (this.isEditMode) {
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
+            console.log(this.formData)
           }
+          console.log(this.isEditMode)
           this.initialData = this.R.clone(this.formData)
           this.loading = false
         } catch (err) {

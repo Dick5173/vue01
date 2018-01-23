@@ -48,6 +48,9 @@
           this.formData.start = 0
           this.formData.end = 0
         }
+      },
+      handleSearch () {
+        this.$emit('submit', this.formData)
       }
     }
   }

@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     div
-      search-toolbar
+      search-toolbar(:queryParams="queryParams", @submit="handleSearch")
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border, @selection-change="handleSelectionChange")
         el-table-column(prop="id", label="店铺ID", width="65px")
@@ -34,29 +34,19 @@
     },
     data () {
       return {
-        dataList: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        queryParams: {
+          status: '',
+          start: 0,
+          end: 0,
+          text: ''
+        }
       }
     },
     computed: {},
     watch: {},
     methods: {
       getQueryApi (params) {
+        console.log(params)
         return TenantApi.getList(this.R.mapObjIndexed((val, key, obj) => {
           if (key === 'start' || key === 'end') {
             if (val === 0) {
@@ -70,6 +60,9 @@
       },
       handleSelectionChange (val) {
         this.multipleSelection = val
+      },
+      handleSearch (data) {
+        this.queryChange(data)
       }
     }
   }

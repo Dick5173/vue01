@@ -13,7 +13,7 @@
           :label="item.principal_name_id",
           :value="item.id")
       el-form-item.input
-        el-input.medium-el-input(v-model.trim="model.tenant_user", placeholder="名字/手机号/店铺管理员ID")
+        el-input.medium-el-input(v-model.trim="model.tenant_user", placeholder="名字/手机号/公司/店铺管理员ID")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="submit") 搜索
 </template>
@@ -55,8 +55,8 @@
           res = res.data.data
           let arr = res.map((i) => {
             let merge = []
-            merge.push(i.app_id)
-            merge.push(i.principal_name)
+            merge.push(i.id)
+            merge.push(i.nick_name)
             let str = merge.join('--')
             let data = {
               id: String(i.id),
