@@ -185,9 +185,6 @@
       }
     },
     computed: {
-      isCopy () {
-        return this.$route.name === 'PlatformProductCopyCreate'
-      },
       isEditMode () {
         return this.$route.name === 'PlatformProductEdit'
       },
@@ -206,10 +203,9 @@
           this.getServiceGroupList()
           this.getAfterServiceList()
           this.getDeliveryRegionList()
-          if (this.isEditMode || this.isCopy) {
+          if (this.isEditMode) {
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
-            console.log(this.formData)
           }
           this.initialData = this.R.clone(this.formData)
           this.loading = false
@@ -238,7 +234,7 @@
         this.$refs.form.validate(async (valid) => {
           if (valid) {
             try {
-              if (!this.isEditMode || this.isCopy) {
+              if (!this.isEditMode) {
                 this.formData.id = 0
                 const frm = Object.assign({}, this.formData)
                 if (up) {
