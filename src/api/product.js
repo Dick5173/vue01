@@ -55,3 +55,10 @@ export const batchShelveDown = (arr) => {
   }
   return Axios.delete(`/admin/batch/product/up`, formData)
 }
+export const getTenantSelectList = (id) => {
+  let params = {
+    page: 1,
+    limit: 50
+  }
+  return Axios.get(`/admin/product/s/${id}/tenant/selected/sold`, {params: params})
+}

@@ -20,7 +20,7 @@
         el-table-column(prop="sold", label="销量", sortable, width="100px")
         el-table-column(prop="stock", label="库存", sortable, width="100px")
           div(slot-scope="props") {{ props.row.prop.stock }}
-        el-table-column(prop="", label="店铺选择", sortable, width="110px")
+        el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
           div(slot-scope="props")
             el-button(type="text", @click="showTenantCountDialog(props.row)") {{props.row.tenant_count}}
         el-table-column(prop="pt", label="上架时间", sortable, width="160px")
