@@ -11,7 +11,8 @@
         el-table-column(prop="mobile", label="手机号")
         el-table-column(prop="", label="公司")
           div(slot-scope="scope") {{showCompany(scope.row)}}
-        el-table-column(prop="app_name", label="店铺")
+        el-table-column(prop="", label="店铺")
+          div(slot-scope="scope") {{scope.row.nick_name}}
         el-table-column(width="100" label="操作")
           template(slot-scope="scope")
             el-button(size="mini", @click="editItem(scope.row)") 编辑
@@ -34,8 +35,8 @@
     data () {
       return {
         queryParams: {
-          tenantId: '',
-          tenant_user: ''
+          tenant_id: '',
+          key: ''
         }
       }
     },
