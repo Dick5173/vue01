@@ -12,7 +12,9 @@
         el-table-column(prop="", label="公司")
           div(slot-scope="scope") {{showCompany(scope.row)}}
         el-table-column(prop="", label="店铺")
-          div(slot-scope="scope") {{scope.row.nick_name}}
+          div(slot-scope="scope")
+            div
+              p(v-html="showTenantName(scope.row)")
         el-table-column(width="100" label="操作")
           template(slot-scope="scope")
             el-button(size="mini", @click="editItem(scope.row)") 编辑
@@ -52,6 +54,19 @@
         } else {
           return '无公司名称'
         }
+      },
+      showTenantName (row) {
+        if (row.company) {
+          if (row.company.tenants) {
+            let arr = row.company.tenants
+            let text = ''
+            for (let i = 0; i < arr.length; i++) {
+              text = arr[i].nick_name + '</br>'
+            }
+            return text
+          }
+        }
+        return '无店铺'
       },
       search (model) {
         this.queryParams = Object.assign(this.queryParams, model)
