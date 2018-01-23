@@ -104,6 +104,9 @@ export const convertModelToForm = R.curry((form) => {
         } else if (priceField.indexOf(key) !== -1) {
           return `${R_.convertFenToYuan(val)}`
         } else if (intField.indexOf(key) !== -1) {
+          if (val === undefined) {
+            return ''
+          }
           return `${val}`
         } else if (key === 'skus') {
           return R.map(skuItem => {
@@ -116,6 +119,10 @@ export const convertModelToForm = R.curry((form) => {
           return R.map(contentItem => {
             return pickContent(contentItem)
           })(val)
+        } else if (key === 'tags') {
+          if (val === null) {
+            return []
+          }
         }
         return val
       })(obj)
