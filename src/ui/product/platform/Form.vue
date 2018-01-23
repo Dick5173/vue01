@@ -25,7 +25,7 @@
         el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
           el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
     el-form-item(label="配送区域", prop="delivery_region_id", placeholder="请选择")
-      el-select(v-model="formData.delivery_region_id", placeholder="请选择")
+      el-select(v-model="formData.delivery_region_id", placeholder="请选择", clearable)
         el-option(v-for="item in deliveryRegionList", :key="item.id", :label="item.name", :value="`${item.id}`")
     el-form-item(label="商品设置", prop="oversea")
       el-checkbox(v-model="formData.oversea") 清关商品
@@ -37,10 +37,10 @@
     el-form-item(label="商品描述", prop="content")
       content-comp(:content.sync="formData.content")
     el-form-item(label="服务组合", prop="service_tag_group_id")
-      el-select(v-model="formData.service_tag_group_id", placeholder="请选择")
+      el-select(v-model="formData.service_tag_group_id", placeholder="请选择", clearable)
         el-option(v-for="item in serviceGroupList", :key="item.id", :label="item.name", :value="`${item.id}`")
     el-form-item(label="售后模板", prop="after_service_id")
-      el-select(v-model="formData.after_service_id", placeholder="请选择")
+      el-select(v-model="formData.after_service_id", placeholder="请选择", clearable)
         el-option(v-for="item in afterServiceList", :key="item.id", :label="item.name", :value="`${item.id}`")
     el-form-item
       el-button(@click="$router.back()") 取消
