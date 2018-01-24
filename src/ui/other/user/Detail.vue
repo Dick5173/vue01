@@ -1,28 +1,28 @@
 <template lang="pug">
   div
     div
-      div.user-head
+      div.head
         div.head-cover(v-lazy:background-image="userData.logo")
         div.head-name {{userData.nickname}}
-      div.user-body
+      div.body
         div.body-item 手机：{{showMobile(userData.mobile)}}
         div.body-item 用户ID：{{userData.id}}
         div.body-item-name 店铺：{{userData.tenantNickName}}
         div.body-item 首次访问：{{showTime(userData.ct)}}
-    div.order
-      div.order-head
-        div.order-item 订单统计
-        el-button.order-item-details(type="text") 详情>
-      div.list
-        el-table.list-el-table(:data="dataList", border)
-          el-table-column(label="最近购买", prop="recent_pay_tick")
-          el-table-column(label="平均交易额（元）", prop="")
-            template(slot-scope="scope")
-              div {{showAverage(scope.row) | price}}
-          el-table-column(label="总交易额（元）", prop="")
-            template(slot-scope="scope")
-              div {{scope.row.total_amount | price}}
-          el-table-column(label="订单总数", prop="total_count")
+      div.list-title
+        div.list-title-head
+          div.list-title-item 订单统计
+          el-button.list-title-item-details(type="text") 详情>
+        div.list
+          el-table.list-el-table(:data="dataList", border)
+            el-table-column(label="最近购买", prop="recent_pay_tick")
+            el-table-column(label="平均交易额（元）", prop="")
+              template(slot-scope="scope")
+                div {{showAverage(scope.row) | price}}
+            el-table-column(label="总交易额（元）", prop="")
+              template(slot-scope="scope")
+                div {{scope.row.total_amount | price}}
+            el-table-column(label="订单总数", prop="total_count")
 </template>
 
 <script>
@@ -81,61 +81,5 @@
 
 
 <style lang="scss" scoped>
-  .user-head {
-    display: flex;
-    height: 50px;
-    .head-cover {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      background-size: cover;
-      background-position: center;
-    }
-    .head-name {
-      display: inline-block;
-      margin-left: 10px;
-      height: 50px;
-      line-height: 50px;
-    }
-  }
-
-  .user-body {
-    display: flex;
-    height: 50px;
-    margin-left: 60px;
-    .body-item {
-      display: inline-block;
-      height: 50px;
-      line-height: 50px;
-      margin-right: 50px;
-    }
-    .body-item-name {
-      display: inline-block;
-      height: 50px;
-      width: 200px;
-      line-height: 50px;
-      margin-right: 50px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-
-  .order {
-    margin-top: 50px;
-    .order-head {
-      display: flex;
-      .order-item {
-        line-height: 40px;
-        margin-right: 20px;
-        display: inline-block;
-      }
-      .order-item-details {
-        display: inline-block;
-      }
-    }
-
-    .list {
-    }
-  }
+  @import "../../../assets/scss/other";
 </style>

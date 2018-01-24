@@ -263,6 +263,36 @@ export default new Router({
           }
         },
         {
+          path: 'tenant/detail',
+          name: 'TenantDetail',
+          component: () => import('src/ui/other/tenant/TenantDetail.vue'),
+          meta: {
+            title: '店铺详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '店铺',
+              to: {name: 'Tenant'}
+            }, {
+              text: '店铺详情'
+            }]
+          }
+        },
+        {
+          path: 'tenant/income',
+          name: 'TenantIncome',
+          component: () => import('src/ui/other/tenant/Income.vue'),
+          meta: {
+            title: '收入',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '店铺',
+              to: {name: 'Tenant'}
+            }, {
+              text: '收入'
+            }]
+          }
+        },
+        {
           path: 'tenantuser',
           name: 'TenantUser',
           component: () => import('src/ui/other/tenant-user/Index.vue'),
