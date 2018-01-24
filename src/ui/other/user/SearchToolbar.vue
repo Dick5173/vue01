@@ -30,7 +30,15 @@
   export default {
     props: {
       queryParams: {
-        type: Object
+        type: Object,
+        default: () => {
+          return {
+            tenant_id: '',
+            key: '',
+            start: new Date().getTime(),
+            end: new Date().getTime()
+          }
+        }
       }
     },
     components: {DatePicker},
@@ -39,8 +47,8 @@
         formData: {
           tenant_id: '',
           key: '',
-          start: 0,
-          end: 0
+          start: new Date().getTime(),
+          end: new Date().getTime()
         },
         defaultDate: [],
         tenantList: [],

@@ -37,8 +37,8 @@
         queryParams: {
           tenant_id: '',
           key: '',
-          start: 0,
-          end: 0
+          start: new Date().getTime(),
+          end: new Date().getTime()
         }
       }
     },
