@@ -185,6 +185,9 @@
       }
     },
     computed: {
+      isRecycle () {
+        return this.$route.params.recycle === true
+      },
       isEditMode () {
         return this.$route.name === 'PlatformProductEdit'
       },
@@ -246,11 +249,20 @@
                   message: '添加成功'
                 })
               } else {
-                await FormApi.update(this.formData.id, this.formData)
-                this.$message({
-                  type: 'success',
-                  message: '编辑成功'
-                })
+                if (this.isRecycle) {
+                  await FormApi.update(this.formData.id, this.formData)
+                  await FormApi.cancelDeleteProduct(this.formData.id)
+                  this.$message({
+                    type: 'success',
+                    message: '编辑成功,商品已经恢复为下架商品'
+                  })
+                } else {
+                  await FormApi.update(this.formData.id, this.formData)
+                  this.$message({
+                    type: 'success',
+                    message: '编辑成功'
+                  })
+                }
               }
               this.$router.back()
             } catch (err) {

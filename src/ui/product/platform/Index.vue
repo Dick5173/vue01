@@ -311,6 +311,9 @@
         })
       },
       toRecycle () {
+        this.$router.push({
+          name: 'PlatformProductRecycle'
+        })
       },
       handleCopy (product) {
       },
