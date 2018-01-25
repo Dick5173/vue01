@@ -158,6 +158,27 @@ export default new Router({
           }
         },
         {
+          path: 'pfproduct/recycle',
+          name: 'PlatformProductRecycle',
+          component: () => import('src/ui/product/platform/Recycle/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '回收站',
+            breadcrumbItems: [
+              {
+                text: '平台商品',
+                to: {
+                  name: 'PlatformProductIndex'
+                }
+              },
+              {
+                text: '回收站'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
           path: 'tsproduct',
           name: 'TenantSelfProductIndex',
           component: () => import('src/ui/product/tenant-self/Index.vue'),

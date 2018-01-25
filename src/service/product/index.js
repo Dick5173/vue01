@@ -162,3 +162,38 @@ export const showPriceInterval = (product) => {
   }
   return `${R_.convertFenToYuan(product.min_price)}~${R_.convertFenToYuan(product.max_price)}`
 }
+export const copyCreate = R.curry((form) => {
+  return R.pipe(
+    R.clone,
+    (obj) => {
+      const pickContent = R.pickAll(['tp', 'text', 'url', 'width', 'height'])
+      return R.mapObjIndexed((val, key) => {
+        if (key === 'head') {
+          return R.map((headItem) => {
+            return pickContent(headItem)
+          })(val)
+        } else if (key === 'cover') {
+          return pickContent(val || {})
+        } else if (key === 'content') {
+          return R.map((item) => {
+            delete item.id
+            return item
+          })(val)
+        } else if (key === 'skus') {
+          return R.map((item) => {
+            delete item.ct
+            delete item.mt
+            delete item.id
+            if (item.image) {
+              delete item.image.id
+            }
+            return item
+          })(val)
+        }
+        return val
+      })(obj)
+    }, (obj) => {
+      return obj
+    }
+  )(form)
+})

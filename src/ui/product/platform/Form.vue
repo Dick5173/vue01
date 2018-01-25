@@ -185,6 +185,12 @@
       }
     },
     computed: {
+      isCopy () {
+        return this.$route.params.copy === true
+      },
+      isRecycle () {
+        return this.$route.params.recycle === true
+      },
       isEditMode () {
         return this.$route.name === 'PlatformProductEdit'
       },
@@ -203,7 +209,7 @@
           this.getServiceGroupList()
           this.getAfterServiceList()
           this.getDeliveryRegionList()
-          if (this.isEditMode) {
+          if (this.isEditMode || this.isCopy) {
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
           }
@@ -229,28 +235,46 @@
         const resDeliveryRegion = await deliveryRegionApi.getList()
         this.deliveryRegionList = resDeliveryRegion.data.data
       },
+      async create (up) {
+        this.formData.id = 0
+        let frm = Object.assign({}, this.formData)
+        if (up) {
+          frm.status = ProductService.allStatus.up.value
+        }
+        if (this.isCopy) {
+          frm = ProductService.copyCreate(frm)
+        }
+        await FormApi.create(frm)
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+      },
+      async update () {
+        if (this.isRecycle) {
+          await FormApi.update(this.formData.id, this.formData)
+          await FormApi.cancelDeleteProduct(this.formData.id)
+          this.$message({
+            type: 'success',
+            message: '编辑成功,商品已经恢复为下架商品'
+          })
+        } else {
+          await FormApi.update(this.formData.id, this.formData)
+          this.$message({
+            type: 'success',
+            message: '编辑成功'
+          })
+        }
+      },
       handleSave (up) {
         this.loading = true
-        this.$refs.form.validate(async (valid) => {
+        this.$refs.form.validate((valid) => {
           if (valid) {
             try {
               if (!this.isEditMode) {
-                this.formData.id = 0
-                const frm = Object.assign({}, this.formData)
-                if (up) {
-                  frm.status = ProductService.allStatus.up.value
-                }
-                await FormApi.create(frm)
-                this.$message({
-                  type: 'success',
-                  message: '添加成功'
-                })
+                this.create(up)
               } else {
-                await FormApi.update(this.formData.id, this.formData)
-                this.$message({
-                  type: 'success',
-                  message: '编辑成功'
-                })
+                this.update()
               }
               this.$router.back()
             } catch (err) {

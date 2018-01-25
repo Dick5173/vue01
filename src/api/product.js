@@ -42,6 +42,9 @@ export const cancelTop = (id) => {
 export const deleteProduct = (id) => {
   return Axios.post(`/admin/product/s/${id}/trash`)
 }
+export const cancelDeleteProduct = (id) => {
+  return Axios.delete(`/admin/product/s/${id}/trash`)
+}
 export const batchCategory = (formData) => {
   return Axios.post(`/admin/batch/product/category`, formData)
 }
@@ -60,4 +63,9 @@ export const getTenantSelectList = (id) => {
     limit: 50
   }
   return Axios.get(`/admin/product/s/${id}/tenant/selected/sold`, {params: params})
+}
+export const getRecycleList = (params) => {
+  return Axios.get('/admin/product', {
+    params: params
+  })
 }

@@ -311,8 +311,18 @@
         })
       },
       toRecycle () {
+        this.$router.push({
+          name: 'PlatformProductRecycle'
+        })
       },
       handleCopy (product) {
+        this.$router.push({
+          name: 'PlatformProductCreate',
+          params: {
+            id: product.id,
+            copy: true
+          }
+        })
       },
       ...$global.$mapMethods({'showCover': showCover})
     }
