@@ -14,7 +14,7 @@
         el-table-column(label="规格")
           div(slot-scope="scope") {{scope.row.sku.spec}}
         el-table-column(label="售价")
-          div(slot-scope="scope") {{scope.row.sell_price}}
+          div(slot-scope="scope") {{scope.row.sell_price | price}}
         el-table-column(label="库存")
           div(slot-scope="scope") {{scope.row.sku.stock}}
         el-table-column(label="编码")
@@ -79,7 +79,6 @@
           this.description = res.data.content ? res.data.content : []
           this.loading = false
         } catch (err) {
-
         } finally {
           this.loading = false
         }
