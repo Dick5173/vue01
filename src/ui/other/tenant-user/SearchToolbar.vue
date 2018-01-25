@@ -49,7 +49,7 @@
       },
       async getTenantList () {
         let params = {
-          limit: 30
+          limit: 50
         }
         try {
           this.selectLoading = true

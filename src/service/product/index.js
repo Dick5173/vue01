@@ -141,7 +141,7 @@ export const convertModelToForm = R.curry((form) => {
 })
 
 export const showCover = (product) => {
-  if (product.cover && product.cover.url) {
+  if (product.cover) {
     return product.cover.url
   }
   if (product.head && product.head.length > 0 && product.head[0].url) {
@@ -155,4 +155,10 @@ export const showSuggestPriceInterval = (product) => {
     return `${R_.convertFenToYuan(product.prop.min_suggest_price)}`
   }
   return `${R_.convertFenToYuan(product.prop.min_suggest_price)}~${R_.convertFenToYuan(product.prop.max_suggest_price)}`
+}
+export const showPriceInterval = (product) => {
+  if (product.min_price === product.max_price) {
+    return `${R_.convertFenToYuan(product.min_price)}`
+  }
+  return `${R_.convertFenToYuan(product.min_price)}~${R_.convertFenToYuan(product.max_price)}`
 }
