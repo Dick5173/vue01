@@ -5,3 +5,6 @@ export const getTenantSelfList = (params) => {
     params: params
   })
 }
+export const getTenantSelfItem = (id) => {
+  return Axios.get(`/admin/product/tenant/self/s/${id}`)
+}

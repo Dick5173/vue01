@@ -119,6 +119,27 @@ export default new Router({
           }
         },
         {
+          path: 'tsproduct/detail/:id',
+          name: 'TenantSelfProductDetail',
+          component: () => import('src/ui/product/tenant-self/TenantSelfDetail.vue'),
+          meta: {
+            group: 'Product',
+            title: '商品详情',
+            breadcrumbItems: [
+              {
+                text: '自营商品',
+                to: {
+                  name: 'TenantSelfProductIndex'
+                }
+              },
+              {
+                text: '商品详情'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
           path: 'category',
           name: 'CategoryIndex',
           component: () => import('src/ui/product/category/Index.vue'),

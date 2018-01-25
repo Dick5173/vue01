@@ -9,7 +9,7 @@
         el-table-column(type="selection", width="55px")
         el-table-column(prop="", label="ID", width="55px")
           template(slot-scope="props")
-            el-button(type="text", @click="") {{props.row.id}}
+            el-button(type="text", @click="toDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
         el-table-column(prop="name", label="商品")
@@ -74,6 +74,14 @@
           }
           return val
         })(params))
+      },
+      toDetail (row) {
+        this.$router.push({
+          name: 'TenantSelfProductDetail',
+          params: {
+            id: row.id
+          }
+        })
       },
       handleSearch (data) {
         this.queryChange(data)
