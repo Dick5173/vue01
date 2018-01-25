@@ -18,6 +18,7 @@
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
+          div(slot-scope="props") {{ props.row.sold }}
         el-table-column(prop="stock", label="库存", sortable, width="100px")
           div(slot-scope="props") {{ props.row.prop.stock }}
         el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
@@ -33,6 +34,7 @@
               el-table-column(prop="suggest_price", label="建议售价")
                 div(slot-scope="skuProps") {{ skuProps.row.suggest_price | price(false) }}
               el-table-column(prop="sold", label="销量")
+                div(slot-scope="skuProps") {{ skuProps.row.sold }}
               el-table-column(prop="stock", label="库存")
         el-table-column(label="操作", width="120px", fixed="right")
           div(slot-scope="props")
