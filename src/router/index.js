@@ -57,6 +57,55 @@ export default new Router({
           }
         },
         {
+          path: '/order',
+          name: 'OrderIndex',
+          component: () => import('src/ui/order/Index.vue'),
+          meta: {
+            title: '订单',
+            showInSide: true
+          }
+        },
+        {
+          path: '/order/detail/:id',
+          name: 'OrderDetail',
+          component: () => import('src/ui/order/detail/Index.vue'),
+          meta: {
+            title: '订单详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '订单',
+              to: {name: 'OrderIndex'}
+            }, {
+              text: '订单详情'
+            }]
+          }
+        },
+        {
+          path: '/order/refund/',
+          name: 'OrderRefund',
+          component: () => import('src/ui/order/refund/Index.vue'),
+          meta: {
+            title: '退款中',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '订单',
+              to: {name: 'OrderIndex'}
+            }, {
+              text: '退款中'
+            }]
+          }
+        },
+        {
+          path: '/order/:id/refund/:oiid',
+          name: 'OrderRefundDetail',
+          component: () => import('src/ui/order/refund/Detail.vue'),
+          meta: {
+            customBreadcrumb: true,
+            title: '退款详情',
+            showInSide: false
+          }
+        },
+        {
           path: 'pfproduct',
           name: 'PlatformProductIndex',
           component: () => import('src/ui/product/platform/Index.vue'),
