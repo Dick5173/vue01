@@ -12,7 +12,7 @@ export const checkExist = (params) => {
 }
 
 export const getItem = (id) => {
-  return Axios.get(`/admin/category/${id}`)
+  return Axios.get(`/admin/category/s/${id}`)
 }
 
 export const create = (form) => {
@@ -20,11 +20,11 @@ export const create = (form) => {
 }
 
 export const update = (id, form) => {
-  return Axios.post(`/admin/category/${id}`, {...form})
+  return Axios.post(`/admin/category/s/${id}`, {...form})
 }
 
 export const deleteItem = (id) => {
-  return Axios.delete(`/admin/category/${id}`)
+  return Axios.delete(`/admin/category/s/${id}`)
 }
 
 export const sortCategory = (parentId, categoryIds) => {

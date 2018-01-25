@@ -15,7 +15,7 @@ export const checkExist = (params) => {
 }
 
 export const getItem = (id) => {
-  return Axios.get(`/admin/sysuser/${id}`)
+  return Axios.get(`/admin/sysuser/s/${id}`)
 }
 
 export const create = (form) => {
@@ -23,5 +23,5 @@ export const create = (form) => {
 }
 
 export const update = (id, form) => {
-  return Axios.post(`/admin/sysuser/${id}`, R.pickAll(['name', 'mobile', 'passwd', 'roles'])(form))
+  return Axios.post(`/admin/sysuser/s/${id}`, R.pickAll(['name', 'mobile', 'passwd', 'roles'])(form))
 }

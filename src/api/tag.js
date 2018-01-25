@@ -7,17 +7,17 @@ export const createTagGroup = (formData) => {
   return Axios.post(`/admin/tag_group`, formData)
 }
 export const editTagGroup = (formData) => {
-  return Axios.post(`/admin/tag_group/${formData.id}`, formData)
+  return Axios.post(`/admin/tag_group/s/${formData.id}`, formData)
 }
 export const createTag = (formData) => {
   return Axios.post(`/admin/tag/`, formData)
 }
 export const editTag = (formData) => {
-  return Axios.post(`/admin/tag/${formData.id}`, formData)
+  return Axios.post(`/admin/tag/s/${formData.id}`, formData)
 }
 export const deleteTagGroup = (row) => {
-  return Axios.delete(`/admin/tag_group/${row.id}`)
+  return Axios.delete(`/admin/tag_group/s/${row.id}`)
 }
 export const deleteTag = (row) => {
-  return Axios.delete(`/admin/tag/${row.id}`)
+  return Axios.delete(`/admin/tag/s/${row.id}`)
 }

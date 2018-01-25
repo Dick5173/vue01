@@ -8,7 +8,7 @@ export const getList = (params) => {
 }
 
 export const checkExist = (params) => {
-  return Axios.head('/a/Product', {
+  return Axios.head('/admin/product', {
     params: params,
     ignoreError: true
   })
