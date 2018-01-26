@@ -48,12 +48,9 @@
         this.$emit('submit', this.model)
       },
       async getTenantList () {
-        let params = {
-          limit: 50
-        }
         try {
           this.selectLoading = true
-          let res = await TenantApi.getListAll(params)
+          let res = await TenantApi.getListAll()
           res = res.data.data
           this.tenantList = getTenantNameId(res)
           this.selectLoading = false

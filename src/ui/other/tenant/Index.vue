@@ -7,6 +7,7 @@
         el-table-column(prop="id", label="店铺ID", width="65px")
         el-table-column(prop="", label="名称", width="")
           div(slot-scope="scope")
+            div.cover(v-lazy:background-image="scope.row.head_img")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nick_name}}
         el-table-column(prop="total_amount", label="销售额", sortable, width="")
           div(slot-scope="scope")
@@ -30,16 +31,17 @@
           div(slot-scope="scope") {{showTenantStatus(scope.row.tenant_status)}}
         el-table-column(prop="", label="操作", width="", fixed="right")
           div(slot-scope="scope")
-            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row)") 禁用
-            el-button(v-else, type="primary", size="small", @click="") 启用
+            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row.id)") 禁用
+            el-button(v-else, type="primary", size="small", @click="enable(scope.row.id)") 启用
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 
 </template>
 <script>
-  import SearchToolbar from 'src/ui/other/tenant/SearchToolBar.vue'
+  import SearchToolbar from 'src/ui/other/tenant/search-toolbar/IndexToolBar.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
+  import { showAppStatus, showTenantStatus } from 'src/service/other/index'
 
   export default {
     mixins: [
@@ -74,43 +76,39 @@
           return val
         })(params))
       },
-      showAppStatus (row) {
-        let text = ''
-        switch (row) {
-          case 1:
-            text = '审核中'
-            break
-          case 2:
-            text = '已上线'
-            break
-          case 3:
-            text = '已下线'
-            break
-          case 4:
-            text = '解除授权'
-            break
-        }
-        return text
-      },
-      showTenantStatus (row) {
-        if (row === 1) {
-          return '正常'
-        }
-        return '禁用'
+      toProduct (row) {
+        this.$router.push({
+          name: 'TenantProduct',
+          params: {
+            id: row.id
+          }
+        })
       },
       toDetail (row) {
-
+        this.$router.push({
+          name: 'TenantDetail',
+          params: {
+            id: row.id
+          }
+        })
       },
       confirmRefund (row) {
         this.$confirm(`“${row.nick_name}”已经完成了退款授权？`, '确认退款授权', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '确认成功!'
-          })
+        }).then(async () => {
+          try {
+            this.loading = true
+            await TenantApi.refundAuthAgree(row.id)
+            this.$message({
+              type: 'success',
+              message: '已确认!'
+            })
+            this.loadDataListByQueryPage()
+          } catch (err) {
+            this.loading = false
+          }
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -118,16 +116,47 @@
           })
         })
       },
-      disabled (row) {
+      disabled (id) {
         this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async () => {
+          try {
+            this.loading = true
+            await TenantApi.disableTenant(id)
+            this.$message({
+              type: 'success',
+              message: '已禁用!'
+            })
+            this.loadDataListByQueryPage()
+          } catch (err) {
+            this.loading = false
+          }
+        }).catch(() => {
           this.$message({
-            type: 'success',
-            message: '已禁用!'
+            type: 'info',
+            message: '已取消'
           })
+        })
+      },
+      enable (id) {
+        this.$confirm('启用店铺？', '提示？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          try {
+            this.loading = true
+            await TenantApi.enableTenant(id)
+            this.$message({
+              type: 'success',
+              message: '已启用!'
+            })
+            this.loadDataListByQueryPage()
+          } catch (err) {
+            this.loading = false
+          }
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -137,12 +166,20 @@
       },
       handleSearch (data) {
         this.queryChange(data)
-      }
+      },
+      ...$global.$mapMethods({'showAppStatus': showAppStatus}),
+      ...$global.$mapMethods({'showTenantStatus': showTenantStatus})
     }
   }
 </script>
 
 
 <style lang="scss" scoped>
-
+  .cover {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+  }
 </style>

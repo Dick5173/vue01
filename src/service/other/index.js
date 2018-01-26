@@ -42,3 +42,27 @@ export const getUserOrderDataList = (data) => {
     return []
   }
 }
+export const showAppStatus = (row) => {
+  let text = ''
+  switch (row) {
+    case 1:
+      text = '审核中'
+      break
+    case 2:
+      text = '已上线'
+      break
+    case 3:
+      text = '已下线'
+      break
+    case 4:
+      text = '解除授权'
+      break
+  }
+  return text
+}
+export const showTenantStatus = (row) => {
+  if (row === 1) {
+    return '正常'
+  }
+  return '禁用'
+}

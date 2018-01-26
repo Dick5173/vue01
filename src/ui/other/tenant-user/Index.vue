@@ -91,6 +91,15 @@
           }
         })
       }
+    },
+    mounted () {
+      if (this.$route.params.tenantDetail === true) {
+        const data = {
+          tenant_id: '',
+          key: this.$route.params.id
+        }
+        this.search(data)
+      }
     }
   }
 </script>

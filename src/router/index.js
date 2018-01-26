@@ -354,10 +354,11 @@ export default new Router({
           }
         },
         {
-          path: 'tenant/detail',
+          path: 'tenant/detail/:id',
           name: 'TenantDetail',
           component: () => import('src/ui/other/tenant/TenantDetail.vue'),
           meta: {
+            group: 'Other',
             title: '店铺详情',
             showInSide: false,
             breadcrumbItems: [{
@@ -369,18 +370,38 @@ export default new Router({
           }
         },
         {
-          path: 'tenant/income',
-          name: 'TenantIncome',
-          component: () => import('src/ui/other/tenant/Income.vue'),
+          path: 'tenant/product/:id',
+          name: 'TenantProduct',
+          component: () => import('src/ui/other/tenant/Product.vue'),
           meta: {
-            title: '收入',
+            group: 'Other',
+            title: '商品',
             showInSide: false,
             breadcrumbItems: [{
               text: '店铺',
               to: {name: 'Tenant'}
             }, {
-              text: '收入'
+              text: '商品'
             }]
+          }
+        },
+        {
+          path: 'tenant/product/detail/:id',
+          name: 'TenantShowDetail',
+          component: () => import('src/ui/other/tenant/ProductDetail.vue'),
+          meta: {
+            group: 'Other',
+            title: '商品详情'
+          }
+        },
+        {
+          path: 'income',
+          name: 'TenantIncome',
+          component: () => import('src/ui/other/tenant/Income.vue'),
+          meta: {
+            group: 'Other',
+            title: '收入',
+            showInSide: true
           }
         },
         {
@@ -398,6 +419,7 @@ export default new Router({
           name: 'CreateTenantUser',
           component: () => import('src/ui/other/tenant-user/Create.vue'),
           meta: {
+            group: 'Other',
             title: '创建店铺管理员',
             showInSide: false,
             breadcrumbItems: [{
@@ -413,6 +435,7 @@ export default new Router({
           name: 'EditTenantUser',
           component: () => import('src/ui/other/tenant-user/Edit.vue'),
           meta: {
+            group: 'Other',
             title: '编辑店铺管理员',
             showInSide: false,
             breadcrumbItems: [{
@@ -438,6 +461,7 @@ export default new Router({
           name: 'UserDetail',
           component: () => import('src/ui/other/user/Detail.vue'),
           meta: {
+            group: 'Other',
             title: '用户详情',
             showInSide: false,
             breadcrumbItems: [{

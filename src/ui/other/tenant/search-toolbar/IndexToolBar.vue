@@ -16,7 +16,9 @@
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
 
   export default {
-    props: {},
+    props: {
+      queryParams: {}
+    },
     components: {
       DatePicker
     },
@@ -38,7 +40,11 @@
       }
     },
     computed: {},
-    watch: {},
+    watch: {
+      queryParams () {
+        this.convertQueryParamsToForm()
+      }
+    },
     methods: {
       changeDate (event) {
         if (event && event.length === 2) {
@@ -51,7 +57,23 @@
       },
       handleSearch () {
         this.$emit('submit', this.formData)
+      },
+      convertQueryParamsToForm () {
+        this.formData = {
+          app_status: this.queryParams.app_status,
+          start: this.R_.parseDateTick(0, this.queryParams.start),
+          end: this.R_.parseDateTick(0, this.queryParams.end),
+          key: this.queryParams.key
+        }
+        if (this.formData.start && this.formData.end) {
+          this.defaultDate = [this.formData.start, this.formData.end]
+        } else {
+          this.defaultDate = []
+        }
       }
+    },
+    mounted () {
+      this.convertQueryParamsToForm()
     }
   }
 </script>
