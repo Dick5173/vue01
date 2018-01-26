@@ -3,23 +3,23 @@
     div
       el-button(type="primary", icon="el-icon-plus", @click="handleCreate") 添加
     div.table-wrapper
-      draggable-table(ref="tabCategory", :dataList.sync="categories.data", @drag-end="handleDragEnd", rowKey="id", expandChildKey="children", :showHeader="false")
-        table-column(label="", type="drag")
-        table-column(label="", type="expand")
+      smart-table(ref="tabCategory", :dataList.sync="categories.data", @drag-end="handleDragEnd", rowKey="id", expandChildKey="children", :showHeader="false")
+        smart-table-column(label="", type="drag")
+        smart-table-column(label="", type="expand")
           div.child-wrapper(slot-scope="props")
-            draggable-table(:dataList.sync!="props.row.children", :showHeader="false", rowKey="id", @drag-end="handleChildDragEnd(props.row)")
-              table-column(label="", type="drag")
-              table-column(label="名称", prop="name")
-              table-column(label="商品", prop="pc")
+            smart-table(:dataList.sync!="props.row.children", :showHeader="false", rowKey="id", @drag-end="handleChildDragEnd(props.row)")
+              smart-table-column(label="", type="drag")
+              smart-table-column(label="名称", prop="name")
+              smart-table-column(label="商品", prop="pc")
                 div(slot-scope="childProps") {{ childProps.row.pc }}款商品
-              table-column(label="操作", width="200px")
+              smart-table-column(label="操作", width="200px")
                 div(slot-scope="childProps")
                   el-button(type="primary", size="mini", plain, @click="handleEditItem(childProps.row)") 编辑
                   el-button(v-if!="showDelete(childProps.row)", type="danger", size="mini", plain,  @click="deleteItem(childProps.row)") 删除
-        table-column(label="名称", prop="name")
-        table-column(label="商品", prop="pc")
+        smart-table-column(label="名称", prop="name")
+        smart-table-column(label="商品", prop="pc")
           div(slot-scope="props") {{ props.row.pc }}款商品
-        table-column(label="操作", width="250px")
+        smart-table-column(label="操作", width="250px")
           div(slot-scope="props")
             el-button(type="primary", size="mini", plain, @click="handleCreateChild(props.row)") 添加子分类
             el-button(type="primary", size="mini", plain, @click="handleEditItem(props.row)") 编辑
@@ -29,16 +29,15 @@
 
 <script>
   import FormDialog from './FormDialog.vue'
-  import DraggableTable from 'src/ui/widget/smart-table/Table.vue'
-  import TableColumn from 'src/ui/widget/smart-table/TableColumn.jsx'
+  import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
 
   import * as CategoryApi from 'src/api/category'
 
   export default {
     components: {
       FormDialog,
-      DraggableTable,
-      TableColumn
+      SmartTable,
+      SmartTableColumn
     },
     data () {
       return {
