@@ -14,10 +14,7 @@ export const orderList = (tid, params) => {
     myParams.end_time = ''
   }
   myParams.status = params.status
-  myParams.prod = params.prod
-  myParams.user = params.user
-  myParams.buyer = params.buyer
-  myParams.dev_no = params.dev_no
+  myParams[params.searchType] = params.searchKey
   myParams.page = params.page
   myParams.limit = params.limit
   return Axios.get(`/admin/order`, {params: myParams})

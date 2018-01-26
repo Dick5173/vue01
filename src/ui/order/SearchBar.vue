@@ -4,16 +4,16 @@
       el-select.status-select(v-model="formData.status", multiple, clearable)
         el-option(v-for="item in optionsStatus", :key="item.value", :label="item.label", :value="item.value")
     el-form-item(label="下单")
-      date-tool-bar(:start.sync="formData.start_time", :end.sync="formData.end_time", placeholder="选择日期")
+      date-range-picker(:start.sync="formData.start_time", :end.sync="formData.end_time", placeholder="选择日期")
     el-form-item(label="店铺")
       select-tenant(v-model!="formData.tenant_id")
     el-form-item
       div.input-div
-        el-input.input-data(:placeholder="selectMoreValue.label", v-model="searchText")
+        el-input.input-data(:placeholder="moreCondition[formData.searchType]", v-model!="formData.searchKey")
         el-dropdown(trigger="click", @command="clickMoreConditions", :show-timeout="10", :hide-timeout="10")
           el-button.more-btn(type="primary") 更多条件
           el-dropdown-menu(slot="dropdown")
-            el-dropdown-item(v-for="item in moreConditions", :key="item.value", :command="item") {{item.label}}
+            el-dropdown-item(v-for="(val, key) in moreCondition", :key="key", :command="key") {{val}}
     el-form-item
       el-button(type="primary", icon="el-icon-search", @click="search") 搜索
       el-button(@click="reset") 重置
@@ -21,12 +21,12 @@
 </template>
 
 <script>
-  import DateToolBar from 'src/ui/common/date-range-picker/Index'
+  import {DateRangePicker} from '@baibao/zeratul'
   import SelectTenant from './SelectTenant'
 
   export default {
     components: {
-      DateToolBar,
+      DateRangePicker,
       SelectTenant
     },
     props: {
@@ -37,10 +37,9 @@
       return {
         formData: {
           status: [],
-          prod: '',
-          user: '',
-          buyer: '',
-          dev_no: '',
+          searchKey: '',
+          searchType: 'prod',
+          tenant_id: 0,
           start_time: 0,
           end_time: 0
         },
@@ -59,45 +58,24 @@
           {value: '3', label: '物流单号', text: ''},
           {value: '4', label: '用户昵称/ID', text: ''}
         ],
-        selectMoreValue: {value: '1', label: '商品/订单号', text: ''}
+        moreCondition: {
+          prod: '商品/订单号',
+          user: '买家姓名/手机',
+          dev_no: '物流单号',
+          buyer: '用户昵称/ID'
+        }
       }
     },
     watch: {
       queryParams () {
-        console.log('======queryParams====')
-        console.log(this.queryParams)
         this.convertQueryParamsToForm()
       }
     },
-    computed: {
-      getSearchFiled () {
-        if (this.selectMoreValue.value === '1') {
-          return 'prod'
-        } else if (this.selectMoreValue.value === '2') {
-          return 'buyer'
-        } else if (this.selectMoreValue.value === '3') {
-          return 'dev_no'
-        } else if (this.selectMoreValue.value === '4') {
-          return 'user'
-        }
-      },
-      searchText: {
-        get () {
-          return this.formData[this.getSearchFiled]
-        },
-        set (val) {
-          this.formData[this.getSearchFiled] = val
-        }
-      }
-    },
     methods: {
-      clickMoreConditions (item) {
-        if (item.value !== this.selectMoreValue.value) {
-          this.formData.prod = ''
-          this.formData.user = ''
-          this.formData.buyer = ''
-          this.formData.dev_no = ''
-          this.selectMoreValue = item
+      clickMoreConditions (key) {
+        if (key !== this.formData.searchType) {
+          this.formData.searchKey = ''
+          this.formData.searchType = key
         }
       },
       search () {
@@ -108,32 +86,8 @@
         this.formData.start_time = this.queryParams.start_time
         this.formData.end_time = this.queryParams.end_time
         this.formData.tenant_id = this.queryParams.tenant_id
-        let filedName = ''
-        let filedValue = ''
-        if (this.queryParams.prod) {
-          filedName = 'prod'
-          filedValue = this.queryParams.prod
-          this.selectMoreValue = {value: '1', label: '商品/订单号', text: ''}
-        } else if (this.queryParams.buyer) {
-          filedName = 'buyer'
-          filedValue = this.queryParams.buyer
-          this.selectMoreValue = {value: '2', label: '买家姓名/手机', text: ''}
-        } else if (this.queryParams.user) {
-          filedName = 'user'
-          filedValue = this.queryParams.user
-          this.selectMoreValue = {value: '4', label: '用户昵称/ID', text: ''}
-        } else if (this.queryParams.dev_no) {
-          filedName = 'dev_no'
-          filedValue = this.queryParams.dev_no
-          this.selectMoreValue = {value: '3', label: '物流单号', text: ''}
-        }
-        this.formData.prod = ''
-        this.formData.user = ''
-        this.formData.buyer = ''
-        this.formData.dev_no = ''
-        if (filedName) {
-          this.formData[filedName] = filedValue
-        }
+        this.formData.searchKey = this.queryParams.searchKey
+        this.formData.searchType = this.queryParams.searchType
       },
       async initData () {
         this.initialData = this.R.clone(this.formData)
