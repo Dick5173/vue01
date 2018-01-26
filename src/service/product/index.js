@@ -2,6 +2,20 @@ import * as R from 'ramda'
 import R_ from 'src/util/R_'
 import * as ResourceService from 'src/service/resource/index'
 
+export const allTp = {
+  platform: {
+    value: 1,
+    text: ''
+  },
+  self_support: {
+    value: 2,
+    text: '自营'
+  },
+  choose_platform: {
+    value: 3,
+    text: '平台'
+  }
+}
 export const allStatus = {
   up: {
     value: 1,
@@ -49,7 +63,7 @@ export const convertFormToParam = R.curry((form) => {
         } else if (key === 'tags') {
           return R.map(tagsItem => {
             return tagsItem.id
-          })(val)
+          })(val || [])
         }
         return val
       })(obj)
@@ -98,7 +112,7 @@ export const convertModelToForm = R.curry((form) => {
         if (key === 'head') {
           return R.map((headItem) => {
             return pickContent(headItem)
-          })(val)
+          })(val || [])
         } else if (key === 'cover') {
           return pickContent(val || {})
         } else if (priceField.indexOf(key) !== -1) {
@@ -118,9 +132,9 @@ export const convertModelToForm = R.curry((form) => {
         } else if (key === 'content') {
           return R.map(contentItem => {
             return pickContent(contentItem)
-          })(val)
+          })(val || [])
         } else if (key === 'tags') {
-          if (val === null) {
+          if (!val) {
             return []
           }
         }
@@ -151,12 +165,28 @@ export const showCover = (product) => {
 }
 
 export const showSuggestPriceInterval = (product) => {
+  if (!product) {
+    return ''
+  }
   if (product.prop.min_suggest_price === product.prop.max_suggest_price) {
     return `${R_.convertFenToYuan(product.prop.min_suggest_price)}`
   }
   return `${R_.convertFenToYuan(product.prop.min_suggest_price)}~${R_.convertFenToYuan(product.prop.max_suggest_price)}`
 }
+export const showProfit = (product) => {
+  if (!product) {
+    return ''
+  }
+  if (product.min_profit === product.max_profit) {
+    return `${R_.convertFenToYuan(product.min_profit)}`
+  } else {
+    return `${R_.convertFenToYuan(product.min_profit)}~${R_.convertFenToYuan(product.max_profit)}`
+  }
+}
 export const showPriceInterval = (product) => {
+  if (!product) {
+    return ''
+  }
   if (product.min_price === product.max_price) {
     return `${R_.convertFenToYuan(product.min_price)}`
   }
