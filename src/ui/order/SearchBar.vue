@@ -19,7 +19,7 @@
       el-button(@click="reset") 重置
     div.refunding-bar
       div.export
-        el-button(@click="refunding") 退款中{{refundCount}}
+        el-button(@click="refunding") 退款中 {{refundCount}}
         <!--el-button(type="primary", @click="createExportTask") 新建导出任务-->
         <!--el-button(type="primary", @click="gotoListExportTask") 导出任务列表-->
 
@@ -28,6 +28,7 @@
 <script>
   import {DateRangePicker} from '@baibao/zeratul'
   import SelectTenant from './SelectTenant'
+  import {refuseCount} from 'src/api/refuse'
 
   export default {
     components: {
@@ -35,15 +36,11 @@
       SelectTenant
     },
     props: {
-      queryParams: {},
-      refundCount: {
-        type: Number,
-        default: 0
-      },
-      tenants: []
+      queryParams: {}
     },
     data () {
       return {
+        refundCount: 0,
         formData: {
           status: [],
           searchKey: '',
@@ -151,6 +148,12 @@
       }
     },
     async mounted () {
+      try {
+        const resCount = await refuseCount()
+        this.refundCount = resCount.data.count
+      } catch (e) {
+        console.log('获取退款数量失败')
+      }
       this.convertQueryParamsToForm()
       this.initData()
     }

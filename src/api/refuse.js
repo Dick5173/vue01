@@ -38,6 +38,10 @@ export const reply = (tid, id, txt, remark) => {
     qs.stringify({txt: txt, remark: remark}))
 }
 
+export const refuseCount = () => {
+  return Axios.get('admin/oi/refund/count')
+}
+
 export const refundToWx = (tid, id) => {
   return false
 }
