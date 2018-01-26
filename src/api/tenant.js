@@ -25,6 +25,9 @@ export const getTenantProductList = (id, params) => {
     params: params
   })
 }
+export const getTenantProductDetail = (tid, pid) => {
+  return Axios.get(`/admin/tenant/s/${tid}/product/ps/${pid}`)
+}
 export const getIncomeList = (params) => {
   return Axios.get(`/admin/bill`, {params: params})
 }

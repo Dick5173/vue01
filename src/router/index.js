@@ -386,8 +386,8 @@ export default new Router({
           }
         },
         {
-          path: 'tenant/product/detail/:id',
-          name: 'TenantShowDetail',
+          path: 'tenant/:tid/product/detail/:pid',
+          name: 'TenantShowProductDetail',
           component: () => import('src/ui/other/tenant/ProductDetail.vue'),
           meta: {
             group: 'Other',
@@ -397,7 +397,7 @@ export default new Router({
         {
           path: 'income',
           name: 'TenantIncome',
-          component: () => import('src/ui/other/tenant/Income.vue'),
+          component: () => import('src/ui/other/Income/Index.vue'),
           meta: {
             group: 'Other',
             title: '收入',

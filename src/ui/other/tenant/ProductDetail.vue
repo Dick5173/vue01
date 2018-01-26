@@ -42,7 +42,7 @@
 
 <script>
   import ShowDescription from 'src/ui/product/tenant-self/ShowDescription.vue'
-  import * as TenantSelfProductApi from 'src/api/tenant-self-product'
+  import * as TenantApi from 'src/api/tenant'
 
   export default {
     props: {},
@@ -72,10 +72,10 @@
         }
         return '非清关商品'
       },
-      async gettsDetail () {
+      async getDetail () {
         try {
           this.loading = true
-          let res = await TenantSelfProductApi.getTenantSelfItem(this.$route.params.id)
+          let res = await TenantApi.getTenantProductDetail(this.$route.params.tid, this.$route.params.pid)
           this.formData = res.data
           this.description = res.data.content ? res.data.content : []
           this.loading = false
@@ -99,7 +99,7 @@
     },
     mounted () {
       this.tp = this.$route.params.tp
-      this.gettsDetail()
+      this.getDetail()
     }
   }
 </script>

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import IncomeToolbar from 'src/ui/other/tenant/search-toolbar/IncomeToolbar.vue'
+  import IncomeToolbar from 'src/ui/other/Income/SearchToolbar.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { dateFormat } from 'src/util/format'
   import * as TenantApi from 'src/api/tenant'
@@ -45,7 +45,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM-DD')
+              return dateFormat(val, 'YYYY-MM')
             }
           }
           return val

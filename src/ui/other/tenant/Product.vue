@@ -59,9 +59,10 @@
     methods: {
       toProductDetail (row) {
         this.$router.push({
-          name: 'TenantShowDetail',
+          name: 'TenantShowProductDetail',
           params: {
-            id: row.id,
+            tid: this.$route.params.id,
+            pid: row.id,
             tp: row.tp
           }
         })

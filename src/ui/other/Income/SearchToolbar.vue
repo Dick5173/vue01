@@ -38,7 +38,9 @@
           start: 0,
           end: 0
         },
-        defaultDate: []
+        defaultDate: [],
+        tenantList: [],
+        selectLoading: false
       }
     },
     computed: {},
