@@ -25,12 +25,12 @@
         el-table-column(prop="", label="退款授权", width="")
           div(slot-scope="scope")
             div(v-if="scope.row.refund_status === 2") 已授权
-            el-button(v-else, type="primary", size="small", @click="") 确认授权
+            el-button(v-else, type="primary", size="small", @click="confirmRefund(scope.row)") 确认授权
         el-table-column(prop="", label="店铺状态", width="")
           div(slot-scope="scope") {{showTenantStatus(scope.row.tenant_status)}}
         el-table-column(prop="", label="操作", width="", fixed="right")
           div(slot-scope="scope")
-            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="") 禁用
+            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row)") 禁用
             el-button(v-else, type="primary", size="small", @click="") 启用
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 
@@ -100,6 +100,40 @@
       },
       toDetail (row) {
 
+      },
+      confirmRefund (row) {
+        this.$confirm(`“${row.nick_name}”已经完成了退款授权？`, '确认退款授权', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '确认成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })
+        })
+      },
+      disabled (row) {
+        this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '已禁用!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })
+        })
       },
       handleSearch (data) {
         this.queryChange(data)

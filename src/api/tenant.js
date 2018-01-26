@@ -5,3 +5,6 @@ export const getList = (params) => {
     params: params
   })
 }
+export const getListAll = () => {
+  return Axios.get(`/admin/tenant/all`)
+}

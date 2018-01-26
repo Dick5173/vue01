@@ -53,7 +53,7 @@
         }
         try {
           this.selectLoading = true
-          let res = await TenantApi.getList(params)
+          let res = await TenantApi.getListAll(params)
           res = res.data.data
           this.tenantList = getTenantNameId(res)
           this.selectLoading = false
