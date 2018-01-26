@@ -98,13 +98,13 @@ export const convertModelToForm = R.curry((form) => {
         if (key === 'head') {
           return R.map((headItem) => {
             return pickContent(headItem)
-          })(val)
+          })(val || [])
         } else if (key === 'cover') {
           return pickContent(val || {})
         } else if (priceField.indexOf(key) !== -1) {
           return `${R_.convertFenToYuan(val)}`
         } else if (intField.indexOf(key) !== -1) {
-          if (val === undefined) {
+          if (!val) {
             return ''
           }
           return `${val}`
@@ -114,11 +114,11 @@ export const convertModelToForm = R.curry((form) => {
             skuItem.stock = `${skuItem.stock}`
             skuItem.image = pickContent(skuItem.image || {})
             return skuItem
-          })(val)
+          })(val || [])
         } else if (key === 'content') {
           return R.map(contentItem => {
             return pickContent(contentItem)
-          })(val)
+          })(val || [])
         } else if (key === 'tags') {
           if (val === null) {
             return []
@@ -171,14 +171,14 @@ export const copyCreate = R.curry((form) => {
         if (key === 'head') {
           return R.map((headItem) => {
             return pickContent(headItem)
-          })(val)
+          })(val || [])
         } else if (key === 'cover') {
           return pickContent(val || {})
         } else if (key === 'content') {
           return R.map((item) => {
             delete item.id
             return item
-          })(val)
+          })(val || [])
         } else if (key === 'skus') {
           return R.map((item) => {
             delete item.ct
@@ -188,7 +188,7 @@ export const copyCreate = R.curry((form) => {
               delete item.image.id
             }
             return item
-          })(val)
+          })(val || [])
         }
         return val
       })(obj)
