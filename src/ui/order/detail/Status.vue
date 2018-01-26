@@ -5,8 +5,10 @@
       span(style="margin-right: 15px") {{order | orderFullStatus}}
       span.section-title 订单编号:
       span(style="margin-right: 15px") {{order.code}}
+      span.section-title 店铺:
+      span(style="margin-right: 15px;text-decoration: underline;", @click="clickShop") {{order.user.nickname}}
       span.section-title 用户:
-      span(style="text-decoration: underline;", @click="clickUser") {{order.order_addr.name}}
+      span(style="text-decoration: underline;", @click="clickUser") {{order.user.nickname}}
 </template>
 
 <script>
@@ -25,6 +27,9 @@
     },
     computed: {},
     methods: {
+      clickShop () {
+        console.log('点击shop')
+      },
       clickUser () {
         console.log('点击user')
       }

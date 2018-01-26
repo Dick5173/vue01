@@ -17,6 +17,7 @@ export const refuseList = (tid, params) => {
   myParams.prod = params.prod
   myParams.prod_tp = params.prod_tp
   myParams.refund_status = params.refund_status
+  myParams.tenant_id = params.tenant_id
   myParams.page = params.page
   myParams.limit = params.limit
   return Axios.get(`/admin/oi/refund`, {params: myParams})

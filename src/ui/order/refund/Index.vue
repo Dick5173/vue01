@@ -22,6 +22,7 @@
       return {
         queryParams: {
           refund_status: 1,
+          tenant_id: '',
           prod_tp: 0,
           prod: '',
           start: new Date().getTime(),

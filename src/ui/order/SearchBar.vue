@@ -48,7 +48,7 @@
           status: [],
           searchKey: '',
           searchType: 'prod',
-          tenant_id: 0,
+          tenant_id: '',
           start_time: 0,
           end_time: 0
         },

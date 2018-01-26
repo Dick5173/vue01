@@ -29,7 +29,7 @@
           status: ['3', '4', '5'],
           searchKey: '',
           searchType: 'prod',
-          tenant_id: 0,
+          tenant_id: '',
           start_time: new Date().getTime(),
           end_time: new Date().getTime()
         }

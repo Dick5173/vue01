@@ -7,7 +7,9 @@
       el-select(v-model="form.prod_tp", placeholder="请选择")
         el-option(v-for="item in productType", :key="item.value", :label="item.label", :value="item.value")
     el-form-item(label="下单")
-      date-tool-bar(:start.sync="form.start", :end.sync="form.end")
+      date-range-picker(:start.sync="form.start", :end.sync="form.end")
+    el-form-item(label="店铺")
+      select-tenant(v-model!="form.tenant_id")
     el-form-item
       div.input-div
         el-input(placeholder="商品名/订单号", v-model="form.prod", width="400px")
@@ -17,17 +19,20 @@
 </template>
 
 <script>
-  import DateToolBar from 'src/ui/common/date-range-picker/Index'
+  import {DateRangePicker} from '@baibao/zeratul'
+  import SelectTenant from '../SelectTenant'
 
   export default {
     components: {
-      DateToolBar
+      DateRangePicker,
+      SelectTenant
     },
     props: {},
     data () {
       return {
         form: {
           refund_status: 1,
+          tenant_id: '',
           prod_tp: 0,
           prod: '',
           start: new Date().getTime(),
