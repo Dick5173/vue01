@@ -2,13 +2,13 @@
   div
     div.status
       span.section-title 订单状态:
-      span(style="margin-right: 15px") {{order | orderFullStatus}}
+      span.section-margin {{order | orderFullStatus}}
       span.section-title 订单编号:
-      span(style="margin-right: 15px") {{order.code}}
+      span.section-margin {{order.code}}
       span.section-title 店铺:
-      span(style="margin-right: 15px;text-decoration: underline;", @click="clickShop") {{order.user.nickname}}
+      span.section-margin.section-btn(@click="clickShop") {{order.user.nickname}}
       span.section-title 用户:
-      span(style="text-decoration: underline;", @click="clickUser") {{order.user.nickname}}
+      span.section-btn(@click="clickUser") {{order.user.nickname}}
 </template>
 
 <script>
@@ -50,5 +50,14 @@
     line-height: 1;
     padding: 11px 12px 11px 0;
     box-sizing: border-box;
+  }
+
+  .section-margin {
+    margin-right: 15px
+  }
+
+  .section-btn {
+    text-decoration: underline;
+    color: $color-primary;
   }
 </style>
