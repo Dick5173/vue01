@@ -30,11 +30,9 @@
         tenants: [],
         queryParams: {
           status: ['3', '4', '5'],
+          searchKey: '',
+          searchType: 'prod',
           tenant_id: 0,
-          prod: '', // 订单编号、商品名称
-          user: '', // 用户昵称、ID
-          buyer: '', // 买家姓名、买家手机号
-          dev_no: '',  // 物流单号
           start_time: new Date().getTime(),
           end_time: new Date().getTime()
         }
