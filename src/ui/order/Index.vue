@@ -1,7 +1,6 @@
 <template lang="pug">
   div.order(v-loading="loading")
-    search-bar(:queryParams="queryParams", @search="handleSearch")
-    refunding-bar
+    search-bar(:queryParams="queryParams", @search="handleSearch", @create_export_task="createExportTask")
     list(:dataList.sync="dataList")
     div.order-bottom 实付合计: {{showPrice(dataList.stat)}}, 利润: {{showProfit(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
     div.order-bottom
@@ -10,7 +9,6 @@
 
 <script>
   import SearchBar from './SearchBar'
-  import RefundingBar from './RefundingBar'
   import List from './List'
   import {orderList} from '../../api/order'
   import LoadPagerData from '../../mixins/load-pager-data'
@@ -21,7 +19,6 @@
     mixins: [LoadPagerData],
     components: {
       SearchBar,
-      RefundingBar,
       List
     },
     data () {
@@ -71,6 +68,18 @@
           sold = stat.count
         }
         return getShowCount(sold)
+      },
+      createExportTask (model) {
+        // this._filter(model)
+        // orderList(this.$tid, Object.assign({export: 1}, this.queryParams)).then((res) => {
+        //   this.$message({
+        //     showClose: true,
+        //     message: res.data,
+        //     type: 'success'
+        //   })
+        // }).catch((err) => {
+        //   this.$myErrorHandler.handle(this, err)
+        // })
       },
       async loadTenant () {
 

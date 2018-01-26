@@ -17,6 +17,11 @@
     el-form-item
       el-button(type="primary", icon="el-icon-search", @click="search") 搜索
       el-button(@click="reset") 重置
+    div.refunding-bar
+      div.export
+        el-button(@click="refunding") 退款中{{refundCount}}
+        <!--el-button(type="primary", @click="createExportTask") 新建导出任务-->
+        <!--el-button(type="primary", @click="gotoListExportTask") 导出任务列表-->
 
 </template>
 
@@ -31,6 +36,10 @@
     },
     props: {
       queryParams: {},
+      refundCount: {
+        type: Number,
+        default: 0
+      },
       tenants: []
     },
     data () {
@@ -72,6 +81,50 @@
       }
     },
     methods: {
+      refunding () {
+        this.$router.push({
+          name: 'OrderRefund'
+        })
+      },
+      createExportTask () {
+        console.log('===createExportTask====')
+        // if (!this.formData.start_time || !this.formData.end_time) {
+        //   this.$message({
+        //     message: '请选择下单时间',
+        //     type: 'error',
+        //     showClose: true
+        //   })
+        //   return
+        // }
+        // let st = new Date(this.formData.start_time)
+        // st.setDate(st.getDate() + 90)
+        // if (st <= new Date(this.formData.end_time)) {
+        //   this.$message({
+        //     message: '日期跨度不能超过90天',
+        //     type: 'error',
+        //     showClose: true
+        //   })
+        //   return
+        // }
+        // this.$confirm(`新建导出任务当前筛选结果`, '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'info'
+        // }).then(() => {
+        //   this.$emit('create_export_task', this.formData)
+        // }).catch(() => {
+        // })
+      },
+      gotoListExportTask () {
+        console.log('===gotoListExportTask====')
+        // this.$router.push({
+        //   path: '/export/task',
+        //   query: {
+        //     fromCat: EXPORT_TASK.CAT_ORDER,
+        //     cat: EXPORT_TASK.CAT_ORDER
+        //   }
+        // })
+      },
       clickMoreConditions (key) {
         if (key !== this.formData.searchType) {
           this.formData.searchKey = ''
@@ -119,6 +172,16 @@
 
     .more-btn {
       margin-left: 10px;
+    }
+  }
+
+  .refunding-bar {
+    width: 100%;
+
+    .export {
+      margin-bottom: 20px;
+      display: flex;
+      float: right;
     }
   }
 
