@@ -11,7 +11,7 @@
       div 退货数量：{{data.total}}
     div.txt-info(v-if="data.tp === 1") 申请退款 {{data.amount | price}}
     div.images
-      div(v-for="imgItem in data.images", v-lazy:background-image="imgItem", @click="previewImage(imgItem)")
+      div(v-for="imgItem in data.images", v-lazy:background-image="imgItem.url", @click="previewImage(imgItem)")
     image-preview-dialog(ref="dlgPreview")
 
 </template>
@@ -61,7 +61,7 @@
     },
     methods: {
       previewImage (imgItem) {
-        this.$refs.dlgPreview.show(imgItem)
+        this.$refs.dlgPreview.show(imgItem.url)
       }
     }
   }
