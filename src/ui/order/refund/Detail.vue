@@ -73,7 +73,7 @@
     methods: {
       async resetItems () {
         try {
-          const resRefund = await orderItems(this.$tid, this.$route.params.oiid)
+          const resRefund = await orderItems(this.$route.params.oiid)
           console.log(resRefund)
           this.data = resRefund.data
           this.loading = false
@@ -105,7 +105,7 @@
         }
       },
       showExpress () {
-        this.$refs.dlgExpress.show(this.data.id)
+        this.$refs.dlgExpress.show(this.$route.params.oiid)
       }
     },
     created () {

@@ -32,7 +32,7 @@
       async refreshOrder () {
         this.loading = true
         try {
-          const res = await orderDetail(this.$tid, this.$route.params.id)
+          const res = await orderDetail(this.$route.params.id)
           this.order = res.data
           this.loading = false
         } catch (ex) {

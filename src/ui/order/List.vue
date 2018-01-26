@@ -17,7 +17,7 @@
               div
                 span 实付{{scope.row.total_price | price}}
                 span.txt-ex(v-if="scope.row.status === 3  && scope.row.order_items.length > 1 && countDelivered(scope.row.order_items) > 0") {{countDelivered(scope.row.order_items)}}/{{scope.row.order_items.length}}已发货
-                span.txt-blod(v-if="scope.row.refunding_count") {{scope.row.refunding_count}}件退款中
+                span.txt-ex.txt-blod.refund-color(v-if="scope.row.refunding_count") {{scope.row.refunding_count}}件退款中
       el-table-column(label="买家信息" width="334")
         template(slot-scope="scope")
           div(v-if="scope.row.order_addr")
@@ -157,8 +157,13 @@
       font-weight: bold;
     }
 
+    .refund-color {
+      color: $color-danger;
+    }
+
     .text-code {
       text-decoration: underline;
+      color: $color-primary;
     }
   }
 

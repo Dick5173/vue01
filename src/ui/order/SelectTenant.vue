@@ -1,47 +1,30 @@
 <template lang="pug">
-  el-select(v-model="model" filterable placeholder="请选择")
-    el-option(v-for="item in tenants", :key="item.id", :label="item.nick_name", :value="item.id")
+  el-select(v-model="model", filterable, clearable, placeholder="店铺/ID")
+    el-option(v-for="item in tenants", :key="item.id", :label="selectName(item)", :value="selectName(item)")
 </template>
 
 <script>
+  import {getListAll} from 'src/api/tenant'
+
   export default {
     components: {},
     props: {
       value: {
-        type: Number,
-        default: 0
+        type: String,
+        default: ''
       }
     },
     data () {
       return {
-        modelValue: 0,
-        tenants: [
-          {
-            id: 1,
-            nick_name: 'a'
-          },
-          {
-            id: 2,
-            nick_name: 'b'
-          },
-          {
-            id: 3,
-            nick_name: 'ab'
-          },
-          {
-            id: 4,
-            nick_name: 'ac'
-          },
-          {
-            id: 5,
-            nick_name: 'c'
-          }
-        ]
+        modelValue: '',
+        tenants: []
       }
     },
     watch: {
       value (val) {
-        this.modelValue = val
+        if (!val || val === '') {
+          this.modelValue = val
+        }
       }
     },
     computed: {
@@ -51,11 +34,26 @@
         },
         set (val) {
           this.modelValue = val
-          this.$emit('input', val)
+          const id = this.modelValue.split(':')[0]
+          this.$emit('input', id)
         }
       }
     },
-    methods: {}
+    methods: {
+      selectName (item) {
+        if (!item.id || item.id === '') {
+          return ''
+        }
+        return item.id + ': ' + item.nick_name
+      },
+      async loadTenants () {
+        const tenantsRes = await getListAll()
+        this.tenants = tenantsRes.data.data
+      }
+    },
+    mounted () {
+      this.loadTenants()
+    }
   }
 </script>
 

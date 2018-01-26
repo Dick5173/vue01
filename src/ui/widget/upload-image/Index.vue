@@ -66,7 +66,8 @@
         thumbnail: '',
         ossToken: {},
         host: '',
-        previewVisible: false
+        previewVisible: false,
+        fileKey: ''
       }
     },
     computed: {
@@ -157,6 +158,7 @@
             }
             const resToken = await AliyunApi.getOssToken()
             this.ossToken = resToken.data.token
+            this.fileKey = resToken.data.key
             done()
           } catch (e) {
             done(e)
@@ -189,7 +191,7 @@
         },
         sending: (file, xhr, formData) => {
           this.isUpdating = true
-          const key = `${this.ossToken.dir}${this.ossToken.key}/${file.name}`
+          const key = `${this.ossToken.dir}${this.fileKey}/${file.name}`
           file.downloadUrl = `${this.host}/${key}`
           formData.append('key', key)
           formData.append('policy', this.ossToken.policy)
