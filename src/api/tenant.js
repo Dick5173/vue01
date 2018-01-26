@@ -6,5 +6,5 @@ export const getList = (params) => {
   })
 }
 export const getListAll = () => {
-  return Axios.get(`/admin/tenant/all`)
+  return Axios.get(`/admin/tenant/all/name`)
 }
