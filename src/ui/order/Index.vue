@@ -46,7 +46,7 @@
         this.queryChange(model)
       },
       getQueryApi (params) {
-        return orderList(this.$tid, params)
+        return orderList(params)
       },
       showPrice (stat) {
         let price = 0
@@ -71,7 +71,7 @@
       },
       createExportTask (model) {
         // this._filter(model)
-        // orderList(this.$tid, Object.assign({export: 1}, this.queryParams)).then((res) => {
+        // orderList(Object.assign({export: 1}, this.queryParams)).then((res) => {
         //   this.$message({
         //     showClose: true,
         //     message: res.data,

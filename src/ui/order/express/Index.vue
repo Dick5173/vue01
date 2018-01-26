@@ -52,7 +52,7 @@
         this.loading = true
         try {
           this.expressDataList = []
-          const res = await getExpress(this.$tid, this.oid)
+          const res = await getExpress(this.oid)
           console.log(res)
           this.expressDataList = res.data
           console.log(this.expressDataList)
