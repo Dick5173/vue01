@@ -86,24 +86,25 @@ const isPrice = R.curry((val) => {
  * @return {Object} 已附值的对象
  */
 const updateWithObjCustom = R.curry((fn, l, r) => {
-  let copyObj = {...l}
-
+  let copyObj = R.clone(l)
   const syncFunc = (key) => {
-    if (r.hasOwnProperty(key) && R.not(R.isEmpty(R.prop(key)(r)))) {
+    if (r.hasOwnProperty(key)) {
       let val = R.prop(key)(r)
       if (RA.isBoolean(copyObj[key])) {
         if (RA.isString(val)) {
           val = (val === 'true' || (!R.isEmpty(val) && val !== '0' && val !== 'false'))
         } else if (RA.isInteger(val)) {
           val = val !== 0
+        } else {
+          val = false
         }
       } else if (RA.isInteger(copyObj[key])) {
-        val = parseInt(val)
+        val = parseInt(val || 0)
       } else if (RA.isString(copyObj[key])) {
-        val = String(val)
+        val = String(val || '')
       } else if (RA.isArray(copyObj[key])) {
         if (RA.isNilOrEmpty(val)) {
-          return []
+          val = []
         }
         if (RA.isNotArray(val)) {
           val = [val]
@@ -116,14 +117,10 @@ const updateWithObjCustom = R.curry((fn, l, r) => {
   R.forEachObjIndexed((value, key, obj) => {
     if (fn) {
       if (!fn(key, copyObj, r)) {
-        if (r.hasOwnProperty(key) && R.not(R.isEmpty(R.prop(key)(r)))) {
-          syncFunc(key)
-        }
-      }
-    } else {
-      if (r.hasOwnProperty(key) && R.not(R.isEmpty(R.prop(key)(r)))) {
         syncFunc(key)
       }
+    } else {
+      syncFunc(key)
     }
   })(l)
   return copyObj
