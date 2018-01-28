@@ -473,6 +473,48 @@ export default new Router({
           }
         },
         {
+          path: 'version',
+          name: 'Version',
+          component: () => import('src/ui/maintain/version/Index.vue'),
+          meta: {
+            group: 'Other',
+            title: '版本更新记录',
+            showInSide: true
+          }
+        },
+        {
+          path: 'version/create',
+          name: 'VersionCreate',
+          component: () => import('src/ui/maintain/version/Create.vue'),
+          meta: {
+            group: 'Other',
+            title: '创建',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本更新记录',
+              to: {name: 'Version'}
+            }, {
+              text: '创建'
+            }]
+          }
+        },
+        {
+          path: 'version/edit/:id',
+          name: 'VersionEdit',
+          component: () => import('src/ui/maintain/version/Edit.vue'),
+          meta: {
+            group: 'Other',
+            title: '编辑',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本更新记录',
+              to: {name: 'Version'}
+            }, {
+              text: '编辑'
+            }]
+          }
+        },
+        {
           path: 'sysuser',
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),
