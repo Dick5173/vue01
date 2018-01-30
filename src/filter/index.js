@@ -1,6 +1,6 @@
 import { date, datetime, monthtime, minutetime } from './datetime'
 import { productSuggestPrice, productPrice, productProfit } from './product'
-import { price } from './common'
+import { price, friendlyPrice } from './common'
 import deliveryStatus from './deliveryStatus'
 import orderFullStatus from './orderFullStatus'
 
@@ -11,6 +11,7 @@ export default {}.install = function (Vue, options) {
     {name: 'monthtime', filter: monthtime},
     {name: 'minutetime', filter: minutetime},
     {name: 'price', filter: price},
+    {name: 'friendlyPrice', filter: friendlyPrice},
     {name: 'productSuggestPrice', filter: productSuggestPrice},
     {name: 'productPrice', filter: productPrice},
     {name: 'productProfit', filter: productProfit},
