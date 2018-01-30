@@ -12,7 +12,7 @@
       div.list-title
         div.list-title-head
           div.list-title-item 订单统计
-          el-button.list-title-item-details(type="text") 详情>
+          el-button.list-title-item-details(type="text", @click="toOrder(userData)") 详情>
         div.list
           el-table.list-el-table(:data="dataList", border)
             el-table-column(label="最近购买", prop="recent_pay_tick")
@@ -59,6 +59,15 @@
         } catch (err) {
           this.loading = false
         }
+      },
+      toOrder (row) {
+        this.$router.push({
+          name: 'OrderIndex',
+          params: {
+            uid: row.id,
+            user: true
+          }
+        })
       },
       showTime (row) {
         if (row !== '') {

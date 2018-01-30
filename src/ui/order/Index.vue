@@ -84,16 +84,27 @@
       async loadTenant () {
 
       },
-      searchTenant () {
+      autoSearch () {
         if (this.$route.params.tenant) {
-          this.queryParams.tenant_id = this.$route.params.tid
-          this.queryChange(this.queryParams)
+          let params = {
+            tenant_id: String(this.$route.params.tid)
+          }
+          this.queryChange(params)
+        }
+        if (this.$route.params.user) {
+          let params = {
+            searchKey: String(this.$route.params.uid),
+            searchType: 'buyer',
+            start_time: '',
+            end_time: ''
+          }
+          this.queryChange(params)
         }
       }
     },
     mounted () {
       this.loadTenant()
-      this.searchTenant()
+      this.autoSearch()
     }
   }
 </script>
