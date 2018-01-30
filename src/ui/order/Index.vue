@@ -10,10 +10,10 @@
 <script>
   import SearchBar from './SearchBar'
   import List from './List'
-  import {orderList} from '../../api/order'
+  import { orderList } from '../../api/order'
   import LoadPagerData from '../../mixins/load-pager-data'
-  import {getShowPrice} from '../../util/moneyUtil'
-  import {getShowCount} from '../../util/number'
+  import { getShowPrice } from '../../util/moneyUtil'
+  import { getShowCount } from '../../util/number'
 
   export default {
     mixins: [LoadPagerData],
@@ -83,10 +83,17 @@
       },
       async loadTenant () {
 
+      },
+      searchTenant () {
+        if (this.$route.params.tenant) {
+          this.queryParams.tenant_id = this.$route.params.tid
+          this.queryChange(this.queryParams)
+        }
       }
     },
     mounted () {
       this.loadTenant()
+      this.searchTenant()
     }
   }
 </script>

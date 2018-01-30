@@ -4,11 +4,24 @@
       income-toolbar(:queryParams="queryParams", @submit="handleSearch")
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
-        el-table-column(prop="", label="统计周期", sortable)
-        el-table-column(prop="", label="销售额（元）", sortable)
-        el-table-column(prop="", label="货款（元）", sortable)
-        el-table-column(prop="", label="平台服务费（元）", sortable)
-        el-table-column(prop="", label="利润（元）", sortable)
+        el-table-column(label="店铺", prop="")
+          template(slot-scope="scope")
+            div
+        el-table-column(label="统计周期", prop="")
+          template(slot-scope="scope")
+            div {{scope.row.start_tick | datetime}}～{{scope.row.end_tick | datetime}}
+        el-table-column(label="销售额（元）", prop="sale_total_amount")
+          template(slot-scope="scope")
+            div {{scope.row.sale_total_amount | price}}
+        el-table-column(label="货款（元）", prop="sp_total_amount")
+          template(slot-scope="scope")
+            div {{scope.row.sp_total_amount | price}}
+        el-table-column(label="平台服务费（元）", prop="platform_fee")
+          template(slot-scope="scope")
+            div {{scope.row.platform_fee | price}}
+        el-table-column(label="利润（元）", prop="total_profit")
+          template(slot-scope="scope")
+            div {{scope.row.total_profit | price}}
       div.total
         span 销售总额：万，货款合计：万，平台服务费合计：万，利润合计：万
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
@@ -53,6 +66,16 @@
       },
       handleSearch (data) {
         this.queryChange(data)
+      }
+    },
+    mounted () {
+      if (this.$route.params.tenant) {
+        let params = {
+          start: 0,
+          end: 0,
+          tenant_id: this.$route.params.tid
+        }
+        this.queryChange(params)
       }
     }
   }

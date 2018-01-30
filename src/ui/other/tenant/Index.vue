@@ -76,6 +76,15 @@
           return val
         })(params))
       },
+      toOrder (row) {
+        this.$router.push({
+          name: 'OrderIndex',
+          params: {
+            tid: row.id,
+            tenant: true
+          }
+        })
+      },
       toProduct (row) {
         this.$router.push({
           name: 'TenantProduct',
