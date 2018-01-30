@@ -20,7 +20,7 @@
           div(slot-scope="props") {{ props.row.prop.stock }}
         el-table-column(prop="", label="店铺ID", width="110px")
           div(slot-scope="props")
-            el-button(type="text", @click="") {{props.row.tenant_id}}
+            el-button(type="text", @click="toTenantDetail(props.row)") {{props.row.tenant_id}}
         el-table-column(prop="pt", label="首次上架", sortable, width="160px")
           div(slot-scope="props", v-if="props.row.pt > 0") {{ props.row.pt | datetime }}
         el-table-column(type="expand", fixed="right")
@@ -74,6 +74,14 @@
           }
           return val
         })(params))
+      },
+      toTenantDetail (row) {
+        this.$router.push({
+          name: 'TenantDetail',
+          params: {
+            id: row.tenant_id
+          }
+        })
       },
       toDetail (row) {
         this.$router.push({
