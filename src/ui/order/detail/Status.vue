@@ -65,7 +65,7 @@
 
   .section-title {
     font-size: 14px;
-    font-weight: 700;
+    /*font-weight: 700;*/
     color: #48576a;
     line-height: 1;
     padding: 11px 12px 11px 0;
@@ -73,7 +73,8 @@
   }
 
   .section-margin {
-    margin-right: 15px
+    margin-right: 15px;
+    color: #303133;
   }
 
   .section-btn {
