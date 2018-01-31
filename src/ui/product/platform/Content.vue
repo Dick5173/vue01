@@ -21,7 +21,9 @@
           el-button(type="danger", size="mini", plain, @click="handleDel(props.index)") 删除
     div
       el-button(type="primary", size="mini", plain, @click="handleCreate") 添加描述
+      el-button(type="primary", size="mini", plain, @click="showPreview") 预览
     create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess")
+    preview-dialog(ref="dlgPreview", :resources="content")
 </template>
 
 <script>
@@ -30,6 +32,7 @@
   import TableColumn from 'src/ui/widget/smart-table/TableColumn.jsx'
   import UploadImage from 'src/ui/widget/upload-image/Index.vue'
   import CreateContentDialog from './dialog/CreateContentDialog.vue'
+  import PreviewDialog from 'src/ui/common/preview/PreviewDialog.vue'
   import * as ResourceService from 'src/service/resource/index'
 
   export default {
@@ -38,13 +41,16 @@
       SmartTable,
       TableColumn,
       UploadImage,
-      CreateContentDialog
+      CreateContentDialog,
+      PreviewDialog
     },
     props: {
       content: {
         type: Array,
         required: true
       }
+    },
+    watch: {
     },
     data () {
       return {
@@ -61,6 +67,9 @@
       }
     },
     methods: {
+      showPreview () {
+        this.$refs.dlgPreview.show()
+      },
       handleDragChange (dataList) {
         this.$emit('update:content', arguments[0])
         this.dispatch('ElFormItem', 'el.form.change', [dataList])
