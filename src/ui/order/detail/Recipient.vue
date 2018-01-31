@@ -34,6 +34,7 @@
 
   .txt-info {
     margin-top: 8px;
+    color: #303133;
   }
   .txt-info-time {
     width: 220px;
