@@ -2,7 +2,7 @@
   div.order(v-loading="loading")
     search-bar(:queryParams="queryParams", @search="handleSearch", @create_export_task="createExportTask")
     list(:dataList.sync="dataList")
-    div.order-bottom 实付合计: {{showPrice(dataList.stat)}}, 利润: {{showProfit(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
+    div.order-bottom.txt-head 实付合计: {{showPrice(dataList.stat)}}, 利润: {{showProfit(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
     div.order-bottom
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
@@ -103,8 +103,8 @@
           let params = {
             searchKey: String(this.$route.params.uid),
             searchType: 'buyer',
-            start_time: '',
-            end_time: ''
+            start_time: 0,
+            end_time: 0
           }
           this.queryChange(params)
         }
@@ -119,6 +119,6 @@
 
 <style lang="scss" scoped>
   .order-bottom {
-    margin-top: 20px;
+    padding-top: 8px;
   }
 </style>

@@ -6,7 +6,7 @@
       span.section-title 订单编号:
       span.section-margin {{order.code}}
       span.section-title 店铺:
-      span.section-margin.section-btn(@click="clickShop") {{order.user.nickname}}
+      span.section-margin.section-btn(@click="clickShop") {{order.tenant.nick_name}}
       span.section-title 用户:
       span.section-btn(@click="clickUser") {{order.user.nickname}}
 </template>
@@ -32,6 +32,12 @@
       },
       clickUser () {
         console.log('点击user')
+        this.$router.push({
+          name: 'UserDetail',
+          params: {
+            id: this.order.user.id
+          }
+        })
       }
     }
   }

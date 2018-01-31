@@ -164,6 +164,7 @@
     .text-code {
       text-decoration: underline;
       color: $color-primary;
+      cursor: pointer;
     }
   }
 
