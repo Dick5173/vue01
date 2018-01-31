@@ -44,6 +44,9 @@
     computed: {},
     methods: {
       handleSearch (model) {
+        if (model.status.length === 0) {
+          model.status = ''
+        }
         this.queryChange(model)
       },
       getQueryApi (params) {
