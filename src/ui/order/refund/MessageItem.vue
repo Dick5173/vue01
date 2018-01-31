@@ -6,7 +6,7 @@
     div.txt-info {{data.txt}}
     div(v-if="data.sys_remark")
       div.txt-info.txt-info-tip 以下内容消费者不可见
-      div {{data.sys_user_name}}:{{data.sys_remark}}
+      div {{data.tenant_user.name}}:{{data.sys_remark}}
     div(v-if="data.status === 5")
       div 退货数量：{{data.total}}
     div.txt-info(v-if="data.tp === 1") 申请退款 {{data.amount | price}}
@@ -41,9 +41,9 @@
         if (this.data.status === RefundStatus.STATUS_CANCELED) {
           return '买家：退款已撤销'
         } else if (this.data.status === RefundStatus.STATUS_AGREED) {
-          return '诚之优品：退款成功'
+          return '客服：退款成功'
         } else if (this.data.status === RefundStatus.STATUS_REJECTED) {
-          return '诚之优品：退款已撤销'
+          return '客服：退款已撤销'
         } else {
           if (this.data.tp === 1) {
             if (this.data.parent_id === 0) {
@@ -52,7 +52,7 @@
               return '买家：申请已修改'
             }
           } else if (this.data.tp === 2) {
-            return '诚之优品回复'
+            return '客服回复'
           } else {
             return ''
           }
