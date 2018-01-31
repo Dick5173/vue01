@@ -12,6 +12,8 @@
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border, @selection-change="handleSelectionChange")
         el-table-column(type="selection", width="55px")
         el-table-column(prop="id", label="ID", width="55px")
+          div(slot-scope="props")
+            el-button(type="text", @click="toDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
         el-table-column(prop="name", label="商品")
@@ -315,6 +317,14 @@
       toRecycle () {
         this.$router.push({
           name: 'PlatformProductRecycle'
+        })
+      },
+      toDetail (row) {
+        this.$router.push({
+          name: 'PlatformProductDetail',
+          params: {
+            id: row.id
+          }
         })
       },
       handleCopy (product) {

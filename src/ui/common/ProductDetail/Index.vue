@@ -10,28 +10,22 @@
     el-form-item(label="卖点", prop="")
       div {{formData.sell_point}}
     el-form-item(label="商品规格", prop="")
-      el-table(:data="formData.tenant_skus ? formData.tenant_skus : []", border)
-        el-table-column(label="规格")
-          div(slot-scope="scope") {{scope.row.sku.spec}}
-        el-table-column(label="售价")
-          div(slot-scope="scope") {{scope.row.sell_price | price}}
-        el-table-column(label="库存")
-          div(slot-scope="scope") {{scope.row.sku.stock}}
-        el-table-column(label="编码")
-          div(slot-scope="scope") {{scope.row.sku.code}}
-        el-table-column(label="图片")
-          template(slot-scope="scope")
-            div.skuImg(v-lazy:background-image="showImg(scope.row.sku.image)")
+      skus(:skus="skus", :isPlatform="isPlatform", :formData="formData")
     el-form-item(label="划线价", prop="st_price")
       span {{formData.st_price | price}}
       span.input-right-desc 元
     el-form-item(label="供货价", prop="supply_price")
       span {{formData.prop.ext.supply_price | price}}
       span.input-right-desc 元
-    el-form-item(label="配送区域", prop="delivery_region_id", placeholder="请选择")
+    el-form-item(v-if="isPlatform", label="商品分类", prop="delivery_region_id")
+      div {{showName(formData.prop.category)}}
+    el-form-item(label="配送区域", prop="delivery_region_id")
       div {{showName(formData.prop.ext.delivery_region)}}
     el-form-item(label="商品设置", prop="oversea")
       div {{showOversea(formData.prop.ext.oversea)}}
+    el-form-item(v-if="isPlatform", label="商品标签", prop="oversea")
+      div
+        el-tag.ptag(type="primary", v-for="item in formData.prop.tags", :key="item.id") {{item.name}}
     el-form-item(label="商品描述", prop="content")
       show-description(:description="description")
     el-form-item(label="服务组合", prop="service_tag_group_id")
@@ -41,16 +35,19 @@
 </template>
 
 <script>
-  import ShowDescription from 'src/ui/product/tenant-self/ShowDescription.vue'
+  import * as ProductApi from 'src/api/product'
+  import * as TenantSelfProductApi from 'src/api/tenant-self-product'
   import * as TenantApi from 'src/api/tenant'
+  import ShowDescription from './ShowDescription.vue'
+  import Skus from 'src/ui/common/ProductDetail/Skus.vue'
 
   export default {
     props: {},
-    components: {ShowDescription},
+    components: {ShowDescription, Skus},
     data () {
       return {
         loading: false,
-        tp: '',
+        skus: [],
         formData: {
           head: [],
           cover: {
@@ -63,7 +60,14 @@
         description: []
       }
     },
-    computed: {},
+    computed: {
+      isPlatform () {
+        return this.$route.name === 'PlatformProductDetail'
+      },
+      isTenantProductDetail () {
+        return this.$route.name === 'TenantShowProductDetail'
+      }
+    },
     watch: {},
     methods: {
       showOversea (row) {
@@ -75,7 +79,17 @@
       async getDetail () {
         try {
           this.loading = true
-          let res = await TenantApi.getTenantProductDetail(this.$route.params.tid, this.$route.params.pid)
+          let res = ''
+          if (this.isPlatform) {
+            res = await ProductApi.getItem(this.$route.params.id)
+            this.skus = res.data.prop.skus
+          } else if (this.isTenantProductDetail) {
+            res = await TenantApi.getTenantProductDetail(this.$route.params.tid, this.$route.params.pid)
+            this.skus = res.data.tenant_skus
+          } else {
+            res = await TenantSelfProductApi.getTenantSelfItem(this.$route.params.id)
+            this.skus = res.data.tenant_skus
+          }
           this.formData = res.data
           this.description = res.data.content ? res.data.content : []
           this.loading = false
@@ -98,7 +112,6 @@
       }
     },
     mounted () {
-      this.tp = this.$route.params.tp
       this.getDetail()
     }
   }
@@ -114,10 +127,5 @@
     margin-right: 10px;
   }
 
-  .skuImg {
-    width: 50px;
-    height: 50px;
-    background-size: cover;
-    margin-right: 10px;
-  }
+
 </style>
