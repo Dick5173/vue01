@@ -1,17 +1,17 @@
 <template lang="pug">
   div
     div
-      el-button(type="primary", @click="createTagGroup", icon="el-icon-plus") 添加标签组
+      el-button(type="primary", @click="createTagGroup") 添加标签组
     div(v-loading="loading")
       div.tagGroup-wrapper(v-for="groupItem in tagGroupList", :key="groupItem.id")
         div.toolbar
           div.group-name {{groupItem.name}}
           div.edit-btn
-            el-button(icon="el-icon-edit", size="mini", type="primary", @click="editTagGroup(groupItem)")
+            el-button(size="mini", type="primary", @click="editTagGroup(groupItem)") 编辑
           div.edit-btn
-            el-button(:disabled="isDisabled(groupItem)", icon="el-icon-delete", size="mini", type="danger", @click="deleteTagGroup(groupItem)")
+            el-button(:disabled="isDisabled(groupItem)", size="mini", type="danger", @click="deleteTagGroup(groupItem)") 删除
           div.create-btn
-            el-button(icon="el-icon-plus", size="mini", type="primary", @click="createTag(groupItem.id)") 添加标签
+            el-button(size="mini", type="primary", @click="createTag(groupItem.id)") 添加标签
         div.tag-list
           el-table.table(:data="groupItem.items", :show-header="false")
             el-table-column
@@ -22,7 +22,7 @@
                 div {{scope.row.pc}}款商品
             el-table-column(width="70px")
               template(slot-scope="scope")
-                el-button(size="mini", icon="el-icon-delete", type="danger", @click="deleteTag(scope.row)")
+                el-button(size="mini", type="danger", @click="deleteTag(scope.row)", plain) 删除
     edit-dialog(ref="dlgEdit", @refresh="refresh")
 </template>
 

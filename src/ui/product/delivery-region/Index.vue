@@ -2,7 +2,7 @@
   div
     div
       router-link(:to="{name:'DeliveryRegioncCreate'}")
-        el-button(type="primary", icon="el-icon-plus") 添加
+        el-button(type="primary") 添加
     div(v-loading="loading")
       div(v-for="item in dataList")
         div
@@ -11,8 +11,8 @@
               span {{item.name}}
               div(style="float: right; height:22px;")
                 span.head-pc {{item.pc}}款商品
-                el-button(size="mini", style="float: right", :disabled="item.pc!==0", type="danger", @click="deleteItem(item)") 删除
-                el-button(size="mini", style="float: right;margin-right: 10px;", type="primary", @click="editItem(item)") 编辑
+                el-button(size="mini", style="float: right", :disabled="item.pc!==0", type="danger", @click="deleteItem(item)", plain) 删除
+                el-button(size="mini", style="float: right;margin-right: 10px;", type="primary", @click="editItem(item)", plain) 编辑
             div.text {{regionText(item)}}
 
 </template>

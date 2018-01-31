@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    el-button(type="primary", icon="el-icon-plus", @click="create") 添加
+    el-button(type="primary", @click="create") 添加
     div.list
       el-table(style="width: 450px;", :data="serviceTagList", row-key="id", border, :show-header="false", v-loading="loading")
         el-table-column(label="", prop="name", width="299")
@@ -8,7 +8,7 @@
             el-button(type="text", @click="edit(scope.row)") {{scope.row.name}}
         el-table-column(label="", width="150")
           template(slot-scope="scope")
-            el-button(size="small", type="danger", @click="del(scope.row)") 删 除
+            el-button(size="small", type="danger", @click="del(scope.row)", plain) 删 除
     edit-dialog(ref="dlgEdit", @created="submitCreated", @updated="submitEdit")
 </template>
 

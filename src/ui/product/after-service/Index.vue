@@ -2,7 +2,7 @@
   div
     div
       router-link(:to="{name:'AfterServiceCreate'}")
-        el-button(type="primary", icon="el-icon-plus") 添加
+        el-button(type="primary") 添加
     div(style="margin-top: 20px;")
       el-table.large-el-table(:data="dataList", border, :show-header="false", v-loading="loading")
         el-table-column(prop="name")
@@ -11,8 +11,8 @@
             div {{scope.row.pc}}款商品
         el-table-column
           template(slot-scope="scope")
-            el-button(size="small", type="primary", @click="editItem(scope.row)") 编 辑
-            el-button(size="small", type="danger", @click="deleteItem(scope.row)") 删 除
+            el-button(size="small", type="primary", @click="editItem(scope.row)", plain) 编 辑
+            el-button(size="small", type="danger", @click="deleteItem(scope.row)", plain) 删 除
 </template>
 
 <script>
