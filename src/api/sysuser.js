@@ -25,3 +25,11 @@ export const create = (form) => {
 export const update = (id, form) => {
   return Axios.post(`/admin/sysuser/s/${id}`, R.pickAll(['name', 'mobile', 'passwd', 'roles'])(form))
 }
+
+export const enable = (id) => {
+  return Axios.post(`/admin/sysuser/s/${id}/enable`)
+}
+
+export const disable = (id) => {
+  return Axios.post(`/admin/sysuser/s/${id}/disable`)
+}

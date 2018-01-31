@@ -91,9 +91,9 @@
         this.$refs.form && this.$refs.form.resetFields()
       },
       async handleSubmit () {
-        try {
-          this.loading = true
-          this.$refs.form.validate(async (valid) => {
+        this.loading = true
+        this.$refs.form.validate(async (valid) => {
+          try {
             if (valid) {
               if (!this.isEditMode) {
                 await SysUserApi.create(this.formData)
@@ -112,10 +112,10 @@
               }
               this.hide()
             }
+          } finally {
             this.loading = false
-          })
-        } finally {
-        }
+          }
+        })
       }
     }
   }
