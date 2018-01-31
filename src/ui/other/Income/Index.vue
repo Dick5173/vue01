@@ -2,7 +2,7 @@
   div
     div
       income-toolbar(:queryParams="queryParams", @submit="handleSearch")
-    div
+    div(v-loading="loading")
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(label="店铺", prop="")
           template(slot-scope="scope")
