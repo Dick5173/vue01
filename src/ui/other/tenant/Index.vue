@@ -44,6 +44,7 @@
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
   import { showAppStatus, showTenantStatus } from 'src/service/other/index'
+  import { PUSH_STATUS_TENANT } from 'src/constants/orderPush'
 
   export default {
     mixins: [
@@ -82,8 +83,10 @@
         this.$router.push({
           name: 'OrderIndex',
           params: {
-            tid: row.id,
-            tenant: true
+            tid: row.id
+          },
+          query: {
+            status: PUSH_STATUS_TENANT
           }
         })
       },

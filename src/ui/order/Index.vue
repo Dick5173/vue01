@@ -10,10 +10,11 @@
 <script>
   import SearchBar from './SearchBar'
   import List from './List'
-  import { orderList } from '../../api/order'
-  import LoadPagerData from '../../mixins/load-pager-data'
-  import { getShowPrice } from '../../util/moneyUtil'
-  import { getShowCount } from '../../util/number'
+  import { orderList } from 'src/api/order'
+  import LoadPagerData from 'src/mixins/load-pager-data'
+  import { getShowPrice } from 'src/util/moneyUtil'
+  import { getShowCount } from 'src/util/number'
+  import {PUSH_STATUS_IN_COME, PUSH_STATUS_TENANT, PUSH_STATUS_USER} from 'src/constants/orderPush'
 
   export default {
     mixins: [LoadPagerData],
@@ -85,21 +86,20 @@
 
       },
       autoSearch () {
-        if (this.$route.params.income) {
+        const status = this.$route.query.status
+        if (status === PUSH_STATUS_IN_COME) {
           let params = {
             tenant_id: String(this.$route.params.tid),
             start_time: this.$route.params.start,
             end_time: this.$route.params.end
           }
           this.queryChange(params)
-        }
-        if (this.$route.params.tenant) {
+        } else if (status === PUSH_STATUS_TENANT) {
           let params = {
             tenant_id: String(this.$route.params.tid)
           }
           this.queryChange(params)
-        }
-        if (this.$route.params.user) {
+        } else if (status === PUSH_STATUS_USER) {
           let params = {
             searchKey: String(this.$route.params.uid),
             searchType: 'buyer',

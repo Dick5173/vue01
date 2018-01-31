@@ -36,6 +36,9 @@
           name: 'UserDetail',
           params: {
             id: this.order.user.id
+          },
+          query: {
+            order: true
           }
         })
       }

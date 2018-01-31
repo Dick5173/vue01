@@ -32,6 +32,7 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { dateFormat } from 'src/util/format'
   import * as BillApi from 'src/api/bill'
+  import { PUSH_STATUS_IN_COME } from 'src/constants/orderPush'
 
   export default {
     mixins: [
@@ -77,8 +78,10 @@
           params: {
             tid: row.tenant_id,
             start: row.start_tick,
-            end: row.end_tick,
-            income: true
+            end: row.end_tick
+          },
+          query: {
+            status: PUSH_STATUS_IN_COME
           }
         })
       },

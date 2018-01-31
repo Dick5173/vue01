@@ -29,6 +29,7 @@
   import * as UserApi from 'src/api/user'
   import { getUserShowData, getUserOrderDataList } from 'src/service/other/index'
   import { dateFormat } from 'src/util/format'
+  import { PUSH_STATUS_USER } from 'src/constants/orderPush'
 
   export default {
     props: {},
@@ -64,8 +65,10 @@
         this.$router.push({
           name: 'OrderIndex',
           params: {
-            uid: row.id,
-            user: true
+            uid: row.id
+          },
+          query: {
+            status: PUSH_STATUS_USER
           }
         })
       },
