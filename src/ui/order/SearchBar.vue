@@ -12,6 +12,7 @@
         el-input.input-data(:placeholder="moreCondition[formData.searchType]", v-model!="formData.searchKey")
         el-dropdown(trigger="click", @command="clickMoreConditions", :show-timeout="10", :hide-timeout="10")
           el-button.more-btn(type="primary") 更多条件
+            i.el-icon-arrow-down.el-icon--right
           el-dropdown-menu(slot="dropdown")
             el-dropdown-item(v-for="(val, key) in moreCondition", :key="key", :command="key") {{val}}
     el-form-item
