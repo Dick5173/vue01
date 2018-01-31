@@ -5,7 +5,6 @@
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="name", label="名字")
-        el-table-column(prop="", label="角色")
         el-table-column(prop="mobile", label="手机号")
         el-table-column(label="操作", width="220px")
           template(slot-scope="scope")
