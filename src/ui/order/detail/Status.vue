@@ -12,6 +12,8 @@
 </template>
 
 <script>
+  import { TENANT_STATUS_ORDER } from 'src/constants/tenantPush'
+
   export default {
     components: {},
     props: {
@@ -28,14 +30,23 @@
     computed: {},
     methods: {
       clickShop () {
-        console.log('点击shop')
+        this.$router.push({
+          name: 'TenantDetail',
+          params: {
+            tid: this.order.tenant.id,
+            id: this.order.id
+          },
+          query: {
+            status: TENANT_STATUS_ORDER
+          }
+        })
       },
       clickUser () {
-        console.log('点击user')
         this.$router.push({
           name: 'UserDetail',
           params: {
-            id: this.order.user.id
+            uid: this.order.user.id,
+            id: this.order.id
           },
           query: {
             order: true
@@ -68,5 +79,6 @@
   .section-btn {
     text-decoration: underline;
     color: $color-primary;
+    cursor: pointer;
   }
 </style>

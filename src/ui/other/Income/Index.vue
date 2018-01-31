@@ -33,6 +33,7 @@
   import { dateFormat } from 'src/util/format'
   import * as BillApi from 'src/api/bill'
   import { PUSH_STATUS_IN_COME } from 'src/constants/orderPush'
+  import { TENANT_STATUS_IN_COME } from 'src/constants/tenantPush'
 
   export default {
     mixins: [
@@ -89,7 +90,10 @@
         this.$router.push({
           name: 'TenantDetail',
           params: {
-            id: row.tenant_id
+            tid: row.tenant_id
+          },
+          query: {
+            status: TENANT_STATUS_IN_COME
           }
         })
       },

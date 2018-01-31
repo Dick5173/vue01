@@ -70,6 +70,7 @@
   import { showAppStatus, showTenantStatus } from 'src/service/other/index'
   import { showCover } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
+  import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
 
   export default {
     props: {},
@@ -191,7 +192,7 @@
       async getDetail () {
         try {
           this.loading = true
-          let res = await TenantApi.getDetail(this.$route.params.id)
+          let res = await TenantApi.getDetail(this.$route.params.tid)
           this.tenantData = res.data.tenant
           this.incomeList = res.data.bills ? res.data.bills : []
           this.productList = res.data.products ? res.data.products : []
@@ -203,6 +204,41 @@
       ...$global.$mapMethods({'showAppStatus': showAppStatus}),
       ...$global.$mapMethods({'showTenantStatus': showTenantStatus}),
       ...$global.$mapMethods({'showCover': showCover})
+    },
+    created () {
+      const status = this.$route.query.status
+      if (status === TENANT_STATUS_IN_COME) {
+        this.$parent.updateBreadcrumb([{
+          text: '收入',
+          to: {name: 'TenantIncome'}
+        }, {
+          text: '店铺详情'
+        }])
+      } else if (status === TENANT_STATUS_ORDER) {
+        this.$parent.updateBreadcrumb([{
+          text: '订单',
+          to: {name: 'OrderIndex'}
+        }, {
+          text: '订单详情',
+          to: {name: 'OrderDetail', param: {id: this.$route.params.id}}
+        }, {
+          text: '店铺详情'
+        }])
+      } else if (status === TENANT_STATUS_PRODUCT) {
+        this.$parent.updateBreadcrumb([{
+          text: '店铺自营商品',
+          to: {name: 'TenantSelfProductIndex'}
+        }, {
+          text: '店铺详情'
+        }])
+      } else {
+        this.$parent.updateBreadcrumb([{
+          text: '店铺',
+          to: {name: 'Tenant'}
+        }, {
+          text: '店铺详情'
+        }])
+      }
     },
     mounted () {
       this.getDetail()

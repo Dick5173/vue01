@@ -53,7 +53,7 @@
       async getDetail () {
         try {
           this.loading = true
-          let res = await UserApi.getUserDetail(this.$route.params.id)
+          let res = await UserApi.getUserDetail(this.$route.params.uid)
           this.userData = getUserShowData(res.data)
           this.dataList = getUserOrderDataList(res.data)
           this.loading = false
@@ -83,6 +83,26 @@
       },
       showAverage (row) {
         return row.total_amount / row.total_count
+      }
+    },
+    created () {
+      if (this.$route.query.order) {
+        this.$parent.updateBreadcrumb([{
+          text: '订单',
+          to: {name: 'OrderIndex'}
+        }, {
+          text: '订单详情',
+          to: {name: 'OrderDetail', param: {id: this.$route.params.id}}
+        }, {
+          text: '用户详情'
+        }])
+      } else {
+        this.$parent.updateBreadcrumb([{
+          text: '用户',
+          to: {name: 'User'}
+        }, {
+          text: '用户详情'
+        }])
       }
     },
     mounted () {

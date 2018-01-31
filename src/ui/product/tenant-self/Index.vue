@@ -40,6 +40,7 @@
   import { showCover } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
   import SearchBar from './SearchBar.vue'
+  import { TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
 
   export default {
     mixins: [
@@ -79,7 +80,10 @@
         this.$router.push({
           name: 'TenantDetail',
           params: {
-            id: row.tenant_id
+            tid: row.tenant_id
+          },
+          query: {
+            status: TENANT_STATUS_PRODUCT
           }
         })
       },

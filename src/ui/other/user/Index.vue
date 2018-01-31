@@ -61,7 +61,7 @@
         this.$router.push({
           name: 'UserDetail',
           params: {
-            id: row.id
+            uid: row.id
           }
         })
       },

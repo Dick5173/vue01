@@ -102,7 +102,7 @@
         this.$router.push({
           name: 'TenantDetail',
           params: {
-            id: row.id
+            tid: row.id
           }
         })
       },

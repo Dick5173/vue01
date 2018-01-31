@@ -354,19 +354,14 @@ export default new Router({
           }
         },
         {
-          path: 'tenant/detail/:id',
+          path: 'tenant/detail/:tid',
           name: 'TenantDetail',
           component: () => import('src/ui/other/tenant/TenantDetail.vue'),
           meta: {
             group: 'Other',
             title: '店铺详情',
             showInSide: false,
-            breadcrumbItems: [{
-              text: '店铺',
-              to: {name: 'Tenant'}
-            }, {
-              text: '店铺详情'
-            }]
+            customBreadcrumb: true
           }
         },
         {
@@ -457,19 +452,14 @@ export default new Router({
           }
         },
         {
-          path: 'userdetail/:id',
+          path: 'userdetail/:uid',
           name: 'UserDetail',
           component: () => import('src/ui/other/user/Detail.vue'),
           meta: {
+            customBreadcrumb: true,
             group: 'Other',
             title: '用户详情',
-            showInSide: false,
-            breadcrumbItems: [{
-              text: '用户',
-              to: {name: 'User'}
-            }, {
-              text: '用户详情'
-            }]
+            showInSide: false
           }
         },
         {
