@@ -5,9 +5,11 @@
     div(v-loading="loading")
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="id", label="店铺ID", width="65px")
-        el-table-column(prop="", label="名称", width="")
+        el-table-column(prop="", label="", width="68")
           div(slot-scope="scope")
             div.cover(v-lazy:background-image="scope.row.head_img")
+        el-table-column(prop="", label="名称", width="")
+          div(slot-scope="scope")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nick_name}}
         el-table-column(prop="total_amount", label="销售额", sortable, width="")
           div(slot-scope="scope")

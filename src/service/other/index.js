@@ -34,9 +34,12 @@ export const getUserShowData = (data) => {
 export const getUserOrderDataList = (data) => {
   let arr = []
   if (data.order_stat) {
-    arr[0].recent_pay_tick = data.order_stat.recent_pay_tick ? data.order_stat.recent_pay_tick : ''
-    arr[0].total_amount = data.order_stat.total_amount ? data.order_stat.total_amount : ''
-    arr[0].total_count = data.order_stat.total_count ? data.order_stat.total_count : ''
+    let item = {
+      recent_pay_tick: data.order_stat.recent_pay_tick ? data.order_stat.recent_pay_tick : '',
+      total_amount: data.order_stat.total_amount ? data.order_stat.total_amount : '',
+      total_count: data.order_stat.total_count ? data.order_stat.total_count : ''
+    }
+    arr = [item]
     return arr
   } else {
     return []
