@@ -33,7 +33,7 @@
     computed: {},
     methods: {
       getQueryApi (params) {
-        return refuseList(this.$tid, params)
+        return refuseList(params)
       },
       search (model) {
         console.log(model)

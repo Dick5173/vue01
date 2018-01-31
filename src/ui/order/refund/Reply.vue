@@ -67,7 +67,7 @@
           if (valid) {
             this.loading = true
             try {
-              const resResult = await reply(this.$tid, this.oiid, this.form.txt, this.form.remark)
+              const resResult = await reply(this.oiid, this.form.txt, this.form.remark)
               this.loading = false
               this.hide()
               this.$emit('submit', resResult.data)

@@ -14,7 +14,6 @@
         template(slot-scope="scope")
           div.status
             el-button(type="text", @click="goRefundDetail(scope.row)", v-if="refundBtnText(scope.row)") {{refundBtnText(scope.row)}}
-            <!--el-button(type="text", @click="refundToWx(scope.row)", v-if="enableRefundToWx(scope.row)") 退款至微信-->
       el-table-column(label="物流状态", width="210", v-if="showStatue")
         template(slot-scope="scope")
           div.status
@@ -43,7 +42,6 @@
   import * as OrderUtil from 'src/manager/order/orderUtil'
   import {REFUND_STATUS_NO_APPLY} from '../../../constants/orderItem'
   import {orderItems} from '../../../api/order'
-  import {refundToWx} from '../../../api/refuse'
   import Agree from '../refund/Agree'
   import ExpressDialog from 'src/ui/order/express/Index'
 
@@ -90,7 +88,7 @@
       },
       async goRefundDetail (row) {
         if (row.refund_status === REFUND_STATUS_NO_APPLY) {
-          const resRefund = await orderItems(this.$tid, row.id)
+          const resRefund = await orderItems(row.id)
           console.log(resRefund)
           this.currentOrderItem = resRefund.data
           this.$refs.agree.show()
@@ -106,24 +104,6 @@
             }
           })
         }
-      },
-      refundToWx (row) {
-        this.$confirm('退款至微信?').then(async () => {
-          try {
-            this.loading = true
-            await refundToWx(this.$tid, row.id)
-            this.$message({
-              showClose: true,
-              message: '退款已成功',
-              type: 'success'
-            })
-            this.$emit('refresh')
-          } catch (e) {
-            this.$myErrorHandler.handle(this, e)
-          } finally {
-            this.loading = false
-          }
-        }).catch(() => {})
       }
     }
   }

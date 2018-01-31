@@ -120,7 +120,7 @@
               this.loading = true
               try {
                 console.log(this.form)
-                const resResult = await agree(this.$tid, this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark)
+                const resResult = await agree(this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark)
                 console.log(resResult)
                 this.$emit('submit', resResult.data)
                 this.loading = false

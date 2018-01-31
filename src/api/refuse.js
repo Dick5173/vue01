@@ -2,7 +2,7 @@ import Axios from 'axios'
 import qs from 'qs'
 import {date} from '../filter/datetime'
 
-export const refuseList = (tid, params) => {
+export const refuseList = (params) => {
   let myParams = {}
   if (parseInt(params.start) > 0) {
     myParams.start = date(parseInt(params.start))
@@ -23,25 +23,21 @@ export const refuseList = (tid, params) => {
   return Axios.get(`/admin/oi/refund`, {params: myParams})
 }
 
-export const agree = (tid, id, amount, txt, total, remark) => {
+export const agree = (id, amount, txt, total, remark) => {
   return Axios.post(`admin/oi/s/${id}/agree`,
     qs.stringify({txt: txt, amount: amount, total: total, remark: remark}))
 }
 
-export const reject = (tid, id, txt, remark) => {
+export const reject = (id, txt, remark) => {
   return Axios.post(`admin/oi/s/${id}/refuse`,
     qs.stringify({txt: txt, remark: remark}))
 }
 
-export const reply = (tid, id, txt, remark) => {
+export const reply = (id, txt, remark) => {
   return Axios.post(`admin/oi/s/${id}/reply`,
     qs.stringify({txt: txt, remark: remark}))
 }
 
 export const refuseCount = () => {
   return Axios.get('admin/oi/refund/count')
-}
-
-export const refundToWx = (tid, id) => {
-  return false
 }
