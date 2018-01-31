@@ -142,7 +142,17 @@
           },
           name: '',
           sell_point: '',
-          skus: [],
+          skus: [{
+            spec: '默认规格',
+            suggest_price: '',
+            stock: '',
+            code: '',
+            image: {
+              url: '',
+              width: 0,
+              height: 0
+            }
+          }],
           st_price: '',
           supply_price: '',
           category_id: '',
