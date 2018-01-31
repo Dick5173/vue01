@@ -21,8 +21,8 @@
       }
     },
     watch: {
-      value (val, old) {
-        if (!old || old === '') {
+      value (val) {
+        if (!val || val === '') {
           this.modelValue = val
         }
       }
@@ -49,16 +49,16 @@
       async loadTenants () {
         const tenantsRes = await getListAll()
         this.tenants = tenantsRes.data.data
-        if (this.modelValue !== '') {
-          const values = this.modelValue.split(':')
+        if (this.value !== '') {
+          const values = this.value.split(':')
           if (values.length === 1) {
             let name = ''
             this.tenants.forEach(item => {
-              if (item.id === parseInt(this.modelValue)) {
+              if (item.id === parseInt(this.value)) {
                 name = item.nick_name
               }
             })
-            this.modelValue += ': ' + name
+            this.modelValue = this.value + ': ' + name
           }
         }
       }
