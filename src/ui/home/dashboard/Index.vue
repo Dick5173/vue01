@@ -4,7 +4,7 @@
       el-form-item
         div.button(@click="toOrder")
           div.text 今日销售额
-          div.number {{dataList[0].today_data}}
+          div.number {{showToday()}}
         div.button(@click="toOrderRefund")
           div.text 退款中
           div.number {{data.refunding_count}}
@@ -23,7 +23,7 @@
 
 <script>
   import * as HomeApi from 'src/api/home'
-  import { getList } from 'src/service/home/index'
+  import { getList, getShowPrice } from 'src/service/home/index'
 
   export default {
     props: {},
@@ -31,13 +31,21 @@
     data () {
       return {
         loading: false,
-        data: {},
+        data: {
+          today_self: 0,
+          today_platform: 0,
+          refunding_count: 0,
+          tenant_count: 0
+        },
         dataList: []
       }
     },
     computed: {},
     watch: {},
     methods: {
+      showToday () {
+        return getShowPrice(this.data.today_self + this.data.today_platform)
+      },
       async getDashboardData () {
         try {
           this.loading = true
