@@ -87,11 +87,11 @@
       autoSearch () {
         if (this.$route.params.income) {
           let params = {
-            searchKey: String(this.$route.params.uid),
-            searchType: 'buyer',
-            start_time: '',
-            end_time: ''
+            tenant_id: String(this.$route.params.tid),
+            start_time: this.$route.params.start,
+            end_time: this.$route.params.end
           }
+          this.queryChange(params)
         }
         if (this.$route.params.tenant) {
           let params = {
