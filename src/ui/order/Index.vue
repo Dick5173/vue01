@@ -103,8 +103,8 @@
           let params = {
             searchKey: String(this.$route.params.uid),
             searchType: 'buyer',
-            start_time: '',
-            end_time: ''
+            start_time: 0,
+            end_time: 0
           }
           this.queryChange(params)
         }
