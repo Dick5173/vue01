@@ -25,7 +25,7 @@
           el-table.list-el-table(:data="incomeList", border)
             el-table-column(label="统计周期", prop="")
               template(slot-scope="scope")
-                div {{scope.row.start_tick | datetime}}～{{scope.row.end_tick | datetime}}
+                div {{showStatPeriod(scope.row)}}
             el-table-column(label="销售额（元）", prop="")
               template(slot-scope="scope")
                 div {{scope.row.sale_total_amount | price}}
@@ -60,15 +60,16 @@
               div(slot-scope="scope", v-if="scope.row.pt > 0") {{ scope.row.pt | datetime }}
             el-table-column(label="来源", prop="")
               div(slot-scope="scope") {{showTp(scope.row.tp)}}
-    el-dialog(title="小程序码", :visible.sync="dialogVisible", width="30%", :modal-append-to-body="false")
+    el-dialog(title="小程序码", :visible.sync="dialogVisible", width="35%", :modal-append-to-body="false")
       img.dlgImg(:src="tenantData.acode_url")
-      el-button(style='margin-left: 30%;', @click="download") 下载小程序码
+      el-button(style='margin-left: 35%;', @click="download") 下载小程序码
 </template>
 
 <script>
   import * as TenantApi from 'src/api/tenant'
   import { showAppStatus, showTenantStatus } from 'src/service/other/index'
   import { showCover } from 'src/service/product/index'
+  import { dateFormat } from 'src/util/format'
 
   export default {
     props: {},
@@ -86,11 +87,17 @@
     computed: {},
     watch: {},
     methods: {
+      showStatPeriod (row) {
+        const start = dateFormat(row.start_tick, 'YYYY-MM')
+        const end = dateFormat(row.end_tick, 'YYYY-MM')
+        return start === end ? start : `${start}~${end}`
+      },
       toIncome (id) {
         this.$router.push({
           name: 'TenantIncome',
           params: {
-            id: id
+            tid: id,
+            tenant: true
           }
         })
       },
