@@ -7,7 +7,7 @@ import { enableRefund } from '../refund/refund'
 
 export const checkPartDeliver = (order) => {
   if (order.status === 3) {
-    if (order.order_items.findIndex(
+    if (order.show_order_items.findIndex(
         (item) => {
           return item.dev_status === 1
         }) !== -1) {
@@ -25,7 +25,7 @@ export const hasExpress = (order) => {
     return true
   }
   if (order.status === 3) {
-    if (order.order_items.findIndex(
+    if (order.show_order_items.findIndex(
         (item) => {
           return item.dev_status === 1
         }) !== -1) {
@@ -39,7 +39,7 @@ export const hasRefund = (order) => {
   if (!order) {
     return false
   }
-  if (order.order_items.findIndex(
+  if (order.show_order_items.findIndex(
       (item) => {
         return enableRefund(item)
       }) !== -1) {

@@ -2,7 +2,7 @@
   div.product-cell
     div.icon(v-lazy:background-image="showIcon")
     div.desc
-      div.txt {{orderItem.product.name}}
+      div.txt {{orderItem.product_name}}
       div.txt 规格: {{orderItem.spec}}
       div.txt 价格: {{orderItem.total_price | price}}
 </template>
@@ -19,10 +19,8 @@
     },
     computed: {
       showIcon () {
-        if (this.orderItem.product && this.orderItem.product.cover) {
-          return this.orderItem.product.cover.url
-        } else if (this.orderItem.product.head && this.orderItem.product.head.length > 0) {
-          return this.orderItem.product.head[0].url
+        if (this.orderItem.product_img_res) {
+          return this.orderItem.product_img_res.url
         }
         return ''
       }

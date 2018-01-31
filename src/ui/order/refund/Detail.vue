@@ -17,7 +17,7 @@
         el-button(size="small", type="primary", @click="reject") 拒绝退款
         el-button(size="small", type="danger", @click="agree") 同意退款
       div
-        message-item(v-for="item in data.refund", :data="item", :key="item.id")
+        message-item(v-for="item in data.refunds", :data="item", :key="item.id")
     reply(ref="reply", :oiid="data.id", @submit="replySuccess")
     reject(ref="reject", :oiid="data.id", @submit="rejectSuccess")
     agree(ref="agree", :orderItem="data", @submit="agreeSuccess")
@@ -50,13 +50,10 @@
     },
     computed: {
       goodsImage () {
-        if (this.data.product && this.data.product.cover) {
-          return this.data.product.cover.url
-        } else if (this.data.product && this.data.product.head && this.data.product.head.length > 0) {
-          return this.data.product.head[0].url
-        } else {
-          return ''
+        if (this.data.product_img_res && this.data.product_img_res.url) {
+          return this.data.product_img_res.url
         }
+        return ''
       },
       devStatusText () {
         if (this.data.dev_status === 1) {
@@ -92,15 +89,15 @@
         this.$refs.agree.show()
       },
       replySuccess (result) {
-        this.data.refund.unshift(result)
+        this.data.refunds.unshift(result)
       },
       rejectSuccess (result) {
-        this.data.refund.unshift(result)
+        this.data.refunds.unshift(result)
         this.data.refund_status = RefundStatus.STATUS_REJECTED
       },
       agreeSuccess (result) {
         if (result) {
-          this.data.refund.unshift(result)
+          this.data.refunds.unshift(result)
           this.data.refund_status = RefundStatus.STATUS_AGREED
         }
       },
@@ -109,7 +106,6 @@
       }
     },
     created () {
-      console.log(this.$route.query.refund)
       if (this.$route.query.refund) {
         this.$parent.updateBreadcrumb([{
           text: '订单',

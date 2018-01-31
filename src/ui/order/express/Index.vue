@@ -34,7 +34,7 @@
     },
     methods: {
       getOiList (item) {
-        return item.oi_list.slice(0, 2)
+        return item.show_order_items.slice(0, 2)
       },
       show (oid, devName, devNo) {
         this.oid = oid

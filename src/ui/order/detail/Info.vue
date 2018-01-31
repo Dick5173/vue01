@@ -1,15 +1,15 @@
 <template lang="pug">
   div
     div.section-title 订单信息:
-    el-table.list-wrapper(:data="order.order_items", border row-key="id")
+    el-table.list-wrapper(:data="order.show_order_items", border row-key="id")
       el-table-column(label="ID", width="70")
         template(slot-scope="scope")
           div.code-id {{scope.row.id}}
       el-table-column(label="商品", min-width="500")
         template(slot-scope="scope")
           div.info-wrapper
-            div.icon-wrapper(v-lazy:background-image="scope.row.product.cover ? scope.row.product.cover.url : scope.row.product.head[0].url")
-            div.name {{scope.row.product.name}}, {{scope.row.spec}}, {{scope.row.price | price}} x {{scope.row.count}}
+            div.icon-wrapper(v-lazy:background-image="scope.row.product_img_res.url")
+            div.name {{scope.row.product_name}}, {{scope.row.spec}}, {{scope.row.price | price}} x {{scope.row.count}}
       el-table-column(label="退款", width="210", v-if="hasRefund")
         template(slot-scope="scope")
           div.status

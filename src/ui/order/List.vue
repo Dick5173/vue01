@@ -4,19 +4,19 @@
       el-table-column(label="订单信息", width="")
         template(slot-scope="scope")
           div.info-wrapper
-            div.head-wrapper(v-if="scope.row.order_items && scope.row.order_items.length > 0")
-              div.icon-wrapper(v-lazy:background-image="scope.row.order_items[0].product.cover ? scope.row.order_items[0].product.cover.url : scope.row.order_items[0].product.head[0].url")
+            div.head-wrapper(v-if="scope.row.show_order_items && scope.row.show_order_items.length > 0")
+              div.icon-wrapper(v-lazy:background-image="showImage(scope.row)")
             div.desc-wrapper
               div 订单号：
                 span.txt-blod.text-code(@click="goToDetail(scope.row.id)") {{scope.row.code}}
                 span.txt-blod &nbsp;&nbsp;{{scope.row | orderFullStatus}}&nbsp;&nbsp;
                 span.txt-blod {{scope.row.ct | datetime}}下单
               div.name-wrapper
-                div.left {{scope.row.order_items[0].product.name}}
-                div.right {{countPurchased(scope.row)}}件商品
+                div.left {{scope.row.show_order_items[0].product_name}}
+                div.right {{scope.row.prod_count}}件商品
               div
                 span 实付{{scope.row.total_price | price}}
-                span.txt-ex(v-if="scope.row.status === 3  && scope.row.order_items.length > 1 && countDelivered(scope.row.order_items) > 0") {{countDelivered(scope.row.order_items)}}/{{scope.row.order_items.length}}已发货
+                span.txt-ex(v-if="scope.row.status === 3  && scope.row.order_item_count > 1 && scope.row.dev_item_count > 0") {{scope.row.dev_item_count}}/{{scope.row.order_item_count}}已发货
                 span.txt-ex.txt-blod.refund-color(v-if="scope.row.refunding_count") {{scope.row.refunding_count}}件退款中
       el-table-column(label="买家信息" width="334")
         template(slot-scope="scope")
@@ -26,7 +26,7 @@
       el-table-column(label="操作" width="119")
         template(slot-scope="scope")
           div.control-wrapper
-            el-button.btn(v-if="countDelivered(scope.row.order_items) > 0", style="width: 80px", size="mini" type="primary", @click="openExpress(scope.row.id)") {{countDelivered(scope.row.order_items)}}件快递
+            el-button.btn(v-if="scope.row.dev_count > 0", style="width: 80px", size="mini" type="primary", @click="openExpress(scope.row.id)") {{scope.row.dev_count}}件快递
             el-tooltip(placement="bottom", effect="light", v-if="scope.row.remind && scope.row.remind.length > 0 && scope.row.status === 3")
               div(slot="content")
                 div(v-for="remind in scope.row.remind", :key="remind.id") {{remind.ct | datetime}}
@@ -51,23 +51,12 @@
     },
     computed: {},
     methods: {
-      countPurchased (prod) {
-        let count = 0
-        if (prod.order_items instanceof Array) {
-          prod.order_items.forEach((item) => {
-            count += item.count
-          })
+      showImage (row) {
+        if (row.show_order_items && row.show_order_items.length > 0 && row.show_order_items[0].product_img_res) {
+          return row.show_order_items[0].product_img_res.url
+        } else {
+          return ''
         }
-        return count
-      },
-      countDelivered (items) {
-        let count = 0
-        items.forEach((item) => {
-          if (item.dev_status === 1) {
-            count++
-          }
-        })
-        return count
       },
       goToDetail (id) {
         this.$router.push({

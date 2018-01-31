@@ -6,7 +6,7 @@
     div.txt-info {{data.txt}}
     div(v-if="data.sys_remark")
       div.txt-info.txt-info-tip 以下内容消费者不可见
-      div {{data.tenant_user.name}}:{{data.sys_remark}}
+      div {{tenantUserName}}{{data.sys_remark}}
     div(v-if="data.status === 5")
       div 退货数量：{{data.total}}
     div.txt-info(v-if="data.tp === 1") 申请退款 {{data.amount | price}}
@@ -57,6 +57,12 @@
             return ''
           }
         }
+      },
+      tenantUserName () {
+        if (this.data.tenant_user && this.data.tenant_user.name) {
+          return `${this.data.tenant_user.name}: `
+        }
+        return ''
       }
     },
     methods: {

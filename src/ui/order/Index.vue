@@ -1,7 +1,7 @@
 <template lang="pug">
   div.order(v-loading="loading")
     search-bar(:queryParams="queryParams", @search="handleSearch", @create_export_task="createExportTask")
-    list(:dataList.sync="dataList")
+    list(:dataList="dataList")
     div.order-bottom.txt-head 实付合计: {{showPrice(dataList.stat)}}, 利润: {{showProfit(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
     div.order-bottom
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
