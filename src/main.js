@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import 'src/assets/image/svg/index'
 import SvgIcon from 'src/ui/widget/svg-icon/Index'
+import BottomContainer from 'src/ui/common/bottom-container/Index'
 import ElementUI from 'element-ui'
 import VueLazyload from 'vue-lazyload'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -21,6 +22,7 @@ Vue.$router = router
 Vue.$store = store
 
 Vue.component('svg-icon', SvgIcon)
+Vue.component('bottom-container', BottomContainer)
 Vue.use(ElementUI)
 Vue.use(VueLazyload)
 Vue.use(ErrorPlugin)

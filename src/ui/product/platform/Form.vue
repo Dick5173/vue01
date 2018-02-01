@@ -1,48 +1,49 @@
 <template lang="pug">
-  el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
-    el-form-item(label="商品图片", prop="head", :required="true")
-      upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT')
-      div.input-bottom-desc 还能上传 {{ remainHeadCount }} 张，建议尺寸750×750像素
-    el-form-item(label="列表图", prop="cover")
-      upload-image(ref="uploadCover", :image.sync="formData.cover")
-      div.input-bottom-desc 建议尺寸750×750像素
-    el-form-item(label="商品名称", prop="name")
-      el-input.medium-el-input(v-model.trim="formData.name", :maxlength="50")
-      span.input-right-desc {{ formData.name.length }} / 50
-    el-form-item(label="卖点", prop="sell_point")
-      el-input.medium-el-input(v-model.trim="formData.sell_point", :maxlength="30")
-      span.input-right-desc {{ formData.sell_point.length }} / 30
-    el-form-item(label="商品规格", prop="skus", required)
-      skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supplyPrice="this.formData.supply_price")
-    el-form-item(label="划线价", prop="st_price")
-      el-input.tiny-el-input(v-model.trim="formData.st_price")
-      span.input-right-desc 元
-    el-form-item(label="供货价", prop="supply_price")
-      el-input.tiny-el-input(v-model.trim="formData.supply_price")
-      span.input-right-desc 元
-    el-form-item(label="商品分类", prop="category_id")
-      el-select(v-model="formData.category_id", placeholder="请选择")
-        el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
-          el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
-    el-form-item(label="配送区域", prop="delivery_region_id", placeholder="请选择")
-      el-select(v-model="formData.delivery_region_id", placeholder="请选择", clearable)
-        el-option(v-for="item in deliveryRegionList", :key="item.id", :label="item.name", :value="`${item.id}`")
-    el-form-item(label="商品设置", prop="oversea")
-      el-checkbox(v-model="formData.oversea") 清关商品
-        span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
-    el-form-item(label="商品标签", prop="tag")
-      div
-        el-tag.ptag(type="primary", v-for="item in formData.tags", :key="item.id") {{item.name}}
-      el-button(type="primary", size="small", icon="el-icon-plus", @click="chooseTag") 选择标签
-    el-form-item(label="商品描述", prop="content")
-      content-comp(:content.sync="formData.content")
-    el-form-item(label="服务组合", prop="service_tag_group_id")
-      el-select(v-model="formData.service_tag_group_id", placeholder="请选择", clearable)
-        el-option(v-for="item in serviceGroupList", :key="item.id", :label="item.name", :value="`${item.id}`")
-    el-form-item(label="售后模板", prop="after_service_id")
-      el-select(v-model="formData.after_service_id", placeholder="请选择", clearable)
-        el-option(v-for="item in afterServiceList", :key="item.id", :label="item.name", :value="`${item.id}`")
-    el-form-item
+  div.bottom-outer-content
+    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
+      el-form-item(label="商品图片", prop="head", :required="true")
+        upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT')
+        div.input-bottom-desc 还能上传 {{ remainHeadCount }} 张，建议尺寸750×750像素
+      el-form-item(label="列表图", prop="cover")
+        upload-image(ref="uploadCover", :image.sync="formData.cover")
+        div.input-bottom-desc 建议尺寸750×750像素
+      el-form-item(label="商品名称", prop="name")
+        el-input.medium-el-input(v-model.trim="formData.name", :maxlength="50")
+        span.input-right-desc {{ formData.name.length }} / 50
+      el-form-item(label="卖点", prop="sell_point")
+        el-input.medium-el-input(v-model.trim="formData.sell_point", :maxlength="30")
+        span.input-right-desc {{ formData.sell_point.length }} / 30
+      el-form-item(label="商品规格", prop="skus", required)
+        skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supplyPrice="this.formData.supply_price")
+      el-form-item(label="划线价", prop="st_price")
+        el-input.tiny-el-input(v-model.trim="formData.st_price")
+        span.input-right-desc 元
+      el-form-item(label="供货价", prop="supply_price")
+        el-input.tiny-el-input(v-model.trim="formData.supply_price")
+        span.input-right-desc 元
+      el-form-item(label="商品分类", prop="category_id")
+        el-select(v-model="formData.category_id", placeholder="请选择")
+          el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
+            el-option(v-for!="childItem in parentItem.children", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
+      el-form-item(label="配送区域", prop="delivery_region_id", placeholder="请选择")
+        el-select(v-model="formData.delivery_region_id", placeholder="请选择", clearable)
+          el-option(v-for="item in deliveryRegionList", :key="item.id", :label="item.name", :value="`${item.id}`")
+      el-form-item(label="商品设置", prop="oversea")
+        el-checkbox(v-model="formData.oversea") 清关商品
+          span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
+      el-form-item(label="商品标签", prop="tag")
+        div
+          el-tag.ptag(type="primary", v-for="item in formData.tags", :key="item.id") {{item.name}}
+        el-button(type="primary", size="small", icon="el-icon-plus", @click="chooseTag") 选择标签
+      el-form-item(label="商品描述", prop="content")
+        content-comp(:content.sync="formData.content")
+      el-form-item(label="服务组合", prop="service_tag_group_id")
+        el-select(v-model="formData.service_tag_group_id", placeholder="请选择", clearable)
+          el-option(v-for="item in serviceGroupList", :key="item.id", :label="item.name", :value="`${item.id}`")
+      el-form-item(label="售后模板", prop="after_service_id")
+        el-select(v-model="formData.after_service_id", placeholder="请选择", clearable)
+          el-option(v-for="item in afterServiceList", :key="item.id", :label="item.name", :value="`${item.id}`")
+    bottom-container
       el-button(@click="$router.back()") 取消
       el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
       el-button(type="primary", :loading="loading", @click="handleSave") 保存
@@ -62,6 +63,7 @@
   import * as deliveryRegionApi from 'src/api/delivery-region'
   import { priceValidator } from 'src/util/validator'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
+  import * as ElUtil from 'src/util/el'
 
   const MAX_HEAD_COUNT = 5
 
@@ -289,6 +291,8 @@
               this.$router.back()
             } catch (err) {
             }
+          } else {
+            ElUtil.scrollToInvalidFirstElement(this.$refs.form)
           }
           this.loading = false
         })
