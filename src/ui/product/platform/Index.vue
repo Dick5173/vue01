@@ -16,7 +16,7 @@
             el-button(type="text", @click="toDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
-        el-table-column(prop="name", label="商品")
+        el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
@@ -347,6 +347,10 @@
     height: 50px;
     background-size: cover;
     background-position: center;
+  }
+
+  .name {
+
   }
 
   .batch {
