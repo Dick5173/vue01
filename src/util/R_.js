@@ -91,12 +91,16 @@ const updateWithObjCustom = R.curry((fn, l, r) => {
     if (r.hasOwnProperty(key)) {
       let val = R.prop(key)(r)
       if (RA.isBoolean(copyObj[key])) {
-        if (RA.isString(val)) {
-          val = (val === 'true' || (!R.isEmpty(val) && val !== '0' && val !== 'false'))
-        } else if (RA.isInteger(val)) {
-          val = val !== 0
+        if (RA.isBoolean(val)) {
+          copyObj[key] = val
         } else {
-          val = false
+          if (RA.isString(val)) {
+            val = (val === 'true' || (!R.isEmpty(val) && val !== '0' && val !== 'false'))
+          } else if (RA.isInteger(val)) {
+            val = val !== 0
+          } else {
+            val = false
+          }
         }
       } else if (RA.isInteger(copyObj[key])) {
         val = parseInt(val || 0)
