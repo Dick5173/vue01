@@ -156,5 +156,7 @@
 
 
 <style lang="scss" scoped>
-
+  .dialog-footer {
+  margin-top: 20px;
+  }
 </style>
