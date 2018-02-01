@@ -257,6 +257,7 @@
           frm = ProductService.copyCreate(frm)
         }
         await FormApi.create(frm)
+        this.$router.back()
         this.$message({
           type: 'success',
           message: '添加成功'
@@ -270,12 +271,14 @@
             type: 'success',
             message: '编辑成功,商品已经恢复为下架商品'
           })
+          this.$router.back()
         } else {
           await FormApi.update(this.formData.id, this.formData)
           this.$message({
             type: 'success',
             message: '编辑成功'
           })
+          this.$router.back()
         }
       },
       handleSave (up) {
@@ -288,7 +291,6 @@
               } else {
                 this.update()
               }
-              this.$router.back()
             } catch (err) {
             }
           } else {
