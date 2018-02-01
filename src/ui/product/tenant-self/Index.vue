@@ -2,8 +2,6 @@
   div
     div
       search-bar(:queryParams="queryParams", @submit="handleSearch")
-    div.button-box
-      el-button.button(size="small", type="primary", @click="") 导&nbsp出
     div(v-loading="loading")
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border, @selection-change="handleSelectionChange")
         el-table-column(type="selection", width="55px")
