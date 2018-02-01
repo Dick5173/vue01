@@ -1,11 +1,12 @@
 <template lang="pug">
   div
-    el-dialog(v-loading="loading", title="上架店铺", :visible.sync="dialogVisible")
-      div.name {{name}}
-      el-table(:data="tenantSelectList", border)
-        el-table-column(prop="id", label="店铺ID")
-        el-table-column(prop="name", label="店铺")
-        el-table-column(prop="sold", label="销量")
+    el-dialog(title="上架店铺", :visible.sync="dialogVisible")
+      div(v-loading="loading")
+        div.name {{name}}
+        el-table(:data="tenantSelectList", border)
+          el-table-column(prop="id", label="店铺ID")
+          el-table-column(prop="name", label="店铺")
+          el-table-column(prop="sold", label="销量")
 </template>
 
 <script>
