@@ -17,7 +17,7 @@
               p(v-html="showTenantName(scope.row)")
         el-table-column(width="100" label="操作")
           template(slot-scope="scope")
-            el-button(size="mini", @click="editItem(scope.row)") 编辑
+            el-button(size="mini", @click="editItem(scope.row)", type="primary", plain) 编辑
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 
 </template>

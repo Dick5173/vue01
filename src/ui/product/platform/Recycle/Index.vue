@@ -30,7 +30,7 @@
         el-table-column(label="操作", width="120px", fixed="right")
           div(slot-scope="props")
             el-dropdown()
-              el-button(type="primary", size="medium")
+              el-button(type="primary", size="medium", plain)
                 | 操作
                 i.el-icon-arrow-down.el-icon--right()
               el-dropdown-menu(slot="dropdown")

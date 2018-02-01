@@ -11,7 +11,7 @@
         el-table-column(label="操作", width="220px")
           template(slot-scope="props")
             div
-              el-button(type="warning", size="mini", plain, @click="handleEditItem(props.row)") 编辑
+              el-button(type="primary", size="mini", plain, @click="handleEditItem(props.row)") 编辑
               el-button(type="danger", size="mini", plain, @click="handleDeleteItem(props.row)") 删除
 </template>
 

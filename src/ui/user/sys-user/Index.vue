@@ -9,7 +9,7 @@
         el-table-column(label="操作", width="220px")
           template(slot-scope="scope")
             div(v-if="!scope.row.super")
-              el-button(type="warning", size="mini", plain, @click="handleEditItem(scope.row)") 编辑
+              el-button(type="primary", size="mini", plain, @click="handleEditItem(scope.row)") 编辑
               el-button(:type="scope.row.enabled ? 'danger' : 'success'", size="mini", plain, @click="handleEnableItem(scope.row)") {{ scope.row.enabled ? '禁用' : '启用' }}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     div

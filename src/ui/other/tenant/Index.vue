@@ -33,8 +33,8 @@
           div(slot-scope="scope") {{showTenantStatus(scope.row.tenant_status)}}
         el-table-column(prop="", label="操作", width="", fixed="right")
           div(slot-scope="scope")
-            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row.id)") 禁用
-            el-button(v-else, type="primary", size="small", @click="enable(scope.row.id)") 启用
+            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row.id)", plain) 禁用
+            el-button(v-else, type="primary", size="small", @click="enable(scope.row.id)", plain) 启用
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 
 </template>
