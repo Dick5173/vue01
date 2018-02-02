@@ -35,7 +35,7 @@
           div(slot-scope="scope")
             el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row.id)", plain) 禁用
             el-button(v-else, type="primary", size="small", @click="enable(scope.row.id)", plain) 启用
-            el-button(:disabled="showBindStatus(scope.row)", type="primary", size="small", @click="handleBind(scope.row)", plain) {{showBindButtonName(scope.row)}}
+            el-button(type="primary", size="small", @click="handleBind(scope.row)", plain) {{showBindButtonName(scope.row)}}
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     bind-child-tenant-dialog(ref="dlgBindChildTenant", @submit="submit")
 </template>
@@ -86,12 +86,6 @@
         await TenantApi.bindChildTenant(formData)
         this.$refs.dlgBindChildTenant.hide()
         this.loadDataListByQueryPage()
-      },
-      showBindStatus (row) {
-        if (row.sub_mch_id) {
-          return true
-        }
-        return false
       },
       handleBind (row) {
         this.$refs.dlgBindChildTenant.show(row)
