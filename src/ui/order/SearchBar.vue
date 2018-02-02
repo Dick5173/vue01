@@ -9,14 +9,14 @@
       select-tenant(v-model!="formData.tenant_id")
     el-form-item
       div.input-div
-        el-input.input-data(:placeholder="moreCondition[formData.searchType]", v-model!="formData.searchKey")
         el-dropdown(trigger="click", @command="clickMoreConditions", :show-timeout="10", :hide-timeout="10")
           el-button.more-btn(type="primary") 更多条件
             i.el-icon-arrow-down.el-icon--right
           el-dropdown-menu(slot="dropdown")
             el-dropdown-item(v-for="(val, key) in moreCondition", :key="key", :command="key") {{val}}
+        el-input.input-data(:placeholder="moreCondition[formData.searchType]", v-model!="formData.searchKey")
     el-form-item
-      el-button(type="primary", icon="el-icon-search", @click="search") 搜索
+      el-button.search(type="primary", icon="el-icon-search", @click="search") 搜索
       el-button(@click="reset") 重置
     div.refunding-bar
       div.export
@@ -167,7 +167,6 @@
   }
 
   .input-div {
-    width: 80vw;
     display: flex;
 
     .input-data {
@@ -175,7 +174,7 @@
     }
 
     .more-btn {
-      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 
@@ -187,6 +186,10 @@
       display: flex;
       float: right;
     }
+  }
+
+  .search {
+    margin-left: 20px;
   }
 
 </style>
