@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     div.top-wrapper
-      div 百宝美市管理后台
+      div.logo 百宝美市管理后台
       div
         el-dropdown(@command="handleMenuCommand")
           span.dropdown-link
@@ -11,7 +11,8 @@
             el-dropdown-item(command="password") 修改密码
             el-dropdown-item(command="logout") 退出登录
     div.side-wrapper
-      side.side-content
+      div
+        side.side-content
     div.body-wrapper
       div
         div#app-content.content-wrapper
@@ -96,7 +97,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $content-padding: 16px;
+  $content-padding: 20px;
   $header-height: 60px;
 
   .top-wrapper {
@@ -105,20 +106,20 @@
     align-items: center;
     height: $header-height;
     width: 100%;
-    background: $color-primary;
+    background: #F5F7FA;
     box-sizing: border-box;
     z-index: 1;
+    border-bottom: solid 1px #E4E7ED;
 
     .dropdown-link {
       cursor: pointer;
-      color: #ffffff;
+      color: #303133;
     }
 
     & > :nth-child(1) {
       flex: 1;
       padding-left: $content-padding;
-      color: $border-color-level4;
-      font-weight: bold;
+      color: #EA2554;
     }
 
     & > :nth-child(2) {
@@ -137,24 +138,32 @@
     overflow-x: hidden;
     width: $side-width;
     z-index: 100;
+    background: #f0f2f5;
 
-    .side-content {
-      transition: all .28s ease-out;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: -17px;
+    & > div {
+      position: relative;
+      width: $side-width - 10;
+      height: 100%;
       overflow-x: hidden;
-      overflow-y: scroll;
-    }
 
+      .side-content {
+        transition: all .28s ease-out;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: -17px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+      }
+    }
   }
 
   .breadcrumb-wrapper {
     height: $header-height;
     overflow: hidden;
-    background-color: #eef1f6;
+    padding-top: 20px;
+    background-color: #ffffff;
     display: flex;
     align-items: center;
     padding-left: $content-padding;
