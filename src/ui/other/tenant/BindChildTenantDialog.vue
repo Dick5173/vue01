@@ -40,7 +40,7 @@
         },
         rules: {
           app_id: [{required: true, message: '不能为空', trigger: 'blur'},
-            {validator: AppIdValidator, trigger: 'change'}],
+            {validator: AppIdValidator, trigger: 'blur'}],
           sub_mch_id: [{required: true, message: '不能为空', trigger: 'blur'}]
         }
       }
