@@ -57,11 +57,20 @@
         this.dialogVisible = false
       },
       handleBind () {
-        this.$refs.form.validate((valid) => {
-          if (valid) {
-            this.$emit('submit', this.formData)
-          }
-        })
+        if (this.tenantData.app_status === 4) {
+          this.$alert('小程序已解除授权', '绑定失败', {
+            confirmButtonText: '确定',
+            callback: () => {
+              this.dialogVisible = false
+            }
+          })
+        } else {
+          this.$refs.form.validate((valid) => {
+            if (valid) {
+              this.$emit('submit', this.formData)
+            }
+          })
+        }
       }
     }
   }
