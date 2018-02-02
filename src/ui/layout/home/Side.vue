@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-menu(mode="vertical", backgroundColor="#324157", textColor="#bfcbd9", activeTextColor="#20a0ff", :default-active="$route.path" router)
+  el-menu(mode="vertical", :default-active="$route.path" router)
     template(v-for!="menuItem in menus")
       el-submenu(:index="menuItem.name" v-if!="menuItem.isGroup")
         template(slot="title") {{ menuItem.title }}
