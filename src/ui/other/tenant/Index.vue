@@ -82,17 +82,22 @@
           return val
         })(params))
       },
-      submit (formData) {
-        console.log(formData)
+      async submit (formData) {
+        await TenantApi.bindChildTenant(formData)
+        this.$refs.dlgBindChildTenant.hide()
+        this.loadDataListByQueryPage()
       },
       showBindStatus (row) {
+        if (row.sub_mch_id) {
+          return true
+        }
         return false
       },
       handleBind (row) {
         this.$refs.dlgBindChildTenant.show(row)
       },
       showBindButtonName (row) {
-        if (row) {
+        if (row.sub_mch_id) {
           return '商户号已绑'
         }
         return '商户号未绑'

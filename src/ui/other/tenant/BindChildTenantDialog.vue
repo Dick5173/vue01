@@ -6,13 +6,13 @@
       div.head
         div.img(v-lazy:background-image="tenantData.head_img")
         div.name {{tenantData.nick_name}}
-      el-form.small-el-form(:model="formData", :rules="rules", label-width="68px")
+      el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="80px")
         el-form-item(label="AppID：", prop="app_id")
           el-input.tiny-x-el-input(v-model.trim="formData.app_id")
-        el-form-item(label="商户号：")
+        el-form-item(label="商户号：", prop="sub_mch_id")
           el-input.tiny-x-el-input(v-model.trim="formData.sub_mch_id")
         el-form-item
-          el-button(type="", @click="dialogVisible = false", plain) 取 消
+          el-button(type="", @click="hide", plain) 取 消
           el-button(type="primary", @click="handleBind", plain) 确 定
 </template>
 
@@ -21,6 +21,13 @@
     props: {},
     components: {},
     data () {
+      const AppIdValidator = (rule, value, callback) => {
+        if (this.formData.app_id !== this.tenantData.app_id) {
+          callback(new Error('AppID与小程序不符'))
+          return
+        }
+        callback()
+      }
       return {
         dialogVisible: false,
         tenantData: {
@@ -31,7 +38,11 @@
           app_id: '',
           sub_mch_id: ''
         },
-        rules: {}
+        rules: {
+          app_id: [{required: true, message: '不能为空', trigger: 'blur'},
+            {validator: AppIdValidator, trigger: 'change'}],
+          sub_mch_id: [{required: true, message: '不能为空', trigger: 'blur'}]
+        }
       }
     },
     computed: {},
@@ -42,8 +53,15 @@
         this.formData.id = row.id
         this.dialogVisible = true
       },
+      hide () {
+        this.dialogVisible = false
+      },
       handleBind () {
-        this.$emit('submit', this.formData)
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.$emit('submit', this.formData)
+          }
+        })
       }
     }
   }
