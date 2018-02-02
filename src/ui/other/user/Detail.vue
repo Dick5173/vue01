@@ -16,6 +16,8 @@
         div.list
           el-table.list-el-table(:data="dataList", border)
             el-table-column(label="最近购买", prop="recent_pay_tick")
+              template(slot-scope="scope")
+                div {{scope.row.recent_pay_tick | date}}
             el-table-column(label="平均交易额（元）", prop="")
               template(slot-scope="scope")
                 div {{showAverage(scope.row) | price}}
