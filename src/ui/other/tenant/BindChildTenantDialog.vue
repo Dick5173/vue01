@@ -22,6 +22,10 @@
     components: {},
     data () {
       const AppIdValidator = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('不能为空'))
+          return
+        }
         if (this.formData.app_id !== this.tenantData.app_id) {
           callback(new Error('AppID与小程序不符'))
           return
@@ -49,6 +53,7 @@
     watch: {},
     methods: {
       show (row) {
+        this.reset()
         this.tenantData = row
         this.formData.id = row.id
         if (row.sub_mch_id) {
@@ -59,6 +64,16 @@
       },
       hide () {
         this.dialogVisible = false
+      },
+      reset () {
+        if (this.$refs['form'] !== undefined) {
+          this.$refs['form'].resetFields()
+        }
+        this.formData = {
+          id: '',
+          app_id: '',
+          sub_mch_id: ''
+        }
       },
       handleBind () {
         if (this.tenantData.app_status === 4) {
