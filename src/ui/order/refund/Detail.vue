@@ -9,7 +9,7 @@
         div 利润：{{data.total_profit | price}}
         div
           span(v-if="!data.dev_status") 物流：{{devStatusText}}
-          span(v-else) 物流
+          span(v-else) 物流：
             el-button(type="text", @click="showExpress") {{devStatusText}}
     div.right
       div(v-if="isActionVisible")
