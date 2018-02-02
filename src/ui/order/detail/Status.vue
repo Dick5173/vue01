@@ -78,7 +78,6 @@
   }
 
   .section-btn {
-    text-decoration: underline;
     color: $color-primary;
     cursor: pointer;
   }
