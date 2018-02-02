@@ -85,6 +85,10 @@
       async submit (formData) {
         await TenantApi.bindChildTenant(formData)
         this.$refs.dlgBindChildTenant.hide()
+        this.$message({
+          message: '绑定商户号成功',
+          type: 'success'
+        })
         this.loadDataListByQueryPage()
       },
       handleBind (row) {
