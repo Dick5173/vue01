@@ -8,38 +8,40 @@
         el-table-column(prop="", label="", width="68")
           div(slot-scope="scope")
             div.cover(v-lazy:background-image="scope.row.head_img")
-        el-table-column(prop="", label="名称", width="")
+        el-table-column(prop="", label="名称", width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nick_name}}
-        el-table-column(prop="total_amount", label="销售额", sortable, width="")
+        el-table-column(prop="total_amount", label="销售额", sortable, width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="toOrder(scope.row)") {{scope.row.total_amount  | price}}
-        el-table-column(prop="total_profit", label="店铺利润", sortable, width="")
+        el-table-column(prop="total_profit", label="店铺利润", sortable, width="110px")
           div(slot-scope="scope") {{scope.row.total_profit  | price}}
-        el-table-column(prop="up_product_count", label="上架商品", sortable, width="")
+        el-table-column(prop="up_product_count", label="上架商品", sortable, width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="toProduct(scope.row)") {{scope.row.up_product_count}}
-        el-table-column(prop="first_uptime", label="首次上线", sortable, width="")
+        el-table-column(prop="first_uptime", label="首次上线", sortable, width="110px")
           div(slot-scope="scope") {{scope.row.first_uptime | datetime}}
-        el-table-column(prop="", label="小程序状态", width="")
+        el-table-column(prop="", label="小程序状态", width="110px")
           div(slot-scope="scope") {{showAppStatus(scope.row.app_status)}}
-        el-table-column(prop="", label="店铺管理员ID", width="")
+        el-table-column(prop="", label="店铺管理员ID", width="110px")
           div(slot-scope="scope") {{scope.row.admin_id}}
-        el-table-column(prop="", label="退款授权", width="")
+        el-table-column(prop="", label="退款授权", width="110px")
           div(slot-scope="scope")
             div(v-if="scope.row.refund_status === 2") 已授权
             el-button(v-else, type="primary", size="small", @click="confirmRefund(scope.row)") 确认授权
         el-table-column(prop="", label="店铺状态", width="")
           div(slot-scope="scope") {{showTenantStatus(scope.row.tenant_status)}}
-        el-table-column(prop="", label="操作", width="", fixed="right")
+        el-table-column(prop="", label="操作", width="180px", fixed="right")
           div(slot-scope="scope")
             el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row.id)", plain) 禁用
             el-button(v-else, type="primary", size="small", @click="enable(scope.row.id)", plain) 启用
+            el-button(:disabled="showBindStatus(scope.row)", type="primary", size="small", @click="handleBind(scope.row)", plain) {{showBindButtonName(scope.row)}}
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
-
+    bind-child-tenant-dialog(ref="dlgBindChildTenant", @submit="submit")
 </template>
 <script>
   import SearchToolbar from 'src/ui/other/tenant/search-toolbar/IndexToolBar.vue'
+  import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
@@ -52,7 +54,8 @@
     ],
     props: {},
     components: {
-      SearchToolbar
+      SearchToolbar,
+      BindChildTenantDialog
     },
     data () {
       return {
@@ -78,6 +81,21 @@
           }
           return val
         })(params))
+      },
+      submit (formData) {
+        console.log(formData)
+      },
+      showBindStatus (row) {
+        return false
+      },
+      handleBind (row) {
+        this.$refs.dlgBindChildTenant.show(row)
+      },
+      showBindButtonName (row) {
+        if (row) {
+          return '商户号已绑'
+        }
+        return '商户号未绑'
       },
       toOrder (row) {
         this.$router.push({
