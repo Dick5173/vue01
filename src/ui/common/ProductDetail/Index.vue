@@ -53,12 +53,6 @@
         default: () => {
           return {}
         }
-      },
-      rowTp: {
-        type: Number,
-        default: () => {
-          return 0
-        }
       }
     },
     components: {ShowDescription, Skus},
@@ -80,7 +74,7 @@
     },
     computed: {
       isPlatform () {
-        if (this.rowTp === 1) {
+        if (this.rowFormData.tp === 1) {
           return true
         }
         return false

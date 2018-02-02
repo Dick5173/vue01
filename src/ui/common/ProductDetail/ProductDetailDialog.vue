@@ -2,10 +2,10 @@
   div
     el-dialog(title="商品详情",
     :visible.sync="dialogVisible",
-    width="50%",
+    width="680px",
     )
       div(v-loading="loading")
-        product-detail(:rowFormData="formData", :rowTp="tp", :isPrompt="prompt")
+        product-detail(:rowFormData="formData", :isPrompt="prompt")
 </template>
 
 <script>
@@ -22,7 +22,6 @@
         loading: false,
         dialogVisible: false,
         formData: {},
-        tp: 0,
         prompt: false
       }
     },
@@ -34,7 +33,6 @@
           this.prompt = needPrompt
         }
         this.dialogVisible = true
-        this.tp = item.tp
         this.getDetail(item.id, item.tp, tid)
       },
       async getDetail (id, tp, tid) {
