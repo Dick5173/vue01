@@ -66,7 +66,7 @@
         this.dialogVisible = false
       },
       reset () {
-        if (this.$refs['form'] !== undefined) {
+        if (this.$refs['form']) {
           this.$refs['form'].resetFields()
         }
         this.formData = {
