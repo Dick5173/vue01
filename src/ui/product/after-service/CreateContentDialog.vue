@@ -54,7 +54,7 @@
         formRules: {
           text: [
             {required: true, message: '请输入文本', trigger: 'blur'},
-            {max: 20, message: '最多可输入20个字符', trigger: 'blur'}
+            {max: 26, message: '最多可输入26个字符', trigger: 'blur'}
           ],
           image: [
             {validator: validateImage, trigger: 'change'}
