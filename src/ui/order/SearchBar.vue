@@ -67,9 +67,9 @@
         ],
         moreCondition: {
           prod: '商品/订单号',
-          user: '买家姓名/手机',
+          buyer: '买家姓名/手机',
           dev_no: '物流单号',
-          buyer: '用户昵称/ID'
+          user: '用户昵称/ID'
         }
       }
     },
