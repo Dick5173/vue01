@@ -51,6 +51,10 @@
       show (row) {
         this.tenantData = row
         this.formData.id = row.id
+        if (row.sub_mch_id) {
+          this.formData.app_id = row.app_id
+          this.formData.sub_mch_id = row.sub_mch_id
+        }
         this.dialogVisible = true
       },
       hide () {
