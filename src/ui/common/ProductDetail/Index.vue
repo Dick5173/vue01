@@ -11,7 +11,7 @@
       div {{formData.sell_point}}
     el-form-item(label="商品规格", prop="")
       skus(:skus="skus", :isPlatform="isPlatform", :formData="formData")
-    el-form-item(label="划线价", prop="st_price")
+    el-form-item(v-if="showFormItem(formData.st_price)", label="划线价", prop="st_price")
       span {{formData.st_price | price}}
       span.input-right-desc 元
     el-form-item(label="供货价", prop="supply_price")

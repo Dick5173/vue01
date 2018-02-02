@@ -116,6 +116,9 @@ export const convertModelToForm = R.curry((form) => {
         } else if (key === 'cover') {
           return pickContent(val || {})
         } else if (priceField.indexOf(key) !== -1) {
+          if (val === 0) {
+            return ''
+          }
           return `${R_.convertFenToYuan(val)}`
         } else if (intField.indexOf(key) !== -1) {
           if (!val) {

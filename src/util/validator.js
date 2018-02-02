@@ -13,7 +13,7 @@ export const nonZeroIntegerValidator = (rule, value, callback) => {
 }
 
 export const priceValidator = (rule, value, callback) => {
-  if (!Vue.R_.isPrice(value)) {
+  if (value && !Vue.R_.isPrice(value)) {
     callback(new Error('不正确的价格'))
     return
   }

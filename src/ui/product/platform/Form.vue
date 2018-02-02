@@ -183,7 +183,6 @@
             {validator: skuValidator, trigger: 'change'}
           ],
           st_price: [
-            {required: true, message: '价格不能为空', trigger: 'blur'},
             {validator: priceValidator, trigger: 'blur'}
           ],
           supply_price: [
