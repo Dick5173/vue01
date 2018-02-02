@@ -8,7 +8,7 @@
           template(slot-scope="scope")
             div.productInfo
               div.infoImg(v-lazy:background-image="getImg(scope.row)")
-              div.infoText(@click="toProductDetail(scope.row)") {{scope.row.name}}
+              div.infoText(@click="showProductDetail(scope.row)") {{scope.row.name}}
         el-table-column(prop="profit", label="利润", sortable, width="100")
           template(slot-scope="scope")
             div {{scope.row | productProfit}}
@@ -29,6 +29,7 @@
             div {{getTpText(scope.row)}}
       div
         el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+      product-detail-dialog(ref="dlgProductDetail")
 </template>
 
 <script>
@@ -36,12 +37,14 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import * as ProductService from 'src/service/product/index'
+  import ProductDetailDialog from 'src/ui/common/ProductDetail/ProductDetailDialog.vue'
 
   export default {
     mixins: [LoadPagerData],
     props: {},
     components: {
-      SearchToolbar
+      SearchToolbar,
+      ProductDetailDialog
     },
     data () {
       return {
@@ -57,15 +60,8 @@
     },
     watch: {},
     methods: {
-      toProductDetail (row) {
-        this.$router.push({
-          name: 'TenantShowProductDetail',
-          params: {
-            tid: this.$route.params.id,
-            pid: row.id,
-            tp: row.tp
-          }
-        })
+      showProductDetail (row) {
+        this.$refs.dlgProductDetail.show(row, false, row.tenant_id)
       },
       getImg (row) {
         return ProductService.showCover(row)

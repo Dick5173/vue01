@@ -7,7 +7,7 @@
         el-table-column(type="selection", width="55px")
         el-table-column(prop="", label="ID", width="55px")
           template(slot-scope="props")
-            el-button(type="text", @click="toDetail(props.row)") {{props.row.id}}
+            el-button(type="text", @click="showProductDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
         el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
@@ -30,6 +30,7 @@
               el-table-column(prop="sold", label="销量")
               el-table-column(prop="stock", label="库存")
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+      product-detail-dialog(ref="dlgProductDetail")
 </template>
 
 <script>
@@ -39,6 +40,7 @@
   import { dateFormat } from 'src/util/format'
   import SearchBar from './SearchBar.vue'
   import { TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
+  import ProductDetailDialog from 'src/ui/common/ProductDetail/ProductDetailDialog.vue'
 
   export default {
     mixins: [
@@ -46,7 +48,8 @@
     ],
     props: {},
     components: {
-      SearchBar
+      SearchBar,
+      ProductDetailDialog
     },
     data () {
       return {
@@ -85,13 +88,8 @@
           }
         })
       },
-      toDetail (row) {
-        this.$router.push({
-          name: 'TenantSelfProductDetail',
-          params: {
-            id: row.id
-          }
-        })
+      showProductDetail (row) {
+        this.$refs.dlgProductDetail.show(row)
       },
       handleSearch (data) {
         this.queryChange(data)

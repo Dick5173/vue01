@@ -13,7 +13,7 @@
         el-table-column(type="selection", width="55px")
         el-table-column(prop="id", label="ID", width="55px")
           div(slot-scope="props")
-            el-button(type="text", @click="toDetail(props.row)") {{props.row.id}}
+            el-button(type="text", @click="showProductDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
         el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
@@ -55,6 +55,7 @@
       batch-category-dialog(ref="batchCategorydlg", @refresh="loadDataListByQueryPage")
       batch-tag-dialog(ref="batchTagdlg", :origin="tagsIdArray", @submit="chooseTagComplete", @refresh="loadDataListByQueryPage")
       tenant-count-dialog(ref="tenantCountDlg")
+      product-detail-dialog(ref="dlgProductDetail")
 </template>
 
 <script>
@@ -66,6 +67,7 @@
   import BatchCategoryDialog from 'src/ui/product/platform/dialog/BatchCategoryDialog.vue'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
   import TenantCountDialog from 'src/ui/product/platform/dialog/TenantCountDialog.vue'
+  import ProductDetailDialog from 'src/ui/common/ProductDetail/ProductDetailDialog.vue'
 
   export default {
     name: 'AdminIndex',
@@ -76,7 +78,8 @@
       SearchBar,
       BatchCategoryDialog,
       BatchTagDialog,
-      TenantCountDialog
+      TenantCountDialog,
+      ProductDetailDialog
     },
     data () {
       return {
@@ -129,6 +132,9 @@
           }
           return val
         })(params))
+      },
+      showProductDetail (row) {
+        this.$refs.dlgProductDetail.show(row)
       },
       shouldResetRouteQuery (to, from) {
         return from.name === 'PlatformProductCreate'
@@ -317,14 +323,6 @@
       toRecycle () {
         this.$router.push({
           name: 'PlatformProductRecycle'
-        })
-      },
-      toDetail (row) {
-        this.$router.push({
-          name: 'PlatformProductDetail',
-          params: {
-            id: row.id
-          }
         })
       },
       handleCopy (product) {

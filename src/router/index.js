@@ -158,28 +158,6 @@ export default new Router({
           }
         },
         {
-          path: 'pfproduct/detail/:id',
-          name: 'PlatformProductDetail',
-          component: () => import('src/ui/common/ProductDetail/Index.vue'),
-          meta: {
-            group: 'Product',
-            title: '商品详情',
-            breadcrumbItems: [
-              {
-                text: '平台商品',
-                to: {
-                  name: 'PlatformProductIndex'
-                }
-              },
-              {
-                text: '商品详情'
-              }
-            ],
-            customBreadcrumb: false
-          }
-        },
-
-        {
           path: 'pfproduct/recycle',
           name: 'PlatformProductRecycle',
           component: () => import('src/ui/product/platform/Recycle/Index.vue'),
@@ -208,27 +186,6 @@ export default new Router({
             group: 'Product',
             title: '店铺自营商品',
             showInSide: true
-          }
-        },
-        {
-          path: 'tsproduct/detail/:id',
-          name: 'TenantSelfProductDetail',
-          component: () => import('src/ui/common/ProductDetail/Index.vue'),
-          meta: {
-            group: 'Product',
-            title: '商品详情',
-            breadcrumbItems: [
-              {
-                text: '自营商品',
-                to: {
-                  name: 'TenantSelfProductIndex'
-                }
-              },
-              {
-                text: '商品详情'
-              }
-            ],
-            customBreadcrumb: false
           }
         },
         {
@@ -400,15 +357,6 @@ export default new Router({
             }, {
               text: '商品'
             }]
-          }
-        },
-        {
-          path: 'tenant/:tid/product/detail/:pid',
-          name: 'TenantShowProductDetail',
-          component: () => import('src/ui/common/ProductDetail/Index.vue'),
-          meta: {
-            group: 'Other',
-            title: '商品详情'
           }
         },
         {

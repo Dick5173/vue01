@@ -33,18 +33,34 @@
     el-form-item(v-if="showFormItem(formData.prop.ext.after_service)", label="售后模板", prop="after_service_id")
       div {{showName(formData.prop.ext.after_service)}}
     el-form-item
-      el-button(type="primary", :disabled="!isPlatform", @click="edit(formData)") 编 辑
+      el-button(type="primary", :disabled="!isPlatform", @click="edit(formData.id)") 编 辑
 </template>
 
 <script>
-  import * as ProductApi from 'src/api/product'
-  import * as TenantSelfProductApi from 'src/api/tenant-self-product'
-  import * as TenantApi from 'src/api/tenant'
   import ShowDescription from './ShowDescription.vue'
   import Skus from 'src/ui/common/ProductDetail/Skus.vue'
 
   export default {
-    props: {},
+    props: {
+      isPrompt: {
+        type: Boolean,
+        default: () => {
+          return false
+        }
+      },
+      rowFormData: {
+        type: Object,
+        default: () => {
+          return {}
+        }
+      },
+      rowTp: {
+        type: Number,
+        default: () => {
+          return 0
+        }
+      }
+    },
     components: {ShowDescription, Skus},
     data () {
       return {
@@ -64,13 +80,23 @@
     },
     computed: {
       isPlatform () {
-        return this.$route.name === 'PlatformProductDetail'
-      },
-      isTenantProductDetail () {
-        return this.$route.name === 'TenantShowProductDetail'
+        if (this.rowTp === 1) {
+          return true
+        }
+        return false
       }
     },
-    watch: {},
+    watch: {
+      rowFormData () {
+        this.formData = this.rowFormData
+        if (!this.isPlatform) {
+          this.skus = this.rowFormData.tenant_skus
+        } else {
+          this.skus = this.rowFormData.prop.skus
+        }
+        this.description = this.rowFormData.content ? this.rowFormData.content : []
+      }
+    },
     methods: {
       showFormItem (row) {
         if (Array.isArray(row)) {
@@ -84,41 +110,34 @@
         }
         return false
       },
-      edit (row) {
-        this.$router.push({
-          name: 'PlatformProductEdit',
-          params: {
-            id: row.id
-          }
-        })
+      edit (id) {
+        if (this.isPrompt) {
+          this.$confirm('离开当前页面，放弃未保存内容？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({
+              name: 'PlatformProductEdit',
+              params: {
+                id: id
+              }
+            })
+          }).catch()
+        } else {
+          this.$router.push({
+            name: 'PlatformProductEdit',
+            params: {
+              id: id
+            }
+          })
+        }
       },
       showOversea (row) {
         if (row) {
           return '清关商品'
         }
         return '非清关商品'
-      },
-      async getDetail () {
-        try {
-          this.loading = true
-          let res = ''
-          if (this.isPlatform) {
-            res = await ProductApi.getItem(this.$route.params.id)
-            this.skus = res.data.prop.skus
-          } else if (this.isTenantProductDetail) {
-            res = await TenantApi.getTenantProductDetail(this.$route.params.tid, this.$route.params.pid)
-            this.skus = res.data.tenant_skus
-          } else {
-            res = await TenantSelfProductApi.getTenantSelfItem(this.$route.params.id)
-            this.skus = res.data.tenant_skus
-          }
-          this.formData = res.data
-          this.description = res.data.content ? res.data.content : []
-          this.loading = false
-        } catch (err) {
-        } finally {
-          this.loading = false
-        }
       },
       showImg (row) {
         if (row) {
@@ -134,7 +153,6 @@
       }
     },
     mounted () {
-      this.getDetail()
     }
   }
 </script>
