@@ -118,8 +118,9 @@
 
     & > :nth-child(1) {
       flex: 1;
-      padding-left: $content-padding;
-      color: #EA2554;
+      padding-left: $content-padding + 15;
+      font-size: 24px;
+      color: #303133;
     }
 
     & > :nth-child(2) {
