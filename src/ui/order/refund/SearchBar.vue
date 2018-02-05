@@ -31,12 +31,12 @@
     data () {
       return {
         form: {
-          refund_status: 1,
+          refund_status: 0,
           tenant_id: '',
           prod_tp: 0,
           prod: '',
-          start: new Date().getTime(),
-          end: new Date().getTime()
+          start: '',
+          end: ''
         },
         refundStatus: [{
           value: 0,
