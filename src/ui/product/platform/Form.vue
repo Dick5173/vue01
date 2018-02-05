@@ -2,7 +2,7 @@
   div.bottom-outer-content
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
       el-form-item(label="商品图片", prop="head", :required="true")
-        upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT')
+        upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT', :host="getHost", :token="getToken")
         div.input-bottom-desc 还能上传 {{ remainHeadCount }} 张，建议尺寸750×750像素
       el-form-item(label="列表图", prop="cover")
         upload-image(ref="uploadCover", :image.sync="formData.cover", :host="getHost", :token="getToken")
@@ -52,9 +52,8 @@
 
 <script>
   import * as AliyunApi from 'src/api/aliyun'
-  import UploadImageList from 'src/ui/widget/upload-image-list/Index.vue'
   import Skus from './Skus.vue'
-  import { UploadImage } from '@baibao/zeratul'
+  import { UploadImage, UploadImageList } from '@baibao/zeratul'
   import ContentComp from './Content.vue'
   import * as FormApi from 'src/api/product'
   import * as CategoryApi from 'src/api/category'
