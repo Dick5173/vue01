@@ -28,7 +28,7 @@
 
 <script>
   import emitter from 'element-ui/src/mixins/emitter'
-  import {SmartTable, SmartTableColumn} from '@baibao/zeratul'
+  import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
   import CreateContentDialog from './dialog/CreateContentDialog.vue'
   import PreviewDialog from 'src/ui/common/preview/PreviewDialog.vue'
   import * as ResourceService from 'src/service/resource/index'
@@ -47,8 +47,7 @@
         required: true
       }
     },
-    watch: {
-    },
+    watch: {},
     data () {
       return {
         formRules: {
@@ -91,9 +90,9 @@
       },
       handleCreateSuccess (data) {
         if (this.createAtPos < 0 || this.createAtPos >= this.content.length) {
-          this.content.push({...data})
+          this.content.push(...this.R.clone(data))
         } else {
-          this.content.splice(this.createAtPos, 0, {...data})
+          this.content.splice(this.createAtPos, 0, ...this.R.clone(data))
         }
       },
       handleDel (index) {

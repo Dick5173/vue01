@@ -5,9 +5,8 @@
         el-input(v-model.trim="formData.text", :maxlength="26")
         div.input-right-desc {{ formData.text.length }} / 26
   mixin imageContent
-    el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="image")
-      upload-image(ref="uploadImage", :image.sync="formData.image", :host="getHost", :token="getToken")
-
+    el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
+      upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="commonDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
       el-form-item(label="类型", prop="tp")
@@ -24,40 +23,44 @@
   import * as AliyunApi from 'src/api/aliyun'
   import { commonDialogWidth } from 'src/config/el'
   import * as ResourceService from 'src/service/resource/index'
-  import { UploadImage } from '@baibao/zeratul'
+  import { UploadImageList } from '@baibao/zeratul'
 
   export default {
     components: {
-      UploadImage
+      UploadImageList
     },
     props: {},
     data () {
       const validateImage = (rule, value, callback) => {
-        if (this.$refs.uploadImage && this.$refs.uploadImage.updating) {
+        if (this.$refs.uploadImage && this.$refs.uploadImage.isUpdating) {
           callback(new Error('图片正在上传中'))
+          return
         }
-        if (!value || !value.url) {
-          callback(new Error('请上传图片'))
+        if (value) {
+          if (value.length <= 0) {
+            callback(new Error('请选择图片'))
+            return
+          } else {
+            callback()
+            return
+          }
         }
-        callback()
+        callback(new Error('请选择图片'))
       }
       return {
         loading: false,
+        initialData: null,
         formData: {
           tp: ResourceService.allTp.text.value,
           text: '',
-          image: {
-            url: '',
-            width: 0,
-            height: 0
-          }
+          imageList: []
         },
         formRules: {
           text: [
             {required: true, message: '请输入文本', trigger: 'blur'},
             {max: 26, message: '最多可输入26个字符', trigger: 'blur'}
           ],
-          image: [
+          imageList: [
             {validator: validateImage, trigger: 'change'}
           ]
         },
@@ -71,6 +74,11 @@
     methods: {
       async show () {
         this.dialogVisible = true
+        await this.$nextTick()
+        if (!this.initialData) {
+          this.initialData = this.R.clone(this.formData)
+        }
+        this.formData = this.R.clone(this.initialData)
       },
       hide () {
         this.dialogVisible = false
@@ -90,23 +98,25 @@
         this.$refs.form.validate(async (valid) => {
           try {
             if (valid) {
-              let result = {}
+              let result = []
               switch (this.formData.tp) {
                 case this.allContentTp.text.value:
-                  result = {
+                  result = [{
                     tp: this.allContentTp.text.value,
                     text: this.formData.text,
                     url: '',
                     width: 0,
                     height: 0
-                  }
+                  }]
                   break
                 case this.allContentTp.img.value:
-                  result = {
-                    tp: this.allContentTp.img.value,
-                    text: '',
-                    ...this.formData.image
-                  }
+                  result = this.R.map(item => {
+                    return {
+                      tp: this.allContentTp.img.value,
+                      text: '',
+                      ...item
+                    }
+                  })(this.formData.imageList)
                   break
               }
               this.$emit('success', result)
