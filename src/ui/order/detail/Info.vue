@@ -142,6 +142,10 @@
   .status {
     padding-top: 5px;
     padding-bottom: 5px;
+
+    & > button {
+      padding: 0 20px !important;
+    }
   }
 
   .list-wrapper {
