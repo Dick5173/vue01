@@ -1,7 +1,8 @@
 <template lang="pug">
   el-dialog(title="查看图片", :visible.sync="dialogVisible", width="50%", @open="openCallback")
-    div.divWrapper
-      img.full-width(v-show="img", :src="img", :style="imgStyle")
+    div.box
+      div.divWrapper
+        img.full-width(v-show="img", :src="img", :style="imgStyle")
 </template>
 
 <script>
@@ -45,7 +46,10 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .box {
+    width: 100%;
+    overflow-x: auto;
+  }
   .full-width {
     display: block;
     margin: 0 auto;
