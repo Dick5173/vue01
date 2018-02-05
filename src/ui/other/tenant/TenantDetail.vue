@@ -10,7 +10,7 @@
         div.body-item 小程序状态：{{showAppStatus(tenantData.app_status)}}
         div.body-item 店铺状态：{{showTenantStatus(tenantData.tenant_status)}}
           el-button(v-if="tenantData.tenant_status === 1", style="margin-left: 10px", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
-          el-button(v-else, style="margin-left: 10px", type="primary", size="mini",@click="enable(tenantData.id)") 启用
+          el-button(v-else, style="margin-left: 10px", type="primary", size="mini", @click="enable(tenantData.id)") 启用
       div.body
         div.body-item 店铺ID：{{tenantData.id}}
         div.body-item 店铺管理员：
@@ -60,9 +60,9 @@
               div(slot-scope="scope", v-if="scope.row.pt > 0") {{ scope.row.pt | datetime }}
             el-table-column(label="来源", prop="")
               div(slot-scope="scope") {{showTp(scope.row.tp)}}
-    el-dialog(title="小程序码", :visible.sync="dialogVisible", width="35%", :modal-append-to-body="false")
+    el-dialog(title="小程序码", :visible.sync="dialogVisible", width="480px", :modal-append-to-body="false")
       img.dlgImg(:src="tenantData.acode_url")
-      el-button(style='margin-left: 35%;', @click="download") 下载小程序码
+      el-button(style='margin-left:150px;', @click="download") 下载小程序码
 </template>
 
 <script>
@@ -249,6 +249,41 @@
 
 <style lang="scss" scoped>
   @import "../../../assets/scss/other";
+  .head {
+    height: 50px;
+    .head-cover {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      background-position: center;
+    }
+    .head-name {
+      position: relative;
+      display: inline-block;
+      margin-left: 10px;
+      height: 22px;
+      line-height: 22px;
+      top: -34px;
+    }
+    .icon {
+      position: relative;
+      margin-left: 15px;
+      width: 50px;
+      line-height: 60px;
+      .img {
+        cursor: pointer;
+        top: 35px;
+        width: 16px;
+      }
+    }
+  }
+
+
+  .dlgImg {
+    width: 430px;
+    height: 430px;
+  }
 
   .cover {
     width: 50px;
@@ -257,14 +292,5 @@
     background-position: center;
   }
 
-  .icon {
-    margin-left: 15px;
-    width: 50px;
-    line-height: 60px;
-    .img {
-      cursor: pointer;
-      top: 35px;
-      width: 20px;
-    }
-  }
+
 </style>
