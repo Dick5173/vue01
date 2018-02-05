@@ -3,24 +3,29 @@
     div
       div.head
         div.head-cover(v-lazy:background-image="tenantData.head_img")
-        div.head-name {{tenantData.nick_name}}
-        span.icon(@click="dialogVisible = true")
-          img.img(:src="qrcodeIcon")
-      div.body
-        div.body-item 小程序状态：{{showAppStatus(tenantData.app_status)}}
-        div.body-item 店铺状态：{{showTenantStatus(tenantData.tenant_status)}}
-          el-button(v-if="tenantData.tenant_status === 1", style="margin-left: 10px", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
-          el-button(v-else, style="margin-left: 10px", type="primary", size="mini", @click="enable(tenantData.id)") 启用
-      div.body
+        div.head-name-box
+          div.head-name {{tenantData.nick_name}}
+            span.icon(@click="dialogVisible = true")
+              img.img(:src="qrcodeIcon")
+          div.head-status {{showAppStatus(tenantData.app_status)}}
+      div.body-status
+        div.body-item-status 店铺状态：{{showTenantStatus(tenantData.tenant_status)}}
+        el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
+        el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
+      div.body-detail
         div.body-item 店铺ID：{{tenantData.id}}
+        div.body-border
         div.body-item 店铺管理员：
-          el-button(type="text", @click="toTenantUser(tenantData.admin_id)") {{tenantData.admin_name}}
+        div.body-item.btn(type="text", @click="toTenantUser(tenantData.admin_id)") {{tenantData.admin_name}}
+        div.body-border
         div.body-item 授权状态：{{showRefundStatus(tenantData.refund_status)}}
+        div.body-border
         div.body-item 首次上线：{{tenantData.first_uptime | datetime}}
+      div.body-bottom-line
       div.list-title
         div.list-title-head
           div.list-title-item 最近收入
-          el-button.list-title-item-details(type="text", @click="toIncome(tenantData.id)") 详细>
+          div.list-title-item.btn(type="text", @click="toIncome(tenantData.id)") 详细
         div.list
           el-table.list-el-table(:data="incomeList", border)
             el-table-column(label="统计周期", prop="")
@@ -38,10 +43,10 @@
             el-table-column(label="利润（元）", prop="")
               template(slot-scope="scope")
                 div {{scope.row.total_profit | price}}
-      div.list-title
+      div.list-title.margin-top
         div.list-title-head
           div.list-title-item 最新上架
-          el-button.list-title-item-details(type="text", @click="toTenantProduct(tenantData.id)") 详细>
+          div.list-title-item.btn(type="text", @click="toTenantProduct(tenantData.id)") 详细
         div.list
           el-table.list-el-table(:data="productList", border)
             el-table-column(prop="", label="", width="70px")
@@ -249,8 +254,10 @@
 
 <style lang="scss" scoped>
   @import "../../../assets/scss/other";
+
   .head {
     height: 50px;
+    display: flex;
     .head-cover {
       display: inline-block;
       width: 50px;
@@ -258,27 +265,78 @@
       background-size: cover;
       background-position: center;
     }
-    .head-name {
-      position: relative;
-      display: inline-block;
+    .head-name-box {
       margin-left: 10px;
-      height: 22px;
-      line-height: 22px;
-      top: -34px;
-    }
-    .icon {
-      position: relative;
-      margin-left: 6px;
-      width: 16px;
-      line-height: 16px;
-      top: -31px;
-      .img {
-        cursor: pointer;
-        width: 16px;
+      .head-name {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        height: 22px;
+        line-height: 22px;
+        .icon {
+          margin-left: 6px;
+          width: 16px;
+          line-height: 16px;
+          .img {
+            cursor: pointer;
+            width: 16px;
+          }
+        }
+      }
+      .head-status {
+        line-height: 20px;
+        height: 20px;
+        font-size: 14px;
+        display: inline-block;
+        margin-left: 3px;
+        margin-top: 5px;
       }
     }
   }
 
+  .body-status {
+    display: flex;
+    margin-top: 20px;
+    align-items: center;
+    .body-item-status {
+      display: inline-block;
+      font-size: 12px;
+      height: 17px;
+      line-height: 17px;
+      margin-right: 10px;
+    }
+  }
+
+  .body-detail {
+    margin-top: 20px;
+    display: flex;
+    height: 21px;
+    align-items: center;
+    .body-border {
+      display: inline-block;
+      border-right: solid 1px #DCDFE6;
+      margin-left: 10px;
+      margin-right: 10px;
+      height: 21px;
+      background-color: #DCDFE6;
+    }
+    .body-item {
+      display: inline-block;
+      height: 17px;
+      font-size: 12px;
+      line-height: 17px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+  }
+
+  .body-bottom-line {
+    border-top: 1px solid #DCDFE6;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 
   .dlgImg {
     width: 430px;
@@ -291,6 +349,5 @@
     background-size: cover;
     background-position: center;
   }
-
 
 </style>
