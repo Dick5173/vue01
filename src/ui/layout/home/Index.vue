@@ -17,10 +17,12 @@
       div
         div#app-content.content-wrapper
           div.breadcrumb-wrapper
-            div
+            div.items-wrapper
               el-breadcrumb(v-if="showBreadcrumb")
                 template(v-for!="item in breadcrumbItems")
                   el-breadcrumb-item(:to="item.to", :replace="!!item.replace") {{ item.text }}
+            div.desc-wrapper
+              div {{ breadcrumbDesc }}
           div.mid-wrapper
             router-view
     change-password-dialog(ref="dlgChangePassword")
@@ -40,7 +42,8 @@
     data () {
       return {
         showBreadcrumb: true,
-        breadcrumbItems: []
+        breadcrumbItems: [],
+        breadcrumbDesc: ''
       }
     },
     methods: {
@@ -53,6 +56,7 @@
               text: this.$route.meta.title ? this.$route.meta.title : this.$route.name
             }])
           }
+          this.updateBreadcrumbDescText(this.$route.meta.breadcrumbDesc || '')
         }
       },
       async updateBreadcrumb (breadcrumbItems) {
@@ -60,6 +64,9 @@
         this.showBreadcrumb = false
         await this.$nextTick()
         this.showBreadcrumb = true
+      },
+      updateBreadcrumbDescText (desc) {
+        this.breadcrumbDesc = desc
       },
       handleMenuCommand (command) {
         switch (command) {
@@ -169,9 +176,23 @@
     align-items: center;
     padding-left: $content-padding;
     padding-right: $content-padding;
-
-    & > :nth-child(1) {
+    .desc-wrapper {
+      position: relative;
+      margin-left: 10px;
+      height: 28px;
+      color: #606266;
+      font-size: 14px;
       flex: 1;
+
+
+      & > div {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+        padding-bottom: 3px;
+      }
     }
   }
 

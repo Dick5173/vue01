@@ -16,8 +16,6 @@
           +textContent
       smart-table-column(label="", width="120px")
         div(slot-scope="props")
-          <!--el-button(type="primary", size="mini", icon="el-icon-plus", plain, @click="handleCreateAbove(props.index)") 上面-->
-          <!--el-button(type="primary", size="mini",  icon="el-icon-plus", plain, @click="handleCreateBelow(props.index)") 下面-->
           el-button(type="danger", size="mini", plain, @click="handleDel(props.index)") 删除
     div
       el-button(type="primary", size="mini", plain, @click="handleCreate") 添加
@@ -29,7 +27,6 @@
 <script>
   import emitter from 'element-ui/src/mixins/emitter'
   import {SmartTable, SmartTableColumn} from '@baibao/zeratul'
-  import UploadImage from 'src/ui/widget/upload-image/Index.vue'
   import CreateContentDialog from './CreateContentDialog.vue'
   import * as ResourceService from 'src/service/resource/index'
   import PreviewDialog from 'src/ui/common/preview/PreviewDialog.vue'
@@ -39,7 +36,6 @@
     components: {
       SmartTable,
       SmartTableColumn,
-      UploadImage,
       CreateContentDialog,
       PreviewDialog
     },
@@ -81,14 +77,6 @@
         this.createAtPos = this.content.length
         this.$refs.dlgCreateContent.show()
       },
-//      handleCreateAbove (index) {
-//        this.createAtPos = index
-//        this.$refs.dlgCreateContent.show()
-//      },
-//      handleCreateBelow (index) {
-//        this.createAtPos = index + 1
-//        this.$refs.dlgCreateContent.show()
-//      },
       handleCreateSuccess (data) {
         if (this.createAtPos < 0 || this.createAtPos >= this.content.length) {
           this.content.push({...data})

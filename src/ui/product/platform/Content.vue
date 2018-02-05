@@ -29,7 +29,6 @@
 <script>
   import emitter from 'element-ui/src/mixins/emitter'
   import {SmartTable, SmartTableColumn} from '@baibao/zeratul'
-  import UploadImage from 'src/ui/widget/upload-image/Index.vue'
   import CreateContentDialog from './dialog/CreateContentDialog.vue'
   import PreviewDialog from 'src/ui/common/preview/PreviewDialog.vue'
   import * as ResourceService from 'src/service/resource/index'
@@ -39,7 +38,6 @@
     components: {
       SmartTable,
       SmartTableColumn,
-      UploadImage,
       CreateContentDialog,
       PreviewDialog
     },

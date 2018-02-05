@@ -6,7 +6,7 @@
         div.input-right-desc {{ formData.text.length }} / 26
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="image")
-      upload-image(ref="uploadImage", :image.sync="formData.image")
+      upload-image(ref="uploadImage", :image.sync="formData.image", :host="getHost", :token="getToken")
 
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="commonDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
@@ -21,9 +21,10 @@
 </template>
 
 <script>
+  import * as AliyunApi from 'src/api/aliyun'
   import { commonDialogWidth } from 'src/config/el'
   import * as ResourceService from 'src/service/resource/index'
-  import UploadImage from 'src/ui/widget/upload-image/Index.vue'
+  import { UploadImage } from '@baibao/zeratul'
 
   export default {
     components: {
@@ -119,7 +120,11 @@
       handleTpChange () {
         this.$refs.fiShowText && this.$refs.fiShowText.clearValidate()
         this.$refs.fiImage && this.$refs.fiImage.clearValidate()
-      }
+      },
+      ...$global.$mapMethods({
+        'getHost': AliyunApi.getOssHost,
+        'getToken': AliyunApi.getOssToken
+      })
     },
     mounted () {
     }

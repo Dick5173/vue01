@@ -10,15 +10,12 @@
 
 <script>
   import { commonDialogWidth } from 'src/config/el'
-
   import * as CategoryApi from 'src/api/category'
   import * as CategoryService from 'src/service/category'
   import { MODE_CREATE, MODE_EDIT } from 'src/constants/index'
-  import UploadImage from 'src/ui/widget/upload-image/Index.vue'
 
   export default {
     components: {
-      UploadImage
     },
     props: {},
     data () {

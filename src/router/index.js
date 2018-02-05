@@ -366,7 +366,8 @@ export default new Router({
           meta: {
             group: 'Other',
             title: '收入',
-            showInSide: true
+            showInSide: true,
+            breadcrumbDesc: '(截止上月)'
           }
         },
         {

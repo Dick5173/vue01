@@ -21,7 +21,7 @@
       smart-table-column(label="图片", width="80px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`image${props.index}`", :prop="'skus.' + props.index + '.image'", :rules="formRules.image")
-            upload-image(:ref="`uploadImage${props.index}`", :image.sync="props.row.image", size="50px", addIconSize="20px")
+            upload-image(:ref="`uploadImage${props.index}`", :image.sync="props.row.image", size="50px", addIconSize="20px", :host="getHost", :token="getToken")
       smart-table-column(label="", width="80px")
         div(slot-scope="props")
           el-button(type="danger", size="mini", plain, @click="handleDelSku(props.index)") 删除
@@ -31,9 +31,9 @@
 </template>
 
 <script>
+  import * as AliyunApi from 'src/api/aliyun'
   import emitter from 'element-ui/src/mixins/emitter'
-  import {SmartTable, SmartTableColumn} from '@baibao/zeratul'
-  import UploadImage from 'src/ui/widget/upload-image/Index.vue'
+  import { SmartTable, SmartTableColumn, UploadImage } from '@baibao/zeratul'
   import { nonZeroIntegerValidator } from 'src/util/validator'
 
   export default {
@@ -143,7 +143,11 @@
           }
         }
         return false
-      }
+      },
+      ...$global.$mapMethods({
+        'getHost': AliyunApi.getOssHost,
+        'getToken': AliyunApi.getOssToken
+      })
     }
   }
 </script>

@@ -5,7 +5,7 @@
         upload-image-list(ref="uploadHead", :imageList.sync="formData.head", :maxFiles='$options.MAX_HEAD_COUNT')
         div.input-bottom-desc 还能上传 {{ remainHeadCount }} 张，建议尺寸750×750像素
       el-form-item(label="列表图", prop="cover")
-        upload-image(ref="uploadCover", :image.sync="formData.cover")
+        upload-image(ref="uploadCover", :image.sync="formData.cover", :host="getHost", :token="getToken")
         div.input-bottom-desc 建议尺寸750×750像素
       el-form-item(label="商品名称", prop="name")
         el-input.medium-el-input(v-model.trim="formData.name", :maxlength="50")
@@ -51,9 +51,10 @@
 </template>
 
 <script>
+  import * as AliyunApi from 'src/api/aliyun'
   import UploadImageList from 'src/ui/widget/upload-image-list/Index.vue'
-  import UploadImage from 'src/ui/widget/upload-image/Index.vue'
   import Skus from './Skus.vue'
+  import { UploadImage } from '@baibao/zeratul'
   import ContentComp from './Content.vue'
   import * as FormApi from 'src/api/product'
   import * as CategoryApi from 'src/api/category'
@@ -304,7 +305,11 @@
       chooseTagComplete (result) {
         this.formData.tags = result.component.chooseTags
         result.component.hide()
-      }
+      },
+      ...$global.$mapMethods({
+        'getHost': AliyunApi.getOssHost,
+        'getToken': AliyunApi.getOssToken
+      })
     },
     async mounted () {
       this.initData()
