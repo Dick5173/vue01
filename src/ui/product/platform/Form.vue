@@ -90,8 +90,9 @@
           } else {
             callback()
           }
+        } else {
+          callback(new Error('请选择图片'))
         }
-        callback(new Error('请选择图片'))
       }
       const coverValidator = (rule, value, callback) => {
         if (this.$refs.uploadCover.isUpdating) {
