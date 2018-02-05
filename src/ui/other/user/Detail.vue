@@ -97,7 +97,9 @@
         return row === '' ? '未知' : row
       },
       showAverage (row) {
-        return row.total_amount / row.total_count
+        let data = row.total_amount / row.total_count
+        data = data.toFixed(2)
+        return data
       }
     },
     created () {
