@@ -21,6 +21,7 @@ export const getUserShowData = (data) => {
     resData.tenantNickName = data.user.tenant && data.user.tenant.nick_name ? data.user.tenant.nick_name : ''
     resData.mobile = data.user.mobile ? data.user.mobile : ''
     resData.ct = data.user.ct ? data.user.ct : ''
+    resData.tid = data.user.tenant_id ? data.user.tenant_id : ''
   } else {
     resData.id = ''
     resData.logo = ''
@@ -28,6 +29,7 @@ export const getUserShowData = (data) => {
     resData.tenantNickName = ''
     resData.mobile = ''
     resData.ct = ''
+    resData.tid = ''
   }
   return resData
 }

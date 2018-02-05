@@ -332,11 +332,6 @@
 
   }
 
-  .body-bottom-line {
-    border-top: 1px solid #DCDFE6;
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
 
   .dlgImg {
     width: 430px;

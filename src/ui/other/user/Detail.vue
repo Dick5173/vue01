@@ -2,17 +2,22 @@
   div
     div
       div.head
-        div.head-cover(v-lazy:background-image="userData.logo")
+        div.head-cover.round(v-lazy:background-image="userData.logo")
         div.head-name {{userData.nickname}}
-      div.body
+      div.body-detail
         div.body-item 手机：{{showMobile(userData.mobile)}}
+        div.body-border
         div.body-item 用户ID：{{userData.id}}
-        div.body-item-name 店铺：{{userData.tenantNickName}}
+        div.body-border
+        div.body-item 店铺：
+        div.body-item.btn(@click="toTenant(userData.tid)") {{userData.tenantNickName}}
+        div.body-border
         div.body-item 首次访问：{{showTime(userData.ct)}}
+      div.body-bottom-line
       div.list-title
         div.list-title-head
           div.list-title-item 订单统计
-          el-button.list-title-item-details(type="text", @click="toOrder(userData)") 详情>
+          div.list-title-item.btn(type="text", @click="toOrder(userData)") 详情
         div.list
           el-table.list-el-table(:data="dataList", border)
             el-table-column(label="最近购买", prop="recent_pay_tick")
@@ -52,6 +57,14 @@
     computed: {},
     watch: {},
     methods: {
+      toTenant (tid) {
+        this.$router.push({
+          name: 'TenantDetail',
+          params: {
+            tid: tid
+          }
+        })
+      },
       async getDetail () {
         try {
           this.loading = true
@@ -116,4 +129,23 @@
 
 <style lang="scss" scoped>
   @import "../../../assets/scss/other";
+
+  .head {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    .head-cover {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      background-position: center;
+    }
+    .head-name {
+      margin-left: 10px;
+      height: 22px;
+      line-height: 22px;
+      font-size: 16px;
+    }
+  }
 </style>
