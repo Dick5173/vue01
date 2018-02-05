@@ -273,7 +273,7 @@
     created () {
     },
     async mounted () {
-      const resOssToken = await AliyunApi.getOssToken()
+      const resOssToken = await AliyunApi.getOssTokenBak()
       this.host = resOssToken.data.token.host
       if (this.myDropzone) {
         this.myDropzone.destroy()
@@ -296,7 +296,7 @@
               done(new Error('图片错误'))
               return
             }
-            const resToken = await AliyunApi.getOssToken()
+            const resToken = await AliyunApi.getOssTokenBak()
             this.ossToken = resToken.data.token
             this.fileKey = resToken.data.key
             done()
