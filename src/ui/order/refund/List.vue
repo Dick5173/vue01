@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import {refundBtnText} from '../../../manager/refund/refund'
+  import {refundBtnText} from '../../../service/refund/refund'
 
   export default {
     components: {},

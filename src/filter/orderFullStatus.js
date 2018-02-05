@@ -1,4 +1,4 @@
-import * as OrderUtil from '../manager/order/orderUtil'
+import * as OrderUtil from '../service/order/orderUtil'
 const orderStatus = {
   1: '待付款',
   2: '已关闭',

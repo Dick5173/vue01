@@ -24,20 +24,24 @@ export const refuseList = (params) => {
 }
 
 export const agree = (id, amount, txt, total, remark) => {
-  return Axios.post(`admin/oi/s/${id}/agree`,
+  return Axios.post(`/admin/oi/s/${id}/agree`,
     qs.stringify({txt: txt, amount: amount, total: total, remark: remark}))
 }
 
 export const reject = (id, txt, remark) => {
-  return Axios.post(`admin/oi/s/${id}/refuse`,
+  return Axios.post(`/admin/oi/s/${id}/refuse`,
     qs.stringify({txt: txt, remark: remark}))
 }
 
 export const reply = (id, txt, remark) => {
-  return Axios.post(`admin/oi/s/${id}/reply`,
+  return Axios.post(`/admin/oi/s/${id}/reply`,
     qs.stringify({txt: txt, remark: remark}))
 }
 
 export const refuseCount = () => {
-  return Axios.get('admin/oi/refund/count')
+  return Axios.get('/admin/oi/refund/count')
+}
+
+export const refundToWx = (id) => {
+  return Axios.post(`/admin/oi/s/${id}/refund/to/weixin`)
 }
