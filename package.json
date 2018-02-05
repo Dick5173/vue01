@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "local": "PROXY=http://localhost:5000 npm run dev",
-    "beta": "PROXY=http://beta.meishi.51baibao.com npm run dev",
+    "local": "cross-env PROXY=http://localhost:5000 npm run dev",
+    "beta": "cross-env PROXY=http://beta.meishi.51baibao.com npm run dev",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
@@ -42,6 +42,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.1.3",
     "css-loader": "^0.28.0",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
