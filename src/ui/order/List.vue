@@ -8,9 +8,9 @@
               div.icon-wrapper(v-lazy:background-image="showImage(scope.row)")
             div.desc-wrapper
               div 订单号：
-                span.txt-blod.text-code(@click="goToDetail(scope.row.id)") {{scope.row.code}}
-                span.txt-blod &nbsp;&nbsp;{{scope.row | orderFullStatus}}&nbsp;&nbsp;
-                span.txt-blod {{scope.row.ct | datetime}}下单
+                span {{scope.row.code}}
+                span &nbsp;&nbsp;{{scope.row | orderFullStatus}}&nbsp;&nbsp;
+                span {{scope.row.ct | datetime}}下单
               div.name-wrapper
                 div.left {{scope.row.show_order_items[0].product_name}}
                 div.right {{scope.row.prod_count}}件商品
@@ -26,6 +26,7 @@
       el-table-column(label="操作" width="119")
         template(slot-scope="scope")
           div.control-wrapper
+            el-button.btn.refund-color(size="mini", type="text", @click="goToDetail(scope.row.id)") 订单详情
             el-button.btn(v-if="scope.row.dev_count > 0", style="width: 80px", size="mini" type="primary", @click="openExpress(scope.row.id)") {{scope.row.dev_count}}件快递
             el-tooltip(placement="bottom", effect="light", v-if="scope.row.remind && scope.row.remind.length > 0 && scope.row.status === 3")
               div(slot="content")
