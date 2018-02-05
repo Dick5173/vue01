@@ -268,12 +268,12 @@
     }
     .icon {
       position: relative;
-      margin-left: 15px;
-      width: 50px;
-      line-height: 60px;
+      margin-left: 6px;
+      width: 16px;
+      line-height: 16px;
+      top: -31px;
       .img {
         cursor: pointer;
-        top: 35px;
         width: 16px;
       }
     }
