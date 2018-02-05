@@ -14,7 +14,7 @@
     "release-beta": "npm run build && scp -r -P 7322 dist/. root@doc.51baibao.com:/opt/meishi_beta/public/admin"
   },
   "dependencies": {
-    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.1.0",
+    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.2.1",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "dropzone": "^5.3.0",
