@@ -9,12 +9,12 @@
 
   div
     smart-table.medium-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")
-      table-column(type="drag")
-      table-column(label="内容")
+      smart-table-column(type="drag")
+      smart-table-column(label="内容")
         div(slot-scope="props")
           +imageContent
           +textContent
-      table-column(label="", width="120px")
+      smart-table-column(label="", width="120px")
         div(slot-scope="props")
           <!--el-button(type="primary", size="mini", icon="el-icon-plus", plain, @click="handleCreateAbove(props.index)") 上面-->
           <!--el-button(type="primary", size="mini",  icon="el-icon-plus", plain, @click="handleCreateBelow(props.index)") 下面-->
@@ -28,8 +28,7 @@
 
 <script>
   import emitter from 'element-ui/src/mixins/emitter'
-  import SmartTable from 'src/ui/widget/smart-table/Table.vue'
-  import TableColumn from 'src/ui/widget/smart-table/TableColumn.jsx'
+  import {SmartTable, SmartTableColumn} from '@baibao/zeratul'
   import UploadImage from 'src/ui/widget/upload-image/Index.vue'
   import CreateContentDialog from './CreateContentDialog.vue'
   import * as ResourceService from 'src/service/resource/index'
@@ -39,7 +38,7 @@
     mixins: [emitter],
     components: {
       SmartTable,
-      TableColumn,
+      SmartTableColumn,
       UploadImage,
       CreateContentDialog,
       PreviewDialog
