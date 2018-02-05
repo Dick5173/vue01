@@ -14,6 +14,8 @@
         template(slot-scope="scope")
           div.status
             el-button(type="text", @click="goRefundDetail(scope.row)", v-if="refundBtnText(scope.row)") {{refundBtnText(scope.row)}}
+          div.status(v-if="enableRefundToWx(scope.row)")
+            el-button(type="text", @click="refundToWx(scope.row)") 退款至微信
       el-table-column(label="物流状态", width="210", v-if="showStatue")
         template(slot-scope="scope")
           div.status
@@ -38,10 +40,11 @@
 
 
 <script>
-  import * as RefundUtil from 'src/manager/refund/refund'
-  import * as OrderUtil from 'src/manager/order/orderUtil'
-  import {REFUND_STATUS_NO_APPLY} from '../../../constants/orderItem'
-  import {orderItems} from '../../../api/order'
+  import * as RefundUtil from 'src/service/refund/refund'
+  import * as OrderUtil from 'src/service/order/orderUtil'
+  import { REFUND_STATUS_NO_APPLY } from '../../../constants/orderItem'
+  import { orderItems } from '../../../api/order'
+  import { refundToWx } from '../../../api/refuse'
   import Agree from '../refund/Agree'
   import ExpressDialog from 'src/ui/order/express/Index'
 
@@ -104,6 +107,22 @@
             }
           })
         }
+      },
+      refundToWx (row) {
+        this.$confirm('退款至微信?').then(async () => {
+          try {
+            this.loading = true
+            await refundToWx(row.id)
+            this.$message({
+              showClose: true,
+              message: '退款已成功',
+              type: 'success'
+            })
+            this.$emit('refresh')
+          } finally {
+            this.loading = false
+          }
+        }).catch(() => {})
       }
     }
   }
@@ -121,8 +140,12 @@
   }
 
   .status {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    & > button {
+      padding: 0 20px !important;
+    }
   }
 
   .list-wrapper {
@@ -167,7 +190,7 @@
       display: flex;
       padding-bottom: 5px;
       justify-content: space-between;
-      text-align:right;
+      text-align: right;
       padding-top: 5px;
     }
 
