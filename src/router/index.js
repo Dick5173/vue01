@@ -515,6 +515,25 @@ export default new Router({
               text: '小程序模板库'
             }]
           }
+        },
+        {
+          path: 'apptemplate/apptemplatedetail/:rowItem',
+          name: 'AppTemplateDetail',
+          component: () => import('src/ui/maintain/app-version/app-template/TemplatDetail.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '代码详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本控制',
+              to: {name: 'AppVersion'}
+            }, {
+              text: '小程序模板库',
+              to: {name: 'AppTemplate'}
+            }, {
+              text: '代码详情'
+            }]
+          }
         }
       ]
     },

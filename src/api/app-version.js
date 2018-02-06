@@ -13,3 +13,9 @@ export const AddDraftToTemplate = (id) => {
   }
   return Axios.post(`/admin/audit/draft/totemplate`, qs.stringify(formData))
 }
+export const deleteTemplate = (id) => {
+  let formData = {
+    template_id: id
+  }
+  return Axios.post(`/admin/audit/template/del`, qs.stringify(formData))
+}

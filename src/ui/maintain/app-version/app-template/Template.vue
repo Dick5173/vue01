@@ -36,7 +36,12 @@
     watch: {},
     methods: {
       toDetail (row) {
-        console.log(row)
+        this.$router.push({
+          name: 'AppTemplateDetail',
+          params: {
+            rowItem: row
+          }
+        })
       }
     }
   }
