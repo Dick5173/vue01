@@ -7,7 +7,7 @@
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
       upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
-  el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="commonDialogWidth", @close="closeCallback")
+  el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="mediumDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
       el-form-item(label="类型", prop="tp")
         el-radio-group(v-model="formData.tp", @change="handleTpChange")
@@ -21,7 +21,7 @@
 
 <script>
   import * as AliyunApi from 'src/api/aliyun'
-  import { commonDialogWidth } from 'src/config/el'
+  import { mediumDialogWidth } from 'src/config/el'
   import * as ResourceService from 'src/service/resource/index'
   import { UploadImageList } from '@baibao/zeratul'
 
@@ -66,7 +66,7 @@
         },
         dialogVisible: false,
         ...$global.$mapConst({
-          'commonDialogWidth': commonDialogWidth,
+          'mediumDialogWidth': mediumDialogWidth,
           'allContentTp': ResourceService.allTp
         })
       }
@@ -140,6 +140,7 @@
 <style lang="scss" scoped>
   .input-text-wrapper {
     display: flex;
+    width: 400px;
 
     .input-right-desc {
       width: 60px;
