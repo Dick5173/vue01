@@ -19,6 +19,11 @@ const homeGroups = [
     name: 'Product',
     title: '商品管理',
     path: '/'
+  },
+  {
+    name: 'VersionManagement',
+    title: '版本管理',
+    path: '/'
   }
 ]
 
@@ -483,6 +488,32 @@ export default new Router({
             group: 'Administrator',
             title: '管理员列表',
             showInSide: true
+          }
+        },
+        {
+          path: 'appversion',
+          name: 'AppVersion',
+          component: () => import('src/ui/maintain/app-version/Index.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '版本控制',
+            showInSide: true
+          }
+        },
+        {
+          path: 'apptemplate',
+          name: 'AppTemplate',
+          component: () => import('src/ui/maintain/app-version/app-template/Index.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '小程序模板库',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本控制',
+              to: {name: 'AppVersion'}
+            }, {
+              text: '小程序模板库'
+            }]
           }
         }
       ]

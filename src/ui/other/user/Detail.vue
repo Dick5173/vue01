@@ -98,7 +98,7 @@
       },
       showAverage (row) {
         let data = row.total_amount / row.total_count
-        data = data.toFixed(2)
+        data = data.toFixed()
         return data
       }
     },
