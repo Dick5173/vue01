@@ -1,9 +1,5 @@
 import Axios from 'axios'
 
-export const getOssTokenBak = () => {
-  return Axios.get(`/admin/aliyun/oss/token`)
-}
-
 export const getOssHost = () => {
   return Axios.get(`/admin/aliyun/oss/token`).then(res => {
     return res.data.token.host
