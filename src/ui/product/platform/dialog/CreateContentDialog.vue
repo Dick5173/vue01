@@ -87,11 +87,7 @@
         this.$refs.form && this.$refs.form.clearValidate()
         // 保持tp, 只重置数据
         this.formData.text = ''
-        this.formData.image = {
-          url: '',
-          width: 0,
-          height: 0
-        }
+        this.formData.imageList = []
       },
       async submit () {
         this.loading = true
