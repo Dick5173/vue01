@@ -105,7 +105,7 @@
         } else if (status === PUSH_STATUS_USER) {
           let params = {
             searchKey: String(this.$route.params.uid),
-            searchType: 'buyer',
+            searchType: 'user',
             start_time: 0,
             end_time: 0
           }
