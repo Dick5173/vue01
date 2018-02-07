@@ -16,20 +16,54 @@
       el-form-item(label="开发者")
         div.item {{itemData.developer}}
       el-form-item(label="")
+        div.bottomBtn(v-if="itemData.template_id || itemData.template_id === 0")
+          el-button(v-loading="loading", type="primary", @click="newVersion(itemData.template_id)") 发版
+          el-button.margin(v-loading="loading", type="danger", @click="deleteVersion(itemData.template_id)") 从模板库删除
 </template>
 
 <script>
+  import * as AppVersionApi from 'src/api/app-version'
+
   export default {
     props: {},
     components: {},
     data () {
       return {
-        itemData: {}
+        itemData: {},
+        loading: false
       }
     },
     computed: {},
     watch: {},
-    methods: {},
+    methods: {
+      async deleteVersion (id) {
+        try {
+          this.loading = true
+          await AppVersionApi.deleteTemplate(id)
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.$router.back()
+        } finally {
+          this.loading = false
+        }
+      },
+      async newVersion (id) {
+        this.$confirm(`TemplateID: ${id}`, '发版', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '已发版'
+          })
+          this.$router.back()
+        }).catch(() => {
+        })
+      }
+    },
     mounted () {
       this.itemData = this.$route.params.rowItem
     }
@@ -44,5 +78,13 @@
     height: 40px;
     line-height: 40px;
     color: #606266;
+  }
+
+  .bottomBtn {
+    margin-left: 100px;
+  }
+
+  .margin {
+    margin-left: 20px;
   }
 </style>

@@ -2,7 +2,7 @@
   div
     div.text 每个小程序只保留最新一次的上传记录
     div
-      el-table(:data="dataList", v-loading="loading")
+      el-table(:data="dataList", v-loading="loading", border)
         el-table-column(label="版本号", prop="user_version", width="100px")
         el-table-column(label="描述", prop="user_desc", width="400px")
         el-table-column(label="来源小程序", prop="source_miniprogram")

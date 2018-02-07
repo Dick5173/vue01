@@ -2,7 +2,7 @@
   div
     div.text 最多可添加50个，还可添加{{50-rowList.length}}个
     div
-      el-table(:data="dataList")
+      el-table(:data="dataList", border)
         el-table-column(label="版本号", prop="user_version", width="100px")
         el-table-column(label="描述", prop="user_desc", width="400px")
         el-table-column(label="TemplateID", prop="template_id")
