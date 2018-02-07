@@ -35,8 +35,8 @@
           tenant_id: '',
           prod_tp: 0,
           prod: '',
-          start: '',
-          end: ''
+          start: 0,
+          end: 0
         },
         refundStatus: [{
           value: 0,
