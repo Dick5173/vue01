@@ -25,8 +25,8 @@
           tenant_id: '',
           prod_tp: 0,
           prod: '',
-          start: '',
-          end: ''
+          start_time: '',
+          end_time: ''
         }
       }
     },

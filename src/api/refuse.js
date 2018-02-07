@@ -4,15 +4,15 @@ import {date} from '../filter/datetime'
 
 export const refuseList = (params) => {
   let myParams = {}
-  if (parseInt(params.start) > 0) {
-    myParams.start = date(parseInt(params.start))
+  if (parseInt(params.start_time) > 0) {
+    myParams.start_time = date(parseInt(params.start_time))
   } else {
-    myParams.start = ''
+    myParams.start_time = ''
   }
-  if (parseInt(params.end) > 0) {
-    myParams.end = date(parseInt(params.end))
+  if (parseInt(params.end_time) > 0) {
+    myParams.end_time = date(parseInt(params.end_time))
   } else {
-    myParams.end = ''
+    myParams.end_time = ''
   }
   myParams.prod = params.prod
   myParams.prod_tp = params.prod_tp

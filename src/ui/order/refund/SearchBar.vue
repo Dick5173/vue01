@@ -7,7 +7,7 @@
       el-select(v-model="form.prod_tp", placeholder="请选择")
         el-option(v-for="item in productType", :key="item.value", :label="item.label", :value="item.value")
     el-form-item(label="下单")
-      date-range-picker(:start.sync="form.start", :end.sync="form.end")
+      date-range-picker(:start.sync="form.start_time", :end.sync="form.end_time")
     el-form-item(label="店铺")
       select-tenant(v-model!="form.tenant_id")
     el-form-item
@@ -35,8 +35,8 @@
           tenant_id: '',
           prod_tp: 0,
           prod: '',
-          start: 0,
-          end: 0
+          start_time: 0,
+          end_time: 0
         },
         refundStatus: [{
           value: 0,
