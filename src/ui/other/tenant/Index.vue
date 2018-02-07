@@ -151,10 +151,6 @@
             this.loading = false
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
         })
       },
       disabled (id) {
@@ -175,10 +171,6 @@
             this.loading = false
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
         })
       },
       enable (id) {
@@ -199,10 +191,6 @@
             this.loading = false
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
         })
       },
       handleSearch (data) {

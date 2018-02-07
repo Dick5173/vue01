@@ -149,10 +149,6 @@
             this.loading = false
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
         })
       },
       disable (id) {
@@ -173,10 +169,6 @@
             this.loading = false
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
         })
       },
       showTp (tp) {

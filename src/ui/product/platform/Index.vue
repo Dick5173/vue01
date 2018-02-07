@@ -189,10 +189,6 @@
             })
             this.loadDataListByQueryPage()
           }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消'
-            })
           })
         }
       },
@@ -240,10 +236,6 @@
             this.loading = false
           }
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
         })
       },
       changeStatus (row) {
@@ -262,10 +254,6 @@
               })
               this.loadDataListByQueryPage()
             }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消'
-              })
             })
           } else {
             this.$confirm('上架商品？', '提示', {
@@ -281,10 +269,6 @@
               })
               this.loadDataListByQueryPage()
             }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消'
-              })
             })
           }
         } catch (err) {
