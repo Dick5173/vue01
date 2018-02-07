@@ -20,7 +20,7 @@
         template(slot-scope="scope")
           div
             el-button(size="mini", @click="goDetail(scope.row)") {{buttonText(scope.row)}}
-          div(v-if="lastRemark(scope.row)") {{lastRemark(scope.row)}}
+          div(v-if="lastRemark(scope.row)") 备注：{{lastRemark(scope.row)}}
 </template>
 
 <script>
@@ -40,9 +40,9 @@
         return refundBtnText(orderItem)
       },
       lastRemark (orderItem) {
-        const rp = orderItem.refund || []
-        if (rp.length > 0) {
-          return rp[0].sys_remark
+        const rp = orderItem.last_refund_sys_remark || []
+        if (rp) {
+          return rp
         }
         return ''
       },
