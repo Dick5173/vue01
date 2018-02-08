@@ -26,8 +26,8 @@
       el-table-column(label="操作" width="119")
         template(slot-scope="scope")
           div.control-wrapper
-            el-button.btn.text-code(size="mini", type="text", @click="goToDetail(scope.row.id)") 订单详情
-            el-button.btn(v-if="scope.row.dev_count > 0", style="width: 80px", size="mini" type="primary", @click="openExpress(scope.row.id)") {{scope.row.dev_count}}件快递
+            el-button.btn.text-code(size="mini", type="primary", @click="goToDetail(scope.row.id)", plain) 订单详情
+            el-button.btn(v-if="scope.row.dev_count > 0", style="width: 80px", size="mini" type="primary", @click="openExpress(scope.row.id)", plain) {{scope.row.dev_count}}件快递
             el-tooltip(placement="bottom", effect="light", v-if="scope.row.remind && scope.row.remind.length > 0 && scope.row.status === 3")
               div(slot="content")
                 div(v-for="remind in scope.row.remind", :key="remind.id") {{remind.ct | datetime}}
