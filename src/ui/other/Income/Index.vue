@@ -23,7 +23,7 @@
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
       div.total
-      div.bottom.txt-head 销售总额: {{overview.sale_total_amount | friendlyPrice(false)}}，贷款合计: {{overview.sp_total_amount | friendlyPrice(false)}}，平台服务费：{{overview.total_platform_fee | friendlyPrice(false)}}, 利润合计: {{overview.tenant_total_amount | friendlyPrice(false)}}
+      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>1") 销售总额: {{overview.sale_total_amount | friendlyPrice(false)}}，贷款合计: {{overview.sp_total_amount | friendlyPrice(false)}}，平台服务费：{{overview.total_platform_fee | friendlyPrice(false)}}, 利润合计: {{overview.tenant_total_amount | friendlyPrice(false)}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 

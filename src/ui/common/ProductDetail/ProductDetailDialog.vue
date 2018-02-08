@@ -2,7 +2,7 @@
   div
     el-dialog(title="商品详情",
     :visible.sync="dialogVisible",
-    width="680px",
+    width="750px",
     )
       div(v-loading="loading")
         product-detail(:rowFormData="formData", :isPrompt="prompt")

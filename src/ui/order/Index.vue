@@ -2,7 +2,7 @@
   div.order(v-loading="loading")
     search-bar(:queryParams="queryParams", @search="handleSearch", @create_export_task="createExportTask")
     list(:dataList="dataList")
-    div.order-bottom.txt-head 实付合计: {{showPrice(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
+    div.order-bottom.txt-head(v-if="dataList.data && dataList.data.length>0") 实付合计: {{showPrice(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
     div.order-bottom
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>

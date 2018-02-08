@@ -17,7 +17,7 @@
         div.item {{itemData.developer}}
       el-form-item(label="")
         div.bottomBtn(v-if="itemData.template_id || itemData.template_id === 0")
-          el-button(v-loading="loading", type="primary", @click="newVersion(itemData.template_id)") 发版
+          el-button(v-loading="loading", type="primary", @click="newVersion(itemData.template_id,itemData.user_version,itemData.user_desc)") 发版
           el-button.margin(v-loading="loading", type="danger", @click="deleteVersion(itemData.template_id)") 从模板库删除
 </template>
 
@@ -49,12 +49,14 @@
           this.loading = false
         }
       },
-      async newVersion (id) {
+      newVersion (id, version, desc) {
         this.$confirm(`TemplateID: ${id}`, '发版', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
+        }).then(async () => {
+          this.loading = true
+          await AppVersionApi.newVersion(id, version, desc)
           this.$message({
             type: 'success',
             message: '已发版'

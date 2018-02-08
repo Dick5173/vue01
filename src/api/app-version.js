@@ -19,9 +19,18 @@ export const deleteTemplate = (id) => {
   }
   return Axios.post(`/admin/audit/template/del`, qs.stringify(formData))
 }
-// export const newVersion = (id) => {
-//   let formData = {
-//     template_id: id
-//   }
-//   return Axios.post(`/admin/audit/tenant/${id}/release`)
-// }
+export const newVersion = (id, version, desc) => {
+  let formData = {
+    template_id: id,
+    version: version,
+    desc: desc
+  }
+  return Axios.post(`/admin/audit/submit/`, qs.stringify(formData))
+}
+
+export const getTotalData = () => {
+  return Axios.get(`/admin/audit/stat`)
+}
+export const getAuditList = (params) => {
+  return Axios.get(`/admin/audit`, {params: params})
+}

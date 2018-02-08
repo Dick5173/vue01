@@ -40,7 +40,7 @@
         return refundBtnText(orderItem)
       },
       lastRemark (orderItem) {
-        const rp = orderItem.last_refund_sys_remark || []
+        const rp = orderItem.last_refund_sys_remark || ''
         if (rp) {
           return rp
         }

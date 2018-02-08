@@ -13,7 +13,7 @@
           el-input.tiny-x-el-input(v-model.trim="formData.sub_mch_id")
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
-          el-button(type="primary", @click="handleBind", plain) 确 定
+          el-button(type="primary", @click="handleBind") 确 定
 </template>
 
 <script>

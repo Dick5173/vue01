@@ -501,6 +501,22 @@ export default new Router({
           }
         },
         {
+          path: 'appversion/auditlist',
+          name: 'AuditList',
+          component: () => import('src/ui/maintain/app-version/audit-list/Index.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '审核列表',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本控制',
+              to: {name: 'AppVersion'}
+            }, {
+              text: '审核列表'
+            }]
+          }
+        },
+        {
           path: 'apptemplate',
           name: 'AppTemplate',
           component: () => import('src/ui/maintain/app-version/app-template/Index.vue'),
