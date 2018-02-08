@@ -5,7 +5,7 @@
   "author": "wangyang <superyfwy@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "npm install && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "local": "cross-env PROXY=http://localhost:5000 npm run dev",
     "beta": "cross-env PROXY=http://beta.meishi.51baibao.com npm run dev",
     "start": "npm run dev",
@@ -15,7 +15,7 @@
     "release": "npm run build && scp -r -P 7322 dist/. root@meishi.51baibao.com:/opt/meishi/public/admin"
   },
   "dependencies": {
-    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#0.3.6",
+    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.3.6",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "dropzone": "^5.3.0",
