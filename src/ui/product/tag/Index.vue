@@ -22,7 +22,7 @@
                 div {{scope.row.pc}}款商品
             el-table-column(width="70px")
               template(slot-scope="scope")
-                el-button(size="mini", type="danger", @click="deleteTag(scope.row)", plain) 删除
+                el-button(size="mini", type="", @click="deleteTag(scope.row)", plain) 删除
     edit-dialog(ref="dlgEdit", @refresh="refresh")
 </template>
 

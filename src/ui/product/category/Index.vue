@@ -14,15 +14,15 @@
                 div(slot-scope="childProps") {{ childProps.row.pc }}款商品
               smart-table-column(label="操作", width="200px")
                 div(slot-scope="childProps")
-                  el-button(type="primary", size="mini", plain, @click="handleEditItem(childProps.row)") 编辑
-                  el-button(v-if!="showDelete(childProps.row)", type="danger", size="mini", plain,  @click="deleteItem(childProps.row)") 删除
+                  el-button(type="", size="mini", plain, @click="handleEditItem(childProps.row)") 编辑
+                  el-button(v-if!="showDelete(childProps.row)", type="", size="mini", plain,  @click="deleteItem(childProps.row)") 删除
         smart-table-column(label="名称", prop="name")
         smart-table-column(label="商品", prop="pc")
           div(slot-scope="props") {{ props.row.pc }}款商品
         smart-table-column(label="操作", width="250px")
           div(slot-scope="props")
-            el-button(type="primary", size="mini", plain, @click="handleCreateChild(props.row)") 添加子分类
-            el-button(type="primary", size="mini", plain, @click="handleEditItem(props.row)") 编辑
+            el-button(type="", size="mini", plain, @click="handleCreateChild(props.row)") 添加子分类
+            el-button(type="", size="mini", plain, @click="handleEditItem(props.row)") 编辑
             el-button(v-if!="showDelete(props.row)", type="danger", size="mini", plain, @click="deleteItem(props.row)") 删除
     form-dialog(ref="dlgForm", :visible.sync="dialogVisible", @updated="loadData", @created="categoryCreated")
 </template>

@@ -11,7 +11,7 @@
             div {{scope.row.pc}}款商品
         el-table-column
           template(slot-scope="scope")
-            el-button(size="small", type="primary", @click="editItem(scope.row)", plain) 编 辑
+            el-button(size="small", type="", @click="editItem(scope.row)", plain) 编 辑
             el-button(size="small", type="danger", @click="deleteItem(scope.row)", plain) 删 除
 </template>
 
