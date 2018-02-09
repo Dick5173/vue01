@@ -14,17 +14,16 @@
           el-table-column(label="", prop="name", align="center")
           el-table-column(label="", prop="", align="center")
             template(slot-scope="scope")
-              el-button(type="text") {{scope.row.number}}
+              el-button(type="text", @click="toAuditList(scope.row)") {{scope.row.number}}
 </template>
 
 <script>
   import * as AppVersionApi from 'src/api/app-version'
-  import {getShowList} from 'src/service/maintain/index'
-  import ElButton from '../../../../node_modules/element-ui/packages/button/src/button.vue'
+  import { getShowList } from 'src/service/maintain/index'
 
   export default {
     props: {},
-    components: {ElButton},
+    components: {},
     data () {
       return {
         loading: false,
@@ -35,6 +34,14 @@
     computed: {},
     watch: {},
     methods: {
+      toAuditList (row) {
+        this.$router.push({
+          name: 'AuditList',
+          query: {
+            name: row.name
+          }
+        })
+      },
       toChooseTemplate () {
         this.$router.push({
           name: 'AppTemplate'

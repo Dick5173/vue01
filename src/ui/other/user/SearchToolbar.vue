@@ -36,7 +36,7 @@
             tenant_id: '',
             key: '',
             start: new Date().getTime(),
-            end: new Date().getTime() + 86400000
+            end: new Date().getTime()
           }
         }
       }

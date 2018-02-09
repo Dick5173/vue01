@@ -13,7 +13,6 @@
         el-table-column(label="操作", width="200px")
           template(slot-scope="scope")
             el-button(@click="addToTemplate(scope.row)", type="primary", size="mini" , plain) 添加到模板库
-            el-button(@click="delete(scope.row)", type="danger", size="mini", plain) 删除
 </template>
 
 <script>

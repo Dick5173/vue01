@@ -34,3 +34,15 @@ export const getTotalData = () => {
 export const getAuditList = (params) => {
   return Axios.get(`/admin/audit`, {params: params})
 }
+export const refreshAppStatus = (id) => {
+  return Axios.post(`/admin/audit/tenant/${id}/refresh`)
+}
+export const retryAudit = (id) => {
+  return Axios.post(`/admin/audit/tenant/${id}/resubmit`)
+}
+export const release = (id) => {
+  return Axios.post(`/admin/audit/tenant/${id}/release`)
+}
+export const getOnlineList = () => {
+  return Axios.get(`/admin/audit/online/templateid`)
+}
