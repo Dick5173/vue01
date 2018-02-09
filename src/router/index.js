@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { getMe } from 'src/api/uc'
+import { clearAuthCookie } from 'src/service/auth/index'
 
 Vue.use(Router)
 
@@ -27,26 +28,11 @@ const homeGroups = [
   }
 ]
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
       component: () => import('src/ui/layout/home/Index.vue'),
-      beforeEnter: async (to, from, next) => {
-        if (Vue.$store.getters.isLogin) {
-          next()
-        } else {
-          try {
-            await getMe()
-            next()
-          } catch (err) {
-            next({
-              name: 'Login',
-              replace: true
-            })
-          }
-        }
-      },
       meta: {
         menu: true,
         groups: homeGroups
@@ -562,3 +548,37 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach(async (to, from, next) => {
+  if (!Vue.$store.getters.isLogin) {
+    try {
+      await getMe()
+    } catch (err) {
+      clearAuthCookie()
+      if (to.name !== 'Login') {
+        next({
+          name: 'Login',
+          replace: true
+        })
+      } else {
+        next()
+      }
+      return
+    }
+  }
+
+  // 以下就必须已完成了登录
+  // 屏蔽掉处理不登录而访问login的情况
+  if (to.name === 'Login') {
+    next({
+      name: 'Dashboard',
+      replace: true
+    })
+    return
+  }
+
+  // 处理其它的路由
+  next()
+})
+
+export default router

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { UPDATE_ME } from 'src/store/types'
 
 const COMMON_ERROR_MESSAGE = '查询失败'
 const NET_CODE_401_ERROR_MSG = '没有权限, 请重新登录'
@@ -18,6 +19,7 @@ const axiosErrorHandler = (err) => {
         message: NET_CODE_401_ERROR_MSG,
         type: 'error'
       })
+      Vue.$store.commit(UPDATE_ME, null)
       Vue.$router.replace({
         name: 'Login'
       })

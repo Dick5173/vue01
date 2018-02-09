@@ -79,9 +79,6 @@
       },
       async logout () {
         await AuthApi.logout()
-        this.$router.replace({
-          name: 'Login'
-        })
       },
       getContentRoot () {
         return this.$refs.contentRoot
