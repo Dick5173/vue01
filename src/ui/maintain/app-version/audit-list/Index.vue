@@ -13,7 +13,7 @@
         el-table-column(label="审核版本ID", prop="audit_template_id")
         el-table-column(label="审核状态", prop="")
           template(slot-scope="scope")
-            div {{showAuditStatus(scope.row)}}
+            div(v-html="showAuditStatus(scope.row)")
         el-table-column(label="操作", prop="", width="90px")
           template(slot-scope="scope")
             el-button(v-if="showButtonStatus(scope.row)", size="mini", type="primary", plain, @click="handle(scope.row)") {{showButtonStatus(scope.row)}}
