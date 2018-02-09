@@ -20,6 +20,11 @@ const homeGroups = [
     name: 'Product',
     title: '商品管理',
     path: '/'
+  },
+  {
+    name: 'VersionManagement',
+    title: '版本管理',
+    path: '/'
   }
 ]
 
@@ -469,6 +474,67 @@ const router = new Router({
             group: 'Administrator',
             title: '管理员列表',
             showInSide: true
+          }
+        },
+        {
+          path: 'appversion',
+          name: 'AppVersion',
+          component: () => import('src/ui/maintain/app-version/Index.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '版本控制',
+            showInSide: true
+          }
+        },
+        {
+          path: 'appversion/auditlist',
+          name: 'AuditList',
+          component: () => import('src/ui/maintain/app-version/audit-list/Index.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '审核列表',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本控制',
+              to: {name: 'AppVersion'}
+            }, {
+              text: '审核列表'
+            }]
+          }
+        },
+        {
+          path: 'apptemplate',
+          name: 'AppTemplate',
+          component: () => import('src/ui/maintain/app-version/app-template/Index.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '小程序模板库',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本控制',
+              to: {name: 'AppVersion'}
+            }, {
+              text: '小程序模板库'
+            }]
+          }
+        },
+        {
+          path: 'apptemplate/apptemplatedetail/:rowItem',
+          name: 'AppTemplateDetail',
+          component: () => import('src/ui/maintain/app-version/app-template/TemplatDetail.vue'),
+          meta: {
+            group: 'VersionManagement',
+            title: '代码详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '版本控制',
+              to: {name: 'AppVersion'}
+            }, {
+              text: '小程序模板库',
+              to: {name: 'AppTemplate'}
+            }, {
+              text: '代码详情'
+            }]
           }
         }
       ]
