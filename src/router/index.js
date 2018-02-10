@@ -554,7 +554,9 @@ router.beforeEach(async (to, from, next) => {
     try {
       await getMe()
     } catch (err) {
-      clearAuthCookie()
+      if (!err.response || err.response.status !== 401) {
+        clearAuthCookie()
+      }
       if (to.name !== 'Login') {
         next({
           name: 'Login',
