@@ -425,16 +425,6 @@ const router = new Router({
           }
         },
         {
-          path: 'themecolor',
-          name: 'ThemeColor',
-          component: () => import('src/ui/other/theme-color/Index.vue'),
-          meta: {
-            group: 'Other',
-            title: '主题色',
-            showInSide: true
-          }
-        },
-        {
           path: 'version',
           name: 'Version',
           component: () => import('src/ui/maintain/version/Index.vue'),
