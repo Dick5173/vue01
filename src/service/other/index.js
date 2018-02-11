@@ -71,3 +71,17 @@ export const showTenantStatus = (row) => {
   }
   return '禁用'
 }
+export const showProductAuth = (row) => {
+  let text = ''
+  switch (row.product_auth) {
+    case 1:
+      text = '自营'
+      break
+    case 2:
+      text = '选货'
+      break
+    case 3:
+      text = '选货/自营'
+  }
+  return text
+}

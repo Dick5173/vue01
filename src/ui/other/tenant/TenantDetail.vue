@@ -12,6 +12,9 @@
         div.body-item-status 店铺状态：{{showTenantStatus(tenantData.tenant_status)}}
         el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
         el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
+      div.body-status.margin-left
+        div.body-item-status 商品权限：
+        el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
       div.body-detail
         div.body-item 店铺ID：{{tenantData.id}}
         div.body-border
@@ -68,18 +71,20 @@
     el-dialog(title="小程序码", :visible.sync="dialogVisible", width="480px", :modal-append-to-body="false")
       img.dlgImg(:src="tenantData.acode_url")
       el-button(style='margin-left:150px;', @click="download") 下载小程序码
+    product-auth-dialog(ref="dlgProductAuth", @refresh="getDetail")
 </template>
 
 <script>
+  import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
   import * as TenantApi from 'src/api/tenant'
-  import { showAppStatus, showTenantStatus } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth } from 'src/service/other/index'
   import { showCover } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
   import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
 
   export default {
     props: {},
-    components: {},
+    components: {ProductAuthDialog},
     data () {
       return {
         dialogVisible: false,
@@ -93,6 +98,9 @@
     computed: {},
     watch: {},
     methods: {
+      showProductAuthDialog (row) {
+        this.$refs.dlgProductAuth.show(row)
+      },
       showStatPeriod (row) {
         const start = dateFormat(row.start_tick, 'YYYY-MM')
         const end = dateFormat(row.end_tick, 'YYYY-MM')
@@ -200,7 +208,8 @@
       },
       ...$global.$mapMethods({'showAppStatus': showAppStatus}),
       ...$global.$mapMethods({'showTenantStatus': showTenantStatus}),
-      ...$global.$mapMethods({'showCover': showCover})
+      ...$global.$mapMethods({'showCover': showCover}),
+      ...$global.$mapMethods({'showProductAuth': showProductAuth})
     },
     created () {
       const status = this.$route.query.status
@@ -246,6 +255,9 @@
 
 <style lang="scss" scoped>
   @import "../../../assets/scss/other";
+  .margin-left{
+    margin-left: 20px;
+  }
 
   .head {
     height: 50px;
@@ -287,7 +299,7 @@
   }
 
   .body-status {
-    display: flex;
+    display: inline-flex;
     margin-top: 20px;
     align-items: center;
     .body-item-status {
