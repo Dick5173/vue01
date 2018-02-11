@@ -9,7 +9,8 @@
           div(slot-scope="scope")
             div.cover(v-lazy:background-image="scope.row.head_img")
         el-table-column(label="名称", prop="nick_name")
-        el-table-column(label="线上版本ID", prop="online_template_id")
+        el-table-column(label="线上版本ID", prop="")
+          div(slot-scope="scope") {{scope.row.online_template_id ? scope.row.online_template_id : '--'}}
         el-table-column(label="审核版本ID", prop="audit_template_id")
         el-table-column(label="审核状态", prop="")
           template(slot-scope="scope")

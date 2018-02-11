@@ -42,7 +42,7 @@
                 div {{scope.row.platform_fee | price}}
             el-table-column(label="利润（元）", prop="")
               template(slot-scope="scope")
-                div {{scope.row.total_profit | price}}
+                div {{scope.row.tenant_total_amount | price}}
       div.list-title.margin-top
         div.list-title-head
           div.list-title-item 最新上架
