@@ -69,7 +69,8 @@
           app_status: '',
           start: 0,
           end: 0,
-          key: ''
+          key: '',
+          product_auth: ''
         }
       }
     },
