@@ -501,7 +501,7 @@ const router = new Router({
           component: () => import('src/ui/maintain/version/Index.vue'),
           meta: {
             group: 'VersionManagement',
-            title: '版本更新记录',
+            title: '更新记录',
             showInSide: true
           }
         },
@@ -514,7 +514,7 @@ const router = new Router({
             title: '创建',
             showInSide: false,
             breadcrumbItems: [{
-              text: '版本更新记录',
+              text: '更新记录',
               to: {name: 'Version'}
             }, {
               text: '创建'
@@ -530,7 +530,7 @@ const router = new Router({
             title: '编辑',
             showInSide: false,
             breadcrumbItems: [{
-              text: '版本更新记录',
+              text: '更新记录',
               to: {name: 'Version'}
             }, {
               text: '编辑'
