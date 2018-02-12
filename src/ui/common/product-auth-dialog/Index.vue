@@ -4,8 +4,8 @@
       el-form(ref="form", :rules="formRules", :model="formData")
         el-form-item
           div.head
-            div.cover
-            div.name
+            div.cover(v-lazy:background-image="tenantData.head_img")
+            div.name {{tenantData.nick_name}}
         el-form-item(prop="checkbox")
           el-checkbox-group(v-model="formData.checkList")
             div
@@ -82,5 +82,20 @@
 
 
 <style lang="scss" scoped>
-
+.head {
+  display: flex;
+  height: 50px;
+  .cover {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    background-position: center;
+  }
+  .name{
+    height: 50px;
+    line-height: 50px;
+    margin-left: 15px;
+  }
+}
 </style>
