@@ -19,6 +19,9 @@
         el-table-column(prop="up_product_count", label="上架商品", sortable, width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="toProduct(scope.row)") {{scope.row.up_product_count}}
+        el-table-column(prop="", label="商品权限", width="110px")
+          div(slot-scope="scope")
+            el-button(type="text", @click="showProductAuthDialog(scope.row)") {{showProductAuth(scope.row)}}
         el-table-column(prop="first_uptime", label="首次上线", sortable, width="110px")
           div(slot-scope="scope") {{scope.row.first_uptime | datetime}}
         el-table-column(prop="", label="小程序状态", width="110px")
@@ -38,14 +41,16 @@
             el-button(:type="showBindStatus(scope.row)", size="small", @click="handleBind(scope.row)", plain) {{showBindButtonName(scope.row)}}
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     bind-child-tenant-dialog(ref="dlgBindChildTenant", @submit="submit")
+    product-auth-dialog(ref="dlgProductAuth", @refresh="loadDataListByQueryPage")
 </template>
 <script>
   import SearchToolbar from 'src/ui/other/tenant/search-toolbar/IndexToolBar.vue'
+  import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
   import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
-  import { showAppStatus, showTenantStatus } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth } from 'src/service/other/index'
   import { PUSH_STATUS_TENANT } from 'src/constants/orderPush'
 
   export default {
@@ -55,7 +60,8 @@
     props: {},
     components: {
       SearchToolbar,
-      BindChildTenantDialog
+      BindChildTenantDialog,
+      ProductAuthDialog
     },
     data () {
       return {
@@ -63,7 +69,8 @@
           app_status: '',
           start: 0,
           end: 0,
-          key: ''
+          key: '',
+          product_auth: ''
         }
       }
     },
@@ -81,6 +88,9 @@
           }
           return val
         })(params))
+      },
+      showProductAuthDialog (row) {
+        this.$refs.dlgProductAuth.show(row)
       },
       async submit (formData) {
         await TenantApi.bindChildTenant(formData)
@@ -197,7 +207,8 @@
         this.queryChange(data)
       },
       ...$global.$mapMethods({'showAppStatus': showAppStatus}),
-      ...$global.$mapMethods({'showTenantStatus': showTenantStatus})
+      ...$global.$mapMethods({'showTenantStatus': showTenantStatus}),
+      ...$global.$mapMethods({'showProductAuth': showProductAuth})
     }
   }
 </script>

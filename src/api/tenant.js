@@ -1,5 +1,5 @@
 import Axios from 'axios'
-
+import qs from 'qs'
 export const getList = (params) => {
   return Axios.get('/admin/tenant', {
     params: params
@@ -30,4 +30,7 @@ export const getTenantProductDetail = (tid, pid) => {
 }
 export const bindChildTenant = (formData) => {
   return Axios.post(`/admin/tenant/s/${formData.id}/mch/bind`, formData)
+}
+export const changeProductAuth = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/product/auth`, qs.stringify(formData))
 }
