@@ -10,7 +10,7 @@
             div.cover(v-lazy:background-image="scope.row.head_img")
         el-table-column(label="名称", prop="nick_name")
         el-table-column(label="线上版本ID", prop="")
-          div(slot-scope="scope") {{scope.row.online_template_id ? scope.row.online_template_id : '--'}}
+          div(slot-scope="scope") {{showOnlineTemplateId(scope.row)}}
         el-table-column(label="审核版本ID", prop="audit_template_id")
         el-table-column(label="审核状态", prop="")
           template(slot-scope="scope")
@@ -51,6 +51,12 @@
       },
       handleSearch (data) {
         this.queryChange(data)
+      },
+      showOnlineTemplateId (row) {
+        if (row.online_template_id === 0 && row.online_status !== 5) {
+          return '--'
+        }
+        return row.online_template_id
       },
       showAuditStatus (row) {
         let text = ''
