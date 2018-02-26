@@ -536,6 +536,15 @@ const router = new Router({
               text: '编辑'
             }]
           }
+        },
+        {
+          path: '/am',
+          name: 'AuthorizationManagement',
+          component: () => import('src/ui/authorization-management/Index.vue'),
+          meta: {
+            title: '权限管理',
+            showInSide: false
+          }
         }
       ]
     },
