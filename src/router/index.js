@@ -540,7 +540,7 @@ const router = new Router({
         {
           path: '/am',
           name: 'AuthorizationManagement',
-          component: () => import('src/ui/character-auth/Index.vue'),
+          component: () => import('src/ui/authorization-management/Index.vue'),
           meta: {
             title: '权限管理',
             showInSide: false

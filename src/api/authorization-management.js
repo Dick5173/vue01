@@ -24,6 +24,15 @@ export const editAuthGroup = (formData) => {
 export const deleteAuthGroup = (id) => {
   return Axios.delete(`/admin/auth_group/s/${id}`)
 }
-export const getAuthitem = (id) => {
+export const getAuthItem = (id) => {
   return Axios.get(`/admin/auth/s/${id}`)
+}
+export const createAuth = (formData) => {
+  return Axios.post(`/admin/auth/`, formData)
+}
+export const editAuth = (formData) => {
+  return Axios.post(`/admin/auth/s/${formData.id}`, formData)
+}
+export const deleteAuth = (id) => {
+  return Axios.delete(`/admin/auth/s/${id}`)
 }

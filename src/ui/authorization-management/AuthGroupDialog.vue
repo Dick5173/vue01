@@ -2,7 +2,7 @@
   el-dialog(:title="showTitle()", :visible.sync="dialogVisible", @close="handleClose()")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="120px")
       el-form-item(label="名称：", prop="name")
-        el-input.tiny-x-el-input(v-model="formData.name", :maxlength="10")
+        el-input.tiny-x-el-input(v-model="formData.name", :maxlength="20")
       el-form-item(label="是否显示名称：", prop="show_name")
         el-radio(v-model="formData.show_name", :label="true") 是
         el-radio(v-model="formData.show_name", :label="false") 否
@@ -31,7 +31,7 @@
         initialData: null,
         formRules: {
           name: [{required: true, message: '不能为空', trigger: 'blur'},
-            {max: 10, message: '名称最长10个字符', trigger: 'blur'}]
+            {max: 20, message: '名称最长20个字符', trigger: 'blur'}]
         }
       }
     },
