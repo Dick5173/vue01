@@ -15,7 +15,7 @@
     },
     methods: {
       text (text) {
-        let data = text.replace('\n', '<br/>')
+        let data = text.replace(/\n/g, '<br/>')
         return data
       }
     }
