@@ -1,5 +1,6 @@
 <template lang="pug">
-  div.preview-text {{resource.text}}
+  div.preview-text
+    div(v-html="text(resource.text)")
 </template>
 
 <script>
@@ -10,6 +11,12 @@
         default () {
           return {}
         }
+      }
+    },
+    methods: {
+      text (text) {
+        let data = text.replace('\n', '<br/>')
+        return data
       }
     }
   }

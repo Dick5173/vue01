@@ -2,8 +2,8 @@
   mixin textContent
     el-form-item.show-validate-el-form(ref="fiShowText", v-if!="formData.tp === allContentTp.text.value", label="", prop="text")
       div.input-text-wrapper
-        el-input(v-model.trim="formData.text", :maxlength="26")
-        div.input-right-desc {{ formData.text.length }} / 26
+        el-input(v-model.trim="formData.text", :maxlength="2000", type="textarea", autosize)
+      div.input-right-desc 建议26个字以内
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
       upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
@@ -58,7 +58,7 @@
         formRules: {
           text: [
             {required: true, message: '请输入文本', trigger: 'blur'},
-            {max: 26, message: '最多可输入26个字符', trigger: 'blur'}
+            {max: 2000, message: '最多可输入2000个字符', trigger: 'blur'}
           ],
           imageList: [
             {validator: validateImage, trigger: 'change'}
