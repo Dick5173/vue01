@@ -103,7 +103,7 @@
       computeFileName (url) {
         var index = url.lastIndexOf('/')
         var ext = url.substr(index + 1)
-        return ext
+        return decodeURIComponent(ext.replace(/%25/g, '%'))
       }
     }
   }
