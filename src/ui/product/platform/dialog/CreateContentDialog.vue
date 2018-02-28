@@ -2,7 +2,7 @@
   mixin textContent
     el-form-item.show-validate-el-form(ref="fiShowText", v-if!="formData.tp === allContentTp.text.value", label="", prop="text")
       div.input-text-wrapper
-        el-input(v-model.trim="formData.text", :maxlength="2000", type="textarea", autosize)
+        el-input(v-model="formData.text", :maxlength="2000", type="textarea", autosize)
       div.input-right-desc 建议26个字以内
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
