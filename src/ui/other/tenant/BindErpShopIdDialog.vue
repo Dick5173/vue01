@@ -11,6 +11,7 @@
           el-input.tiny-x-el-input(v-model.trim="formData.app_id")
         el-form-item(label="erp商户：", prop="erp_shop_id")
           el-input.tiny-x-el-input(v-model.trim="formData.erp_shop_id")
+          el-alert.erp_bind_warn(title="ERP账号错误将无法发货", type="warning", left, :closable="false", show-icon)
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
           el-button(type="primary", @click="handleErpBind") 确 定
@@ -85,20 +86,27 @@
             }
           })
         } else {
-          this.$refs.form.validate(async (valid) => {
-            if (valid) {
-              let formData = {
-                erp_shop_id: this.formData.erp_shop_id,
-                app_id: this.formData.app_id
+          this.$confirm('填写错误，会导致无法发货', '绑定？', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(async () => {
+            this.$refs.form.validate(async (valid) => {
+              if (valid) {
+                let formData = {
+                  erp_shop_id: this.formData.erp_shop_id,
+                  app_id: this.formData.app_id
+                }
+                await TenantApi.bindErpShopId(this.tenantData.id, formData)
+                this.$message({
+                  type: 'success',
+                  message: '已修改erp商户号!'
+                })
+                this.dialogVisible = false
+                this.$emit('refresh')
               }
-              await TenantApi.bindErpShopId(this.tenantData.id, formData)
-              this.$message({
-                type: 'success',
-                message: '已修改erp商户号!'
-              })
-              this.dialogVisible = false
-              this.$emit('refresh')
-            }
+            })
+          }).catch(() => {
           })
         }
       }
@@ -125,4 +133,10 @@
       margin-left: 10px;
     }
   }
+  .erp_bind_warn {
+    background-position: left;
+    height: 30px;
+    width: 250px !important;
+  }
+
 </style>
