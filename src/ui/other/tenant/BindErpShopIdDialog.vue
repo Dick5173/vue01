@@ -1,22 +1,24 @@
 <template lang="pug">
   div
-    el-dialog( title="绑定商户号",
+    el-dialog( title="绑定ERP商户号",
     :visible.sync="dialogVisible",
     width="400px")
       div.head
         div.img(v-lazy:background-image="tenantData.head_img")
         div.name {{tenantData.nick_name}}
-      el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="80px")
+      el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="90px")
         el-form-item(label="AppID：", prop="app_id")
           el-input.tiny-x-el-input(v-model.trim="formData.app_id")
-        el-form-item(label="商户号：", prop="sub_mch_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.sub_mch_id")
+        el-form-item(label="erp商户：", prop="erp_shop_id")
+          el-input.tiny-x-el-input(v-model.trim="formData.erp_shop_id")
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
-          el-button(type="primary", @click="handleBind") 确 定
+          el-button(type="primary", @click="handleErpBind") 确 定
 </template>
 
 <script>
+  import * as TenantApi from 'src/api/tenant'
+
   export default {
     props: {},
     components: {},
@@ -32,6 +34,7 @@
         }
         callback()
       }
+
       return {
         dialogVisible: false,
         tenantData: {
@@ -39,14 +42,12 @@
         },
         formData: {
           id: '',
-          app_id: '',
-          sub_mch_id: '',
           erp_shop_id: ''
         },
         rules: {
           app_id: [{required: true, message: '不能为空', trigger: 'blur'},
             {validator: AppIdValidator, trigger: 'blur'}],
-          sub_mch_id: [{required: true, message: '不能为空', trigger: 'blur'}]
+          erp_shop_id: [{required: true, message: '不能为空', trigger: 'blur'}]
         }
       }
     },
@@ -57,9 +58,9 @@
         this.reset()
         this.tenantData = row
         this.formData.id = row.id
-        if (row.sub_mch_id) {
+        if (row.erp_shop_id) {
           this.formData.app_id = row.app_id
-          this.formData.sub_mch_id = row.sub_mch_id
+          this.formData.erp_shop_id = row.erp_shop_id
         }
         this.dialogVisible = true
       },
@@ -72,11 +73,10 @@
         }
         this.formData = {
           id: '',
-          app_id: '',
-          sub_mch_id: ''
+          erp_shop_id: ''
         }
       },
-      handleBind () {
+      handleErpBind () {
         if (this.tenantData.app_status === 4) {
           this.$alert('小程序已解除授权', '绑定失败', {
             confirmButtonText: '确定',
@@ -85,9 +85,19 @@
             }
           })
         } else {
-          this.$refs.form.validate((valid) => {
+          this.$refs.form.validate(async (valid) => {
             if (valid) {
-              this.$emit('submit', this.formData)
+              let formData = {
+                erp_shop_id: this.formData.erp_shop_id,
+                app_id: this.formData.app_id
+              }
+              await TenantApi.bindErpShopId(this.tenantData.id, formData)
+              this.$message({
+                type: 'success',
+                message: '已修改erp商户号!'
+              })
+              this.dialogVisible = false
+              this.$emit('refresh')
             }
           })
         }

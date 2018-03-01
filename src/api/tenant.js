@@ -34,3 +34,7 @@ export const bindChildTenant = (formData) => {
 export const changeProductAuth = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/product/auth`, qs.stringify(formData))
 }
+
+export const bindErpShopId = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/erp/bind`, formData)
+}

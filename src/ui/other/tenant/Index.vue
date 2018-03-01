@@ -34,19 +34,27 @@
             el-button(v-else, type="primary", size="small", @click="confirmRefund(scope.row)") 确认授权
         el-table-column(prop="", label="店铺状态", width="")
           div(slot-scope="scope") {{showTenantStatus(scope.row.tenant_status)}}
-        el-table-column(prop="", label="操作", width="180px", fixed="right")
-          div(slot-scope="scope")
-            el-button(v-if="scope.row.tenant_status === 1", type="danger", size="small", @click="disabled(scope.row.id)", plain) 禁用
-            el-button(v-else, type="primary", size="small", @click="enable(scope.row.id)", plain) 启用
-            el-button(:type="showBindStatus(scope.row)", size="small", @click="handleBind(scope.row)", plain) {{showBindButtonName(scope.row)}}
+        el-table-column(label="操作", width="120px", fixed="right")
+          div(slot-scope="props")
+            el-dropdown()
+              el-button(type="primary", size="medium", plain)
+                | 操作
+                i.el-icon-arrow-down.el-icon--right()
+              el-dropdown-menu(slot="dropdown")
+                el-dropdown-item(v-if="props.row.tenant_status === 1", type="danger", size="small", @click.native="disabled(props.row.id)", plain) &nbsp;&nbsp;禁用&nbsp;&nbsp;
+                el-dropdown-item(v-else, type="primary", size="small", @click.native="enable(props.row.id)", plain) &nbsp;&nbsp;启用&nbsp;&nbsp;
+                el-dropdown-item(:type="showBindStatus(props.row)", size="small", @click.native="handleBind(props.row)", plain) &nbsp;&nbsp;{{showBindButtonName(props.row)}}&nbsp;&nbsp;
+                el-dropdown-item(:type="showErpBindStatus(props.row)", size="small", @click.native="handleErpBind(props.row)", plain) &nbsp;&nbsp;{{showErpBindButtonName(props.row)}}&nbsp;&nbsp;
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     bind-child-tenant-dialog(ref="dlgBindChildTenant", @submit="submit")
+    bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="loadDataListByQueryPage")
     product-auth-dialog(ref="dlgProductAuth", @refresh="loadDataListByQueryPage")
 </template>
 <script>
   import SearchToolbar from 'src/ui/other/tenant/search-toolbar/IndexToolBar.vue'
   import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
   import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
+  import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
@@ -61,7 +69,8 @@
     components: {
       SearchToolbar,
       BindChildTenantDialog,
-      ProductAuthDialog
+      ProductAuthDialog,
+      BindErpShopIdDialog
     },
     data () {
       return {
@@ -104,8 +113,17 @@
       handleBind (row) {
         this.$refs.dlgBindChildTenant.show(row)
       },
+      handleErpBind (row) {
+        this.$refs.dlgBindShopId.show(row)
+      },
       showBindStatus (row) {
         if (row.sub_mch_id) {
+          return ''
+        }
+        return 'primary'
+      },
+      showErpBindStatus (row) {
+        if (row.erp_shop_id) {
           return ''
         }
         return 'primary'
@@ -115,6 +133,12 @@
           return '商户号已绑'
         }
         return '商户号未绑'
+      },
+      showErpBindButtonName (row) {
+        if (row.sub_mch_id) {
+          return 'ERP已绑'
+        }
+        return 'ERP未绑'
       },
       toOrder (row) {
         this.$router.push({
