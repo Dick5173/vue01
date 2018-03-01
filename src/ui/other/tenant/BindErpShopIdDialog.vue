@@ -86,7 +86,11 @@
             }
           })
         } else {
-          this.$confirm('填写错误，会导致无法发货', '绑定？', {
+          var tips = '填写错误，会导致无法发货'
+          if (this.tenantData.erp_shop_id !== this.formData.erp_shop_id) {
+            tips = '从' + this.formData.erp_shop_id + '更换为' + this.tenantData.erp_shop_id + '？'
+          }
+          this.$confirm(tips, '更换ERP', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
