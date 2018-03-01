@@ -135,7 +135,7 @@
         return '商户号未绑'
       },
       showErpBindButtonName (row) {
-        if (row.sub_mch_id) {
+        if (row.erp_shop_id) {
           return 'ERP已绑'
         }
         return 'ERP未绑'
