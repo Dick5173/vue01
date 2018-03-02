@@ -15,6 +15,9 @@
       div.body-status.margin-left
         div.body-item-status 商品权限：
         el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
+        el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
+        el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
+        el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
       div.body-detail
         div.body-item 店铺ID：{{tenantData.id}}
         div.body-border
@@ -72,19 +75,30 @@
       img.dlgImg(:src="tenantData.acode_url")
       el-button(style='margin-left:150px;', @click="download") 下载小程序码
     product-auth-dialog(ref="dlgProductAuth", @refresh="getDetail")
+    bind-child-tenant-dialog(ref="dlgMchBindDialog", @refresh="getDetail")
+    bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="getDetail")
+    bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="getDetail")
 </template>
 
 <script>
   import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
+  import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
+  import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
+  import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
   import * as TenantApi from 'src/api/tenant'
-  import { showAppStatus, showTenantStatus, showProductAuth } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName } from 'src/service/other/index'
   import { showCover } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
   import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
 
   export default {
     props: {},
-    components: {ProductAuthDialog},
+    components: {
+      ProductAuthDialog,
+      BindChildTenantDialog,
+      BindErpShopIdDialog,
+      BindQiyuDialog
+    },
     data () {
       return {
         dialogVisible: false,
@@ -100,6 +114,15 @@
     methods: {
       showProductAuthDialog (row) {
         this.$refs.dlgProductAuth.show(row)
+      },
+      showMchBindDialog (row) {
+        this.$refs.dlgMchBindDialog.show(row)
+      },
+      showErpBindDialog (row) {
+        this.$refs.dlgBindShopId.show(row)
+      },
+      showQiyuBindDialog (row) {
+        this.$refs.dlgBindQiyu.show(row)
       },
       showStatPeriod (row) {
         const start = dateFormat(row.start_tick, 'YYYY-MM')
@@ -209,7 +232,10 @@
       ...$global.$mapMethods({'showAppStatus': showAppStatus}),
       ...$global.$mapMethods({'showTenantStatus': showTenantStatus}),
       ...$global.$mapMethods({'showCover': showCover}),
-      ...$global.$mapMethods({'showProductAuth': showProductAuth})
+      ...$global.$mapMethods({'showProductAuth': showProductAuth}),
+      ...$global.$mapMethods({'showErpBindButtonName': showErpBindButtonName}),
+      ...$global.$mapMethods({'showQiyuBindButtonName': showQiyuBindButtonName}),
+      ...$global.$mapMethods({'showMchBindButtonName': showMchBindButtonName})
     },
     created () {
       const status = this.$route.query.status

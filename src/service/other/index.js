@@ -85,3 +85,24 @@ export const showProductAuth = (row) => {
   }
   return text
 }
+
+export const showErpBindButtonName = (row) => {
+  if (row.erp_shop_id) {
+    return 'ERP已绑'
+  }
+  return 'ERP未绑'
+}
+
+export const showQiyuBindButtonName = (row) => {
+  if (row.qiyu_id) {
+    return '七鱼号已绑'
+  }
+  return '七鱼号未绑'
+}
+
+export const showMchBindButtonName = (row) => {
+  if (row.sub_mch_id) {
+    return '商户号已绑'
+  }
+  return '商户号未绑'
+}

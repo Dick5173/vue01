@@ -43,11 +43,11 @@
               el-dropdown-menu(slot="dropdown")
                 el-dropdown-item(v-if="props.row.tenant_status === 1", type="danger", size="small", @click.native="disabled(props.row.id)", plain) &nbsp;&nbsp;禁用&nbsp;&nbsp;
                 el-dropdown-item(v-else, type="primary", size="small", @click.native="enable(props.row.id)", plain) &nbsp;&nbsp;启用&nbsp;&nbsp;
-                el-dropdown-item(:type="showBindStatus(props.row)", size="small", @click.native="handleBind(props.row)", plain) &nbsp;&nbsp;{{showBindButtonName(props.row)}}&nbsp;&nbsp;
+                el-dropdown-item(:type="showBindStatus(props.row)", size="small", @click.native="handleBind(props.row)", plain) &nbsp;&nbsp;{{showMchBindButtonName(props.row)}}&nbsp;&nbsp;
                 el-dropdown-item(:type="showErpBindStatus(props.row)", size="small", @click.native="handleErpBind(props.row)", plain) &nbsp;&nbsp;{{showErpBindButtonName(props.row)}}&nbsp;&nbsp;
                 el-dropdown-item(:type="showQiyuBindStatus(props.row)", size="small", @click.native="handleQiyuBind(props.row)", plain) &nbsp;&nbsp;{{showQiyuBindButtonName(props.row)}}&nbsp;&nbsp;
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
-    bind-child-tenant-dialog(ref="dlgBindChildTenant", @submit="submit")
+    bind-child-tenant-dialog(ref="dlgBindChildTenant", @refresh="loadDataListByQueryPage")
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="loadDataListByQueryPage")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="loadDataListByQueryPage")
     product-auth-dialog(ref="dlgProductAuth", @refresh="loadDataListByQueryPage")
@@ -61,7 +61,7 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
-  import { showAppStatus, showTenantStatus, showProductAuth } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName } from 'src/service/other/index'
   import { PUSH_STATUS_TENANT } from 'src/constants/orderPush'
 
   export default {
@@ -105,15 +105,6 @@
       showProductAuthDialog (row) {
         this.$refs.dlgProductAuth.show(row)
       },
-      async submit (formData) {
-        await TenantApi.bindChildTenant(formData)
-        this.$refs.dlgBindChildTenant.hide()
-        this.$message({
-          message: '绑定商户号成功',
-          type: 'success'
-        })
-        this.loadDataListByQueryPage()
-      },
       handleBind (row) {
         this.$refs.dlgBindChildTenant.show(row)
       },
@@ -140,24 +131,6 @@
           return ''
         }
         return 'primary'
-      },
-      showBindButtonName (row) {
-        if (row.sub_mch_id) {
-          return '商户号已绑'
-        }
-        return '商户号未绑'
-      },
-      showErpBindButtonName (row) {
-        if (row.erp_shop_id) {
-          return 'ERP已绑'
-        }
-        return 'ERP未绑'
-      },
-      showQiyuBindButtonName (row) {
-        if (row.qiyu_id) {
-          return '七鱼号已绑'
-        }
-        return '七鱼号未绑'
       },
       toOrder (row) {
         this.$router.push({
@@ -251,7 +224,11 @@
       },
       ...$global.$mapMethods({'showAppStatus': showAppStatus}),
       ...$global.$mapMethods({'showTenantStatus': showTenantStatus}),
-      ...$global.$mapMethods({'showProductAuth': showProductAuth})
+      ...$global.$mapMethods({'showProductAuth': showProductAuth}),
+      ...$global.$mapMethods({'showProductAuth': showProductAuth}),
+      ...$global.$mapMethods({'showErpBindButtonName': showErpBindButtonName}),
+      ...$global.$mapMethods({'showQiyuBindButtonName': showQiyuBindButtonName}),
+      ...$global.$mapMethods({'showMchBindButtonName': showMchBindButtonName})
     }
   }
 </script>

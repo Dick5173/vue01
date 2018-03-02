@@ -17,6 +17,8 @@
 </template>
 
 <script>
+  import * as TenantApi from 'src/api/tenant'
+
   export default {
     props: {},
     components: {},
@@ -84,13 +86,38 @@
               this.dialogVisible = false
             }
           })
-        } else {
-          this.$refs.form.validate((valid) => {
-            if (valid) {
-              this.$emit('submit', this.formData)
-            }
-          })
+          return
         }
+
+        var tips = '确定绑定商户号?'
+        if (this.tenantData.sub_mch_id !== '' && this.tenantData.sub_mch_id !== this.formData.sub_mch_id) {
+          tips = '从' + this.tenantData.sub_mch_id + '更换为' + this.formData.sub_mch_id + '？'
+        }
+
+        this.$refs.form.validate(async (valid) => {
+          if (!valid) {
+            return
+          }
+
+          let formData = {
+            sub_mch_id: this.formData.sub_mch_id,
+            app_id: this.formData.app_id
+          }
+
+          this.$confirm(tips, '设置商户号', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(async () => {
+            await TenantApi.bindChildTenant(this.tenantData.id, formData)
+            this.$message({
+              type: 'success',
+              message: '绑定商户号成功!'
+            })
+            this.dialogVisible = false
+            this.$emit('refresh')
+          }).catch(() => {})
+        })
       }
     }
   }

@@ -28,8 +28,8 @@ export const getTenantProductList = (id, params) => {
 export const getTenantProductDetail = (tid, pid) => {
   return Axios.get(`/admin/tenant/s/${tid}/product/ps/${pid}`)
 }
-export const bindChildTenant = (formData) => {
-  return Axios.post(`/admin/tenant/s/${formData.id}/mch/bind`, formData)
+export const bindChildTenant = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/mch/bind`, formData)
 }
 export const changeProductAuth = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/product/auth`, qs.stringify(formData))
