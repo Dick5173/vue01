@@ -15,7 +15,7 @@
         el-table-column(label="审核状态", prop="")
           template(slot-scope="scope")
             div(v-html="showAuditStatus(scope.row)")
-        el-table-column(label="操作", prop="", width="90px")
+        el-table-column(label="操作", prop="", width="97px")
           template(slot-scope="scope")
             el-button(v-if="showButtonStatus(scope.row)", size="mini", type="primary", plain, @click="handle(scope.row)") {{showButtonStatus(scope.row)}}
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
@@ -39,6 +39,7 @@
         queryParams: {
           key: '',
           audit_status: '',
+          template_id: 0,
           online_template_id: ''
         }
       }
@@ -96,6 +97,9 @@
             break
           case 5:
             text = ''
+            if (row.template_id !== this.template_id) {
+              text = '提交最新'
+            }
             break
         }
         return text
@@ -122,6 +126,22 @@
               type: 'success',
               message: '已重新获取审核状态'
             })
+          } else if (row.audit_status === 5) {
+            if (row.template_id !== this.template_id) {
+              this.$confirm('确定发布最新版？', '提交最新版本', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(async () => {
+                await AppVersionApi.submitLatest(row.id)
+                this.$message({
+                  type: 'success',
+                  message: '已提交最新版本'
+                })
+                this.dialogVisible = false
+                this.$emit('refresh')
+              }).catch(() => {})
+            }
           }
           this.loadDataListByQueryPage()
         } finally {
@@ -151,10 +171,15 @@
           }
           this.queryChange(params)
         }
+      },
+      async getLatestTemplateId () {
+        let res = await AppVersionApi.getLatestTemplate()
+        this.template_id = res.template_id
       }
     },
     mounted () {
       this.autoSearch()
+      this.getLatestTemplateId()
     }
   }
 </script>

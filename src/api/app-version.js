@@ -46,3 +46,9 @@ export const release = (id) => {
 export const getOnlineList = () => {
   return Axios.get(`/admin/audit/online/templateid`)
 }
+export const getLatestTemplate = () => {
+  return Axios.get(`/admin/audit/template/latest`)
+}
+export const submitLatest = (id) => {
+  return Axios.post(`/admin/audit/tenant/${id}/submit/latest`)
+}
