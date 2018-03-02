@@ -85,34 +85,38 @@
               this.dialogVisible = false
             }
           })
-        } else {
-          var tips = '填写错误，会导致无法发货'
-          if (this.tenantData.erp_shop_id !== '' && this.tenantData.erp_shop_id !== this.formData.erp_shop_id) {
-            tips = '从' + this.tenantData.erp_shop_id + '更换为' + this.formData.erp_shop_id + '？'
+          return
+        }
+
+        var tips = '填写错误，会导致无法发货'
+        if (this.tenantData.erp_shop_id !== '' && this.tenantData.erp_shop_id !== this.formData.erp_shop_id) {
+          tips = '从' + this.tenantData.erp_shop_id + '更换为' + this.formData.erp_shop_id + '？'
+        }
+
+        this.$refs.form.validate(async (valid) => {
+          if (!valid) {
+            return
           }
+
+          let formData = {
+            erp_shop_id: this.formData.erp_shop_id,
+            app_id: this.formData.app_id
+          }
+
           this.$confirm(tips, '更换ERP', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(async () => {
-            this.$refs.form.validate(async (valid) => {
-              if (valid) {
-                let formData = {
-                  erp_shop_id: this.formData.erp_shop_id,
-                  app_id: this.formData.app_id
-                }
-                await TenantApi.bindErpShopId(this.tenantData.id, formData)
-                this.$message({
-                  type: 'success',
-                  message: '已修改erp商户号!'
-                })
-                this.dialogVisible = false
-                this.$emit('refresh')
-              }
+            await TenantApi.bindErpShopId(this.tenantData.id, formData)
+            this.$message({
+              type: 'success',
+              message: '已修改erp商户号!'
             })
-          }).catch(() => {
-          })
-        }
+            this.dialogVisible = false
+            this.$emit('refresh')
+          }).catch(() => {})
+        })
       }
     }
   }

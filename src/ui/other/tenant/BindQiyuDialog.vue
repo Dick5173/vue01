@@ -84,34 +84,38 @@
               this.dialogVisible = false
             }
           })
-        } else {
-          var tips = '设置七鱼号'
-          if (this.tenantData.qiyu_id !== '' && this.tenantData.qiyu_id !== this.formData.qiyu_id) {
-            tips = '从' + this.tenantData.qiyu_id + '更换为' + this.formData.qiyu_id + '？'
+          return
+        }
+
+        var tips = '设置七鱼号'
+        if (this.tenantData.qiyu_id !== '' && this.tenantData.qiyu_id !== this.formData.qiyu_id) {
+          tips = '从' + this.tenantData.qiyu_id + '更换为' + this.formData.qiyu_id + '？'
+        }
+
+        let formData = {
+          qiyu_id: this.formData.qiyu_id,
+          app_id: this.formData.app_id
+        }
+
+        this.$refs.form.validate(async (valid) => {
+          if (!valid) {
+            return
           }
+
           this.$confirm(tips, '设置七鱼', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(async () => {
-            this.$refs.form.validate(async (valid) => {
-              if (valid) {
-                let formData = {
-                  qiyu_id: this.formData.qiyu_id,
-                  app_id: this.formData.app_id
-                }
-                await TenantApi.bindQiyu(this.tenantData.id, formData)
-                this.$message({
-                  type: 'success',
-                  message: '已修改七鱼号!'
-                })
-                this.dialogVisible = false
-                this.$emit('refresh')
-              }
+            await TenantApi.bindQiyu(this.tenantData.id, formData)
+            this.$message({
+              type: 'success',
+              message: '已修改七鱼号!'
             })
-          }).catch(() => {
-          })
-        }
+            this.dialogVisible = false
+            this.$emit('refresh')
+          }).catch(() => {})
+        })
       }
     }
   }
