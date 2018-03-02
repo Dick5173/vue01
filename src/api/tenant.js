@@ -38,3 +38,7 @@ export const changeProductAuth = (tid, formData) => {
 export const bindErpShopId = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/erp/bind`, formData)
 }
+
+export const bindQiyu = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/qiyu/bind`, formData)
+}

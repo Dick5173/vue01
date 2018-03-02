@@ -45,9 +45,11 @@
                 el-dropdown-item(v-else, type="primary", size="small", @click.native="enable(props.row.id)", plain) &nbsp;&nbsp;启用&nbsp;&nbsp;
                 el-dropdown-item(:type="showBindStatus(props.row)", size="small", @click.native="handleBind(props.row)", plain) &nbsp;&nbsp;{{showBindButtonName(props.row)}}&nbsp;&nbsp;
                 el-dropdown-item(:type="showErpBindStatus(props.row)", size="small", @click.native="handleErpBind(props.row)", plain) &nbsp;&nbsp;{{showErpBindButtonName(props.row)}}&nbsp;&nbsp;
+                el-dropdown-item(:type="showQiyuBindStatus(props.row)", size="small", @click.native="handleQiyuBind(props.row)", plain) &nbsp;&nbsp;{{showQiyuBindButtonName(props.row)}}&nbsp;&nbsp;
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     bind-child-tenant-dialog(ref="dlgBindChildTenant", @submit="submit")
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="loadDataListByQueryPage")
+    bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="loadDataListByQueryPage")
     product-auth-dialog(ref="dlgProductAuth", @refresh="loadDataListByQueryPage")
 </template>
 <script>
@@ -55,6 +57,7 @@
   import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
   import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
   import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
+  import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
@@ -70,7 +73,8 @@
       SearchToolbar,
       BindChildTenantDialog,
       ProductAuthDialog,
-      BindErpShopIdDialog
+      BindErpShopIdDialog,
+      BindQiyuDialog
     },
     data () {
       return {
@@ -116,6 +120,9 @@
       handleErpBind (row) {
         this.$refs.dlgBindShopId.show(row)
       },
+      handleQiyuBind (row) {
+        this.$refs.dlgBindQiyu.show(row)
+      },
       showBindStatus (row) {
         if (row.sub_mch_id) {
           return ''
@@ -124,6 +131,12 @@
       },
       showErpBindStatus (row) {
         if (row.erp_shop_id) {
+          return ''
+        }
+        return 'primary'
+      },
+      showQiyuBindStatus (row) {
+        if (row.qiyu_id) {
           return ''
         }
         return 'primary'
@@ -139,6 +152,12 @@
           return 'ERP已绑'
         }
         return 'ERP未绑'
+      },
+      showQiyuBindButtonName (row) {
+        if (row.qiyu_id) {
+          return '七鱼号已绑'
+        }
+        return '七鱼号未绑'
       },
       toOrder (row) {
         this.$router.push({
