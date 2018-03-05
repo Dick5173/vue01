@@ -314,6 +314,58 @@ const router = new Router({
           }
         },
         {
+          path: 'freight',
+          name: 'FreightIndex',
+          component: () => import('src/ui/product/freight/Index.vue'),
+          meta: {
+            group: 'Product',
+            title: '运费模板',
+            showInSide: true
+          }
+        },
+        {
+          path: 'freight/create',
+          name: 'FreightCreate',
+          component: () => import('src/ui/product/freight/Create.vue'),
+          meta: {
+            group: 'Product',
+            title: '创建运费模板',
+            breadcrumbItems: [
+              {
+                text: '运费模板',
+                to: {
+                  name: 'FreightIndex'
+                }
+              },
+              {
+                text: '创建'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
+          path: 'freight/edit/:id',
+          name: 'FreightEdit',
+          component: () => import('src/ui/product/freight/Edit.vue'),
+          meta: {
+            group: 'Product',
+            title: '编辑运费模板',
+            breadcrumbItems: [
+              {
+                text: '售后模板',
+                to: {
+                  name: 'FreightIndex'
+                }
+              },
+              {
+                text: '编辑'
+              }
+            ],
+            customBreadcrumb: false
+          }
+        },
+        {
           path: 'tenant',
           name: 'Tenant',
           component: () => import('src/ui/other/tenant/Index.vue'),

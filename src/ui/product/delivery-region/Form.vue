@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import * as AddressUtil from 'src/util/addressUtil'
+  import * as AddressUtil from 'src/util/address'
   import * as DRegionApi from 'src/api/delivery-region'
 
   export default {
