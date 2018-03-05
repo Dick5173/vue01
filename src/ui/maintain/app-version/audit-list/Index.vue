@@ -15,7 +15,7 @@
         el-table-column(label="审核状态", prop="")
           template(slot-scope="scope")
             div(v-html="showAuditStatus(scope.row)")
-        el-table-column(label="操作", prop="", width="170px")
+        el-table-column(label="操作", prop="", width="200px")
           template(slot-scope="scope")
             el-button(v-if="showButtonStatus(scope.row)", size="mini", type="primary", plain, @click="handle(scope.row)") {{showButtonStatus(scope.row)}}
             el-button(v-if="showReleaseStatus(scope.row)", size="mini", type="primary", plain, @click="handleRelease(scope.row)") {{showReleaseStatus(scope.row)}}
@@ -103,7 +103,7 @@
             break
           case 5:
             text = ''
-            if (row.template_id !== this.template_id) {
+            if (row.online_template_id !== this.template_id) {
               text = '提交最新'
             }
             break
@@ -140,7 +140,7 @@
               message: '已重新获取审核状态'
             })
           } else if (row.audit_status === 5) {
-            if (row.template_id !== this.template_id) {
+            if (row.online_template_id !== this.template_id) {
               this.$confirm('确定发布最新版？', '提交最新版本', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
