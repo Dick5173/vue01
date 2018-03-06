@@ -57,11 +57,6 @@
       show (row) {
         this.reset()
         this.tenantData = row
-        this.formData.id = row.id
-        if (row.qiyu_id) {
-          this.formData.app_id = row.app_id
-          this.formData.qiyu_id = row.qiyu_id
-        }
         this.dialogVisible = true
       },
       hide () {

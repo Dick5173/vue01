@@ -58,11 +58,6 @@
       show (row) {
         this.reset()
         this.tenantData = row
-        this.formData.id = row.id
-        if (row.erp_shop_id) {
-          this.formData.app_id = row.app_id
-          this.formData.erp_shop_id = row.erp_shop_id
-        }
         this.dialogVisible = true
       },
       hide () {
