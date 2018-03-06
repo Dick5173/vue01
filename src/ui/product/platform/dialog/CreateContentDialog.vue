@@ -8,6 +8,7 @@
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
       upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
       div.desc-text {{imageTip}}
+
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="mediumDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
       el-form-item(label="类型", prop="tp")
