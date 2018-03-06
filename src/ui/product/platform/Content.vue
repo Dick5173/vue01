@@ -24,7 +24,7 @@
     div
       el-button(type="primary", size="mini", plain, @click="handleCreate") 添加描述
       el-button(type="primary", size="mini", plain, @click="showPreview") 预览
-    create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess")
+    create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess", imageTip="建议宽度750像素")
     preview-dialog(ref="dlgPreview", :resources="content")
 </template>
 
