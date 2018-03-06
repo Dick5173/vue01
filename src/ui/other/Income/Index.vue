@@ -16,10 +16,10 @@
         el-table-column(label="总货款（元）", prop="sp_total_amount")
           template(slot-scope="scope")
             div {{scope.row.sp_total_amount | price}}
-        el-table-column(label="自营贷款（元）", prop="self_sp_amount")
+        el-table-column(label="自营货款（元）", prop="self_sp_amount")
           template(slot-scope="scope")
             div {{scope.row.self_sp_amount | price}}
-        el-table-column(label="平台贷款（元）", prop="platform_sp_amount")
+        el-table-column(label="平台货款（元）", prop="platform_sp_amount")
           template(slot-scope="scope")
             div {{scope.row.platform_sp_amount | price}}
         el-table-column(label="平台服务费（元）", prop="platform_fee")
@@ -29,7 +29,7 @@
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
       div.total
-      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 销售总额: {{overview.sale_total_amount | friendlyPrice(true)}}，总贷款: {{overview.sp_total_amount | friendlyPrice(true)}}，自营货款: {{overview.self_sp_amount | friendlyPrice(true)}}, 平台货款: {{overview.platform_sp_amount | friendlyPrice(true)}}, 平台服务费:{{overview.total_platform_fee | friendlyPrice(true)}}, 利润: {{overview.tenant_total_amount | friendlyPrice(true)}}
+      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 销售总额: {{overview.sale_total_amount | friendlyPrice(true)}}，总货款: {{overview.sp_total_amount | friendlyPrice(true)}}，自营货款: {{overview.self_sp_amount | friendlyPrice(true)}}, 平台货款: {{overview.platform_sp_amount | friendlyPrice(true)}}, 平台服务费:{{overview.total_platform_fee | friendlyPrice(true)}}, 利润: {{overview.tenant_total_amount | friendlyPrice(true)}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 
