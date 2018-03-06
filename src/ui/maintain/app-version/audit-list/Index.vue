@@ -15,9 +15,10 @@
         el-table-column(label="审核状态", prop="")
           template(slot-scope="scope")
             div(v-html="showAuditStatus(scope.row)")
-        el-table-column(label="操作", prop="", width="90px")
+        el-table-column(label="操作", prop="", width="200px")
           template(slot-scope="scope")
             el-button(v-if="showButtonStatus(scope.row)", size="mini", type="primary", plain, @click="handle(scope.row)") {{showButtonStatus(scope.row)}}
+            el-button(v-if="showReleaseStatus(scope.row)", size="mini", type="primary", plain, @click="handleRelease(scope.row)") {{showReleaseStatus(scope.row)}}
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 
@@ -39,6 +40,8 @@
         queryParams: {
           key: '',
           audit_status: '',
+          template_id: 0,
+          need_release: true,
           online_template_id: ''
         }
       }
@@ -81,6 +84,10 @@
       },
       showButtonStatus (row) {
         let text = ''
+        if (!row.need_release) {
+          return text
+        }
+
         switch (row.audit_status) {
           case 1:
             text = '刷新'
@@ -96,7 +103,17 @@
             break
           case 5:
             text = ''
+            if (row.online_template_id !== this.template_id) {
+              text = '提交最新'
+            }
             break
+        }
+        return text
+      },
+      showReleaseStatus (row) {
+        let text = '恢复发版'
+        if (row.need_release) {
+          text = '停止发版'
         }
         return text
       },
@@ -122,11 +139,51 @@
               type: 'success',
               message: '已重新获取审核状态'
             })
+          } else if (row.audit_status === 5) {
+            if (row.online_template_id !== this.template_id) {
+              this.$confirm('确定发布最新版？', '提交最新版本', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(async () => {
+                await AppVersionApi.submitLatest(row.id)
+                this.$message({
+                  type: 'success',
+                  message: '已提交最新版本'
+                })
+                this.dialogVisible = false
+                this.$emit('refresh')
+              }).catch(() => {})
+            }
           }
           this.loadDataListByQueryPage()
         } finally {
           this.loading = false
         }
+      },
+      async handleRelease (row) {
+        var tips = '确定要恢复发版吗？'
+        if (row.need_release) {
+          tips = '确定要停止发布后续版本吗？'
+        }
+        this.$confirm(tips, '更改发版状态', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          if (row.need_release) {
+            await AppVersionApi.stopReleaseVersion(row.id)
+          } else {
+            await AppVersionApi.startReleaseVersion(row.id)
+          }
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+          this.dialogVisible = false
+          this.$emit('refresh')
+          this.loadDataListByQueryPage()
+        }).catch(() => {})
       },
       autoSearch () {
         let name = this.$route.query.name
@@ -151,10 +208,15 @@
           }
           this.queryChange(params)
         }
+      },
+      async getLatestTemplateId () {
+        let res = await AppVersionApi.getLatestTemplate()
+        this.template_id = res.template_id
       }
     },
     mounted () {
       this.autoSearch()
+      this.getLatestTemplateId()
     }
   }
 </script>

@@ -1,19 +1,19 @@
 <template lang="pug">
   div
-    el-dialog( title="绑定商户号",
+    el-dialog( title="绑定七鱼号",
     :visible.sync="dialogVisible",
     width="400px")
       div.head
         div.img(v-lazy:background-image="tenantData.head_img")
         div.name {{tenantData.nick_name}}
-      el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="80px")
+      el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="90px")
         el-form-item(label="AppID：", prop="app_id")
           el-input.tiny-x-el-input(v-model.trim="formData.app_id")
-        el-form-item(label="商户号：", prop="sub_mch_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.sub_mch_id")
+        el-form-item(label="七鱼ID：", prop="qiyu_id")
+          el-input.tiny-x-el-input(v-model.trim="formData.qiyu_id")
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
-          el-button(type="primary", @click="handleBind") 确 定
+          el-button(type="primary", @click="handleQiyuBind") 确 定
 </template>
 
 <script>
@@ -34,6 +34,7 @@
         }
         callback()
       }
+
       return {
         dialogVisible: false,
         tenantData: {
@@ -41,14 +42,12 @@
         },
         formData: {
           id: '',
-          app_id: '',
-          sub_mch_id: '',
-          erp_shop_id: ''
+          qiyu_id: ''
         },
         rules: {
           app_id: [{required: true, message: '不能为空', trigger: 'blur'},
             {validator: AppIdValidator, trigger: 'blur'}],
-          sub_mch_id: [{required: true, message: '不能为空', trigger: 'blur'}]
+          qiyu_id: [{required: true, message: '不能为空', trigger: 'blur'}]
         }
       }
     },
@@ -69,11 +68,10 @@
         }
         this.formData = {
           id: '',
-          app_id: '',
-          sub_mch_id: ''
+          qiyu_id: ''
         }
       },
-      handleBind () {
+      handleQiyuBind () {
         if (this.tenantData.app_status === 4) {
           this.$alert('小程序已解除授权', '绑定失败', {
             confirmButtonText: '确定',
@@ -84,9 +82,14 @@
           return
         }
 
-        var tips = '确定绑定商户号?'
-        if (this.tenantData.sub_mch_id !== '' && this.tenantData.sub_mch_id !== this.formData.sub_mch_id) {
-          tips = '从' + this.tenantData.sub_mch_id + '更换为' + this.formData.sub_mch_id + '？'
+        var tips = '设置七鱼号'
+        if (this.tenantData.qiyu_id !== '' && this.tenantData.qiyu_id !== this.formData.qiyu_id) {
+          tips = '从' + this.tenantData.qiyu_id + '更换为' + this.formData.qiyu_id + '？'
+        }
+
+        let formData = {
+          qiyu_id: this.formData.qiyu_id,
+          app_id: this.formData.app_id
         }
 
         this.$refs.form.validate(async (valid) => {
@@ -94,20 +97,15 @@
             return
           }
 
-          let formData = {
-            sub_mch_id: this.formData.sub_mch_id,
-            app_id: this.formData.app_id
-          }
-
-          this.$confirm(tips, '设置商户号', {
+          this.$confirm(tips, '设置七鱼', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(async () => {
-            await TenantApi.bindChildTenant(this.tenantData.id, formData)
+            await TenantApi.bindQiyu(this.tenantData.id, formData)
             this.$message({
               type: 'success',
-              message: '绑定商户号成功!'
+              message: '已修改七鱼号!'
             })
             this.dialogVisible = false
             this.$emit('refresh')
@@ -137,4 +135,5 @@
       margin-left: 10px;
     }
   }
+
 </style>

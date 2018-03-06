@@ -28,9 +28,25 @@ export const getTenantProductList = (id, params) => {
 export const getTenantProductDetail = (tid, pid) => {
   return Axios.get(`/admin/tenant/s/${tid}/product/ps/${pid}`)
 }
-export const bindChildTenant = (formData) => {
-  return Axios.post(`/admin/tenant/s/${formData.id}/mch/bind`, formData)
+export const bindChildTenant = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/mch/bind`, formData)
 }
 export const changeProductAuth = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/product/auth`, qs.stringify(formData))
+}
+
+export const bindErpShopId = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/erp/bind`, formData)
+}
+
+export const bindQiyu = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/qiyu/bind`, formData)
+}
+
+export const hidePowerInfo = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/info/hide`)
+}
+
+export const showPowerInfo = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/info/show`)
 }

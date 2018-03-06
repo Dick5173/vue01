@@ -2,7 +2,7 @@
   div.order(v-loading="loading")
     search-bar(:queryParams="queryParams", @search="handleSearch", @create_export_task="createExportTask")
     list(:dataList="dataList")
-    div.order-bottom.txt-head(v-if="dataList.data && dataList.data.length>0") 实付合计: {{showPrice(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}
+    div.order-bottom.txt-head(v-if="dataList.data && dataList.data.length>0") 实付合计: {{showPrice(dataList.stat)}} &nbsp;&nbsp; 商品数量: {{showSold(dataList.stat)}}（其中退款金额：{{dataList.stat.refund_amount | price}}，退货数量：{{dataList.stat.refund_count}}）
     div.order-bottom
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
@@ -15,7 +15,6 @@
   import { getShowPrice } from 'src/util/moneyUtil'
   import { getShowCount } from 'src/util/number'
   import {PUSH_STATUS_IN_COME, PUSH_STATUS_TENANT, PUSH_STATUS_USER} from 'src/constants/orderPush'
-
   export default {
     mixins: [LoadPagerData],
     components: {
@@ -27,7 +26,7 @@
         loading: false,
         tenants: [],
         queryParams: {
-          status: ['3', '4', '5'],
+          status: ['3', '4', '5', '6'],
           searchKey: '',
           searchType: 'prod',
           tenant_id: '',

@@ -11,14 +11,18 @@
           return {}
         }
       }
+    },
+    methods: {
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .preview-text {
-    text-align: center;
+    word-wrap:break-word;
+    text-align: left;
     padding-left: 5px;
     padding-right: 5px;
+    white-space: pre-wrap;
   }
 </style>

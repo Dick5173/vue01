@@ -2,11 +2,13 @@
   mixin textContent
     el-form-item.show-validate-el-form(ref="fiShowText", v-if!="formData.tp === allContentTp.text.value", label="", prop="text")
       div.input-text-wrapper
-        el-input(v-model.trim="formData.text", :maxlength="26")
-        div.input-right-desc {{ formData.text.length }} / 26
+        el-input(v-model="formData.text", :maxlength="2000", type="textarea", autosize)
+      div.desc-text 建议26个字以内
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
       upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
+      div.desc-text {{imageTip}}
+
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="mediumDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
       el-form-item(label="类型", prop="tp")
@@ -29,7 +31,12 @@
     components: {
       UploadImageList
     },
-    props: {},
+    props: {
+      imageTip: {
+        type: String,
+        default: ''
+      }
+    },
     data () {
       const validateImage = (rule, value, callback) => {
         if (this.$refs.uploadImage && this.$refs.uploadImage.isUpdating) {
@@ -58,7 +65,7 @@
         formRules: {
           text: [
             {required: true, message: '请输入文本', trigger: 'blur'},
-            {max: 26, message: '最多可输入26个字符', trigger: 'blur'}
+            {max: 2000, message: '最多可输入2000个字符', trigger: 'blur'}
           ],
           imageList: [
             {validator: validateImage, trigger: 'change'}
@@ -145,5 +152,10 @@
     .input-right-desc {
       width: 60px;
     }
+  }
+
+  .desc-text {
+    color: $font-color-place-holder;
+    font-size: $font-size-content-small;
   }
 </style>

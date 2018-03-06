@@ -1,11 +1,13 @@
 <template lang="pug">
 
   mixin imageContent
-    div.image-content(v-if!="props.row.tp === allContentTp.img.value", v-lazy:background-image="props.row.url")
+    div.box
+      div.image-content(v-if!="props.row.tp === allContentTp.img.value", v-lazy:background-image="props.row.url")
+      div.text-content(v-if!="props.row.tp === allContentTp.img.value") {{computeFileName(props.row.url)}}
   mixin textContent
     div.text-content(v-if!="props.row.tp === allContentTp.text.value")
       el-form-item.show-validate-el-form(:ref="`text${props.index}`", :prop="'content.' + props.index + '.text'", :rules="formRules.text")
-        el-input(v-model.trim="props.row.text",  :maxlength="26")
+        el-input(v-model="props.row.text", :maxlength="2000", type="textarea", :autosize="{ minRows: 1, maxRows: 15}")
 
   div
     smart-table.large-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")
@@ -22,7 +24,7 @@
     div
       el-button(type="primary", size="mini", plain, @click="handleCreate") 添加描述
       el-button(type="primary", size="mini", plain, @click="showPreview") 预览
-    create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess")
+    create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess", imageTip="建议宽度750像素")
     preview-dialog(ref="dlgPreview", :resources="content")
 </template>
 
@@ -53,7 +55,7 @@
         formRules: {
           text: [
             {required: true, message: '不能为空', trigger: 'blur'},
-            {max: 26, message: '最多可以输入26个字符', trigger: 'blur'}
+            {max: 2000, message: '最多可以输入2000个字符', trigger: 'blur'}
           ]
         },
         createAtPos: -1,
@@ -97,15 +99,33 @@
       },
       handleDel (index) {
         this.content.splice(index, 1)
+      },
+      computeFileName (url) {
+        var index = url.lastIndexOf('/')
+        var ext = url.substr(index + 1)
+        return decodeURIComponent(ext.replace(/%25/g, '%'))
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  .text-content {
+    height: 50px;
+    width: 95%;
+    margin-left: 10px;
+    line-height: 50px;
+    display: inline-block;
+  }
+
+  .box {
+    display: flex;
+  }
+
   .image-content {
     width: 50px;
     height: 50px;
+    display: inline-block;
     background-size: cover;
     background-position: center;
   }

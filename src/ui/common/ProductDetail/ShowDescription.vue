@@ -3,7 +3,7 @@
     div(v-for!="item in description")
       div(v-if="item.tp === allTp.img.value")
         img.resource-img.small-el-form(:src="item.url")
-      div(v-if="item.tp === allTp.text.value") {{ item.text }}
+      div.preview-text(v-if="item.tp === allTp.text.value") {{ item.text }}
 </template>
 
 <script>
@@ -23,8 +23,15 @@
   }
 </script>
 
-<style>
+<style lang="scss" scoped>
   .resource-img {
     display: block;
+  }
+  .preview-text {
+    word-wrap:break-word;
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: pre-wrap;
   }
 </style>
