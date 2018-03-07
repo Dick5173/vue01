@@ -57,7 +57,7 @@ export const getShowPrice = (num) => {
 }
 export const getShowPercentage = (num) => {
   if (num) {
-    return `${num * 100}%`
+    return `${(num * 100).toFixed(2)}%`
   }
   return ''
 }
