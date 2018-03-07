@@ -1,6 +1,7 @@
 import * as R from 'ramda'
 import R_ from 'src/util/R_'
 import * as ResourceService from 'src/service/resource/index'
+import { convertKgToG, convertGToKg } from 'src/util/weight'
 
 export const allTp = {
   platform: {
@@ -53,6 +54,7 @@ export const convertFormToParam = R.curry((form) => {
           return R.map(skuItem => {
             skuItem.suggest_price = R_.convertYuanToFen(skuItem.suggest_price)
             skuItem.stock = parseInt(skuItem.stock)
+            skuItem.weight = skuItem.weight ? convertKgToG(skuItem.weight) : 0
             if (skuItem.image && skuItem.image.url) {
               skuItem.image.tp = ResourceService.allTp.img.value
             } else {
@@ -131,6 +133,7 @@ export const convertModelToForm = R.curry((form) => {
           return R.map(skuItem => {
             skuItem.suggest_price = `${R_.convertFenToYuan(skuItem.suggest_price)}`
             skuItem.stock = `${skuItem.stock}`
+            skuItem.weight = skuItem.weight ? `${convertGToKg(skuItem.weight)}` : ''
             skuItem.image = pickContent(skuItem.image || {})
             return skuItem
           })(val || [])

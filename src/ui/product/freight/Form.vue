@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-form.large-el-form(ref="form", :model="formData", :rules="formRules", labelWidth="80px", v-loading="loading")
+  el-form.freight-tab(ref="form", :model="formData", :rules="formRules", labelWidth="80px", v-loading="loading")
     el-form-item(label="模板名称", prop="name")
       el-input.small-el-input(v-model.trim="formData.name", :maxlength="20", placeholder="最多20个字")
     el-form-item(label="计费类型", prop="unit_tp")
@@ -106,4 +106,7 @@
 </script>
 
 <style lang="scss" scoped>
+  .freight-tab {
+    width: 780px;
+  }
 </style>

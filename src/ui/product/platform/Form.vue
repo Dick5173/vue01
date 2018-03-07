@@ -185,6 +185,7 @@
             suggest_price: '',
             stock: '',
             code: '',
+            weight: '',
             image: {
               url: '',
               width: 0,

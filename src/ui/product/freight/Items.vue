@@ -53,7 +53,12 @@
     data () {
       const numValidator = (rule, value, callback) => {
         if (this.tp === FreightService.allUnitTp.piece.value) {
-          if (!(/^[0-9]*[1-9][0-9]*$/.test(value))) {
+          if (!this.R_.isInteger(value)) {
+            callback(new Error('不正确的数字'))
+            return
+          }
+          const i = parseInt(value)
+          if (i < 0) {
             callback(new Error('必须为正整数'))
             return
           }
@@ -66,7 +71,7 @@
             }
             callback()
           } else {
-            callback(new Error('格式不正确'))
+            callback(new Error('最多1位小数数字'))
             return
           }
         }
