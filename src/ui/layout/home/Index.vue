@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     div.top-wrapper
-      div.logo 百宝美市管理后台
+      div.logo(@click="showVersion") 百宝美市管理后台
       div
         el-dropdown(@command="handleMenuCommand")
           span.dropdown-link
@@ -33,6 +33,7 @@
   import ChangePasswordDialog from 'src/ui/user/change-password/Index.vue'
   import { mapState } from 'vuex'
   import * as AuthApi from 'src/api/auth'
+  import { dateFormat } from 'src/util/format'
 
   export default {
     components: {
@@ -82,6 +83,29 @@
       },
       getContentRoot () {
         return this.$refs.contentRoot
+      },
+      showVersion () {
+        if (!this.clickCount) {
+          this.clickCount = 0
+        }
+        this.clickCount += 1
+        if (this.clickCount >= 5) {
+          if (!process.version) {
+            alert('开发版')
+          } else {
+            let versionText = `${process.version.CODE}.${dateFormat(process.version.BUILD_TIME, 'yyMMddHHmmss')}`
+            if (process.env.RELEASE_ENV && process.env.RELEASE_ENV !== 'prod') {
+              versionText = process.env.RELEASE_ENV + ':' + versionText
+            }
+            alert(versionText)
+          }
+        }
+        if (this.tmrClickCount) {
+          clearTimeout(this.tmrClickCount)
+        }
+        this.tmrClickCount = setTimeout(() => {
+          this.clickCount = 0
+        }, 1000)
       }
     },
     computed: {
@@ -180,7 +204,6 @@
       color: #606266;
       font-size: 14px;
       flex: 1;
-
 
       & > div {
         position: absolute;
