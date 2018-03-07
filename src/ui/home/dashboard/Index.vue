@@ -32,8 +32,8 @@
       return {
         loading: false,
         data: {
-          today_self: 0,
-          today_platform: 0,
+          today_sale_self: 0,
+          today_supply_price_platform: 0,
           refunding_count: 0,
           tenant_count: 0
         },
@@ -44,7 +44,7 @@
     watch: {},
     methods: {
       showToday () {
-        return getShowPrice(this.data.today_self + this.data.today_platform)
+        return getShowPrice(this.data.today_sale_self + this.data.today_sale_platform)
       },
       async getDashboardData () {
         try {

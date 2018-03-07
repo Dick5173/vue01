@@ -2,27 +2,27 @@ export const getList = (data) => {
   let arr = []
   let sales = {
     name: '销售额',
-    today_data: getShowPrice(data.today_self + data.today_platform),
-    yesterday_data: getShowPrice(data.yesterday_self + data.yesterday_platform),
-    month_data: getShowPrice(data.month_self + data.month_platform),
-    pre_month_data: getShowPrice(data.pre_month_self + data.pre_month_platform),
-    all_data: getShowPrice(data.all_self + data.all_platform)
+    today_data: getShowPrice(data.today_sale_self + data.today_sale_platform),
+    yesterday_data: getShowPrice(data.yesterday_sale_self + data.yesterday_sale_platform),
+    month_data: getShowPrice(data.month_sale_self + data.month_sale_platform),
+    pre_month_data: getShowPrice(data.pre_month_sale_self + data.pre_month_sale_platform),
+    all_data: getShowPrice(data.all_sale_self + data.all_sale_platform)
   }
   let platformProportion = {
     name: '平台供货比',
-    today_data: getShowPercentage(data.today_platform / (data.today_self + data.today_platform)),
-    yesterday_data: getShowPercentage(data.yesterday_platform / (data.yesterday_self + data.yesterday_platform)),
-    month_data: getShowPercentage(data.month_platform / (data.month_self + data.month_platform)),
-    pre_month_data: getShowPercentage(data.pre_month_platform / (data.pre_month_self + data.pre_month_platform)),
-    all_data: getShowPercentage(data.all_platform / (data.all_self + data.all_platform))
+    today_data: getShowPercentage(data.today_sale_platform / (data.today_sale_self + data.today_sale_platform)),
+    yesterday_data: getShowPercentage(data.yesterday_sale_platform / (data.yesterday_sale_self + data.yesterday_sale_platform)),
+    month_data: getShowPercentage(data.month_sale_platform / (data.month_sale_self + data.month_sale_platform)),
+    pre_month_data: getShowPercentage(data.pre_month_sale_platform / (data.pre_month_sale_self + data.pre_month_sale_platform)),
+    all_data: getShowPercentage(data.all_sale_platform / (data.all_sale_self + data.all_sale_platform))
   }
   let platform = {
     name: '平台供货款',
-    today_data: getShowPrice(data.today_platform),
-    yesterday_data: getShowPrice(data.yesterday_platform),
-    month_data: getShowPrice(data.month_platform),
-    pre_month_data: getShowPrice(data.pre_month_platform),
-    all_data: getShowPrice(data.all_platform)
+    today_data: getShowPrice(data.today_supply_price_platform),
+    yesterday_data: getShowPrice(data.yesterday_supply_price_platform),
+    month_data: getShowPrice(data.month_supply_price_platform),
+    pre_month_data: getShowPrice(data.pre_month_supply_price_platform),
+    all_data: getShowPrice(data.all_supply_price_platform)
   }
   let user = {
     name: '交易用户数',
