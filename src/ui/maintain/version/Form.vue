@@ -4,7 +4,7 @@
       el-input(v-model.trim="formData.code", :maxlength="10")
     el-form-item(prop="update_time", label="版本更新时间", :required="true")
       date-picker(:value.sync="formData.update_time")
-    el-form-item(prop="desc", label="内容")
+    el-form-item(prop="description", label="内容")
       el-input(type="textarea", v-model.trim="formData.description", :rows="2")
     el-form-item
       el-button(@click="$router.back()") 取消
@@ -46,7 +46,7 @@
           update_time: [
             {validator: updateTimeValidator, trigger: 'change'}
           ],
-          desc: [
+          description: [
             {required: true, message: '请输入内容', trigger: 'blur'}
           ]
         }

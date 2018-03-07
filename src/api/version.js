@@ -11,11 +11,15 @@ export const deleteItem = (id) => {
 
 export const create = (formData) => {
   formData.update_time = dateFormat(formData.update_time, 'YYYY-MM-DD HH:mm:ss')
+  formData.desc = formData.description
+  formData.description = ''
   return Axios.post('/admin/version', formData)
 }
 
 export const update = (id, formData) => {
   formData.update_time = dateFormat(formData.update_time, 'YYYY-MM-DD HH:mm:ss')
+  formData.desc = formData.description
+  formData.description = ''
   return Axios.post(`/admin/version/s/${id}`, formData)
 }
 
