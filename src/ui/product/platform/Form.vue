@@ -147,6 +147,14 @@
         }
         callback()
       }
+      const freightTemplateValidator = (rule, value, callback) => {
+        if (this.radFreightVal === FREIGHT_SPECIFY_TEMPLATE && !value) {
+          callback(new Error('请选择运费模板'))
+          return
+        }
+        callback()
+      }
+
       return {
         loading: false,
         initialData: {},
@@ -223,6 +231,9 @@
           ],
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}
+          ],
+          freight_template_id: [
+            {validator: freightTemplateValidator, trigger: 'change'}
           ]
         }
       }
