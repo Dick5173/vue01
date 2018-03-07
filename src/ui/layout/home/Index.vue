@@ -93,7 +93,7 @@
           if (!process.version) {
             alert('开发版')
           } else {
-            let versionText = `${process.version.CODE}.${dateFormat(process.version.BUILD_TIME, 'YYMMDDHHmmss')}`
+            let versionText = `${process.version.CODE}.${dateFormat(process.version.BUILD_TIME, 'MMDDHHmm')}`
             if (process.env.RELEASE_ENV && process.env.RELEASE_ENV !== 'prod') {
               versionText = process.env.RELEASE_ENV + ':' + versionText
             }
