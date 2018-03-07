@@ -1,6 +1,6 @@
 {
   "name": "meishi_admin",
-  "version": "0.9.3",
+  "version": "1.0.1",
   "description": "优品平销平台后台管理系统",
   "author": "wangyang <superyfwy@gmail.com>",
   "private": true,
@@ -11,7 +11,7 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "npm install && node build/build.js",
-    "release-beta": "npm run build && scp -r -P 7322 dist/. root@doc.51baibao.com:/opt/meishi_beta/public/admin",
+    "release-beta": "npm run build beta && scp -r -P 7322 dist/. root@doc.51baibao.com:/opt/meishi_beta/public/admin",
     "release": "npm run build && scp -r -P 7322 dist/. root@meishi.51baibao.com:/opt/meishi/public/admin"
   },
   "dependencies": {

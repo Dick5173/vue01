@@ -10,8 +10,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const betaConfig = require('../config/beta.env')
+const packageFile = require('../package.json')
 
-const env = require('../config/prod.env')
+let env = require('../config/prod.env')
+
+if (process.argv.length > 2 &&  process.argv[2] === 'beta') {
+  env = betaConfig
+}
+
+const version = {
+  CODE: '"' + packageFile.version + '"',
+  BUILD_TIME: new Date().getTime()
+}
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -30,7 +41,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      'process.env': env,
+      'process.version': version
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
@@ -46,7 +58,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`, 
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
       allChunks: true,
     }),
