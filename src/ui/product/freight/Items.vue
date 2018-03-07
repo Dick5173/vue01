@@ -33,7 +33,7 @@
 
 <script>
   import ChooseProvinceDialog from 'src/ui/common/choose-province-dialog'
-  import * as FreightService from 'src/service/freight/index'
+  import * as FreightService from 'src/service/freight-template/index'
   import { priceValidator } from 'src/util/validator'
 
   export default {

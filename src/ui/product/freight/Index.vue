@@ -19,7 +19,7 @@
 
 <script>
   import * as FreightApi from 'src/api/freight-template'
-  import * as FreightService from 'src/service/freight'
+  import * as FreightService from 'src/service/freight-template'
 
   export default {
     data () {

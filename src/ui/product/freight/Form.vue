@@ -14,7 +14,7 @@
 
 <script>
   import * as FormApi from 'src/api/freight-template'
-  import * as FreightService from 'src/service/freight'
+  import * as FreightService from 'src/service/freight-template'
   import Items from './Items'
 
   export default {

@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import * as FreightService from '../service/freight'
+import * as FreightService from '../service/freight-template'
 
 export const getList = () => {
   return Axios.get(`/admin/freight_template`)
