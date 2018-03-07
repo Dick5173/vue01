@@ -38,7 +38,7 @@ export const convertFormToParam = R.curry((form) => {
           return R.map((headItem) => {
             return R.assoc('tp', ResourceService.allTp.img.value)(headItem)
           })(val)
-        } else if (key === 'cover') {
+        } else if (['page_cover', 'cover'].indexOf(key) >= 0) {
           if (val && val.url) {
             val.tp = ResourceService.allTp.img.value
             return val
@@ -80,7 +80,7 @@ export const convertFormToParam = R.curry((form) => {
         after_service_id: obj.after_service_id,
         delivery_region_id: obj.delivery_region_id
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'name', 'sell_point', 'st_price', 'content', 'prop'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'content', 'prop'])(obj)
     }
   )(form)
 })
@@ -113,7 +113,7 @@ export const convertModelToForm = R.curry((form) => {
           return R.map((headItem) => {
             return pickContent(headItem)
           })(val || [])
-        } else if (key === 'cover') {
+        } else if (['page_cover', 'cover'].indexOf(key) >= 0) {
           return pickContent(val || {})
         } else if (priceField.indexOf(key) !== -1) {
           if (val === 0) {
@@ -152,7 +152,7 @@ export const convertModelToForm = R.curry((form) => {
         supply_price: obj.supply_price,
         skus: obj.skus
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id'])(obj)
     }
   )(form)
 })
@@ -205,7 +205,7 @@ export const copyCreate = R.curry((form) => {
           return R.map((headItem) => {
             return pickContent(headItem)
           })(val || [])
-        } else if (key === 'cover') {
+        } else if (['page_cover', 'cover'].indexOf(key) >= 0) {
           return pickContent(val || {})
         } else if (key === 'content') {
           return R.map((item) => {

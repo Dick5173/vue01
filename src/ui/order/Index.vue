@@ -26,7 +26,7 @@
         loading: false,
         tenants: [],
         queryParams: {
-          status: ['3', '4', '5'],
+          status: ['3', '4', '5', '6'],
           searchKey: '',
           searchType: 'prod',
           tenant_id: '',

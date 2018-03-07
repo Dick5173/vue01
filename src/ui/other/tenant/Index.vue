@@ -46,6 +46,8 @@
                 el-dropdown-item(:type="showBindStatus(props.row)", size="small", @click.native="handleBind(props.row)", plain) &nbsp;&nbsp;{{showMchBindButtonName(props.row)}}&nbsp;&nbsp;
                 el-dropdown-item(:type="showErpBindStatus(props.row)", size="small", @click.native="handleErpBind(props.row)", plain) &nbsp;&nbsp;{{showErpBindButtonName(props.row)}}&nbsp;&nbsp;
                 el-dropdown-item(:type="showQiyuBindStatus(props.row)", size="small", @click.native="handleQiyuBind(props.row)", plain) &nbsp;&nbsp;{{showQiyuBindButtonName(props.row)}}&nbsp;&nbsp;
+                el-dropdown-item(v-if="props.row.relate_info_show", type="danger", size="small", @click.native="hideInfo(props.row.id)", plain) &nbsp;&nbsp;隐藏powered by&nbsp;&nbsp;
+                el-dropdown-item(v-else, type="primary", size="small", @click.native="showInfo(props.row.id)", plain) &nbsp;&nbsp;显示powered by&nbsp;&nbsp;
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     bind-child-tenant-dialog(ref="dlgBindChildTenant", @refresh="loadDataListByQueryPage")
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="loadDataListByQueryPage")
@@ -218,6 +220,44 @@
           }
         }).catch(() => {
         })
+      },
+      hideInfo (id) {
+        this.$confirm('隐藏"百宝美市提供平台支持"', '隐藏powered by？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          try {
+            this.loading = true
+            await TenantApi.hidePowerInfo(id)
+            this.$message({
+              type: 'success',
+              message: '已隐藏!'
+            })
+            this.loadDataListByQueryPage()
+          } catch (err) {
+            this.loading = false
+          }
+        }).catch(() => {})
+      },
+      showInfo (id) {
+        this.$confirm('显示"百宝美市提供平台支持"', '显示powered by？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          try {
+            this.loading = true
+            await TenantApi.showPowerInfo(id)
+            this.$message({
+              type: 'success',
+              message: '已显示!'
+            })
+            this.loadDataListByQueryPage()
+          } catch (err) {
+            this.loading = false
+          }
+        }).catch(() => {})
       },
       handleSearch (data) {
         this.queryChange(data)

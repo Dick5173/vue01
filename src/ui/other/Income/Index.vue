@@ -13,9 +13,15 @@
         el-table-column(label="销售额（元）", prop="sale_total_amount")
           template(slot-scope="scope")
             el-button(type="text", @click="toOrder(scope.row)") {{scope.row.sale_total_amount | price}}
-        el-table-column(label="货款（元）", prop="sp_total_amount")
+        el-table-column(label="总货款（元）", prop="sp_total_amount")
           template(slot-scope="scope")
             div {{scope.row.sp_total_amount | price}}
+        el-table-column(label="自营货款（元）", prop="self_sp_amount")
+          template(slot-scope="scope")
+            div {{scope.row.self_sp_amount | price}}
+        el-table-column(label="平台货款（元）", prop="platform_sp_amount")
+          template(slot-scope="scope")
+            div {{scope.row.platform_sp_amount | price}}
         el-table-column(label="平台服务费（元）", prop="platform_fee")
           template(slot-scope="scope")
             div {{scope.row.platform_fee | price}}
@@ -23,7 +29,7 @@
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
       div.total
-      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>1") 销售总额: {{overview.sale_total_amount | friendlyPrice(false)}}，货款合计: {{overview.sp_total_amount | friendlyPrice(false)}}，平台服务费：{{overview.total_platform_fee | friendlyPrice(false)}}, 利润合计: {{overview.tenant_total_amount | friendlyPrice(false)}}
+      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 销售总额: {{overview.sale_total_amount | friendlyPrice(true)}}，总货款: {{overview.sp_total_amount | friendlyPrice(true)}}，自营货款: {{overview.self_sp_amount | friendlyPrice(true)}}, 平台货款: {{overview.platform_sp_amount | friendlyPrice(true)}}, 平台服务费:{{overview.total_platform_fee | friendlyPrice(true)}}, 利润: {{overview.tenant_total_amount | friendlyPrice(true)}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 
@@ -73,6 +79,18 @@
           return val
         })(params))
       },
+      getProfitOverview (params) {
+        return BillApi.getProfitOverview(this.R.mapObjIndexed((val, key, obj) => {
+          if (key === 'start' || key === 'end') {
+            if (val === 0) {
+              return ''
+            } else {
+              return dateFormat(val, 'YYYY-MM')
+            }
+          }
+          return val
+        })(params))
+      },
       toOrder (row) {
         this.$router.push({
           name: 'OrderIndex',
@@ -102,21 +120,22 @@
         const end = dateFormat(row.end_tick, 'YYYY-MM')
         return start === end ? start : `${start}~${end}`
       },
-      handleSearch (data) {
+      async handleSearch (data) {
         this.queryChange(data)
+        const res = await this.getProfitOverview(data)
+        this.overview = res.data.stat
       }
     },
     async mounted () {
-      const res = await BillApi.getProfitOverview()
-      this.overview = res.data.stat
-      if (this.$route.params.tenant) {
-        let params = {
-          start: 0,
-          end: 0,
-          tenant_id: this.$route.params.tid
-        }
-        this.queryChange(params)
+      let params = {
+        tenant_id: 0
       }
+      if (this.$route.params.tenant) {
+        params.tenant_id = this.$route.params.tid
+      }
+      const res = await BillApi.getProfitOverview(params)
+      this.overview = res.data.stat
+      this.queryChange(params)
     }
   }
 </script>

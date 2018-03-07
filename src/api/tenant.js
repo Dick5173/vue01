@@ -42,3 +42,11 @@ export const bindErpShopId = (tid, formData) => {
 export const bindQiyu = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/qiyu/bind`, formData)
 }
+
+export const hidePowerInfo = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/info/hide`)
+}
+
+export const showPowerInfo = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/info/show`)
+}

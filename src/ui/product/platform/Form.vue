@@ -7,6 +7,9 @@
       el-form-item(label="列表图", prop="cover")
         upload-image(ref="uploadCover", :image.sync="formData.cover", :host="getHost", :token="getToken")
         div.input-bottom-desc 建议尺寸750×750像素
+      el-form-item(label="首页图", prop="page_cover")
+        upload-image(ref="uploadPageCover", :image.sync="formData.page_cover", :host="getHost", :token="getToken")
+        div.input-bottom-desc 在首页中以单品形式显示时适用，建议尺寸702×440像素
       el-form-item(label="商品名称", prop="name")
         el-input.medium-el-input(v-model.trim="formData.name", :maxlength="50")
         span.input-right-desc {{ formData.name.length }} / 50
@@ -101,6 +104,13 @@
         }
         callback()
       }
+      const pageCoverValidator = (rule, value, callback) => {
+        if (this.$refs.uploadPageCover.isUpdating) {
+          callback(new Error('正在上传图片'))
+          return
+        }
+        callback()
+      }
       const skuValidator = (rule, value, callback) => {
         if (!value || value.length <= 0) {
           callback(new Error('Sku不能为空'))
@@ -143,6 +153,11 @@
             width: 0,
             height: 0
           },
+          page_cover: {
+            url: '',
+            width: 0,
+            height: 0
+          },
           name: '',
           sell_point: '',
           skus: [{
@@ -172,6 +187,9 @@
           ],
           cover: [
             {validator: coverValidator, trigger: 'change'}
+          ],
+          page_cover: [
+            {validator: pageCoverValidator, trigger: 'change'}
           ],
           name: [
             {required: true, message: '不能为空', trigger: 'blur'},

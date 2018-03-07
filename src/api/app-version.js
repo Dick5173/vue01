@@ -52,3 +52,11 @@ export const getLatestTemplate = () => {
 export const submitLatest = (id) => {
   return Axios.post(`/admin/audit/tenant/${id}/submit/latest`)
 }
+
+export const startReleaseVersion = (id) => {
+  return Axios.post(`/admin/audit/tenant/${id}/release/start`)
+}
+
+export const stopReleaseVersion = (id) => {
+  return Axios.post(`/admin/audit/tenant/${id}/release/stop`)
+}
