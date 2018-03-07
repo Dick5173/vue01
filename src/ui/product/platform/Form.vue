@@ -34,6 +34,11 @@
       el-form-item(label="商品设置", prop="oversea")
         el-checkbox(v-model="formData.oversea") 清关商品
           span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
+      el-form-item(label="运费", prop="freight_template_id")
+        el-radio(v-model="radFreightVal", :label="$options.FREIGHT_FREE_DELIVERY") 包邮
+        el-radio(v-model="radFreightVal", :label="$options.FREIGHT_SPECIFY_TEMPLATE") 运费模板 &nbsp;
+        el-select(v-model="formData.freight_template_id", placeholder="请选择")
+          el-option(v-for="item in freightTemplateList", :key="item.id", :label="item.name", :value="`${item.id}`")
       el-form-item(label="商品标签", prop="tag")
         div
           el-tag.ptag(type="primary", v-for="item in formData.tags", :key="item.id") {{item.name}}
@@ -64,14 +69,19 @@
   import * as ServiceGroupApi from 'src/api/servicetag'
   import * as AfterServiceApi from 'src/api/after-service'
   import * as deliveryRegionApi from 'src/api/delivery-region'
+  import * as freightTemplateApi from 'src/api/freight-template'
   import { priceValidator } from 'src/util/validator'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
   import * as ElUtil from 'src/util/el'
 
   const MAX_HEAD_COUNT = 5
+  const FREIGHT_FREE_DELIVERY = 0
+  const FREIGHT_SPECIFY_TEMPLATE = 1
 
   export default {
     MAX_HEAD_COUNT,
+    FREIGHT_FREE_DELIVERY,
+    FREIGHT_SPECIFY_TEMPLATE,
     components: {
       UploadImageList,
       UploadImage,
@@ -144,6 +154,8 @@
         afterServiceList: [],
         deliveryRegionList: [],
         allCategories: [],
+        freightTemplateList: [],
+        radFreightVal: 0,
         formData: {
           id: 0,
           status: 1,
@@ -179,7 +191,8 @@
           tags: [],
           service_tag_group_id: '',
           after_service_id: '',
-          delivery_region_id: ''
+          delivery_region_id: '',
+          freight_template_id: ''
         },
         formRules: {
           head: [
@@ -231,6 +244,18 @@
         return this.formData.tags ? [{tags: this.formData.tags}] : []
       }
     },
+    watch: {
+      radFreightVal (newVal, oldVal) {
+        if (newVal === FREIGHT_FREE_DELIVERY) {
+          this.formData.freight_template_id = ''
+        }
+      },
+      'formData.freight_template_id' (newVal, oldVal) {
+        if (newVal) {
+          this.radFreightVal = FREIGHT_SPECIFY_TEMPLATE
+        }
+      }
+    },
     methods: {
       async initData () {
         try {
@@ -239,6 +264,7 @@
           this.getServiceGroupList()
           this.getAfterServiceList()
           this.getDeliveryRegionList()
+          this.getFreightTemplateList()
           if (this.isEditMode || this.isCopy) {
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
@@ -264,6 +290,10 @@
       async getDeliveryRegionList () {
         const resDeliveryRegion = await deliveryRegionApi.getList()
         this.deliveryRegionList = resDeliveryRegion.data.data
+      },
+      async getFreightTemplateList () {
+        const resFreightTemplate = await freightTemplateApi.getList()
+        this.freightTemplateList = resFreightTemplate.data.data
       },
       async create (up) {
         this.formData.id = 0

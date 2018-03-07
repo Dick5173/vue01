@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import * as FormApi from 'src/api/freight'
+  import * as FormApi from 'src/api/freight-template'
   import * as FreightService from 'src/service/freight'
   import Items from './Items'
 

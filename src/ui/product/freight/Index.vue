@@ -18,7 +18,7 @@
 </template>
 
 <script>
-  import * as FreightApi from 'src/api/freight'
+  import * as FreightApi from 'src/api/freight-template'
   import * as FreightService from 'src/service/freight'
 
   export default {

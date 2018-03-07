@@ -32,7 +32,7 @@ export const convertFormToParam = R.curry((form) => {
     R.clone,
     (obj) => {
       const priceField = ['st_price', 'supply_price']
-      const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id']
+      const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id']
       return R.mapObjIndexed((val, key) => {
         if (key === 'head') {
           return R.map((headItem) => {
@@ -78,7 +78,8 @@ export const convertFormToParam = R.curry((form) => {
         tags: obj.tags,
         service_tag_group_id: obj.service_tag_group_id,
         after_service_id: obj.after_service_id,
-        delivery_region_id: obj.delivery_region_id
+        delivery_region_id: obj.delivery_region_id,
+        freight_template_id: obj.freight_template_id
       }
       return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'content', 'prop'])(obj)
     }
@@ -97,7 +98,8 @@ export const convertModelToForm = R.curry((form) => {
         tags: ['prop', 'tags'],
         service_tag_group_id: ['prop', 'ext', 'service_tag_group', 'id'],
         after_service_id: ['prop', 'ext', 'after_service', 'id'],
-        delivery_region_id: ['prop', 'ext', 'delivery_region', 'id']
+        delivery_region_id: ['prop', 'ext', 'delivery_region', 'id'],
+        freight_template_id: ['prop', 'ext', 'freight_template', 'id']
       }
       R.forEachObjIndexed((val, key) => {
         obj[key] = R.path(val)(obj)
@@ -107,7 +109,7 @@ export const convertModelToForm = R.curry((form) => {
     (obj) => {
       const pickContent = R.pickAll(['id', 'tp', 'text', 'url', 'width', 'height'])
       const priceField = ['st_price', 'supply_price']
-      const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id']
+      const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id']
       return R.mapObjIndexed((val, key) => {
         if (key === 'head') {
           return R.map((headItem) => {
@@ -152,7 +154,7 @@ export const convertModelToForm = R.curry((form) => {
         supply_price: obj.supply_price,
         skus: obj.skus
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id'])(obj)
     }
   )(form)
 })
