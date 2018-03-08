@@ -5,7 +5,7 @@
     el-form-item(prop="update_time", label="版本更新时间", :required="true")
       date-picker(:value.sync="formData.update_time")
     el-form-item(prop="description", label="内容")
-      el-input(type="textarea", v-model.trim="formData.description", :rows="2")
+      el-input(type="textarea", v-model.trim="formData.description", :rows="4")
     el-form-item
       el-button(@click="$router.back()") 取消
       el-button(type="primary", :loading="saving", @click="save") 确定
