@@ -211,7 +211,7 @@
       },
       async getLatestTemplateId () {
         let res = await AppVersionApi.getLatestTemplate()
-        this.template_id = res.template_id
+        this.template_id = res.data.template_id
       }
     },
     mounted () {
