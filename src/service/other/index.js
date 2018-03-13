@@ -101,8 +101,15 @@ export const showQiyuBindButtonName = (row) => {
 }
 
 export const showMchBindButtonName = (row) => {
-  if (row.sub_mch_id) {
-    return '商户号已绑'
+  if (row.pay_service === 1) {
+    if (row.sub_mch_id !== '') {
+      return '商户号已绑'
+    }
+  }
+  if (row.pay_service === 2) {
+    if (row.sp_sub_mch_id !== '') {
+      return '商户号已绑'
+    }
   }
   return '商户号未绑'
 }
