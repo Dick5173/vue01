@@ -27,6 +27,8 @@
         div.body-item 授权状态：{{showRefundStatus(tenantData.refund_status)}}
         div.body-border
         div.body-item 首次上线：{{tenantData.first_uptime | datetime}}
+        div.body-border
+        div.body-item 支付服务商：{{payService(tenantData.pay_service)}}
       div.body-bottom-line
       div.list-title
         div.list-title-head
@@ -137,6 +139,15 @@
             tenant: true
           }
         })
+      },
+      payService (value) {
+        if (value === 1) {
+          return '微信'
+        }
+        if (value === 2) {
+          return '全付通'
+        }
+        return ''
       },
       toTenantProduct (id) {
         this.$router.push({
