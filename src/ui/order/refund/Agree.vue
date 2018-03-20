@@ -24,7 +24,7 @@
 
 <script>
   import {agree} from 'src/api/refuse'
-  import {convertYuanToFen, checkIsMoney} from 'src/util/moneyUtil'
+  import {convertYuanToFen, checkIsMoney} from 'src/util/money'
 
   export default {
     components: {},

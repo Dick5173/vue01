@@ -19,7 +19,7 @@
 
 <script>
   import * as DRegionApi from 'src/api/delivery-region'
-  import * as AddressUtil from 'src/util/addressUtil'
+  import * as AddressUtil from 'src/util/address'
 
   export default {
     props: {},

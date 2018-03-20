@@ -1,5 +1,5 @@
 import R_ from 'src/util/R_'
-import { convertFenToYuan } from 'src/util/moneyUtil'
+import { convertFenToYuan } from 'src/util/money'
 
 export const price = (val, showSymbol = true) => {
   const lessZero = val < 0

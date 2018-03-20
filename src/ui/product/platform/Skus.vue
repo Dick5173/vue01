@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    smart-table.large-el-table(ref="skuTable", :dataList="skus", @drag-change="handleDragChange",  @drag-end="handleDragEnd")
+    smart-table.skus-table(ref="skuTable", :dataList="skus", @drag-change="handleDragChange",  @drag-end="handleDragEnd")
       smart-table-column(type="drag")
       smart-table-column(label="规格")
         div(slot-scope="props")
@@ -18,6 +18,10 @@
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`code${props.index}`", :prop="'skus.' + props.index + '.code'", :rules="formRules.code")
             el-input(v-model.trim="props.row.code")
+      smart-table-column(label="重量(kg)")
+        div(slot-scope="props")
+          el-form-item.show-validate-el-form(:ref="`weight{props.index}`", :prop="'skus.' + props.index + '.weight'", :rules="formRules.weight")
+            el-input(v-model.trim="props.row.weight")
       smart-table-column(label="图片", width="80px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`image${props.index}`", :prop="'skus.' + props.index + '.image'", :rules="formRules.image")
@@ -80,6 +84,18 @@
         }
         callback()
       }
+      const weightValidator = (rule, value, callback) => {
+        if (!value) {
+          callback()
+          return
+        }
+        let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1})?$)|(^(0){1}$)|(^[0-9]\.[0-9]$)/
+        if (!reg.test(value)) {
+          callback(new Error('最多1位小数数字'))
+          return
+        }
+        callback()
+      }
       return {
         formRules: {
           spec: [
@@ -95,6 +111,9 @@
           ],
           code: [
             {required: true, message: '不能为空', trigger: 'blur'}
+          ],
+          weight: [
+            {validator: weightValidator, trigger: 'blur'}
           ]
         }
       }
@@ -121,6 +140,7 @@
             suggest_price: '',
             stock: '',
             code: '',
+            weight: '',
             image: {
               url: '',
               width: 0,
@@ -154,6 +174,6 @@
 
 <style lang="scss" scoped>
   .skus-table {
-    width: 700px;
+    width: 820px;
   }
 </style>

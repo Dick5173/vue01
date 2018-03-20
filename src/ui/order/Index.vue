@@ -12,7 +12,7 @@
   import List from './List'
   import { orderList } from 'src/api/order'
   import LoadPagerData from 'src/mixins/load-pager-data'
-  import { getShowPrice } from 'src/util/moneyUtil'
+  import { getShowPrice } from 'src/util/money'
   import { getShowCount } from 'src/util/number'
   import {PUSH_STATUS_IN_COME, PUSH_STATUS_TENANT, PUSH_STATUS_USER} from 'src/constants/orderPush'
   export default {
