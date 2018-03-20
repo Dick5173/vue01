@@ -2,11 +2,11 @@
   el-form.freight-tab(ref="form", :model="formData", :rules="formRules", labelWidth="80px", v-loading="loading")
     el-form-item(label="模板名称", prop="name")
       el-input.small-el-input(v-model.trim="formData.name", :maxlength="20", placeholder="最多20个字")
-    el-form-item(label="计费类型", prop="unit_tp")
-      el-radio-group(v-model="formData.unit_tp", @change="handleUnitTpChange", :disabled="isEditMode")
+    el-form-item(label="计费类型", prop="compute_tp")
+      el-radio-group(v-model="formData.compute_tp", @change="handleUnitTpChange", :disabled="isEditMode")
         el-radio(v-for!="item in allUnitTp", :label="item.value", :key="item.value") {{ item.text }}
     el-form-item(label="", prop="items")
-      items(:data-list="formData.items", :tp="formData.unit_tp")
+      items(:data-list="formData.items", :tp="formData.compute_tp")
     el-form-item
       el-button(@click="$router.back()") 取消
       el-button(type="primary", :loading="saving", @click="save") 确定
@@ -29,7 +29,7 @@
         formData: {
           id: 0,
           name: '',
-          unit_tp: FreightService.allUnitTp.piece.value,
+          compute_tp: FreightService.allUnitTp.piece.value,
           items: [
             {
               id: 0,

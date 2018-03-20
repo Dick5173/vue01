@@ -16,9 +16,9 @@ export const allUnitTp = {
 export const getDescText = (freight) => {
   let text = ''
   for (const item of freight.items || []) {
-    const unitText = freight.unit_tp === 1 ? '件' : 'kg'
-    const firstVal = freight.unit_tp === allUnitTp.piece.value ? item.first_unit : convertGToKg(item.first_unit)
-    const nextVal = freight.unit_tp === allUnitTp.piece.value ? item.next_unit : convertGToKg(item.next_unit)
+    const unitText = freight.compute_tp === 1 ? '件' : 'kg'
+    const firstVal = freight.compute_tp === allUnitTp.piece.value ? item.first_unit : convertGToKg(item.first_unit)
+    const nextVal = freight.compute_tp === allUnitTp.piece.value ? item.next_unit : convertGToKg(item.next_unit)
     let provinces = ''
     if (!item.province || item.province.length === 0) {
       provinces = '默认'
@@ -46,10 +46,10 @@ export const convertFormToParam = R.curry((form) => {
           return R.map(ruleItem => {
             ruleItem.first_price = convertYuanToFen(ruleItem.first_price)
             ruleItem.next_price = convertYuanToFen(ruleItem.next_price)
-            if (form.unit_tp === allUnitTp.piece.value) {
+            if (form.compute_tp === allUnitTp.piece.value) {
               ruleItem.first_unit = parseInt(ruleItem.first_unit)
               ruleItem.next_unit = parseInt(ruleItem.next_unit)
-            } else if (form.unit_tp === allUnitTp.weight.value) {
+            } else if (form.compute_tp === allUnitTp.weight.value) {
               ruleItem.first_unit = convertKgToG(ruleItem.first_unit)
               ruleItem.next_unit = convertKgToG(ruleItem.next_unit)
             }
@@ -71,10 +71,10 @@ export const convertModelToForm = R.curry((model) => {
           return R.map(ruleItem => {
             ruleItem.first_price = `${convertFenToYuan(ruleItem.first_price)}`
             ruleItem.next_price = `${convertFenToYuan(ruleItem.next_price)}`
-            if (model.unit_tp === allUnitTp.piece.value) {
+            if (model.compute_tp === allUnitTp.piece.value) {
               ruleItem.first_unit = `${ruleItem.first_unit}`
               ruleItem.next_unit = `${ruleItem.next_unit}`
-            } else if (model.unit_tp === allUnitTp.weight.value) {
+            } else if (model.compute_tp === allUnitTp.weight.value) {
               ruleItem.first_unit = `${convertGToKg(ruleItem.first_unit)}`
               ruleItem.next_unit = `${convertGToKg(ruleItem.next_unit)}`
             }

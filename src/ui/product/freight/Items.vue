@@ -7,7 +7,7 @@
           div(v-else)
             el-form-item.show-validate-in-tab-el-form(:ref="`province${props.$index}`", :prop="'items.' + props.$index + '.province'", :rules="formRules.province")
               div.province(@click="handleChooseProvince(props)") {{ showProvince(props.row) }}
-      el-table-column(label="首件(个)")
+      el-table-column(:label="isWeight ? '首件(Kg)' : '首件(个)'")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.first_unit'", :rules="formRules.first_unit")
             el-input(v-model.trim="props.row.first_unit")
@@ -15,7 +15,7 @@
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.first_price'", :rules="formRules.first_price")
             el-input(v-model.trim="props.row.first_price")
-      el-table-column(label="续件(个)")
+      el-table-column(:label="isWeight ? '续件(Kg)' : '续件(个)'")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.next_unit'", :rules="formRules.next_unit")
             el-input(v-model.trim="props.row.next_unit")
@@ -48,6 +48,11 @@
       tp: {
         type: Number,
         required: true
+      }
+    },
+    computed: {
+      isWeight () {
+        return this.tp === FreightService.allUnitTp.weight.value
       }
     },
     data () {
