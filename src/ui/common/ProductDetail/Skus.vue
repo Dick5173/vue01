@@ -14,6 +14,8 @@
           div(slot-scope="scope") {{scope.row.sku.stock}}
         el-table-column(label="编码")
           div(slot-scope="scope") {{scope.row.sku.code}}
+        el-table-column(label="重量(kg)")
+          div(slot-scope="scope") {{getWeight(scope.row.sku.weight)}}
         el-table-column(label="图片")
           template(slot-scope="scope")
             div.skuImg(v-lazy:background-image="showImg(scope.row.sku.image)")
@@ -27,12 +29,16 @@
           div(slot-scope="scope") {{scope.row.stock}}
         el-table-column(label="编码")
           div(slot-scope="scope") {{scope.row.code}}
+        el-table-column(label="重量(kg)")
+          div(slot-scope="scope") {{getWeight(scope.row.weight)}}
         el-table-column(label="图片")
           template(slot-scope="scope")
             div.skuImg(v-lazy:background-image="showImg(scope.row.image)")
 </template>
 
 <script>
+  import { convertGToKg } from '../../../util/weight'
+
   export default {
     props: {
       skus: {
@@ -64,6 +70,9 @@
           return row.url
         }
         return ''
+      },
+      getWeight (weigth) {
+        return `${convertGToKg(weigth)}`
       }
     }
   }
