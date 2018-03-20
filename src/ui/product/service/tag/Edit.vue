@@ -4,9 +4,9 @@
       el-form(ref="form", :model="formData", :rules="rules", label-width="80px", v-loading="loading")
         el-form-item(label="服务名称" prop="name")
           el-input(placeholder="最多5个字", v-model.trim="formData.name", :maxlength="5")
-        el-form-item(label="服务描述", prop="desc")
-          el-input(type="textarea", :autosize="{ minRows: 5, maxRows: 5}", placeholder="", v-model.trim="formData.desc", :maxlength="100")
-          span.input-tip {{formData.desc ? formData.desc.length : 0}}/100
+        el-form-item(label="服务描述", prop="description")
+          el-input(type="textarea", :autosize="{ minRows: 5, maxRows: 5}", placeholder="", v-model.trim="formData.description", :maxlength="100")
+          span.input-tip {{formData.description ? formData.description.length : 0}}/100
       div.dialog-footer(slot="footer")
         el-button(@click="dialogVisible = false") 取 消
         el-button(type="primary", @click="submit") 确 定
@@ -26,11 +26,11 @@
         formData: {
           id: 0,
           name: '',
-          desc: ''
+          description: ''
         },
         rules: {
           name: [{required: true, message: '不能为空', trigger: 'blur'}],
-          desc: [{required: true, message: '不能为空', trigger: 'blur'}]
+          description: [{required: true, message: '不能为空', trigger: 'blur'}]
         }
       }
     },
@@ -47,7 +47,7 @@
             res = res.data
             this.formData.id = res.id
             this.formData.name = res.name
-            this.formData.desc = res.desc
+            this.formData.description = res.description
             this.loading = false
           } catch (err) {
             this.loading = false
@@ -56,7 +56,7 @@
           let formData = {
             id: 0,
             name: '',
-            desc: ''
+            description: ''
           }
           this.formData = formData
         }
