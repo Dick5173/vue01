@@ -8,9 +8,8 @@
           el-option(v-for="item in authGroupList", :key="item.id", :label="item.name", :value="item.id")
       el-button(@click="addPath", type="primary", size="small") 添加权限路径
       el-form-item(prop="paths")
-        smart-table(:dataList="formData.paths")
-          smart-table-column(label="ID", width="80px")
-            div.show-validate-el-form(slot-scope="scope") {{scope.row.id}}
+        smart-table(:dataList.sync="formData.paths")
+          smart-table-column(type="drag")
           smart-table-column(label="名称")
             div(slot-scope="scope")
               el-form-item.show-validate-el-form(:prop="'paths.' + scope.index + '.name'", :rules="formRules.name")

@@ -1,73 +1,48 @@
 <template lang="pug">
   div(v-loading="loading")
-    div.text 平台后台
-    div.head
-      el-button.head(type="primary", @click="handleAuthGroup(platform)") 添加权限组
-      el-table.large-el-table(:data="platformAuthGroupList", border)
-        el-table-column(label="ID")
-          div(slot-scope="scope") {{scope.row.id}}
-        el-table-column(label="名称")
-          div(slot-scope="scope") {{scope.row.name}}
-        el-table-column(label="应用的权限数量")
-          div(slot-scope="scope") {{scope.row.auth_count }}
-        el-table-column(label="操作")
-          template(slot-scope="scope")
-            el-button(type="primary", plain, size="mini", @click="handleAuthGroup(platform,scope.row)") 编辑
-            el-button(type="danger", plain, size="mini", @click="deleteAuthGroup(scope.row)", :disabled="scope.row.auth_count !== 0") 删除
-    div.head
-      el-button.head(type="primary", @click="handleAuth(platform)") 添加权限
-      el-table.large-el-table(:data="platformAuthList", border)
-        el-table-column(label="ID")
-          div(slot-scope="scope") {{scope.row.id}}
-        el-table-column(label="名称")
-          div(slot-scope="scope") {{scope.row.name}}
-        el-table-column(label="权限组ID")
-          div(slot-scope="scope") {{scope.row.auth_group_id}}
-        el-table-column(label="操作")
-          template(slot-scope="scope")
-            el-button(type="primary", plain, size="mini", @click="handleAuth(platform,scope.row)") 编辑
-            el-button(type="danger", plain, size="mini", @click="deleteAuth(scope.row)") 删除
-    div.text 店铺后台
-    div.head
-      el-button.head(type="primary", @click="handleAuthGroup(tenant)") 添加权限组
-      el-table.large-el-table(:data="tenantAuthGroupList", border)
-        el-table-column(label="ID")
-          div(slot-scope="scope") {{scope.row.id}}
-        el-table-column(label="名称")
-          div(slot-scope="scope") {{scope.row.name}}
-        el-table-column(label="应用的权限数量")
-          div(slot-scope="scope") {{scope.row.auth_count}}
-        el-table-column(label="操作")
-          template(slot-scope="scope")
-            el-button(type="primary", plain, size="mini", @click="handleAuthGroup(tenant,scope.row)") 编辑
-            el-button(type="danger", plain, size="mini", @click="deleteAuthGroup(scope.row)", :disabled="scope.row.auth_count !== 0") 删除
-    div.head
-      el-button.head(type="primary", @click="handleAuth(tenant)") 添加权限
-      el-table.large-el-table(:data="tenantAuthList", border)
-        el-table-column(label="ID")
-          div(slot-scope="scope") {{scope.row.id}}
-        el-table-column(label="名称")
-          div(slot-scope="scope") {{scope.row.name}}
-        el-table-column(label="权限组ID")
-          div(slot-scope="scope") {{scope.row.auth_group_id}}
-        el-table-column(label="操作")
-          template(slot-scope="scope")
-            el-button(type="primary", plain, size="mini", @click="handleAuth(tenant,scope.row)") 编辑
-            el-button(type="danger", plain, size="mini", @click="deleteAuth(scope.row)") 删除
+    div
+      div.title 系统
+      div.section
+        div
+          el-button(type="primary", @click="handleAuthGroup(platform)") 添加权限组
+        div.content
+          smart-table(:dataList.sync="platformAuthGroupList", @drag-end="handleAuthGroupDragEnd(platform)", rowKey="id")
+            smart-table-column(label="", type="drag")
+            smart-table-column(label="名称", prop="name")
+            smart-table-column(label="应用的权限数量", prop="auth_count", width="260")
+            smart-table-column(label="操作", prop="auth_count", width="240")
+              div(slot-scope="scope")
+                el-button(type="primary", plain, size="mini", @click="handleOpenAuthList(scope.row)") 查看权限
+                el-button(type="primary", plain, size="mini", @click="handleAuthGroup(platform,scope.row)") 编辑
+                el-button(type="danger", plain, size="mini", @click="deleteAuthGroup(scope.row)", :disabled="scope.row.auth_count !== 0") 删除
+      div.title 商铺
+      div.section
+        div
+          el-button(type="primary", @click="handleAuthGroup(tenant)") 添加权限组
+        div.content
+          smart-table(:dataList.sync="tenantAuthGroupList", @drag-end="handleAuthGroupDragEnd(tenant)", rowKey="id")
+            smart-table-column(label="", type="drag")
+            smart-table-column(label="名称", prop="name")
+            smart-table-column(label="应用的权限数量", prop="auth_count", width="260")
+            smart-table-column(label="操作", prop="auth_count", width="240")
+              div(slot-scope="scope")
+                el-button(type="primary", plain, size="mini", @click="handleOpenAuthList(scope.row)") 查看权限
+                el-button(type="primary", plain, size="mini", @click="handleAuthGroup(tenant,scope.row)") 编辑
+                el-button(type="danger", plain, size="mini", @click="deleteAuthGroup(scope.row)", :disabled="scope.row.auth_count !== 0") 删除
     auth-group-dialog(ref="dlgAuthGroup", @refresh="refreshData")
-    auth-dialog(ref="dlgAuth", @refresh="refreshData")
 </template>
 
 <script>
   import * as AuthManagementApi from 'src/api/authorization-management'
+  import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
   import AuthGroupDialog from 'src/ui/authorization-management/AuthGroupDialog.vue'
-  import AuthDialog from 'src/ui/authorization-management/AuthDialog.vue'
 
   export default {
     props: {},
     components: {
-      AuthGroupDialog,
-      AuthDialog
+      SmartTable,
+      SmartTableColumn,
+      AuthGroupDialog
     },
     data () {
       return {
@@ -80,23 +55,11 @@
         loading: false
       }
     },
-    computed: {
-    },
+    computed: {},
     watch: {},
     methods: {
-      async deleteAuth (row) {
-        this.loading = true
-        try {
-          await AuthManagementApi.deleteAuth(row.id)
-          this.refreshData()
-        } finally {
-          this.loading = false
-        }
-      },
-      handleAuth (tp, row) {
-        this.$refs.dlgAuth.show(tp, row)
-      },
       async deleteAuthGroup (row) {
+        await this.$confirm('确认删除？', '提示')
         this.loading = true
         try {
           await AuthManagementApi.deleteAuthGroup(row.id)
@@ -108,13 +71,38 @@
       handleAuthGroup (tp, row) {
         this.$refs.dlgAuthGroup.show(tp, row)
       },
+      handleOpenAuthList (row) {
+        this.$router.push(
+          {
+            name: 'AuthDetail',
+            params: {
+              id: row.id
+            }
+          }
+        )
+      },
+      async handleAuthGroupDragEnd (tp) {
+        this.loading = true
+        let dataList = []
+        if (tp === this.platform) {
+          dataList = this.platformAuthGroupList
+        } else if (tp === this.tenant) {
+          dataList = this.tenantAuthGroupList
+        }
+        try {
+          await AuthManagementApi.sortAuthGroup(tp, this.R.map(item => {
+            return item.id
+          })(dataList || []))
+          this.$message({message: '排序成功', type: 'success'})
+        } finally {
+          this.loading = false
+        }
+      },
       getPlatformList () {
         this.getCharacterAuthGroupList(this.platform)
-        this.getCharacterAuthList(this.platform)
       },
       getTenantList () {
         this.getCharacterAuthGroupList(this.tenant)
-        this.getCharacterAuthList(this.tenant)
       },
       async getCharacterAuthGroupList (tp) {
         this.loading = true
@@ -125,20 +113,6 @@
           } else {
             let res = await AuthManagementApi.getAuthGroupList(tp)
             this.tenantAuthGroupList = res.data.data
-          }
-        } finally {
-          this.loading = false
-        }
-      },
-      async getCharacterAuthList (tp) {
-        this.loading = true
-        try {
-          if (tp === this.platform) {
-            let res = await AuthManagementApi.getAuthList(tp)
-            this.platformAuthList = res.data.data
-          } else {
-            let res = await AuthManagementApi.getAuthList(tp)
-            this.tenantAuthList = res.data.data
           }
         } finally {
           this.loading = false
@@ -158,9 +132,30 @@
 
 
 <style lang="scss" scoped>
-  .head {
-    margin-bottom: 20px;
+
+  .title {
+    font-size: 22px;
+    color: #606266;
+    padding-bottom: 10px;
   }
+
+  .section {
+    margin-left: 20px;
+    margin-bottom: 8px;
+    .head {
+      font-size: 18px;
+      color: #606266;
+      margin-bottom: 10px;
+    }
+    .content {
+      width: 800px;
+      padding-bottom: 10px;
+    }
+  }
+
+  .head {
+  }
+
   .text {
     font-size: 22px;
     color: #606266;

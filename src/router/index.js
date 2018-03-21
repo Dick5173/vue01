@@ -597,6 +597,21 @@ const router = new Router({
             title: '权限管理',
             showInSide: false
           }
+        },
+        {
+          path: '/am/:id',
+          name: 'AuthDetail',
+          component: () => import('src/ui/authorization-management/AuthDetail.vue'),
+          meta: {
+            title: '权限',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '权限管理',
+              to: {name: 'AuthorizationManagement'}
+            }, {
+              text: '权限'
+            }]
+          }
         }
       ]
     },

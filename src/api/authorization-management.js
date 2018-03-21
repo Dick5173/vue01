@@ -8,10 +8,10 @@ export const getAuthGroupList = (tp) => {
     }
   })
 }
-export const getAuthList = (tp) => {
+export const getAuthList = (pid) => {
   return Axios.get(`/admin/auth`, {
     params: {
-      tp: tp
+      pid
     }
   })
 }
@@ -24,6 +24,9 @@ export const editAuthGroup = (formData) => {
 export const deleteAuthGroup = (id) => {
   return Axios.delete(`/admin/auth_group/s/${id}`)
 }
+export const getAuthGroupItem = (id) => {
+  return Axios.get(`/admin/auth_group/s/${id}`)
+}
 export const getAuthItem = (id) => {
   return Axios.get(`/admin/auth/s/${id}`)
 }
@@ -35,4 +38,16 @@ export const editAuth = (formData) => {
 }
 export const deleteAuth = (id) => {
   return Axios.delete(`/admin/auth/s/${id}`)
+}
+
+export const sortAuthGroup = (tp, ids) => {
+  return Axios.post(`/admin/sort/auth_group/${tp}`, {
+    val: ids || []
+  })
+}
+
+export const sortAuth = (tp, ids) => {
+  return Axios.post(`/admin/sort/auth/${tp}`, {
+    val: ids || []
+  })
 }
