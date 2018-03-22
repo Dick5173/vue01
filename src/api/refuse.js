@@ -25,7 +25,9 @@ export const refuseList = (params) => {
 
 export const agree = (id, amount, txt, total, remark) => {
   return Axios.post(`/admin/oi/s/${id}/agree`,
-    qs.stringify({txt: txt, amount: amount, total: total, remark: remark}))
+    qs.stringify({txt: txt, amount: amount, total: total, remark: remark}), {
+      fullError: true
+    })
 }
 
 export const reject = (id, txt, remark) => {
@@ -43,5 +45,7 @@ export const refuseCount = () => {
 }
 
 export const refundToWx = (id) => {
-  return Axios.post(`/admin/oi/s/${id}/refund/to/weixin`)
+  return Axios.post(`/admin/oi/s/${id}/refund/to/weixin`, null, {
+    fullError: true
+  })
 }

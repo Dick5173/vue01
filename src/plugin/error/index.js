@@ -26,8 +26,14 @@ const axiosErrorHandler = (err) => {
       return true
     }
     let msg = err.response.data
-    if (!msg || msg.length > 50) {
-      msg = err.response.status
+    if (!(err.config && err.config.fullError)) {
+      if (!msg || msg.length > 50) {
+        if (err.response.status === 500) {
+          msg = '服务器错误'
+        } else {
+          msg = err.response.status
+        }
+      }
     }
     Vue.prototype.$message({
       message: msg,
