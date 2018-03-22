@@ -24,7 +24,7 @@
         div.body-item 店铺管理员：
         div.body-item.btn(type="text", @click="toTenantUser(tenantData.admin_id)") {{tenantData.admin_name}}
         div.body-border
-        div.body-item 授权状态：{{showRefundStatus(tenantData.refund_status)}}
+        div.body-item 退款授权：{{showRefundStatus(tenantData.refund_status)}}
         div.body-border
         div.body-item 首次上线：{{tenantData.first_uptime | datetime}}
         div.body-border
