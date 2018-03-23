@@ -612,6 +612,15 @@ const router = new Router({
               text: '权限'
             }]
           }
+        },
+        {
+          path: '/application',
+          name: 'ApplicationIndex',
+          component: () => import('src/ui/minprog-application/Index.vue'),
+          meta: {
+            title: '入驻申请',
+            showInSide: true
+          }
         }
       ]
     },
