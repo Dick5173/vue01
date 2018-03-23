@@ -319,7 +319,8 @@ const router = new Router({
           component: () => import('src/ui/product/freight/Index.vue'),
           meta: {
             group: 'Product',
-            title: '运费模板'
+            title: '运费模板',
+            showInSide: true
           }
         },
         {

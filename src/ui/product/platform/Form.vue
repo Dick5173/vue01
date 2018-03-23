@@ -34,7 +34,7 @@
       el-form-item(label="商品设置", prop="oversea")
         el-checkbox(v-model="formData.oversea") 清关商品
           span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
-      el-form-item(label="运费", prop="freight_template_id" v-if="false")
+      el-form-item(label="运费", prop="freight_template_id")
         el-radio(v-model="radFreightVal", :label="$options.FREIGHT_FREE_DELIVERY") 包邮
         el-radio(v-model="radFreightVal", :label="$options.FREIGHT_SPECIFY_TEMPLATE") 运费模板 &nbsp;
         el-select(v-model="formData.freight_template_id", placeholder="请选择")
