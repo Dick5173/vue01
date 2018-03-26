@@ -15,15 +15,18 @@
           div(slot-scope="scope")
             div
               p(v-html="showTenantName(scope.row)")
-        el-table-column(width="100" label="操作")
+        el-table-column(width="170px" label="操作")
           template(slot-scope="scope")
             el-button(size="mini", @click="editItem(scope.row)", type="primary", plain) 编辑
+            el-button(size="mini", @click="resetPwd(scope.row)", type="primary", plain) 修改密码
     el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+    reset-pwd-dialog(ref="dlgResetPwd", @refresh="loadDataListByQueryPage")
 
 </template>
 
 <script>
   import LoadPagerData from 'src/mixins/load-pager-data'
+  import ResetPwdDialog from 'src/ui/other/tenant-user/ResetPwdDialog.vue'
   import * as TenantUserApi from 'src/api/tenant-user'
   import SearchToolbar from 'src/ui/other/tenant-user/SearchToolbar.vue'
   import * as Obj from 'src/util/obj'
@@ -33,7 +36,9 @@
       LoadPagerData
     ],
     props: {},
-    components: {SearchToolbar},
+    components: {
+      SearchToolbar,
+      ResetPwdDialog},
     data () {
       return {
         queryParams: {
@@ -90,6 +95,9 @@
             id: row.id
           }
         })
+      },
+      resetPwd (row) {
+        this.$refs.dlgResetPwd.show(row)
       }
     },
     mounted () {

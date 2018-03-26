@@ -8,9 +8,9 @@
           el-input.input(placeholder="最多20个字", :maxlength="20", v-model.trim="formData.name")
         el-form-item(label="手机号码：", prop="mobile")
           el-input.input(placeholder="手机号11位1开头", :maxlength="11", v-model.trim="formData.mobile")
-        el-form-item(label="密码：", prop="passwd")
+        el-form-item(v-if="mode===0", label="密码：", prop="passwd")
           el-input.input(type="password", placeholder="请输入密码", v-model.trim="formData.passwd")
-        el-form-item(label="重复密码：", prop="checkpasswd")
+        el-form-item(v-if="mode===0", label="重复密码：", prop="checkpasswd")
           el-input.input(type="password", placeholder="请重复密码", v-model.trim="formData.checkpasswd")
         div.border 公司信息
         el-form-item(label="公司名称：", prop="company_name")

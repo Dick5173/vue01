@@ -15,3 +15,7 @@ export const editTenantUser = (id, formData) => {
 export const getTenantUserItem = (id) => {
   return Axios.get('/admin/tenant_user/s' + `/${id}`)
 }
+
+export const resetTenantUserPwd = (id, formData) => {
+  return Axios.post(`/admin/tenant_user/s/${id}/reset/pwd`, formData)
+}
