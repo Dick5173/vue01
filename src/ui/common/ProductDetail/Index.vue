@@ -23,15 +23,19 @@
       div {{showName(formData.prop.ext.delivery_region)}}
     el-form-item(v-if="showFormItem(formData.prop.ext.oversea)", label="商品设置：", prop="oversea")
       div {{showOversea(formData.prop.ext.oversea)}}
+    el-form-item(label="运费：", v-if="formData.prop.ext.freight_template")
+      div.freight-wrapper(v-html="freightDescText(formData.prop.ext.freight_template)")
     el-form-item(v-if="isPlatform && showFormItem(formData.prop.tags)", label="商品标签：", prop="oversea")
       div
         el-tag.ptag(type="primary", v-for="item in formData.prop.tags", :key="item.id") {{item.name}}
     el-form-item(v-if="showFormItem(description)", label="商品描述：", prop="content")
       show-description(:description="description")
     el-form-item(v-if="showFormItem(formData.prop.ext.service_tag_group)", label="服务组合：", prop="service_tag_group_id")
-      div {{showName(formData.prop.ext.service_tag_group)}}
+      div
+        div {{ formData.prop.ext.service_tag_group.name }}
+        div {{ serviceTagGroupShowText(formData.prop.ext.service_tag_group) }}
     el-form-item(v-if="showFormItem(formData.prop.ext.after_service)", label="售后模板：", prop="after_service_id")
-      div {{showName(formData.prop.ext.after_service)}}
+      show-after-service(:afterService="formData.prop.ext.after_service")
     el-form-item
       el-button(type="primary", :disabled="!isPlatform", @click="edit(formData.id)") 编 辑
 </template>
@@ -39,6 +43,9 @@
 <script>
   import ShowDescription from './ShowDescription.vue'
   import Skus from 'src/ui/common/ProductDetail/Skus.vue'
+  import * as FreightService from 'src/service/freight-template'
+  import * as ServiceTagGroupService from 'src/service/service_tag_group'
+  import ShowAfterService from './ShowAfterService.vue'
 
   export default {
     props: {
@@ -55,7 +62,7 @@
         }
       }
     },
-    components: {ShowDescription, Skus},
+    components: {ShowDescription, Skus, ShowAfterService},
     data () {
       return {
         loading: false,
@@ -144,7 +151,9 @@
           return row.name
         }
         return ''
-      }
+      },
+      ...$global.$mapConst({'serviceTagGroupShowText': ServiceTagGroupService.showItemsText}),
+      ...$global.$mapMethods({'freightDescText': FreightService.getDescText})
     },
     mounted () {
     }
@@ -163,6 +172,10 @@
 
   .ptag {
     margin-right: 10px;
+  }
+
+  .freight-wrapper {
+    line-height: 18px;
   }
 
 </style>
