@@ -25,9 +25,6 @@
         if (value === '') {
           callback(new Error('请输入密码'))
         } else if (reg.test(value)) {
-          if (this.formData.checkpasswd !== '') {
-            this.$refs.form.validateField('checkpasswd')
-          }
           callback()
         } else if (!reg.test(value)) {
           callback(new Error('密码只能是长度6到20的字母和数字'))
