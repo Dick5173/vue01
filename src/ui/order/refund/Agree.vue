@@ -50,7 +50,7 @@
           } else {
             callback(new Error('请输入适合的数字'))
           }
-          if (convertYuanToFen(value) > this.orderItem.total_price) {
+          if (convertYuanToFen(value) > this.canRefundPrice) {
             callback(new Error('请输入适合的数字'))
           }
         }
