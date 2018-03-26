@@ -131,9 +131,11 @@
             }).then(async () => {
               this.loading = true
               try {
-                console.log(this.form)
                 const resResult = await agree(this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark)
-                console.log(resResult)
+                this.$message({
+                  message: '退款成功',
+                  type: 'success'
+                })
                 this.$emit('submit', resResult.data)
                 this.loading = false
                 this.hide()
