@@ -4,7 +4,10 @@
       el-form-item(label="退款金额", prop="amount")
         el-input.input(v-model="form.amount")
         div(style="color: rgb(153, 153, 153);font-size: 12px;")
-          span 最多退款{{orderItem.total_price | price}}
+          span 最多退款
+          span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
+          span 其中商品总额{{orderItem.total_price | price}}，
+          span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}
@@ -88,6 +91,15 @@
           arr[i] = this.orderItem.count - i
         }
         return arr
+      },
+      canFullRefund () {
+        return (this.orderItem.total_price + this.orderItem.order_postage) <= this.orderItem.order_left_amount
+      },
+      canRefundPrice () {
+        if (this.canFullRefund) {
+          return this.orderItem.total_price + this.orderItem.order_postage
+        }
+        return this.orderItem.order_left_amount
       }
     },
     methods: {
@@ -157,5 +169,12 @@
     color: #868686;
     margin-top: 5px;
     margin-bottom: 20px;
+  }
+
+  .can-refund-price {
+
+    &.red {
+      color: $color-danger;
+    }
   }
 </style>
