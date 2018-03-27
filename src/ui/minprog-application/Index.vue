@@ -6,7 +6,7 @@
           div(slot-scope="props") {{ getPlatform(props.row.platform) }}
         el-table-column(prop="name", label="名字")
         el-table-column(prop="mobile", label="手机号")
-        el-table-column(prop="wx_acount", label="微信个人账号")
+        el-table-column(prop="wx_account", label="微信个人账号")
         el-table-column(prop="wx_oa", label="微信公众账号")
         el-table-column(prop="follower_level", label="粉丝量级")
         el-table-column(prop="remark", label="留言")
