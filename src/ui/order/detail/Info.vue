@@ -14,6 +14,7 @@
         template(slot-scope="scope")
           div.status
             el-button(type="text", @click="goRefundDetail(scope.row)", v-if="refundBtnText(scope.row)") {{refundBtnText(scope.row)}}
+            p.refund-fail-tips(v-if="scope.row.fail_refund") {{scope.row.fail_refund.errmsg}}
           div.status(v-if="enableRefundToWx(scope.row)")
             el-button(type="text", @click="refundToWx(scope.row)") 退款至微信
       el-table-column(label="物流状态", width="210", v-if="showStatue")
@@ -149,6 +150,16 @@
       padding: 0 20px !important;
     }
   }
+
+  .refund-fail-tips {
+    padding-top: 1px;
+    padding-bottom: 1px;
+
+    & > button {
+      padding: 0 1px !important;
+    }
+  }
+
 
   .list-wrapper {
     margin-top: 5px;
