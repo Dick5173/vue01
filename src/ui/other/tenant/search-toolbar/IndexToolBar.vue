@@ -12,6 +12,9 @@
       el-form-item
         el-input(v-model.trim="formData.key", placeholder="店铺名称/店铺ID")
       el-form-item
+        el-select(v-model="formData.level", clearable, placeholder="店铺等级")
+          el-option(v-for="item in tenantLevelList", :key="item.level", :label="item.name", :value="item.level")
+      el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
 </template>
 
@@ -32,7 +35,8 @@
           start: 0,
           end: 0,
           key: '',
-          product_auth: ''
+          product_auth: '',
+          level: ''
         },
         defaultDate: [],
         statusList: [
@@ -45,6 +49,11 @@
           {name: '选货/自营', product_auth: '3'},
           {name: '选货', product_auth: '2'},
           {name: '自营', product_auth: '1'}
+        ],
+        tenantLevelList: [
+          {name: '普通店铺', level: '1'},
+          {name: '中级店铺', level: '2'},
+          {name: '高级店铺', level: '3'}
         ]
       }
     },
@@ -73,7 +82,8 @@
           start: this.R_.parseDateTick(0, this.queryParams.start),
           end: this.R_.parseDateTick(0, this.queryParams.end),
           key: this.queryParams.key,
-          product_auth: this.queryParams.product_auth
+          product_auth: this.queryParams.product_auth,
+          level: this.queryParams.level
         }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]
