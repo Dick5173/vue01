@@ -21,9 +21,16 @@
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price")
         span.input-right-desc 元
-      el-form-item(label="供货价", prop="supply_price")
-        el-input.tiny-el-input(v-model.trim="formData.supply_price")
-        span.input-right-desc 元
+      el-form-item(label="供货价")
+        el-form-item(label="普通店铺", prop="supply_price", style="margin-bottom:20px")
+          el-input.tiny-el-input(v-model.trim="formData.supply_price")
+          span.input-right-desc 元
+        el-form-item(label="中级店铺", prop="mid_tenant_supply_price", style="margin-bottom:20px")
+          el-input.tiny-el-input(v-model.trim="formData.mid_tenant_supply_price")
+          span.input-right-desc 元
+        el-form-item(label="高级店铺", prop="high_tenant_supply_price")
+          el-input.tiny-el-input(v-model.trim="formData.high_tenant_supply_price")
+          span.input-right-desc 元
       el-form-item(label="商品分类", prop="category_id")
         el-select(v-model="formData.category_id", placeholder="请选择")
           el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
@@ -147,6 +154,36 @@
         }
         callback()
       }
+      const midTenantSupplyPriceValidator = (rule, value, callback) => {
+        if (!this.R_.isPrice(value)) {
+          callback(new Error('不正确的价格'))
+          return
+        }
+        const midTenantSupplyPrice = this.R_.convertYuanToFen(value)
+        if (this.R_.isPrice(this.formData.supply_price)) {
+          const st = this.R_.convertYuanToFen(this.formData.supply_price)
+          if (midTenantSupplyPrice > st) {
+            callback(new Error('不能大于普通店铺划线价'))
+            return
+          }
+        }
+        callback()
+      }
+      const highTenantSupplyPriceValidator = (rule, value, callback) => {
+        if (!this.R_.isPrice(value)) {
+          callback(new Error('不正确的价格'))
+          return
+        }
+        const highTenantSupplyPrice = this.R_.convertYuanToFen(value)
+        if (this.R_.isPrice(this.formData.mid_tenant_supply_price)) {
+          const st = this.R_.convertYuanToFen(this.formData.mid_tenant_supply_price)
+          if (highTenantSupplyPrice > st) {
+            callback(new Error('不能大于中级店铺划线价'))
+            return
+          }
+        }
+        callback()
+      }
       const freightTemplateValidator = (rule, value, callback) => {
         if (this.radFreightVal === FREIGHT_SPECIFY_TEMPLATE && !value) {
           callback(new Error('请选择运费模板'))
@@ -194,6 +231,8 @@
           }],
           st_price: '',
           supply_price: '',
+          mid_tenant_supply_price: '',
+          high_tenant_supply_price: '',
           category_id: '',
           oversea: false,
           content: [],
@@ -229,6 +268,14 @@
           supply_price: [
             {required: true, message: '价格不能为空', trigger: 'blur'},
             {validator: supplyPriceValidator, trigger: 'blur'}
+          ],
+          mid_tenant_supply_price: [
+            {required: true, message: '价格不能为空', trigger: 'blur'},
+            {validator: midTenantSupplyPriceValidator, trigger: 'blur'}
+          ],
+          high_tenant_supply_price: [
+            {required: true, message: '价格不能为空', trigger: 'blur'},
+            {validator: highTenantSupplyPriceValidator, trigger: 'blur'}
           ],
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}

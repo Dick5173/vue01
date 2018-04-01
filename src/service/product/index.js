@@ -32,7 +32,7 @@ export const convertFormToParam = R.curry((form) => {
   return R.pipe(
     R.clone,
     (obj) => {
-      const priceField = ['st_price', 'supply_price']
+      const priceField = ['st_price', 'supply_price', 'mid_tenant_supply_price', 'high_tenant_supply_price']
       const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id']
       return R.mapObjIndexed((val, key) => {
         if (key === 'head') {
@@ -76,6 +76,8 @@ export const convertFormToParam = R.curry((form) => {
         category_id: obj.category_id,
         oversea: !!obj.oversea,
         supply_price: obj.supply_price,
+        mid_tenant_supply_price: obj.mid_tenant_supply_price,
+        high_tenant_supply_price: obj.high_tenant_supply_price,
         skus: obj.skus,
         tags: obj.tags,
         service_tag_group_id: obj.service_tag_group_id,
@@ -96,6 +98,8 @@ export const convertModelToForm = R.curry((form) => {
         category_id: ['prop', 'category', 'id'],
         oversea: ['prop', 'ext', 'oversea'],
         supply_price: ['prop', 'ext', 'supply_price'],
+        mid_tenant_supply_price: ['prop', 'ext', 'mid_tenant_supply_price'],
+        high_tenant_supply_price: ['prop', 'ext', 'high_tenant_supply_price'],
         skus: ['prop', 'skus'],
         tags: ['prop', 'tags'],
         service_tag_group_id: ['prop', 'ext', 'service_tag_group', 'id'],
@@ -110,7 +114,7 @@ export const convertModelToForm = R.curry((form) => {
     },
     (obj) => {
       const pickContent = R.pickAll(['id', 'tp', 'text', 'url', 'width', 'height'])
-      const priceField = ['st_price', 'supply_price']
+      const priceField = ['st_price', 'supply_price', 'mid_tenant_supply_price', 'high_tenant_supply_price']
       const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id']
       return R.mapObjIndexed((val, key) => {
         if (key === 'head') {
@@ -155,9 +159,11 @@ export const convertModelToForm = R.curry((form) => {
         category_id: obj.category_id,
         oversea: !!obj.oversea,
         supply_price: obj.supply_price,
+        mid_tenant_supply_price: obj.mid_tenant_supply_price,
+        high_tenant_supply_price: obj.high_tenant_supply_price,
         skus: obj.skus
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'skus', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'supply_price', 'mid_tenant_supply_price', 'high_tenant_supply_price', 'skus', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id'])(obj)
     }
   )(form)
 })
