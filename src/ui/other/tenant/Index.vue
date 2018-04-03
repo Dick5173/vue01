@@ -19,6 +19,9 @@
         el-table-column(prop="up_product_count", label="上架商品", sortable, width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="toProduct(scope.row)") {{scope.row.up_product_count}}
+        el-table-column(prop="level", label="店铺等级", width="110px")
+          div(slot-scope="scope")
+            el-button(type="text", @click="showTenantLevelDialog(scope.row)") {{scope.row.tenant_level.description}}
         el-table-column(prop="", label="商品权限", width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="showProductAuthDialog(scope.row)") {{showProductAuth(scope.row)}}
@@ -53,13 +56,16 @@
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="loadDataListByQueryPage")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="loadDataListByQueryPage")
     product-auth-dialog(ref="dlgProductAuth", @refresh="loadDataListByQueryPage")
+    tenant-level-dialog(ref="dlgTenantLevel", @refresh="loadDataListByQueryPage")
 </template>
 <script>
   import SearchToolbar from 'src/ui/other/tenant/search-toolbar/IndexToolBar.vue'
+  import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
   import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
   import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
   import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
   import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
+
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
@@ -76,7 +82,8 @@
       BindChildTenantDialog,
       ProductAuthDialog,
       BindErpShopIdDialog,
-      BindQiyuDialog
+      BindQiyuDialog,
+      TenantLevelDialog
     },
     data () {
       return {
@@ -116,6 +123,9 @@
       },
       handleQiyuBind (row) {
         this.$refs.dlgBindQiyu.show(row)
+      },
+      showTenantLevelDialog (row) {
+        this.$refs.dlgTenantLevel.show(row)
       },
       showBindStatus (row) {
         if (row.sub_mch_id) {
