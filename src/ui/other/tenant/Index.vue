@@ -19,9 +19,6 @@
         el-table-column(prop="up_product_count", label="上架商品", sortable, width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="toProduct(scope.row)") {{scope.row.up_product_count}}
-        el-table-column(prop="level", label="店铺等级", width="110px")
-          div(slot-scope="scope")
-            el-button(type="text", @click="showTenantLevelDialog(scope.row)") {{showTenantLevel(scope.row)}}
         el-table-column(prop="", label="商品权限", width="110px")
           div(slot-scope="scope")
             el-button(type="text", @click="showProductAuthDialog(scope.row)") {{showProductAuth(scope.row)}}
@@ -56,11 +53,9 @@
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="loadDataListByQueryPage")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="loadDataListByQueryPage")
     product-auth-dialog(ref="dlgProductAuth", @refresh="loadDataListByQueryPage")
-    tenant-level-dialog(ref="dlgTenantLevel", @refresh="loadDataListByQueryPage")
 </template>
 <script>
   import SearchToolbar from 'src/ui/other/tenant/search-toolbar/IndexToolBar.vue'
-  import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
   import ProductAuthDialog from 'src/ui/common/product-auth-dialog/Index.vue'
   import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
   import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
@@ -68,7 +63,7 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
-  import { showAppStatus, showTenantStatus, showTenantLevel, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName } from 'src/service/other/index'
   import { PUSH_STATUS_TENANT } from 'src/constants/orderPush'
 
   export default {
@@ -81,8 +76,7 @@
       BindChildTenantDialog,
       ProductAuthDialog,
       BindErpShopIdDialog,
-      BindQiyuDialog,
-      TenantLevelDialog
+      BindQiyuDialog
     },
     data () {
       return {
@@ -91,8 +85,7 @@
           start: 0,
           end: 0,
           key: '',
-          product_auth: '',
-          level: ''
+          product_auth: ''
         }
       }
     },
@@ -110,9 +103,6 @@
           }
           return val
         })(params))
-      },
-      showTenantLevelDialog (row) {
-        this.$refs.dlgTenantLevel.show(row)
       },
       showProductAuthDialog (row) {
         this.$refs.dlgProductAuth.show(row)
@@ -274,7 +264,6 @@
       },
       ...$global.$mapMethods({'showAppStatus': showAppStatus}),
       ...$global.$mapMethods({'showTenantStatus': showTenantStatus}),
-      ...$global.$mapMethods({'showTenantLevel': showTenantLevel}),
       ...$global.$mapMethods({'showProductAuth': showProductAuth}),
       ...$global.$mapMethods({'showProductAuth': showProductAuth}),
       ...$global.$mapMethods({'showErpBindButtonName': showErpBindButtonName}),

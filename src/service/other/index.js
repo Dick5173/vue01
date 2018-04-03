@@ -86,21 +86,6 @@ export const showProductAuth = (row) => {
   return text
 }
 
-export const showTenantLevel = (row) => {
-  let text = ''
-  switch (row.level) {
-    case 1:
-      text = '普通'
-      break
-    case 2:
-      text = '中级'
-      break
-    case 3:
-      text = '高级'
-  }
-  return text
-}
-
 export const showErpBindButtonName = (row) => {
   if (row.erp_shop_id) {
     return 'ERP已绑'
