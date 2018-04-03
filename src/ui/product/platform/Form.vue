@@ -21,16 +21,11 @@
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price")
         span.input-right-desc 元
-      el-form-item(label="供货价")
-        el-form-item(label="普通店铺", prop="supply_price", style="margin-bottom:20px")
-          el-input.tiny-el-input(v-model.trim="formData.supply_price")
-          span.input-right-desc 元
-        el-form-item(label="中级店铺", prop="mid_tenant_supply_price", style="margin-bottom:20px")
-          el-input.tiny-el-input(v-model.trim="formData.mid_tenant_supply_price")
-          span.input-right-desc 元
-        el-form-item(label="高级店铺", prop="high_tenant_supply_price")
-          el-input.tiny-el-input(v-model.trim="formData.high_tenant_supply_price")
-          span.input-right-desc 元
+      el-form-item(label="供货价", prop="supply_price")
+        el-input.tiny-el-input(v-model.trim="formData.supply_price")
+        span.input-right-desc 元
+      el-form-item(label="供货价", prop="supply_levels")
+        supply-price-comp(:data-list="formData.supply_levels")
       el-form-item(label="商品分类", prop="category_id")
         el-select(v-model="formData.category_id", placeholder="请选择")
           el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
@@ -68,10 +63,10 @@
 <script>
   import * as AliyunApi from 'src/api/aliyun'
   import Skus from './Skus.vue'
-  import Supply from './Supply.vue'
   import * as TenantApi from 'src/api/tenant'
   import { UploadImage, UploadImageList } from '@baibao/zeratul'
   import ContentComp from './Content.vue'
+  import SupplyPriceComp from './SupplyPrice'
   import * as FormApi from 'src/api/product'
   import * as CategoryApi from 'src/api/category'
   import * as ProductService from 'src/service/product'
@@ -97,7 +92,7 @@
       Skus,
       ContentComp,
       BatchTagDialog,
-      Supply
+      SupplyPriceComp
     },
     data () {
       const headValidator = (rule, value, callback) => {
@@ -195,6 +190,15 @@
         callback()
       }
 
+      // todo, 验证供货价格
+      const supplyLevelsValidator = (rule, value, callback) => {
+        if (!value || value.length <= 0) {
+          callback(new Error('供货价格不能为空'))
+          return
+        }
+        callback()
+      }
+
       return {
         loading: false,
         initialData: {},
@@ -233,11 +237,7 @@
               height: 0
             }
           }],
-          supply_levels: [{
-            id: 0,
-            tenant_level_id: 0,
-            supply_price: 0
-          }],
+          supply_levels: [],
           st_price: '',
           supply_price: '',
           mid_tenant_supply_price: '',
@@ -291,6 +291,9 @@
           ],
           freight_template_id: [
             {validator: freightTemplateValidator, trigger: 'change'}
+          ],
+          supply_levels: [
+            {validator: supplyLevelsValidator, trigger: 'change'}
           ]
         }
       }
@@ -306,7 +309,7 @@
         return this.$route.name === 'PlatformProductEdit'
       },
       remainHeadCount () {
-        return MAX_HEAD_COUNT - this.formData.head.length
+        return MAX_HEAD_COUNT - (this.formData.head || []).length
       },
       oraTags () {
         return this.formData.tags ? [{tags: this.formData.tags}] : []
@@ -328,7 +331,6 @@
       async initData () {
         try {
           this.loading = true
-          this.getTenantLevel()
           this.getCategoryList()
           this.getServiceGroupList()
           this.getAfterServiceList()
@@ -338,6 +340,8 @@
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
           }
+          await this.getTenantLevel()
+          this.formData.supply_levels = ProductService.buildSupplyPrice(this.tenantLevelList, this.formData.supply_levels)
           this.initialData = this.R.clone(this.formData)
           this.loading = false
         } catch (err) {
@@ -347,6 +351,7 @@
       async getTenantLevel () {
         const res = await TenantApi.getTenantLevelList()
         this.tenantLevelList = res.data.data
+        console.log('this.tenantLevelList', this.tenantLevelList)
       },
       async getCategoryList () {
         const resCategory = await CategoryApi.getList()
@@ -371,7 +376,6 @@
       async create (up) {
         this.formData.id = 0
         let frm = Object.assign({}, this.formData)
-        console.log(frm.supply_levels)
         if (up) {
           frm.status = ProductService.allStatus.up.value
         }

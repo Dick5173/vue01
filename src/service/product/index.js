@@ -83,7 +83,14 @@ export const convertFormToParam = R.curry((form) => {
         service_tag_group_id: obj.service_tag_group_id,
         after_service_id: obj.after_service_id,
         delivery_region_id: obj.delivery_region_id,
-        freight_template_id: obj.freight_template_id
+        freight_template_id: obj.freight_template_id,
+        supply_levels: R.map(spItem => {
+          return {
+            id: spItem.id,
+            tenant_level_id: spItem.tenant_level.id,
+            supply_price: R_.convertYuanToFen(spItem.supply_price)
+          }
+        })(obj.supply_levels || [])
       }
       return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'content', 'prop'])(obj)
     }
@@ -241,3 +248,14 @@ export const copyCreate = R.curry((form) => {
     }
   )(form)
 })
+
+export const buildSupplyPrice = (tenantLevelList, supplyPriceRawData) => {
+  // todo: 在更新时，需要设置ID和supply_price的值
+  return R.map((item) => {
+    return {
+      id: 0,
+      tenant_level: item,
+      supply_price: ''
+    }
+  })(tenantLevelList || [])
+}
