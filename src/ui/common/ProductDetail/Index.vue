@@ -15,15 +15,8 @@
       span {{formData.st_price | price}}
       span.input-right-desc 元
     el-form-item(label="供货价")
-      el-form-item(label="普通店铺：", prop="supply_price")
-        span {{formData.prop.ext.supply_price | price}}
-        span.input-right-desc 元
-      el-form-item(label="中级店铺：", prop="mid_tenant_supply_price")
-        span {{formData.prop.ext.mid_tenant_supply_price | price}}
-        span.input-right-desc 元
-      el-form-item(label="高级店铺：", prop="high_tenant_supply_price")
-        span {{formData.prop.ext.high_tenant_supply_price | price}}
-        span.input-right-desc 元
+      span(v-if="!isPlatform") {{formData.prop.ext.supply_price | price}}
+      span.input-right-desc(v-if="!isPlatform") 元
     el-form-item(v-if="isPlatform", label="商品分类：", prop="delivery_region_id")
       div {{showName(formData.prop.category)}}
     el-form-item(v-if="showFormItem(formData.prop.ext.delivery_region)", label="配送区域：", prop="delivery_region_id")
