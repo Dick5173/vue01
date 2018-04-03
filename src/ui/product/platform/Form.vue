@@ -17,12 +17,9 @@
         el-input.medium-el-input(v-model.trim="formData.sell_point", :maxlength="30")
         span.input-right-desc {{ formData.sell_point.length }} / 30
       el-form-item(label="商品规格", prop="skus", required)
-        skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supplyPrice="this.formData.supply_price")
+        skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supply_levels="this.formData.supply_levels")
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price")
-        span.input-right-desc 元
-      el-form-item(label="供货价", prop="supply_price")
-        el-input.tiny-el-input(v-model.trim="formData.supply_price")
         span.input-right-desc 元
       el-form-item(label="供货价", prop="supply_levels")
         supply-price-comp(:data-list="formData.supply_levels")
@@ -137,51 +134,6 @@
         }
         callback()
       }
-      const supplyPriceValidator = (rule, value, callback) => {
-        if (!this.R_.isPrice(value)) {
-          callback(new Error('不正确的价格'))
-          return
-        }
-        const supplyPrice = this.R_.convertYuanToFen(value)
-        if (this.R_.isPrice(this.formData.st_price)) {
-          const st = this.R_.convertYuanToFen(this.formData.st_price)
-          if (supplyPrice > st) {
-            callback(new Error('不能大于划线价'))
-            return
-          }
-        }
-        callback()
-      }
-      const midTenantSupplyPriceValidator = (rule, value, callback) => {
-        if (!this.R_.isPrice(value)) {
-          callback(new Error('不正确的价格'))
-          return
-        }
-        const midTenantSupplyPrice = this.R_.convertYuanToFen(value)
-        if (this.R_.isPrice(this.formData.supply_price)) {
-          const st = this.R_.convertYuanToFen(this.formData.supply_price)
-          if (midTenantSupplyPrice > st) {
-            callback(new Error('不能大于普通店铺划线价'))
-            return
-          }
-        }
-        callback()
-      }
-      const highTenantSupplyPriceValidator = (rule, value, callback) => {
-        if (!this.R_.isPrice(value)) {
-          callback(new Error('不正确的价格'))
-          return
-        }
-        const highTenantSupplyPrice = this.R_.convertYuanToFen(value)
-        if (this.R_.isPrice(this.formData.mid_tenant_supply_price)) {
-          const st = this.R_.convertYuanToFen(this.formData.mid_tenant_supply_price)
-          if (highTenantSupplyPrice > st) {
-            callback(new Error('不能大于中级店铺划线价'))
-            return
-          }
-        }
-        callback()
-      }
       const freightTemplateValidator = (rule, value, callback) => {
         if (this.radFreightVal === FREIGHT_SPECIFY_TEMPLATE && !value) {
           callback(new Error('请选择运费模板'))
@@ -190,11 +142,22 @@
         callback()
       }
 
-      // todo, 验证供货价格
       const supplyLevelsValidator = (rule, value, callback) => {
         if (!value || value.length <= 0) {
           callback(new Error('供货价格不能为空'))
           return
+        }
+        var prevPrice = 0
+        for (var i = 0; i < value.length; i++) {
+          if (!this.R_.isPrice(value[i].supply_price)) {
+            callback(new Error('不正确的价格'))
+            return
+          }
+          var p = this.R_.convertYuanToFen(value[i].supply_price)
+          if (prevPrice !== 0 && p > prevPrice) {
+            callback(new Error('供货价格不合法'))
+          }
+          prevPrice = p
         }
         callback()
       }
@@ -239,9 +202,6 @@
           }],
           supply_levels: [],
           st_price: '',
-          supply_price: '',
-          mid_tenant_supply_price: '',
-          high_tenant_supply_price: '',
           category_id: '',
           oversea: false,
           content: [],
@@ -273,18 +233,6 @@
           ],
           st_price: [
             {validator: priceValidator, trigger: 'blur'}
-          ],
-          supply_price: [
-            {required: true, message: '价格不能为空', trigger: 'blur'},
-            {validator: supplyPriceValidator, trigger: 'blur'}
-          ],
-          mid_tenant_supply_price: [
-            {required: true, message: '价格不能为空', trigger: 'blur'},
-            {validator: midTenantSupplyPriceValidator, trigger: 'blur'}
-          ],
-          high_tenant_supply_price: [
-            {required: true, message: '价格不能为空', trigger: 'blur'},
-            {validator: highTenantSupplyPriceValidator, trigger: 'blur'}
           ],
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}
@@ -341,6 +289,7 @@
             this.formData = ProductService.convertModelToForm(resItem.data)
           }
           await this.getTenantLevel()
+          console.log(this.formData.supply_levels)
           this.formData.supply_levels = ProductService.buildSupplyPrice(this.tenantLevelList, this.formData.supply_levels)
           this.initialData = this.R.clone(this.formData)
           this.loading = false

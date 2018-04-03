@@ -52,8 +52,8 @@
         type: Array,
         required: true
       },
-      supplyPrice: {
-        type: String,
+      supply_levels: {
+        type: Array,
         required: true
       },
       stPrice: {
@@ -68,8 +68,12 @@
           return
         }
         const suggestPrice = this.R_.convertYuanToFen(value)
-        if (this.R_.isPrice(this.supplyPrice)) {
-          const sp = this.R_.convertYuanToFen(this.supplyPrice)
+        if (this.supply_levels.length === 0) {
+          callback(new Error('供货价没有设置'))
+          return
+        }
+        if (this.R_.isPrice(this.supply_levels[0].supply_price)) {
+          const sp = this.R_.convertYuanToFen(this.supply_levels[0].supply_price)
           if (suggestPrice < sp) {
             callback(new Error('不能小于供货价'))
             return
