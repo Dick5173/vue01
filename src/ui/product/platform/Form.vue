@@ -68,6 +68,8 @@
 <script>
   import * as AliyunApi from 'src/api/aliyun'
   import Skus from './Skus.vue'
+  import Supply from './Supply.vue'
+  import * as TenantApi from 'src/api/tenant'
   import { UploadImage, UploadImageList } from '@baibao/zeratul'
   import ContentComp from './Content.vue'
   import * as FormApi from 'src/api/product'
@@ -94,7 +96,8 @@
       UploadImage,
       Skus,
       ContentComp,
-      BatchTagDialog
+      BatchTagDialog,
+      Supply
     },
     data () {
       const headValidator = (rule, value, callback) => {
@@ -199,6 +202,7 @@
         afterServiceList: [],
         deliveryRegionList: [],
         allCategories: [],
+        tenantLevelList: [],
         freightTemplateList: [],
         radFreightVal: 0,
         formData: {
@@ -228,6 +232,11 @@
               width: 0,
               height: 0
             }
+          }],
+          supply_levels: [{
+            id: 0,
+            tenant_level_id: 0,
+            supply_price: 0
           }],
           st_price: '',
           supply_price: '',
@@ -319,6 +328,7 @@
       async initData () {
         try {
           this.loading = true
+          this.getTenantLevel()
           this.getCategoryList()
           this.getServiceGroupList()
           this.getAfterServiceList()
@@ -333,6 +343,10 @@
         } catch (err) {
           this.loading = false
         }
+      },
+      async getTenantLevel () {
+        const res = await TenantApi.getTenantLevelList()
+        this.tenantLevelList = res.data.data
       },
       async getCategoryList () {
         const resCategory = await CategoryApi.getList()
@@ -357,6 +371,7 @@
       async create (up) {
         this.formData.id = 0
         let frm = Object.assign({}, this.formData)
+        console.log(frm.supply_levels)
         if (up) {
           frm.status = ProductService.allStatus.up.value
         }
