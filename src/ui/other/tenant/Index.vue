@@ -85,7 +85,8 @@
           start: 0,
           end: 0,
           key: '',
-          product_auth: ''
+          product_auth: '',
+          level: ''
         }
       }
     },

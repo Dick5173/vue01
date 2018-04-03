@@ -50,3 +50,11 @@ export const hidePowerInfo = (tid) => {
 export const showPowerInfo = (tid) => {
   return Axios.post(`/admin/tenant/s/${tid}/info/show`)
 }
+
+export const updateTenantLevel = (tid, formData) => {
+  return Axios.post(`/admin/tenant/s/${tid}/level`, qs.stringify(formData))
+}
+
+export const getTenantLevelList = (params) => {
+  return Axios.get(`/admin/tenant_level`)
+}
