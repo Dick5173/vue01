@@ -284,12 +284,11 @@
           this.getAfterServiceList()
           this.getDeliveryRegionList()
           this.getFreightTemplateList()
+          await this.getTenantLevel()
           if (this.isEditMode || this.isCopy) {
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
           }
-          await this.getTenantLevel()
-          console.log(this.formData.supply_levels)
           this.formData.supply_levels = ProductService.buildSupplyPrice(this.tenantLevelList, this.formData.supply_levels)
           this.initialData = this.R.clone(this.formData)
           this.loading = false
