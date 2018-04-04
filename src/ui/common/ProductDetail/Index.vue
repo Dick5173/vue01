@@ -17,6 +17,7 @@
     el-form-item(label="供货价")
       span(v-if="!isPlatform") {{formData.prop.ext.supply_price | price}}
       span.input-right-desc(v-if="!isPlatform") 元
+      supply-price-comp(v-if="isPlatform" :dataList="supply_levels")
     el-form-item(v-if="isPlatform", label="商品分类：", prop="delivery_region_id")
       div {{showName(formData.prop.category)}}
     el-form-item(v-if="showFormItem(formData.prop.ext.delivery_region)", label="配送区域：", prop="delivery_region_id")
@@ -42,6 +43,7 @@
 
 <script>
   import ShowDescription from './ShowDescription.vue'
+  import SupplyPriceComp from './SupplyPrice'
   import Skus from 'src/ui/common/ProductDetail/Skus.vue'
   import * as FreightService from 'src/service/freight-template'
   import * as ServiceTagGroupService from 'src/service/service_tag_group'
@@ -62,7 +64,7 @@
         }
       }
     },
-    components: {ShowDescription, Skus, ShowAfterService},
+    components: {ShowDescription, Skus, SupplyPriceComp, ShowAfterService},
     data () {
       return {
         loading: false,
@@ -95,6 +97,7 @@
         } else {
           this.skus = this.rowFormData.prop.skus
         }
+        this.supply_levels = this.rowFormData.supply_levels
         this.description = this.rowFormData.content ? this.rowFormData.content : []
       }
     },

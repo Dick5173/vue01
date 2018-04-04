@@ -13,6 +13,7 @@
   import * as ProductApi from 'src/api/product'
   import * as TenantSelfProductApi from 'src/api/tenant-self-product'
   import * as TenantApi from 'src/api/tenant'
+  import * as ProductService from 'src/service/product'
 
   export default {
     props: {},
@@ -36,6 +37,7 @@
         this.getDetail(item.id, item.tp, tid)
       },
       async getDetail (id, tp, tid) {
+        await this.getTenantLevel()
         try {
           this.loading = true
           let res = ''
@@ -47,11 +49,19 @@
             res = await TenantSelfProductApi.getTenantSelfItem(id)
           }
           this.formData = res.data
+          if (tp === 1) {
+            this.formData.supply_levels = ProductService.buildSupplyPriceWithConvertFenToYuan(this.tenantLevelList, this.formData.prop.supply_levels)
+          }
         } catch (err) {
           console.log(err)
         } finally {
           this.loading = false
         }
+      },
+      async getTenantLevel () {
+        const res = await TenantApi.getTenantLevelList()
+        this.tenantLevelList = res.data.data
+        console.log('this.tenantLevelList', this.tenantLevelList)
       }
     }
   }

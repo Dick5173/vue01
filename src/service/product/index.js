@@ -248,7 +248,7 @@ export const copyCreate = R.curry((form) => {
   )(form)
 })
 
-export const buildSupplyPrice = (tenantLevelList, supplyPriceRawData) => {
+export const buildSupplyPrice = (tenantLevelList, supplyPriceRawData, convertFenToYuan) => {
   let fnFindSupplyPrice = (tenantLevelId) => {
     return R.find(item => {
       return item.tenant_level_id === tenantLevelId || (item.tenant_level && item.tenant_level.id === tenantLevelId)
@@ -261,6 +261,24 @@ export const buildSupplyPrice = (tenantLevelList, supplyPriceRawData) => {
       id: itemSupplyPrice ? itemSupplyPrice.id : 0,
       tenant_level: item,
       supply_price: itemSupplyPrice ? `${itemSupplyPrice.supply_price}` : ''
+    }
+  })(tenantLevelList || [])
+}
+
+// todo 优化将两个方法合并
+export const buildSupplyPriceWithConvertFenToYuan = (tenantLevelList, supplyPriceRawData) => {
+  let fnFindSupplyPrice = (tenantLevelId) => {
+    return R.find(item => {
+      return item.tenant_level_id === tenantLevelId || (item.tenant_level && item.tenant_level.id === tenantLevelId)
+    })(supplyPriceRawData || [])
+  }
+
+  return R.map((item) => {
+    const itemSupplyPrice = fnFindSupplyPrice(item.id)
+    return {
+      id: itemSupplyPrice ? itemSupplyPrice.id : 0,
+      tenant_level: item,
+      supply_price: itemSupplyPrice ? `${R_.convertFenToYuan(itemSupplyPrice.supply_price)}` : ''
     }
   })(tenantLevelList || [])
 }
