@@ -154,8 +154,6 @@ export const convertModelToForm = R.curry((form) => {
         } else if (key === 'supply_levels') {
           return R.map(item => {
             item.supply_price = `${R_.convertFenToYuan(item.supply_price)}`
-            item.tenant_level_id = `${item.tenant_level_id}`
-            item.id = `${item.id}`
             return item
           })(val || [])
         }
@@ -168,6 +166,7 @@ export const convertModelToForm = R.curry((form) => {
         category_id: obj.category_id,
         oversea: !!obj.oversea,
         skus: obj.skus,
+        supply_price: obj.supply_price,
         supply_levels: obj.supply_levels
       }
       return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id'])(obj)
@@ -250,12 +249,18 @@ export const copyCreate = R.curry((form) => {
 })
 
 export const buildSupplyPrice = (tenantLevelList, supplyPriceRawData) => {
-  // todo: 在更新时，需要设置ID和supply_price的值
+  let fnFindSupplyPrice = (tenantLevelId) => {
+    return R.find(item => {
+      return item.tenant_level_id === tenantLevelId || (item.tenant_level && item.tenant_level.id === tenantLevelId)
+    })(supplyPriceRawData || [])
+  }
+
   return R.map((item) => {
+    const itemSupplyPrice = fnFindSupplyPrice(item.id)
     return {
-      id: 0,
+      id: itemSupplyPrice ? itemSupplyPrice.id : 0,
       tenant_level: item,
-      supply_price: ''
+      supply_price: itemSupplyPrice ? `${R_.convertFenToYuan(itemSupplyPrice.supply_levels)}` : ''
     }
   })(tenantLevelList || [])
 }
