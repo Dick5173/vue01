@@ -15,8 +15,10 @@
       span {{formData.st_price | price}}
       span.input-right-desc 元
     el-form-item(label="供货价")
-      span(v-if="!isPlatform") {{formData.prop.ext.supply_price | price}}
-      span.input-right-desc(v-if="!isPlatform") 元
+      span(v-if="isTenantProduct") {{formData.prop.ext.supply_price | price}}
+      span.input-right-desc(v-if="isTenantProduct") 元
+      span(v-if="isSelected") {{formData.supply_price | price}}
+      span.input-right-desc(v-if="isSelected") 元
       supply-price-comp(v-if="isPlatform" :dataList="supply_levels")
     el-form-item(v-if="isPlatform", label="商品分类：", prop="delivery_region_id")
       div {{showName(formData.prop.category)}}
@@ -84,6 +86,18 @@
     computed: {
       isPlatform () {
         if (this.rowFormData.tp === 1) {
+          return true
+        }
+        return false
+      },
+      isSelected () {
+        if (this.rowFormData.tp === 3) {
+          return true
+        }
+        return false
+      },
+      isTenantProduct () {
+        if (this.rowFormData.tp === 2) {
           return true
         }
         return false

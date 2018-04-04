@@ -62,6 +62,12 @@
     watch: {},
     methods: {
       showProfit (row) {
+        if (this.formData.prop.suply_levels) {
+          if (this.formData.prop.suply_levels.length > 0) {
+            let data = row.sell_price - this.formData.prop.supply_levels[0].supply_price
+            return data
+          }
+        }
         let data = row.sell_price - this.formData.prop.ext.supply_price
         return data
       },
