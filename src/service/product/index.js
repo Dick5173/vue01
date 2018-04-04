@@ -260,7 +260,7 @@ export const buildSupplyPrice = (tenantLevelList, supplyPriceRawData) => {
     return {
       id: itemSupplyPrice ? itemSupplyPrice.id : 0,
       tenant_level: item,
-      supply_price: itemSupplyPrice ? `${R_.convertFenToYuan(itemSupplyPrice.supply_levels)}` : ''
+      supply_price: itemSupplyPrice ? `${itemSupplyPrice.supply_price}` : ''
     }
   })(tenantLevelList || [])
 }
