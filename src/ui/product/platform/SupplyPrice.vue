@@ -3,7 +3,7 @@
     el-table.small-el-table(:data="dataList", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
       el-table-column(label="等级")
         template(slot-scope="props")
-          div {{props.row.tenant_level.description}}
+          div {{props.row.tenant_level.name}}
       el-table-column(label="价格")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'supply_levels.' + props.$index + '.supply_price'", :rules="formRules.supply_price")

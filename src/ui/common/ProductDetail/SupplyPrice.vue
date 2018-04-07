@@ -4,7 +4,7 @@
       el-table-column(label="等级")
         template(slot-scope="props")
           div.supply-price
-            div {{props.row.tenant_level.description}}
+            div {{props.row.tenant_level.name}}
       el-table-column(label="价格")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'supply_levels.' + props.$index + '.supply_price'", :rules="formRules.supply_price")
