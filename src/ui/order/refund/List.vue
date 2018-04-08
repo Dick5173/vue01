@@ -6,7 +6,8 @@
           div.info-wrapper
             div.icon-wrapper(v-lazy:background-image="scope.row.product_img_res.url")
             div.desc-wrapper
-              div 订单号：{{scope.row.ocode}}
+              div 订单号：
+                span.order-no(@click="handleOpenDetail(scope.row)") {{scope.row.ocode}}
               div {{scope.row.product_name}}
               div 规格：{{scope.row.spec}}
               div {{scope.row.price | price}} X {{scope.row.count}}
@@ -57,6 +58,14 @@
             refund: true
           }
         })
+      },
+      handleOpenDetail (row) {
+        this.$router.push({
+          name: 'OrderDetail',
+          params: {
+            id: row.order_id
+          }
+        })
       }
     }
   }
@@ -83,5 +92,10 @@
 
       }
     }
+  }
+
+  .order-no {
+    color: $color-primary;
+    cursor: pointer;
   }
 </style>
