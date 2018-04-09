@@ -3,7 +3,7 @@
     el-form(ref="formAgree", :model="form", label-width="80px", :rules="rules")
       el-form-item(label="退款金额", prop="amount")
         el-input.input(v-model="form.amount")
-        div(style="color: rgb(153, 153, 153);font-size: 12px;")
+        div.tip
           span 最多退款
           span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
           span 其中商品总额{{orderItem.total_price | price}}，
@@ -16,6 +16,8 @@
       el-form-item(label="退货数量", prop="count")
         el-select(v-model="form.count", placeholder="请选择")
           el-option(v-for="item in chooseCount", :key="item", :label="item", :value="item")
+        div.tip
+          span 未给用户发货的商品也要记作退货数量
       el-form-item(label="备注", prop="remark")
         el-input(v-model="form.remark", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="remarkMaxLength")
         span.input-tip {{form.remark.length}} / {{remarkMaxLength}}
@@ -164,6 +166,11 @@
     width: 100%;
     height: 1px;
     background-color: #d6d6d6;
+  }
+
+  .tip {
+    color: rgb(153, 153, 153);
+    font-size: 12px;
   }
 
   .txt {
