@@ -72,7 +72,10 @@
     computed: {
       hasRefund () {
         console.log(this.order)
-        return OrderUtil.hasRefund(this.order)
+        return OrderUtil.hasRefund(this.order) && !this.buyGroupOrder
+      },
+      buyGroupOrder () {
+        return this.order.tp === 2 && this.order.buy_group_record_status === 2
       },
       showStatue () {
         return this.order.status !== 1

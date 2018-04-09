@@ -54,6 +54,7 @@
         optionsStatus: [
           {value: '3', label: '待发货'},
           {value: '1', label: '待付款'},
+          {value: '800', label: '待成团'},
           {value: '4', label: '待收货'},
           {value: '5', label: '已完成'},
           {value: '2', label: '已关闭'},
