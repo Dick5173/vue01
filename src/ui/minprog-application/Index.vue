@@ -2,7 +2,7 @@
   div(v-loading="loading")
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
-        el-table-column(label="来源平台", width="80px")
+        el-table-column(label="来源平台", width="91px")
           div(slot-scope="props") {{ getPlatform(props.row.platform) }}
         el-table-column(prop="name", label="名字")
         el-table-column(prop="mobile", label="手机号")
