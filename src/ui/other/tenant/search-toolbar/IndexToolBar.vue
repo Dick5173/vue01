@@ -13,7 +13,7 @@
         el-input(v-model.trim="formData.key", placeholder="店铺名称/店铺ID")
       el-form-item
         el-select(v-model="formData.level", clearable, placeholder="店铺等级")
-          el-option(v-for="item in tenantLevelList", :key="item.id", :label="item.description", :value="item.id")
+          el-option(v-for="item in tenantLevelList", :key="item.id", :label="item.description", :value="`${item.id}`")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
 </template>
