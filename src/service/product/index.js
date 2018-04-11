@@ -239,6 +239,11 @@ export const copyCreate = R.curry((form) => {
             }
             return item
           })(val || [])
+        } else if (key === 'supply_levels') {
+          return R.map((item) => {
+            delete item.id
+            return item
+          })(val || [])
         }
         return val
       })(obj)
