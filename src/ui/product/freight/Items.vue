@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     el-table(:data="dataList", border, cell-class-name="hidden-bottom-padding-el-tab")
-      el-table-column(label="默送区域")
+      el-table-column(label="配送区域")
         template(slot-scope="props")
           div.show-margin-cell(v-if="props.$index === 0") 默认
           div(v-else)
