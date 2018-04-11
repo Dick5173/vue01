@@ -31,6 +31,8 @@
     choose-province-dialog(ref="dlgChooseProvince", @submit="handleSubmit")
 </template>
 
+
+
 <script>
   import ChooseProvinceDialog from 'src/ui/common/choose-province-dialog'
   import * as FreightService from 'src/service/freight-template/index'
