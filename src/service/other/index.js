@@ -85,7 +85,18 @@ export const showProductAuth = (row) => {
   }
   return text
 }
-
+export const showDeliverytButtonName = (row) => {
+  let text = ''
+  switch (row.delivery_mode) {
+    case 1:
+      text = '结算后发货'
+      break
+    case 2:
+      text = '实时发货'
+      break
+  }
+  return text
+}
 export const showErpBindButtonName = (row) => {
   if (row.erp_shop_id) {
     return 'ERP已绑'
