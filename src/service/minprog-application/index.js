@@ -5,7 +5,7 @@ export const allPlatform = {
   },
   bm_micro_prog: {
     value: 2,
-    text: '包妈商场'
+    text: '包妈商城'
   },
   meishi_micro_prog: {
     value: 3,
@@ -15,6 +15,6 @@ export const allPlatform = {
 
 export const allPlatformMap = {
   1: 'PC',
-  2: '包妈商场',
+  2: '包妈商城',
   3: '美市小程序'
 }
