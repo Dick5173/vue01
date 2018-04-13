@@ -58,6 +58,6 @@ export const updateTenantLevel = (tid, formData) => {
 export const getTenantLevelList = (params) => {
   return Axios.get(`/admin/tenant_level`)
 }
-export const getDilvery = (tid, formData) => {
+export const postDilvery = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/delivery/mode`, qs.stringify(formData))
 }

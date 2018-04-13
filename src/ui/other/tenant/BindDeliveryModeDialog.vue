@@ -6,7 +6,7 @@
       div.head
         div.img(v-lazy:background-image="tenantData.head_img")
         div.name {{tenantData.nick_name}}
-      el-form.small-el-form(ref="form", :model="formData", label-width="110px")
+      el-form.small-el-form(ref="form", label-width="110px")
         div.body-text
           el-radio-group(v-model="delivery_mode")
             el-radio(:label="1") 结算后发货
@@ -30,9 +30,6 @@
         delivery_mode: 0,
         tenantData: {
           head_img: ''
-        },
-        formData: {
-          sub_mch_id: ''
         }
       }
     },
@@ -48,9 +45,6 @@
       reset () {
         if (this.$refs['form']) {
           this.$refs['form'].resetFields()
-        }
-        this.formData = {
-          sub_mch_id: ''
         }
       },
       handleBind () {
@@ -70,7 +64,7 @@
               var formData = {
                 delivery_mode: 1
               }
-              await TenantApi.getDilvery(this.tenantData.id, formData)
+              await TenantApi.postDilvery(this.tenantData.id, formData)
               this.$message({
                 type: 'success',
                 message: '更新成功 '
@@ -94,7 +88,7 @@
               var formData = {
                 delivery_mode: 2
               }
-              await TenantApi.getDilvery(this.tenantData.id, formData)
+              await TenantApi.postDilvery(this.tenantData.id, formData)
               this.$message({
                 type: 'success',
                 message: '更新成功 '
