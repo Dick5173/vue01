@@ -1,10 +1,10 @@
-import ChinaAddressV1Data from 'src/data/china_address_v1.json'
+import ChinaAddressV1Data from './address.json'
 
 export const allProvince = (() => {
   return ChinaAddressV1Data.filter((item) => {
-    return !item.parent
+    return !item.p
   }).map((item) => {
-    return item.name
+    return item.n
   })
 })()
 
