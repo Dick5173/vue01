@@ -7,7 +7,7 @@
           div.head-name {{tenantData.nick_name}}
             span.icon(@click="dialogVisible = true")
               img.img(:src="qrcodeIcon")
-          div.head-status {{showAppStatus(tenantData.app_status)}}
+              div.head-status {{showAppStatus(tenantData.app_status)}}
       div.body-status
         div.body-item-status 店铺状态：{{showTenantStatus(tenantData.tenant_status)}}
         el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
@@ -18,6 +18,9 @@
         el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
         el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
         el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
+      div.body-status.margin-left
+        div.body-item-status 发货：
+          el-button(type="text", @click="showDeliveryAuthDialog(tenantData)", size="mini") {{showDeliverytButtonName(tenantData)}}
       div.body-detail
         div.body-item 店铺ID：{{tenantData.id}}
         div.body-border
@@ -80,6 +83,7 @@
     bind-child-tenant-dialog(ref="dlgMchBindDialog", @refresh="getDetail")
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="getDetail")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="getDetail")
+    bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
 </template>
 
 <script>
@@ -87,8 +91,9 @@
   import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue'
   import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
   import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
+  import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
   import * as TenantApi from 'src/api/tenant'
-  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName } from 'src/service/other/index'
   import { showCover } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
   import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
@@ -99,7 +104,8 @@
       ProductAuthDialog,
       BindChildTenantDialog,
       BindErpShopIdDialog,
-      BindQiyuDialog
+      BindQiyuDialog,
+      BindDeliveryModeDialog
     },
     data () {
       return {
@@ -125,6 +131,9 @@
       },
       showQiyuBindDialog (row) {
         this.$refs.dlgBindQiyu.show(row)
+      },
+      showDeliveryAuthDialog (row) {
+        this.$refs.dlgBindDelivery.show(row)
       },
       showStatPeriod (row) {
         const start = dateFormat(row.start_tick, 'YYYY-MM')
@@ -246,7 +255,8 @@
       ...$global.$mapMethods({'showProductAuth': showProductAuth}),
       ...$global.$mapMethods({'showErpBindButtonName': showErpBindButtonName}),
       ...$global.$mapMethods({'showQiyuBindButtonName': showQiyuBindButtonName}),
-      ...$global.$mapMethods({'showMchBindButtonName': showMchBindButtonName})
+      ...$global.$mapMethods({'showMchBindButtonName': showMchBindButtonName}),
+      ...$global.$mapMethods({'showDeliverytButtonName': showDeliverytButtonName})
     },
     created () {
       const status = this.$route.query.status

@@ -96,7 +96,8 @@
           end: 0,
           key: '',
           product_auth: '',
-          level: ''
+          level: '',
+          delivery_mode: ''
         }
       }
     },
