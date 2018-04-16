@@ -28,6 +28,17 @@ export const allStatus = {
   }
 }
 
+export const allSupplyType = {
+  supply: {
+    value: 2,
+    text: '定向供货'
+  },
+  unlimited: {
+    value: 1,
+    text: '无限制'
+  }
+}
+
 export const convertFormToParam = R.curry((form) => {
   return R.pipe(
     R.clone,
@@ -81,6 +92,10 @@ export const convertFormToParam = R.curry((form) => {
         after_service_id: obj.after_service_id,
         delivery_region_id: obj.delivery_region_id,
         freight_template_id: obj.freight_template_id,
+        supply_scope_tp: obj.supply_scope_tp,
+        supply_tenants: R.map(item => {
+          return item.id
+        })(obj.supply_tenants || []),
         supply_levels: R.map(spItem => {
           return {
             id: spItem.id,
@@ -107,7 +122,9 @@ export const convertModelToForm = R.curry((form) => {
         service_tag_group_id: ['prop', 'ext', 'service_tag_group', 'id'],
         after_service_id: ['prop', 'ext', 'after_service', 'id'],
         delivery_region_id: ['prop', 'ext', 'delivery_region', 'id'],
-        freight_template_id: ['prop', 'ext', 'freight_template', 'id']
+        freight_template_id: ['prop', 'ext', 'freight_template', 'id'],
+        supply_scope_tp: ['prop', 'supply_scope_tp'],
+        supply_tenants: ['prop', 'supply_tenants']
       }
       R.forEachObjIndexed((val, key) => {
         obj[key] = R.path(val)(obj)
@@ -169,7 +186,7 @@ export const convertModelToForm = R.curry((form) => {
         supply_price: obj.supply_price,
         supply_levels: obj.supply_levels
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants'])(obj)
     }
   )(form)
 })

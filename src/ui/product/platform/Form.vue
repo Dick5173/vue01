@@ -33,6 +33,10 @@
       el-form-item(label="商品设置", prop="oversea")
         el-checkbox(v-model="formData.oversea") 清关商品
           span.input-right-desc 购买清关商品时需要消费者提供真实姓名和身份证，系统检验后才能进行付款
+      el-form-item(label="定向供货")
+        div.supply
+          div.tenants {{showSupplyTenants}}
+          el-button(type="primary",  size="small", @click="chooseSupplyTenants") 修改
       el-form-item(label="运费", prop="freight_template_id")
         el-radio(v-model="radFreightVal", :label="$options.FREIGHT_FREE_DELIVERY") 包邮
         el-radio(v-model="radFreightVal", :label="$options.FREIGHT_SPECIFY_TEMPLATE") 运费模板 &nbsp;
@@ -55,6 +59,7 @@
       el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
       el-button(type="primary", :loading="loading", @click="handleSave") 保存
     batch-tag-dialog(ref="chooseTagDialog", :origin="oraTags", @submit="chooseTagComplete")
+    choose-supply-tenants-dialog(ref="chooseSupplyTenantsDialog", @choose="chooseSupplyTenantsComplete")
 </template>
 
 <script>
@@ -73,6 +78,7 @@
   import * as freightTemplateApi from 'src/api/freight-template'
   import { priceValidator } from 'src/util/validator'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
+  import ChooseSupplyTenantsDialog from 'src/ui/product/platform/dialog/ChooseSupplyTenantsDialog.vue'
   import * as ElUtil from 'src/util/el'
 
   const MAX_HEAD_COUNT = 5
@@ -89,7 +95,8 @@
       Skus,
       ContentComp,
       BatchTagDialog,
-      SupplyPriceComp
+      SupplyPriceComp,
+      ChooseSupplyTenantsDialog
     },
     data () {
       const headValidator = (rule, value, callback) => {
@@ -261,6 +268,16 @@
       },
       oraTags () {
         return this.formData.tags ? [{tags: this.formData.tags}] : []
+      },
+      showSupplyTenants () {
+        if (!this.formData.supply_scope_tp || this.formData.supply_scope_tp === 1) {
+          return '无限制'
+        }
+        let tenants = ''
+        this.formData.supply_tenants.forEach((item, index) => {
+          tenants += `${index === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+        })
+        return tenants
       }
     },
     watch: {
@@ -380,6 +397,14 @@
         this.formData.tags = result.component.chooseTags
         result.component.hide()
       },
+      chooseSupplyTenants () {
+        this.$refs.chooseSupplyTenantsDialog.show(this.formData)
+      },
+      chooseSupplyTenantsComplete (tenant) {
+        console.log(tenant)
+        this.formData.supply_scope_tp = tenant.supply_scope_tp
+        this.formData.supply_tenants = tenant.supply_tenants
+      },
       ...$global.$mapMethods({
         'getHost': AliyunApi.getOssHost,
         'getToken': AliyunApi.getOssToken
@@ -394,5 +419,16 @@
 <style lang="scss" scoped>
   .ptag {
     margin-right: 10px;
+  }
+
+  .supply {
+    display: flex;
+    align-items: center;
+
+    .tenants {
+      max-width: 400px;
+      margin-right: 10px;
+      color: $font-color-common;
+    }
   }
 </style>
