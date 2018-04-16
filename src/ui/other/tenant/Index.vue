@@ -31,6 +31,9 @@
           div(slot-scope="scope") {{showAppStatus(scope.row.app_status)}}
         el-table-column(prop="", label="店铺管理员ID", width="110px")
           div(slot-scope="scope") {{scope.row.admin_id}}
+        el-table-column(prop="", label="支付服务商", width="110px")
+          div(slot-scope="scope")
+            div.pay-service(:class="{'full-pay': scope.row.pay_service === 2}")
         el-table-column(prop="", label="退款授权", width="110px")
           div(slot-scope="scope")
             div(v-if="scope.row.refund_status === 2") 已授权
@@ -292,5 +295,15 @@
     height: 50px;
     background-size: cover;
     background-position: center;
+  }
+
+  .pay-service {
+    width: 50px;
+    height: 50px;
+    background: url("~@/assets/image/icon-wx-pay.png") no-repeat center / 100% 100%;
+
+    &.full-pay {
+      background: url("~@/assets/image/icon-full-pay.png") no-repeat center / 100% 100%;
+    }
   }
 </style>
