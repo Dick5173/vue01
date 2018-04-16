@@ -49,55 +49,39 @@
       },
       handleBind () {
         const h = this.$createElement
-        if (this.delivery_mode === 1) {
-          this.$msgbox({
-            title: '设为结算后发货',
-            message: h('p', null, [
-              h('span', null, '此后的订单为结算后发货')
-            ]),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            center: true
-          }).then(async () => {
-            try {
-              var formData = {
-                delivery_mode: 1
-              }
-              await TenantApi.postDilvery(this.tenantData.id, formData)
-              this.$message({
-                type: 'success',
-                message: '更新成功 '
-              })
-              this.dialogVisible = false
-              this.$emit('refresh')
-            } catch (err) {}
-          }).catch(() => {})
-        } else {
-          this.$msgbox({
-            title: '设为实时发货',
-            message: h('p', null, [
-              h('span', null, '此后的订单为实时发货')
-            ]),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            center: true
-          }).then(async () => {
-            try {
-              var formData = {
-                delivery_mode: 2
-              }
-              await TenantApi.postDilvery(this.tenantData.id, formData)
-              this.$message({
-                type: 'success',
-                message: '更新成功 '
-              })
-              this.dialogVisible = false
-              this.$emit('refresh')
-            } catch (err) {}
-          }).catch(() => {})
+        var title = '设为结算后发货'
+        var content = '此后的订单为结算后发货'
+        var delivM = 1
+        if (this.delivery_mode === 2) {
+          title = '设为实时发货'
+          content = '此后的订单为实时发货'
+          delivM = 2
         }
+        this.$msgbox({
+          title: title,
+          message: h('p', null, [
+            h('span', null, content)
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          center: true
+        }).then(async () => {
+          try {
+            var formData = {
+              delivery_mode: delivM
+            }
+            await TenantApi.postDilvery(this.tenantData.id, formData)
+            this.$message({
+              type: 'success',
+              message: '更新成功 '
+            })
+            this.dialogVisible = false
+            this.$emit('refresh')
+          } catch (err) {
+          }
+        }).catch(() => {
+        })
       },
       async getDetail () {
         try {
