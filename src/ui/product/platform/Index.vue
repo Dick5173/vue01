@@ -90,7 +90,8 @@
           start: 0,
           end: 0,
           text: '',
-          tags: []
+          tags: [],
+          supply_scope_tp: 0
         },
         multipleSelection: []
       }

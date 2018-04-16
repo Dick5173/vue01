@@ -17,6 +17,8 @@
         el-select(v-model="formData.tags", placeholder="请选择标签", multiple)
           el-option-group(v-for="parentItem in allTags", :label="parentItem.name", :key="parentItem.id")
             el-option(v-for="childItem in parentItem.items", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
+      el-form-item
+        el-checkbox(v-model="supply_scope", @change="supplyChange") 定向供货
       el-form-item(label="上架:")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item(label="")
@@ -48,8 +50,10 @@
           start: 0,
           end: 0,
           text: '',
-          tags: []
+          tags: [],
+          supply_scope_tp: 0
         },
+        supply_scope: false,
         // endregion
         initialData: null,
         allCategories: [],
@@ -86,6 +90,9 @@
           this.formData.end = 0
         }
       },
+      supplyChange () {
+        this.formData.supply_scope_tp = this.supply_scope ? 2 : 0
+      },
       handleSearch () {
         this.$emit('submit', this.formData)
       },
@@ -102,8 +109,10 @@
           start: this.R_.parseDateTick(0, this.queryParams.start),
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
-          tags: this.queryParams.tags
+          tags: this.queryParams.tags,
+          supply_scope_tp: this.queryParams.supply_scope_tp
         }
+        this.supply_scope = this.queryParams.supply_scope_tp === 2
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]
         } else {
