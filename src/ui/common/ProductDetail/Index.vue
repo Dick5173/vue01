@@ -26,6 +26,8 @@
       div {{showName(formData.prop.ext.delivery_region)}}
     el-form-item(v-if="showFormItem(formData.prop.ext.oversea)", label="商品设置：", prop="oversea")
       div {{showOversea(formData.prop.ext.oversea)}}
+    el-form-item(label="定向供货：")
+      div.tenants {{showSupplyTenants}}
     el-form-item(label="运费：", v-if="formData.prop.ext.freight_template")
       div.freight-wrapper(v-html="freightDescText(formData.prop.ext.freight_template)")
     el-form-item(v-if="isPlatform && showFormItem(formData.prop.tags)", label="商品标签：", prop="oversea")
@@ -101,6 +103,16 @@
           return true
         }
         return false
+      },
+      showSupplyTenants () {
+        if (!this.formData.prop.supply_scope_tp || this.formData.prop.supply_scope_tp === 1) {
+          return '无限制'
+        }
+        let tenants = ''
+        this.formData.prop.supply_tenants.forEach((item, index) => {
+          tenants += `${index === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+        })
+        return tenants
       }
     },
     watch: {
@@ -193,6 +205,11 @@
 
   .freight-wrapper {
     line-height: 18px;
+  }
+
+  .tenants {
+    max-width: 400px;
+    color: $font-color-common;
   }
 
 </style>
