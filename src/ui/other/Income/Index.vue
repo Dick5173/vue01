@@ -28,13 +28,18 @@
         el-table-column(label="利润（元）", prop="total_profit")
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
+        el-table-column(label="操作", prop="")
+          template(slot-scope="scope")
+            el-button(type="text" @click="showBalanceDialog") 确认结算
       div.total
       div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 销售总额: {{overview.sale_total_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 平台服务费:{{overview.total_platform_fee | price}}, 利润: {{overview.tenant_total_amount | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+      bind-balance-dialog(ref="dlgBindBalance")
 </template>
 
 <script>
   import IncomeToolbar from 'src/ui/other/Income/SearchToolbar.vue'
+  import BindBalanceDialog from 'src/ui/other/Income/BindBalanceDialog.vue'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { dateFormat } from 'src/util/format'
   import * as BillApi from 'src/api/bill'
@@ -45,7 +50,7 @@
       LoadPagerData
     ],
     props: {},
-    components: {IncomeToolbar},
+    components: {IncomeToolbar, BindBalanceDialog},
     data () {
       return {
         queryParams: {
@@ -105,6 +110,9 @@
         const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH-mm-ss')
         const end = dateFormat(row.end_tick, 'YYYY-MM-DD HH-mm-ss')
         return start === end ? start : `${start}~${end}`
+      },
+      showBalanceDialog (row) {
+        this.$refs.dlgBindBalance.show(row)
       },
       async handleSearch (data) {
         this.queryChange(data)
