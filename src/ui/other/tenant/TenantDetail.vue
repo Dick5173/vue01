@@ -331,17 +331,22 @@
           .img {
             cursor: pointer;
             width: 16px;
+            position:relative;
+            left:0px;
+            top:32px;
+          }
+          .head-status {
+            width:80px;
+            line-height: 20px;
+            height: 20px;
+            font-size: 14px;
+            display: inline-block;
+            margin-left: -69px;
+            margin-top: 41px;
           }
         }
       }
-      .head-status {
-        line-height: 20px;
-        height: 20px;
-        font-size: 14px;
-        display: inline-block;
-        margin-left: 3px;
-        margin-top: 5px;
-      }
+
     }
   }
 
