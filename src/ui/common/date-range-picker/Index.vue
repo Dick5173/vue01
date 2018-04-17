@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-date-picker(type="daterange", range-separator="至", start-placeholder="开始日期", end-placeholder="结束日期", :picker-options="pickerOptions", align="right", unlink-panels, v-bind!="$attrs", v-on!="$listeners",  v-model="chooseDate")
+  el-date-picker(:type="type", range-separator="至", start-placeholder="开始日期", end-placeholder="结束日期", :picker-options="pickerOptions", align="right", unlink-panels, v-bind!="$attrs", v-on!="$listeners",  v-model="chooseDate")
 </template>
 
 <script>
@@ -10,6 +10,10 @@
         default: () => {
           return []
         }
+      },
+      type: {
+        type: String,
+        default: 'daterange' // daterange：日期 datetimerange：日期加时间
       }
     },
     data () {
