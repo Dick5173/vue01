@@ -2,9 +2,9 @@
   el-dialog(title="定向供货", v-loading="loading", :visible.sync="dialogVisible", width="400px")
     div.radio-content
       el-radio(v-for="item in allSupplyType", :key="item.value", :label="item.value", v-model="paramsTenant.supply_scope_tp", @change="typeChange") {{item.text}}
-    div.selected-content
-      div 已选：
-      div.sel {{showSelectItem}}
+    el-form(ref="form", :model="paramsTenant", :rules="formRules")
+      el-form-item(label="已选：", ref="fISelect", prop="select")
+        div.sel {{showSelectItem}}
     div.search-el-input
       el-input(placeholder="店铺/ID", v-model.trim="queryParams.key")
         el-button(slot="append", icon="el-icon-search", @click="handleSearch") 搜索
@@ -24,11 +24,19 @@
 <script>
   import * as ProductService from 'src/service/product/index'
   import * as TenantApi from 'src/api/tenant'
+  import * as ElUtil from 'src/util/el'
 
   export default {
     components: {},
     props: {},
     data () {
+      const selcetValidator = (rule, value, callback) => {
+        if (this.paramsTenant.supply_scope_tp === ProductService.allSupplyType.supply.value && this.paramsTenant.supply_tenants.length === 0) {
+          callback(new Error('不能为空'))
+          return
+        }
+        callback()
+      }
       return {
         loading: false,
         dialogVisible: false,
@@ -44,6 +52,11 @@
         paramsTenant: {
           supply_scope_tp: 1,
           supply_tenants: []
+        },
+        formRules: {
+          select: [
+            {validator: selcetValidator, trigger: 'change'}
+          ]
         },
         ...$global.$mapConst({
           'allSupplyType': ProductService.allSupplyType
@@ -115,24 +128,29 @@
         return this.paramsTenant.supply_scope_tp === ProductService.allSupplyType.unlimited.value
       },
       typeChange () {
+        this.$refs.fISelect.clearValidate()
         this.paramsTenant.supply_tenants = []
         this.checkedItemIds = []
       },
-      addCheckProduct (id) {
+      async addCheckProduct (id) {
         const newItem = this.R.find((tenant) => {
           return tenant.id === id
         })(this.dataList.data || [])
         if (newItem) {
           this.paramsTenant.supply_tenants.push(newItem)
         }
+        await this.$nextTick()
+        this.$refs.fISelect.onFieldChange()
       },
-      removeCheckProduct (id) {
+      async removeCheckProduct (id) {
         const i = this.R.findIndex((tenant) => {
           return tenant.id === id
         })(this.paramsTenant.supply_tenants)
         if (i !== -1) {
           this.paramsTenant.supply_tenants.splice(i, 1)
         }
+        await this.$nextTick()
+        this.$refs.fISelect.onFieldChange()
       },
       changePage (page) {
         this.queryParams.page = page
@@ -148,8 +166,14 @@
         }
       },
       submit () {
-        this.$emit('choose', this.paramsTenant)
-        this.hide()
+        this.$refs.form.validate(async (valid) => {
+          if (valid) {
+            this.$emit('choose', this.paramsTenant)
+            this.hide()
+          } else {
+            ElUtil.scrollToInvalidFirstElement(this.$refs.form)
+          }
+        })
       }
     }
   }
