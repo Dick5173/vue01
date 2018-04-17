@@ -13,7 +13,7 @@
           :label="item.principal_name_id",
           :value="item.id")
       el-form-item(label="首次上线：")
-        date-picker(:defaultDate="defaultDate", @change = "changeDate")
+        date-picker(:defaultDate="defaultDate", @change = "changeDate", type="datetimerange")
       el-form-item
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
