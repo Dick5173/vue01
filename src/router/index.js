@@ -409,8 +409,7 @@ const router = new Router({
           meta: {
             group: 'Other',
             title: '收入',
-            showInSide: true,
-            breadcrumbDesc: '(截止上月)'
+            showInSide: true
           }
         },
         {
