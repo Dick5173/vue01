@@ -8,11 +8,11 @@
           template(slot-scope="scope")
             el-button(type="text", @click="toTenantDetail(scope.row)") {{scope.row.tenant_nickname}}
         el-table-column(label="统计周期", prop="")
+          template(slot-scope="scope") {{showStatPeriod(scope.row)}}
+        el-table-column(label="向美市结算（元）", prop="")
           template(slot-scope="scope")
-            div {{showStatPeriod(scope.row)}}
         el-table-column(label="销售额（元）", prop="sale_total_amount")
-          template(slot-scope="scope")
-            el-button(type="text", @click="toOrder(scope.row)") {{scope.row.sale_total_amount | price}}
+          template(slot-scope="scope") {{scope.row.sale_total_amount | price}}
         el-table-column(label="总货款（元）", prop="sp_total_amount")
           template(slot-scope="scope")
             div {{scope.row.sp_total_amount | price}}
@@ -29,7 +29,7 @@
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
       div.total
-      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 销售总额: {{overview.sale_total_amount | friendlyPrice(true)}}，总货款: {{overview.sp_total_amount | friendlyPrice(true)}}，自营货款: {{overview.self_sp_amount | friendlyPrice(true)}}, 平台货款: {{overview.platform_sp_amount | friendlyPrice(true)}}, 平台服务费:{{overview.total_platform_fee | friendlyPrice(true)}}, 利润: {{overview.tenant_total_amount | friendlyPrice(true)}}
+      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 销售总额: {{overview.sale_total_amount}}，总货款: {{overview.sp_total_amount}}，自营货款: {{overview.self_sp_amount}}, 平台货款: {{overview.platform_sp_amount}}, 平台服务费:{{overview.total_platform_fee}}, 利润: {{overview.tenant_total_amount}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 
@@ -38,7 +38,6 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { dateFormat } from 'src/util/format'
   import * as BillApi from 'src/api/bill'
-  import { PUSH_STATUS_IN_COME } from 'src/constants/orderPush'
   import { TENANT_STATUS_IN_COME } from 'src/constants/tenantPush'
 
   export default {
@@ -91,19 +90,6 @@
           return val
         })(params))
       },
-      toOrder (row) {
-        this.$router.push({
-          name: 'OrderIndex',
-          params: {
-            tid: row.tenant_id,
-            start: row.start_tick,
-            end: row.end_tick
-          },
-          query: {
-            status: PUSH_STATUS_IN_COME
-          }
-        })
-      },
       toTenantDetail (row) {
         this.$router.push({
           name: 'TenantDetail',
@@ -116,8 +102,8 @@
         })
       },
       showStatPeriod (row) {
-        const start = dateFormat(row.start_tick, 'YYYY-MM')
-        const end = dateFormat(row.end_tick, 'YYYY-MM')
+        const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH-mm-ss')
+        const end = dateFormat(row.end_tick, 'YYYY-MM-DD HH-mm-ss')
         return start === end ? start : `${start}~${end}`
       },
       async handleSearch (data) {
