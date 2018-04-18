@@ -2,7 +2,7 @@
   div
     smart-table.skus-table(ref="skuTable", :dataList="skus", @drag-change="handleDragChange",  @drag-end="handleDragEnd")
       smart-table-column(type="drag")
-      smart-table-column(label="规格")
+      smart-table-column(label="规格", width="220px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`spec{props.index}`", :prop="'skus.' + props.index + '.spec'", :rules="formRules.spec")
             el-input(v-model.trim="props.row.spec")
@@ -178,6 +178,6 @@
 
 <style lang="scss" scoped>
   .skus-table {
-    width: 820px;
+    width: 920px;
   }
 </style>
