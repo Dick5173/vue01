@@ -270,7 +270,12 @@
         return this.formData.tags ? [{tags: this.formData.tags}] : []
       },
       showSupplyTenants () {
+        console.log(this.formData)
         if (!this.formData.supply_scope_tp || this.formData.supply_scope_tp === 1) {
+          return '无限制'
+        }
+        if (!this.formData.supply_tenants || this.formData.supply_tenants.length === 0) {
+          this.formData.supply_scope_tp = 1
           return '无限制'
         }
         let tenants = ''
