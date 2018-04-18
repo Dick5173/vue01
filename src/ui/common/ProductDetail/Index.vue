@@ -108,14 +108,10 @@
         if (!this.formData.prop.supply_scope_tp || this.formData.prop.supply_scope_tp === 1) {
           return '无限制'
         }
-        if (!this.formData.supply_tenants || this.formData.supply_tenants.length === 0) {
-          this.formData.supply_scope_tp = 1
-          return '无限制'
-        }
         let tenants = ''
-        this.formData.prop.supply_tenants.forEach((item, index) => {
-          tenants += `${index === 0 ? '' : '、'}${item.id}-${item.nick_name}`
-        })
+        this.R.forEachObjIndexed((item, index) => {
+          tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+        })(this.formData.prop.supply_tenants || [])
         return tenants
       }
     },
