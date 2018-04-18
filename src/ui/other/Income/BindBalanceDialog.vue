@@ -93,6 +93,8 @@
       margin-left: 10px;
     }
   }
-
+  .el-form-item{
+    margin:0px;
+  }
 
 </style>
