@@ -9,7 +9,7 @@
       el-form(ref="form" labelWidth="85px" v-loading="loading")
         el-form-item(label="结算金额:") {{tenantData.settle_amount | price}}
         el-form-item(label="结算周期:") {{showStatPeriod(tenantData)}}
-        el-form-item(label="公司:")
+        el-form-item(label="公司:") {{this.company_name}}
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
           el-button(v-if="tenantData.show_settle_btn" type="primary", @click="handleSettle") 确 定
@@ -27,6 +27,7 @@
             head_img: ''
           },
           tenantDetail: {},
+          company_name: '',
           loading: false
         }
       },
@@ -50,14 +51,21 @@
             this.$refs['form'].resetFields()
           }
         },
-        handleSettle () {
-
+        async handleSettle () {
+          await TenantApi.settleBill(this.tenantData.id)
+          this.$message({
+            type: 'success',
+            message: '结算成功!'
+          })
+          this.dialogVisible = false
+          this.$emit('refresh')
         },
         async getDetail (tid) {
           try {
             this.loading = true
-            let res = await TenantApi.getDetail(tid)
-            this.tenantDetail = res.data.tenant
+            let res = await TenantApi.getBasic(tid)
+            this.tenantDetail = res.data
+            this.company_name = this.tenantDetail.company.name
           } catch (err) {
           } finally {
             this.loading = false

@@ -11,6 +11,9 @@ export const getListAll = () => {
 export const getDetail = (id) => {
   return Axios.get(`/admin/tenant/s/${id}`)
 }
+export const getBasic = (id) => {
+  return Axios.get(`/admin/tenant/s/${id}/basic`)
+}
 export const disableTenant = (id) => {
   return Axios.post(`/admin/tenant/s/${id}/disable`)
 }
@@ -60,4 +63,8 @@ export const getTenantLevelList = (params) => {
 }
 export const postDilvery = (tid, formData) => {
   return Axios.post(`/admin/tenant/s/${tid}/delivery/mode`, qs.stringify(formData))
+}
+
+export const settleBill = (billId) => {
+  return Axios.post(`/admin/bill/s/${billId}/settle`)
 }
