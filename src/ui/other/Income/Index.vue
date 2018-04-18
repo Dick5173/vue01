@@ -11,7 +11,7 @@
           template(slot-scope="scope") {{showStatPeriod(scope.row)}}
         el-table-column(label="向美市结算（元）", prop="settle_total_amount")
           template(slot-scope="scope")
-            div {{scope.row.platform_sp_amount + scope.row.platform_fee | price}}
+            div {{scope.row.settle_amount | price}}
         el-table-column(label="销售额（元）", prop="sale_total_amount")
           template(slot-scope="scope") {{scope.row.sale_total_amount | price}}
         el-table-column(label="总货款（元）", prop="sp_total_amount")
