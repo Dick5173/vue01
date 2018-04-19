@@ -36,7 +36,7 @@
       div.total
       div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 向美市结算:{{overview.settle_total_amount | price}} 销售总额: {{overview.sale_total_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 平台服务费:{{overview.total_platform_fee | price}}, 利润: {{overview.tenant_total_amount | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
-      bind-balance-dialog(ref="dlgBindBalance")
+      bind-balance-dialog(ref="dlgBindBalance",@refresh="handleSearch")
 </template>
 
 <script>
