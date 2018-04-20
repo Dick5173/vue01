@@ -69,3 +69,9 @@ export const getRecycleList = (params) => {
     params: params
   })
 }
+export const createSyncStatus = (id) => {
+  return Axios.post(`/admin/product/s/${id}/stock_sync`)
+}
+export const deleteSyncStatus = (id) => {
+  return Axios.delete(`/admin/product/s/${id}/stock_sync`)
+}
