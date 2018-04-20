@@ -136,8 +136,8 @@
         this.$refs.dlgBindDelivery.show(row)
       },
       showStatPeriod (row) {
-        const start = dateFormat(row.start_tick, 'YYYY-MM')
-        const end = dateFormat(row.end_tick, 'YYYY-MM')
+        const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH:mm:ss')
+        const end = dateFormat(row.end_tick, 'YYYY-MM-DD HH:mm:ss')
         return start === end ? start : `${start}~${end}`
       },
       toIncome (id) {

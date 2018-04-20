@@ -31,7 +31,7 @@
     props: {},
     data () {
       const selcetValidator = (rule, value, callback) => {
-        if (this.paramsTenant.supply_scope_tp === ProductService.allSupplyType.supply.value && this.paramsTenant.supply_tenants.length === 0) {
+        if (this.paramsTenant.supply_scope_tp === ProductService.allSupplyType.supply.value && (!this.paramsTenant.supply_tenants || this.paramsTenant.supply_tenants.length === 0)) {
           callback(new Error('不能为空'))
           return
         }
@@ -88,9 +88,9 @@
           return '无限制'
         }
         let tenants = ''
-        this.paramsTenant.supply_tenants.forEach((item, index) => {
-          tenants += `${index === 0 ? '' : '、'}${item.id}-${item.nick_name}`
-        })
+        this.R.forEachObjIndexed((item, index) => {
+          tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+        })(this.paramsTenant.supply_tenants || [])
         return tenants
       }
     },
@@ -102,8 +102,8 @@
         if (this.paramsTenant.supply_scope_tp === ProductService.allSupplyType.supply.value) {
           this.checkedItemIds = this.R.map((item) => {
             return item.id
-          })(paramsTenant.supply_tenants)
-          this.paramsTenant.supply_tenants = this.R.clone(paramsTenant.supply_tenants)
+          })(paramsTenant.supply_tenants || [])
+          this.paramsTenant.supply_tenants = this.R.clone(paramsTenant.supply_tenants || [])
         }
         this.dialogVisible = true
         await this.refreshList()

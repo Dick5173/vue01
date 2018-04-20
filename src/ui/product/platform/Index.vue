@@ -22,7 +22,9 @@
         el-table-column(prop="sold", label="销量", sortable, width="100px")
           div(slot-scope="props") {{ props.row.sold }}
         el-table-column(prop="stock", label="库存", sortable, width="100px")
-          div(slot-scope="props") {{ props.row.prop.stock }}
+          template(slot-scope="props")
+            span {{ props.row.prop.stock }}&nbsp;
+            el-icon(name="circle-check", v-if="props.row.prop.stock_sync")
         el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
           div(slot-scope="props")
             div(v-if="props.row.tenant_count === 0") {{props.row.tenant_count}}
@@ -50,6 +52,7 @@
                 el-dropdown-item(@click.native="changeStatus(props.row)") &nbsp;&nbsp;{{props.row.status === 1 ? '下架' : '上架'}}&nbsp;&nbsp;
                 el-dropdown-item(@click.native="changeTop(props.row)") &nbsp;&nbsp;{{props.row.top_tick === 0 ? '置顶' : '取消置顶'}}&nbsp;&nbsp;
                 el-dropdown-item(@click.native="deleteProduct(props.row)") &nbsp;&nbsp;删除&nbsp;&nbsp;
+                el-dropdown-item(@click.native="handleSync(props.row)") &nbsp;&nbsp;{{props.row.prop.stock_sync ? '暂停自动补货' : '恢复自动补货'}}&nbsp;&nbsp;
       el-button.recycle(@click="toRecycle") 回收站
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       batch-category-dialog(ref="batchCategorydlg", @refresh="loadDataListByQueryPage")
@@ -238,6 +241,33 @@
           }
         }).catch(() => {
         })
+      },
+      handleSync (row) {
+        try {
+          const action = row.prop.stock_sync ? '暂停' : '恢复'
+          const msg = `${action}自动补货?`
+          this.$confirm(msg, action, {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(async () => {
+            this.loading = true
+            if (row.prop.stock_sync) {
+              await ProductApi.deleteSyncStatus(row.id)
+            } else {
+              await ProductApi.createSyncStatus(row.id)
+            }
+            this.$message({
+              type: 'success',
+              message: row.prop.stock_sync ? '暂停自动补货成功' : '恢复自动补货成功'
+            })
+            this.loading = false
+            this.loadDataListByQueryPage()
+          }).catch(() => {
+          })
+        } catch (err) {
+          this.loading = false
+        }
       },
       changeStatus (row) {
         try {
