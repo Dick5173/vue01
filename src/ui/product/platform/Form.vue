@@ -216,7 +216,9 @@
           service_tag_group_id: '',
           after_service_id: '',
           delivery_region_id: '',
-          freight_template_id: ''
+          freight_template_id: '',
+          supply_scope_tp: 1,
+          supply_tenants: []
         },
         formRules: {
           head: [
