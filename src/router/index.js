@@ -13,7 +13,7 @@ const homeGroups = [
   },
   {
     name: 'Other',
-    title: '其他',
+    title: '店铺管理',
     path: '/'
   },
   {
