@@ -4,7 +4,11 @@
       search-toolbar(:queryParams="queryParams", @submit="handleSearch")
     div(v-loading="loading")
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
-        el-table-column(prop="id", label="店铺ID", width="65px")
+        el-table-column(label="店铺ID", width="65px")
+          div(slot-scope="scope")
+            el-tooltip(content="可开售", effect="light", placement="bottom-start", v-if="showShipping(scope.row)")
+              el-icon(name="circle-check")
+            span &nbsp;{{scope.row.id}}
         el-table-column(prop="", label="", width="68")
           div(slot-scope="scope")
             div.cover(v-lazy:background-image="scope.row.head_img")
@@ -72,7 +76,7 @@
   import LoadPagerData from 'src/mixins/load-pager-data'
   import * as TenantApi from 'src/api/tenant'
   import { dateFormat } from 'src/util/format'
-  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName } from 'src/service/other/index'
+  import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, isMchBind } from 'src/service/other/index'
   import { PUSH_STATUS_TENANT } from 'src/constants/orderPush'
 
   export default {
@@ -118,6 +122,9 @@
       },
       showProductAuthDialog (row) {
         this.$refs.dlgProductAuth.show(row)
+      },
+      showShipping (row) {
+        return row.app_status === 2 && isMchBind(row)
       },
       handleBind (row) {
         this.$refs.dlgBindChildTenant.show(row)
