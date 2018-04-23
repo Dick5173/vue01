@@ -13,72 +13,72 @@
 </template>
 
 <script>
-  import { commonDialogWidth } from 'src/config/el'
-  import * as UcApi from 'src/api/uc'
+import { commonDialogWidth } from 'src/config/el'
+import * as UcApi from 'src/api/uc'
 
-  export default {
-    data () {
-      const confirmPwdValidator = (rule, value, callback) => {
-        if (value !== this.formData.new_passwd) {
-          callback(new Error('两次输入密码不一致'))
-          return
-        }
-        callback()
+export default {
+  data () {
+    const confirmPwdValidator = (rule, value, callback) => {
+      if (value !== this.formData.new_passwd) {
+        callback(new Error('两次输入密码不一致'))
+        return
       }
-      return {
-        loading: false,
-        dialogVisible: false,
-        formData: {
-          old_passwd: '',
-          new_passwd: '',
-          confirm_passwd: ''
-        },
-        formRules: {
-          old_passwd: [
-            {required: true, message: '请输入原密码', trigger: 'blur'}
-          ],
-          new_passwd: [
-            {required: true, message: '请输入新密码', trigger: 'blur'}
-          ],
-          confirm_passwd: [
-            {required: true, message: '请再次输入密码', trigger: 'blur'},
-            {validator: confirmPwdValidator, trigger: 'blur'}
-          ]
-        },
-        ...$global.$mapConst({
-          'commonDialogWidth': commonDialogWidth
-        })
-      }
+      callback()
+    }
+    return {
+      loading: false,
+      dialogVisible: false,
+      formData: {
+        old_passwd: '',
+        new_passwd: '',
+        confirm_passwd: ''
+      },
+      formRules: {
+        old_passwd: [
+          { required: true, message: '请输入原密码', trigger: 'blur' }
+        ],
+        new_passwd: [
+          { required: true, message: '请输入6-20个数字或字母', trigger: 'blur' }
+        ],
+        confirm_passwd: [
+          { required: true, message: '请再次输入新密码', trigger: 'blur' },
+          { validator: confirmPwdValidator, trigger: 'blur' }
+        ]
+      },
+      ...$global.$mapConst({
+        'commonDialogWidth': commonDialogWidth
+      })
+    }
+  },
+  methods: {
+    show () {
+      this.dialogVisible = true
     },
-    methods: {
-      show () {
-        this.dialogVisible = true
-      },
-      hide () {
-        this.dialogVisible = false
-      },
-      closeCallback () {
-        this.$refs.form && this.$refs.form.resetFields()
-      },
-      handleSubmit () {
-        this.$refs.form.validate(async (valid) => {
-          if (valid) {
-            this.loading = true
-            try {
-              await UcApi.updatePassword(this.formData)
-              this.$message({
-                type: 'success',
-                message: '更新成功'
-              })
-              this.hide()
-            } finally {
-              this.loading = false
-            }
+    hide () {
+      this.dialogVisible = false
+    },
+    closeCallback () {
+      this.$refs.form && this.$refs.form.resetFields()
+    },
+    handleSubmit () {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          this.loading = true
+          try {
+            await UcApi.updatePassword(this.formData)
+            this.$message({
+              type: 'success',
+              message: '更新成功'
+            })
+            this.hide()
+          } finally {
+            this.loading = false
           }
-        })
-      }
+        }
+      })
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
