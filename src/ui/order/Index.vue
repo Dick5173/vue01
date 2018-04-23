@@ -30,8 +30,8 @@
           searchKey: '',
           searchType: 'prod',
           tenant_id: '',
-          start_time: new Date().getTime(),
-          end_time: new Date().getTime()
+          start_time: 0,
+          end_time: 0
         }
       }
     },
