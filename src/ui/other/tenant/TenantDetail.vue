@@ -28,10 +28,11 @@
         //- el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
         el-button(type="text", size="mini", @click="setTenantStatus(tenantData.id,tenantData.tenant_status)") {{showTenantStatus(tenantData.tenant_status)}}
       div.body-status.margin-left
-        div.body-item-status 店铺等级：{{tenantData.tenant_level_id}}
+        div.body-item-status 店铺等级：
+          el-button(type="text", @click="showTenantLevelDialog(tenantData)", size="mini") {{tenantData.tenant_level.description}}
       div.body-status.margin-left
         div.body-item-status 商品权限：
-        el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
+          el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
         //- el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
         //- el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
         //- el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
@@ -100,6 +101,7 @@
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="getDetail")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="getDetail")
     bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
+    tenant-level-dialog(ref="dlgTenantLevel", @refresh="getDetail")
 </template>
 
 <script>
@@ -108,6 +110,7 @@ import BindChildTenantDialog from 'src/ui/other/tenant/BindChildTenantDialog.vue
 import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
 import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
 import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
+import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
 import * as TenantApi from 'src/api/tenant'
 import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName } from 'src/service/other/index'
 import { showCover } from 'src/service/product/index'
@@ -121,7 +124,8 @@ export default {
     BindChildTenantDialog,
     BindErpShopIdDialog,
     BindQiyuDialog,
-    BindDeliveryModeDialog
+    BindDeliveryModeDialog,
+    TenantLevelDialog
   },
   data () {
     return {
@@ -130,7 +134,9 @@ export default {
       loading: false,
       incomeList: [],
       productList: [],
-      tenantData: {}
+      tenantData: {
+        tenant_level: {}
+      }
     }
   },
   computed: {
@@ -151,6 +157,9 @@ export default {
     },
     showDeliveryAuthDialog (row) {
       this.$refs.dlgBindDelivery.show(row)
+    },
+    showTenantLevelDialog (row) {
+      this.$refs.dlgTenantLevel.show(row)
     },
     showStatPeriod (row) {
       const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH:mm:ss')
@@ -393,7 +402,9 @@ export default {
   display: flex;
   align-items: center;
   margin-top: 20px;
+  padding-bottom: 20px;
   height: 21px;
+  border-bottom: 1px solid #dcdfe6;
   .body-border {
     display: inline-block;
     margin-right: 10px;
