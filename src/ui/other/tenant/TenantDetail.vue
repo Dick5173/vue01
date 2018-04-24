@@ -26,7 +26,7 @@
         //- {{showTenantStatus(tenantData.tenant_status)}}
         //- el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
         //- el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
-        el-button(type="text", size="mini", @click="setTenantStatus(tenantData.id,tenantData.tenant_status)") {{showTenantStatus(tenantData.tenant_status)}}
+        el-button(type="text", size="mini", @click="setTenantStatus") {{showTenantStatus(tenantData.tenant_status)}}
       div.body-status.margin-left
         div.body-item-status 店铺等级：
           el-button(type="text", @click="showTenantLevelDialog(tenantData)", size="mini") {{tenantData.tenant_level.description}}
@@ -102,6 +102,18 @@
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="getDetail")
     bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
     tenant-level-dialog(ref="dlgTenantLevel", @refresh="getDetail")
+    el-dialog.tenant-status(title="店铺状态", :visible.sync="tenantDialogVisible", width="480px", :modal-append-to-body="false")
+      div.head
+        div.head-cover(v-lazy:background-image="tenantData.head_img")
+        div.head-name-box
+          div.head-name {{tenantData.nick_name}}
+      el-radio-group(v-model="tenantStatus")
+        el-radio(:label="1") 正常
+        el-radio(:label="2") 禁用
+      i.el-alert.el-alert--warning 小程序将无法访问，店铺后台将无法登录
+      div.dialog-footer(slot="footer")
+        el-button(@click="tenantDialogVisible = false") 取 消
+        el-button(type="primary" @click="setTenantStatusSubmit(tenantData.id)") 确 定
 </template>
 
 <script>
@@ -136,7 +148,9 @@ export default {
       productList: [],
       tenantData: {
         tenant_level: {}
-      }
+      },
+      tenantDialogVisible: false,
+      tenantStatus: ''
     }
   },
   computed: {
@@ -208,52 +222,59 @@ export default {
         }
       })
     },
-    setTenantStatus (id, status) {
-      if (status === 1) {
-        this.disable(id)
-      } else {
+    setTenantStatus () {
+      this.tenantDialogVisible = true
+    },
+    setTenantStatusSubmit (id) {
+      if (this.tenantStatus === 1) {
         this.enable(id)
+      } else {
+        this.disable(id)
       }
     },
-    enable (id) {
-      this.$confirm('启用店铺？', '提示？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await TenantApi.enableTenant(id)
-          this.$message({
-            type: 'success',
-            message: '已启用!'
-          })
-          this.getDetail()
-        } catch (err) {
-          this.loading = false
-        }
-      }).catch(() => {
-      })
+    async enable (id) {
+      // this.$confirm('启用店铺？', '提示？', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(async () => {
+
+      // }).catch(() => {
+      // })
+      try {
+        this.loading = true
+        await TenantApi.enableTenant(id)
+        this.$message({
+          type: 'success',
+          message: '已启用!'
+        })
+        this.tenantDialogVisible = false
+        this.getDetail()
+      } catch (err) {
+        this.loading = false
+      }
     },
-    disable (id) {
-      this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await TenantApi.disableTenant(id)
-          this.$message({
-            type: 'success',
-            message: '已禁用!'
-          })
-          this.getDetail()
-        } catch (err) {
-          this.loading = false
-        }
-      }).catch(() => {
-      })
+    async disable (id) {
+      // this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(async () => {
+
+      // }).catch(() => {
+      // })
+      try {
+        this.loading = true
+        await TenantApi.disableTenant(id)
+        this.$message({
+          type: 'success',
+          message: '已禁用!'
+        })
+        this.tenantDialogVisible = false
+        this.getDetail()
+      } catch (err) {
+        this.loading = false
+      }
     },
     showTp (tp) {
       if (tp === 1) {
@@ -277,6 +298,7 @@ export default {
         this.tenantData = res.data.tenant
         this.incomeList = res.data.bills ? res.data.bills : []
         this.productList = res.data.products ? res.data.products : []
+        this.tenantStatus = this.tenantData.tenant_status
       } catch (err) {
       } finally {
         this.loading = false
@@ -437,5 +459,27 @@ export default {
   height: 50px;
   background-position: center;
   background-size: cover;
+}
+.tenant-status {
+  .head {
+    margin-bottom: 20px;
+    .head-cover {
+      border-radius: 50%;
+    }
+    .head-name-box {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .el-radio {
+    margin-left: 0;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .el-alert {
+    margin-left: 10px;
+    background: none;
+    padding-top: 0px;
+  }
 }
 </style>
