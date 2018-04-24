@@ -41,175 +41,174 @@
         div {{ serviceTagGroupShowText(formData.prop.ext.service_tag_group) }}
     el-form-item(v-if="showFormItem(formData.prop.ext.after_service)", label="售后模板：", prop="after_service_id")
       show-after-service(:afterService="formData.prop.ext.after_service")
-    el-form-item
+    el-form-item.btn-fixed
       el-button(type="primary", :disabled="!isPlatform", @click="edit(formData.id)") 编 辑
 </template>
 
 <script>
-  import ShowDescription from './ShowDescription.vue'
-  import SupplyPriceComp from './SupplyPrice'
-  import Skus from 'src/ui/common/ProductDetail/Skus.vue'
-  import * as FreightService from 'src/service/freight-template'
-  import * as ServiceTagGroupService from 'src/service/service_tag_group'
-  import ShowAfterService from './ShowAfterService.vue'
+import ShowDescription from './ShowDescription.vue'
+import SupplyPriceComp from './SupplyPrice'
+import Skus from 'src/ui/common/ProductDetail/Skus.vue'
+import * as FreightService from 'src/service/freight-template'
+import * as ServiceTagGroupService from 'src/service/service_tag_group'
+import ShowAfterService from './ShowAfterService.vue'
 
-  export default {
-    props: {
-      isPrompt: {
-        type: Boolean,
-        default: () => {
-          return false
-        }
-      },
-      rowFormData: {
-        type: Object,
-        default: () => {
-          return {}
-        }
+export default {
+  props: {
+    isPrompt: {
+      type: Boolean,
+      default: () => {
+        return false
       }
     },
-    components: {ShowDescription, Skus, SupplyPriceComp, ShowAfterService},
-    data () {
-      return {
-        loading: false,
-        skus: [],
-        formData: {
-          head: [],
-          cover: {
-            url: ''
-          },
-          prop: {
-            ext: {}
-          }
+    rowFormData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  components: { ShowDescription, Skus, SupplyPriceComp, ShowAfterService },
+  data () {
+    return {
+      loading: false,
+      skus: [],
+      formData: {
+        head: [],
+        cover: {
+          url: ''
         },
-        description: []
+        prop: {
+          ext: {}
+        }
+      },
+      description: []
+    }
+  },
+  computed: {
+    isPlatform () {
+      if (this.rowFormData.tp === 1) {
+        return true
       }
+      return false
     },
-    computed: {
-      isPlatform () {
-        if (this.rowFormData.tp === 1) {
-          return true
-        }
-        return false
-      },
-      isSelected () {
-        if (this.rowFormData.tp === 3) {
-          return true
-        }
-        return false
-      },
-      isTenantProduct () {
-        if (this.rowFormData.tp === 2) {
-          return true
-        }
-        return false
-      },
-      showSupplyTenants () {
-        if (!this.formData.prop.supply_scope_tp || this.formData.prop.supply_scope_tp === 1) {
-          return '无限制'
-        }
-        let tenants = ''
-        this.R.forEachObjIndexed((item, index) => {
-          tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
-        })(this.formData.prop.supply_tenants || [])
-        return tenants
+    isSelected () {
+      if (this.rowFormData.tp === 3) {
+        return true
       }
+      return false
     },
-    watch: {
-      rowFormData () {
-        this.formData = this.rowFormData
-        if (!this.isPlatform) {
-          this.skus = this.rowFormData.tenant_skus
-        } else {
-          this.skus = this.rowFormData.prop.skus
-        }
-        this.supply_levels = this.rowFormData.supply_levels
-        this.description = this.rowFormData.content ? this.rowFormData.content : []
+    isTenantProduct () {
+      if (this.rowFormData.tp === 2) {
+        return true
       }
+      return false
     },
-    methods: {
-      showFormItem (row) {
-        if (Array.isArray(row)) {
-          if (row.length !== 0) {
-            return true
-          }
-          return false
-        }
-        if (row) {
+    showSupplyTenants () {
+      if (!this.formData.prop.supply_scope_tp || this.formData.prop.supply_scope_tp === 1) {
+        return '无限制'
+      }
+      let tenants = ''
+      this.R.forEachObjIndexed((item, index) => {
+        tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+      })(this.formData.prop.supply_tenants || [])
+      return tenants
+    }
+  },
+  watch: {
+    rowFormData () {
+      this.formData = this.rowFormData
+      if (!this.isPlatform) {
+        this.skus = this.rowFormData.tenant_skus
+      } else {
+        this.skus = this.rowFormData.prop.skus
+      }
+      this.supply_levels = this.rowFormData.supply_levels
+      this.description = this.rowFormData.content ? this.rowFormData.content : []
+    }
+  },
+  methods: {
+    showFormItem (row) {
+      if (Array.isArray(row)) {
+        if (row.length !== 0) {
           return true
         }
         return false
-      },
-      edit (id) {
-        if (this.isPrompt) {
-          this.$confirm('离开当前页面，放弃未保存内容？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.$router.push({
-              name: 'PlatformProductEdit',
-              params: {
-                id: id
-              }
-            })
-          }).catch()
-        } else {
+      }
+      if (row) {
+        return true
+      }
+      return false
+    },
+    edit (id) {
+      if (this.isPrompt) {
+        this.$confirm('离开当前页面，放弃未保存内容？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.$router.push({
             name: 'PlatformProductEdit',
             params: {
               id: id
             }
           })
-        }
-      },
-      showOversea (row) {
-        if (row) {
-          return '清关商品'
-        }
-        return '非清关商品'
-      },
-      showImg (row) {
-        if (row) {
-          return row.url
-        }
-        return ''
-      },
-      showName (row) {
-        if (row) {
-          return row.name
-        }
-        return ''
-      },
-      ...$global.$mapConst({'serviceTagGroupShowText': ServiceTagGroupService.showItemsText}),
-      ...$global.$mapMethods({'freightDescText': FreightService.getDescText})
+        }).catch()
+      } else {
+        this.$router.push({
+          name: 'PlatformProductEdit',
+          params: {
+            id: id
+          }
+        })
+      }
     },
-    mounted () {
-    }
+    showOversea (row) {
+      if (row) {
+        return '清关商品'
+      }
+      return '非清关商品'
+    },
+    showImg (row) {
+      if (row) {
+        return row.url
+      }
+      return ''
+    },
+    showName (row) {
+      if (row) {
+        return row.name
+      }
+      return ''
+    },
+    ...$global.$mapConst({ 'serviceTagGroupShowText': ServiceTagGroupService.showItemsText }),
+    ...$global.$mapMethods({ 'freightDescText': FreightService.getDescText })
+  },
+  mounted () {
   }
+}
 </script>
 
 
-<style lang="scss" scoped>
-  .img {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    background-size: cover;
-    margin-right: 10px;
-  }
+<style lang="scss">
+.img {
+  display: inline-block;
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+}
 
-  .ptag {
-    margin-right: 10px;
-  }
+.ptag {
+  margin-right: 10px;
+}
 
-  .freight-wrapper {
-    line-height: 18px;
-  }
+.freight-wrapper {
+  line-height: 18px;
+}
 
-  .tenants {
-    max-width: 400px;
-    color: $font-color-common;
-  }
-
+.tenants {
+  max-width: 400px;
+  color: $font-color-common;
+}
 </style>
