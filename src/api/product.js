@@ -75,3 +75,6 @@ export const createSyncStatus = (id) => {
 export const deleteSyncStatus = (id) => {
   return Axios.delete(`/admin/product/s/${id}/stock_sync`)
 }
+export const getTenantCollects = (id, params) => {
+  return Axios.get(`/admin/product/s/${id}/tenant/product/collect`, {params: params})
+}
