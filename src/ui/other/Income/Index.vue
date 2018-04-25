@@ -80,7 +80,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM')
+              return dateFormat(val, 'YYYY-MM-DD HH:mm:ss')
             }
           }
           return val
@@ -92,7 +92,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM')
+              return dateFormat(val, 'YYYY-MM HH:mm:ss')
             }
           }
           return val
