@@ -19,6 +19,8 @@
         el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
+        el-table-column(prop="suggest_price", label="收藏", width="110px")
+          el-button(slot-scope="props", type="text", @click="clickCollect(props.row)") {{ props.row.collect_count }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
           div(slot-scope="props") {{ props.row.sold }}
         el-table-column(prop="stock", label="库存", sortable, width="100px")
@@ -59,6 +61,7 @@
       batch-tag-dialog(ref="batchTagdlg", :origin="tagsIdArray", @submit="chooseTagComplete", @refresh="loadDataListByQueryPage")
       tenant-count-dialog(ref="tenantCountDlg")
       product-detail-dialog(ref="dlgProductDetail")
+      tenant-collect-dialog(ref="dlgTenantCollectDetail")
 </template>
 
 <script>
@@ -71,6 +74,7 @@
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
   import TenantCountDialog from 'src/ui/product/platform/dialog/TenantCountDialog.vue'
   import ProductDetailDialog from 'src/ui/common/ProductDetail/ProductDetailDialog.vue'
+  import TenantCollectDialog from 'src/ui/common/tenant_collect_dialog/Index'
 
   export default {
     name: 'AdminIndex',
@@ -82,7 +86,8 @@
       BatchCategoryDialog,
       BatchTagDialog,
       TenantCountDialog,
-      ProductDetailDialog
+      ProductDetailDialog,
+      TenantCollectDialog
     },
     data () {
       return {
@@ -94,7 +99,8 @@
           end: 0,
           text: '',
           tags: [],
-          supply_scope_tp: 0
+          supply_scope_tp: 0,
+          id: ''
         },
         multipleSelection: []
       }
@@ -348,6 +354,9 @@
             copy: true
           }
         })
+      },
+      clickCollect (row) {
+        this.$refs.dlgTenantCollectDetail.show(row)
       },
       ...$global.$mapMethods({'showCover': showCover})
     }
