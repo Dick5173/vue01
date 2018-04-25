@@ -19,7 +19,7 @@
         el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
-        el-table-column(prop="suggest_price", label="收藏", width="110px")
+        el-table-column(prop="collect_count", label="收藏", sortable, width="110px")
           el-button(slot-scope="props", type="text", @click="clickCollect(props.row)") {{ props.row.collect_count }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
           div(slot-scope="props") {{ props.row.sold }}

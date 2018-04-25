@@ -13,7 +13,7 @@
         el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
         el-table-column(prop="price", label="售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productPrice }}
-        el-table-column(prop="price", label="收藏", width="110px")
+        el-table-column(prop="collect_count", label="收藏", sortable, width="110px")
           div(slot-scope="props") {{ props.row.collect_count }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
         el-table-column(prop="stock", label="库存", sortable, width="100px")
