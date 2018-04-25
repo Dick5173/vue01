@@ -80,7 +80,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM')
+              return dateFormat(val)
             }
           }
           return val
@@ -92,7 +92,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM')
+              return dateFormat(val)
             }
           }
           return val
@@ -110,8 +110,8 @@
         })
       },
       showStatPeriod (row) {
-        const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH:mm:ss')
-        const end = dateFormat(row.end_tick, 'YYYY-MM-DD HH:mm:ss')
+        const start = dateFormat(row.start_tick)
+        const end = dateFormat(row.end_tick)
         return start === end ? start : `${start}~${end}`
       },
       showBalanceDialog (row) {
