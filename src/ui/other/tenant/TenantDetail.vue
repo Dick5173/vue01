@@ -389,6 +389,7 @@ export default {
           left: 0px;
           width: 16px;
           cursor: pointer;
+          height: 16px;
         }
         .head-status {
           display: inline-block;
