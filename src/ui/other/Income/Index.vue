@@ -7,7 +7,7 @@
         el-table-column(label="店铺", prop="")
           template(slot-scope="scope")
             el-button(type="text", @click="toTenantDetail(scope.row)") {{scope.row.tenant_nickname}}
-        el-table-column(label="统计周期", prop="")
+        el-table-column(label="统计周期", prop ="")
           template(slot-scope="scope") {{showStatPeriod(scope.row)}}
         el-table-column(label="向美市结算（元）", prop="settle_total_amount")
           template(slot-scope="scope")
