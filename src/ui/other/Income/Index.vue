@@ -7,7 +7,7 @@
         el-table-column(label="店铺", prop="")
           template(slot-scope="scope")
             el-button(type="text", @click="toTenantDetail(scope.row)") {{scope.row.tenant_nickname}}
-        el-table-column(label="统计周期", prop="")
+        el-table-column(label="统计周期", prop ="")
           template(slot-scope="scope") {{showStatPeriod(scope.row)}}
         el-table-column(label="向美市结算（元）", prop="settle_total_amount")
           template(slot-scope="scope")
@@ -36,7 +36,7 @@
       div.total
       div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 向美市结算:{{overview.settle_total_amount | price}} 销售总额: {{overview.sale_total_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 平台服务费:{{overview.total_platform_fee | price}}, 利润: {{overview.tenant_total_amount | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
-      bind-balance-dialog(ref="dlgBindBalance")
+      bind-balance-dialog(ref="dlgBindBalance",@refresh="handleSearch")
 </template>
 
 <script>
@@ -80,7 +80,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM')
+              return dateFormat(val)
             }
           }
           return val
@@ -92,7 +92,7 @@
             if (val === 0) {
               return ''
             } else {
-              return dateFormat(val, 'YYYY-MM')
+              return dateFormat(val)
             }
           }
           return val
@@ -110,8 +110,8 @@
         })
       },
       showStatPeriod (row) {
-        const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH:mm:ss')
-        const end = dateFormat(row.end_tick, 'YYYY-MM-DD HH:mm:ss')
+        const start = dateFormat(row.start_tick)
+        const end = dateFormat(row.end_tick)
         return start === end ? start : `${start}~${end}`
       },
       showBalanceDialog (row) {

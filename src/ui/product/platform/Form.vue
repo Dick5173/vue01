@@ -433,4 +433,7 @@
       color: $font-color-common;
     }
   }
+  .bottom-container{
+    z-index:100;
+  }
 </style>

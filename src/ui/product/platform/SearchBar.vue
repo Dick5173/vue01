@@ -27,7 +27,6 @@
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
 </template>
-
 <script>
   import * as CategoryApi from 'src/api/category'
   import * as TagApi from 'src/api/tag'
@@ -110,7 +109,7 @@
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
           tags: this.queryParams.tags,
-          supply_scope_tp: this.queryParams.supply_scope_tp
+          supply_scope_tp: this.queryParams.supply_scope_tp,
         }
         this.supply_scope = this.queryParams.supply_scope_tp === 2
         if (this.formData.start && this.formData.end) {

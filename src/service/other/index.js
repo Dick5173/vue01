@@ -111,16 +111,23 @@ export const showQiyuBindButtonName = (row) => {
   return '七鱼号未绑'
 }
 
-export const showMchBindButtonName = (row) => {
+export const isMchBind = (row) => {
   if (row.pay_service === 1) {
     if (row.sub_mch_id !== '') {
-      return '商户号已绑'
+      return true
     }
   }
   if (row.pay_service === 2) {
     if (row.sp_sub_mch_id !== '') {
-      return '商户号已绑'
+      return true
     }
+  }
+  return false
+}
+
+export const showMchBindButtonName = (row) => {
+  if (isMchBind(row)) {
+    return '商户号已绑'
   }
   return '商户号未绑'
 }
