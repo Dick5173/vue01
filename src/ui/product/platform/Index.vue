@@ -99,7 +99,8 @@
           end: 0,
           text: '',
           tags: [],
-          supply_scope_tp: 0
+          supply_scope_tp: 0,
+          id: ''
         },
         multipleSelection: []
       }
