@@ -52,8 +52,7 @@
           end: 0,
           text: '',
           tags: [],
-          supply_scope_tp: 0,
-          id: ''
+          supply_scope_tp: 0
         },
         supply_scope: false,
         // endregion
@@ -112,8 +111,12 @@
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
           tags: this.queryParams.tags,
+<<<<<<< HEAD
           supply_scope_tp: this.queryParams.supply_scope_tp,
           id: this.queryParams.id
+=======
+          supply_scope_tp: this.queryParams.supply_scope_tp
+>>>>>>> d71fa8841b1955169b167a30c6e2dd92eeac8b63
         }
         this.supply_scope = this.queryParams.supply_scope_tp === 2
         if (this.formData.start && this.formData.end) {
