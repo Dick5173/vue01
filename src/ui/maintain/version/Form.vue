@@ -1,7 +1,7 @@
 <template lang="pug">
   el-form.medium-el-form(v-loading="loading", ref="form", :model="formData", :rules="formRules", labelWidth="110px")
     el-form-item.tiny-el-input(prop="code", label="版本号")
-      el-input(v-model.trim="formData.code", :maxlength="10")
+      el-input(v-model.trim="formData.code", :maxlength="10" clearable)
     el-form-item(prop="update_time", label="版本更新时间", :required="true")
       date-picker(:value.sync="formData.update_time")
     el-form-item(prop="description", label="内容")

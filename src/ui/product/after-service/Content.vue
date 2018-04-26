@@ -5,7 +5,7 @@
   mixin textContent
     div.text-content(v-if!="props.row.tp === allContentTp.text.value")
       el-form-item.show-validate-el-form(:ref="`text${props.index}`", :prop="'content.' + props.index + '.text'", :rules="formRules.text")
-        el-input(v-model.trim="props.row.text",  :maxlength="26")
+        el-input(v-model.trim="props.row.text",  :maxlength="26" clearable)
 
   div
     smart-table.medium-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")

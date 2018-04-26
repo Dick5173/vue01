@@ -16,7 +16,7 @@
       el-form-item(label="首次访问：")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item(label="")
-        el-input(v-model.trim="formData.key", placeholder="用户昵称/ID")
+        el-input(v-model.trim="formData.key", placeholder="用户昵称/ID" clearable)
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置

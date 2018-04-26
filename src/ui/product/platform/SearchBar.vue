@@ -22,9 +22,9 @@
       el-form-item(label="上架:")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item(label="")
-        el-input(v-model.trim="formData.text", placeholder="商品名/编码")
+        el-input(v-model.trim="formData.text", clearable placeholder="商品名/编码")
       el-form-item(label="")
-        el-input(v-model.trim="formData.id", placeholder="ID")
+        el-input(v-model.trim="formData.id", clearable placeholder="ID")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置

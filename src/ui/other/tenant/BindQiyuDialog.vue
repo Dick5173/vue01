@@ -8,9 +8,9 @@
         div.name {{tenantData.nick_name}}
       el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="90px")
         el-form-item(label="AppID：", prop="app_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.app_id")
+          el-input.tiny-x-el-input(v-model.trim="formData.app_id" clearable)
         el-form-item(label="七鱼ID：", prop="qiyu_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.qiyu_id")
+          el-input.tiny-x-el-input(v-model.trim="formData.qiyu_id" clearable)
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
           el-button(type="primary", @click="handleQiyuBind") 确 定
