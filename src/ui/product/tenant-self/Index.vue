@@ -59,7 +59,8 @@
           tenant_id: '',
           start: 0,
           end: 0,
-          text: ''
+          text: '',
+          id: ''
         },
         multipleSelection: []
       }

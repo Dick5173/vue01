@@ -24,7 +24,7 @@
       el-form-item(label="")
         el-input(v-model.trim="formData.text", clearable placeholder="商品名/编码")
       el-form-item(label="")
-        el-input(v-model.trim="formData.id", clearable placeholder="ID")
+        el-input(v-model.trim="formData.id", clearable placeholder="商品ID")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
@@ -113,7 +113,7 @@
           text: this.queryParams.text,
           tags: this.queryParams.tags,
           supply_scope_tp: this.queryParams.supply_scope_tp,
-          id: this.queryParams.text
+          id: this.queryParams.id
         }
         this.supply_scope = this.queryParams.supply_scope_tp === 2
         if (this.formData.start && this.formData.end) {
