@@ -164,7 +164,7 @@
 
 <style lang="scss" scoped>
   .status-select {
-    width: 260px;
+    width: 280px;
   }
 
   .input-div {
