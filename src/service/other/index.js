@@ -97,6 +97,17 @@ export const showDeliverytButtonName = (row) => {
   }
   return text
 }
+export const showWithdrawBindButtonName = (row) => {
+  let text = ''
+  switch (row.delivery_mode) {
+    case 1:
+      text = '开启'
+      break
+    case 2:
+      text = '关闭'
+  }
+  return text
+}
 export const showErpBindButtonName = (row) => {
   if (row.erp_shop_id) {
     return 'ERP已绑'
