@@ -1,13 +1,22 @@
 <template lang="pug">
   el-dialog(title="同意退款",  :visible.sync="dialogVisible", size="tiny", @open="openCallback", @close="closeCallback", v-loading="loading")
-    el-form(ref="formAgree", :model="form", label-width="80px", :rules="rules")
+    el-form(ref="formAgree", :model="form", label-width="110px", :rules="rules")
       el-form-item(label="退款金额", prop="amount")
         el-input.input(v-model="form.amount")
         div.tip
           span 最多退款
           span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
           span 其中商品总额{{orderItem.total_price | price}}，
+          span(v-if="orderItem.full_reduce_amount > 0") 余额抵用{{orderItem.full_reduce_amount | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
+      el-form-item(label="退回余额抵用", prop="purpose" v-if="orderItem.full_reduce_amount > 0")
+        el-input.input(v-model="form.purpose")
+        div.tip
+          span 最多退回{{orderItem.full_reduce_amount | price}}，退至用户"钱包-余额"
+      el-form-item(label="追回分享奖励", prop="purpose" v-if="orderItem.full_reduce_amount > 0")
+        el-input.input(v-model="form.purpose")
+        div.tip
+          span 最多退回{{orderItem.full_reduce_amount | price}}
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}
@@ -58,6 +67,21 @@
         }
         callback()
       }
+      const validatePurpose = (rule, value, callback) => {
+        if (value) {
+          if (checkIsMoney(value)) {
+            if (parseFloat(value) <= 0) {
+              callback(new Error('价格必须大于0'))
+              return
+            }
+          } else {
+            callback(new Error('请输入合适的数字'))
+          }
+          if (convertYuanToFen(value) > this.orderItem.full_reduce_amount) {
+            callback(new Error('超出最大值，请输入合适的数字'))
+          }
+        }
+      }
       return {
         loading: false,
         dialogVisible: false,
@@ -82,6 +106,10 @@
           ],
           remark: [
             {max: 30, message: '最大30个字符', trigger: 'blur'}
+          ],
+          purpose: [
+            {required: true, message: '请输入适合的数字', trigger: 'blur'},
+            {validator: validatePurpose, trigger: 'blur'}
           ]
         }
       }
