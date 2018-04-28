@@ -1,8 +1,8 @@
 <template lang="pug">
   el-dialog(:title="title", width="30%", :visible.sync="dialogVisible")
     el-form(ref="form", :model="formData", :rules="rules", v-loading="loading")
-      el-form-item(label="名称", prop="name", :maxlength="10")
-        el-input(v-model="formData.name" clearable)
+      el-form-item(label="名称", prop="name")
+        el-input(v-model="formData.name", :maxlength="10")
     div(slot="footer", class="dialog-footer")
       el-button(@click="dialogVisible = false") 取 消
       el-button(type="primary", @click="submitForm") 确 定
