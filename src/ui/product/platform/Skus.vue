@@ -64,7 +64,7 @@
     data () {
       const suggestPriceValidator = (rule, value, callback) => {
         if (!this.R_.isPrice(value)) {
-          callback(new Error('不正确的价格'))
+          callback(new Error('请输入正数，最多2位小数'))
           return
         }
         const suggestPrice = this.R_.convertYuanToFen(value)
@@ -95,7 +95,7 @@
         }
         let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1})?$)|(^(0){1}$)|(^[0-9]\.[0-9]$)/
         if (!reg.test(value)) {
-          callback(new Error('最多1位小数数字'))
+          callback(new Error('请输入正数，最多1位小数'))
           return
         }
         callback()

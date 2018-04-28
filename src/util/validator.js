@@ -14,7 +14,7 @@ export const nonZeroIntegerValidator = (rule, value, callback) => {
 
 export const priceValidator = (rule, value, callback) => {
   if (value && !Vue.R_.isPrice(value)) {
-    callback(new Error('不正确的价格'))
+    callback(new Error('请输入正数，最多2位小数'))
     return
   }
   callback()

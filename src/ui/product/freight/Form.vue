@@ -108,5 +108,9 @@
 <style lang="scss" scoped>
   .freight-tab {
     width: 780px;
+
+  }
+  .el-table .cell{
+    height: 80px !important; ;
   }
 </style>

@@ -59,7 +59,7 @@
       const numValidator = (rule, value, callback) => {
         if (this.tp === FreightService.allUnitTp.piece.value) {
           if (!this.R_.isInteger(value)) {
-            callback(new Error('不正确的数字'))
+            callback(new Error('请输入正整数'))
             return
           }
           const i = parseInt(value)
