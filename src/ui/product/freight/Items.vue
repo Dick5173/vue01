@@ -154,4 +154,7 @@
   .show-margin-cell {
     margin-bottom: 20px;
   }
+  .show-validate-in-tab-el-form{
+    margin-bottom: 30px !important;
+  }
 </style>
