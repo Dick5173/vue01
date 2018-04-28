@@ -3,6 +3,7 @@
     div {{title}}
       span.time.txt-info {{data.ct | datetime}}
     div(v-if="data.status === 5") {{data.amount|price}}将由微信原路退给买家
+    div(v-if="data.status === 5&& data.purpose > 0") {{data.purpose | price}}将退至买家"钱包-余额"
     div.txt-info {{data.txt}}
     div(v-if="data.sys_remark")
       div.txt-info.txt-info-tip 以下内容消费者不可见
