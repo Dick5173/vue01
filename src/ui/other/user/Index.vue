@@ -10,16 +10,29 @@
         el-table-column(prop="", label="用户")
           div(slot-scope="scope")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nickname}}
+        el-table-column(prop="",label="收入")
+          div(slot-scope="scope")
+            el-button(type="text", @click="toIncome(scope.row)") {{1800 | price}}
+        el-table-column(prop="",label="余额")
+          div(slot-scope="scope") {{1900 | price}}
+        el-table-column(prop="",label="核销提现")
+          div(slot-scope="scope")
+            el-button(type="text", @click="toWithdraw(scope.row)") {{2000 | price}}
         el-table-column(prop="", label="首次访问")
           template(slot-scope="scope")
             div {{showDate(scope.row)}}
         el-table-column(prop="", label="店铺")
           div(slot-scope="scope") {{getTenantName(scope.row)}}
+        el-table-column(prop="",label="操作")
+          div.control-wrapper(slot-scope="scope")
+            el-button.btn.text-code(size="mini", type="primary", @click="showWithDrawDialog(scope.row)", plain) 核销提现
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+      with-draw-dialog(ref="withDrawDilog")
 </template>
 
 <script>
   import SearchToolbar from 'src/ui/other/user/SearchToolbar.vue'
+  import WithDrawDialog from 'src/ui/other/user/WithDrawDialog.vue'
   import { dateFormat } from 'src/util/format'
   import * as UserApi from 'src/api/user'
   import LoadPagerData from 'src/mixins/load-pager-data'
@@ -30,7 +43,8 @@
     ],
     props: {},
     components: {
-      SearchToolbar
+      SearchToolbar,
+      WithDrawDialog
     },
     data () {
       return {
@@ -64,6 +78,25 @@
             uid: row.id
           }
         })
+      },
+      toIncome (row) {
+        this.$router.push({
+          name: 'UserIncome',
+          params: {
+            uid: row.id
+          }
+        })
+      },
+      toWithdraw (row) {
+        this.$router.push({
+          name: 'UserWithDraw',
+          params: {
+            uid: row.id
+          }
+        })
+      },
+      showWithDrawDialog (row) {
+        this.$refs.withDrawDilog.show(row)
       },
       showDate (row) {
         return dateFormat(row.ct, 'YYYY-MM-DD')

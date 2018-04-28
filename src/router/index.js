@@ -476,6 +476,36 @@ const router = new Router({
           }
         },
         {
+          path: '/user/userincome/:uid',
+          name: 'UserIncome',
+          component: () => import('src/ui/other/user/Income.vue'),
+          meta: {
+            title: '收入',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'User'}
+            }, {
+              text: '收入'
+            }]
+          }
+        },
+        {
+          path: '/user/userwithdraw/:uid',
+          name: 'UserWithDraw',
+          component: () => import('src/ui/other/user/Withdraw.vue'),
+          meta: {
+            title: '核销提现',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'User'}
+            }, {
+              text: '核销提现'
+            }]
+          }
+        },
+        {
           path: 'sysuser',
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),
