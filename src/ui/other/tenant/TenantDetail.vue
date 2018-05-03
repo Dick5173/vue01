@@ -42,7 +42,7 @@
       div
         div.body-status
           div.body-item-status 支付商户号：
-            el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{payService(tenantData)}}{{payServiceId(tenantData.pay_service)}}
+            el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{payService(tenantData)}}
         div.body-status.margin-left
           div.body-item-status ERP：
             el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
@@ -191,19 +191,12 @@ export default {
     },
     payService (value) {
       if (value.pay_service === 1 && value.sub_mch_id !== '') {
-        return '微信'
+        return '微信' + value.sub_mch_id
       }
       if (value.pay_service === 2 && value.sp_sub_mch_id !== '') {
-        return '全付通'
+        return '全付通' + value.sp_sub_mch_id
       }
       return '未绑定'
-    },
-    payServiceId (val) {
-      if (val === 1) {
-        return this.tenantData.sub_mch_id
-      } else if (val === 2) {
-        return this.tenantData.sp_sub_mch_id
-      }
     },
     toTenantProduct (id) {
       this.$router.push({
