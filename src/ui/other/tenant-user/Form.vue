@@ -28,7 +28,7 @@
         el-form-item(label="邮箱：", prop="company_email")
           el-input.input(v-model.trim="formData.company_email" clearable)
         el-form-item
-          el-button(type="button", @click="cancel") 取消
+          el-button(@click="$router.back()") 取消
           el-button(type="primary", @click="submit") 确定
 </template>
 
@@ -122,9 +122,6 @@
     computed: {},
     watch: {},
     methods: {
-      cancel () {
-        this.$router.push('/tenantuser')
-      },
       submit () {
         this.$refs.form.validate(async (validFrom) => {
           if (validFrom) {
