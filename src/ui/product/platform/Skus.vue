@@ -14,7 +14,7 @@
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`stock${props.index}`", :prop="'skus.' + props.index + '.stock'", :rules="formRules.stock")
             el-input(v-model.trim="props.row.stock")
-      smart-table-column(label="编码")
+      smart-table-column(label="编码" width="220px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`code${props.index}`", :prop="'skus.' + props.index + '.code'", :rules="formRules.code")
             el-input(v-model.trim="props.row.code")
