@@ -2,11 +2,11 @@
   el-dialog(:visible.sync="dialogVisible", :title="dialogTitle", :width="commonDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="66px")
       el-form-item(prop="name", label="名称")
-        el-input(v-model.trim="formData.name", :maxlength="20" clearable)
+        el-input(v-model.trim="formData.name", :maxlength="20", clearable)
       el-form-item(prop="mobile", label="手机号")
-        el-input(v-model.trim="formData.mobile" clearable)
+        el-input(v-model.trim="formData.mobile", clearable)
       el-form-item(prop="passwd", label="密码")
-        el-input(type="password", v-model.trim="formData.passwd" clearable)
+        el-input(type="password", v-model.trim="formData.passwd", clearable)
     div.dialog-footer(slot="footer")
       el-button(@click="dialogVisible = false") 取消
       el-button(type="primary", :loading="loading", @click="handleSubmit") 确定

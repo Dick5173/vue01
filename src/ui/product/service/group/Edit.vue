@@ -3,7 +3,7 @@
     el-dialog(title="服务说明", :visible.sync="dialogVisible", width="30%")
       el-form(ref="form", :model="formData", :rules="rules", label-width="80px", v-loading="loading")
         el-form-item(label="组合名称" prop="name")
-          el-input(placeholder="最多10个字", v-model.trim="formData.name", :maxlength="10" clearable)
+          el-input(placeholder="最多10个字", v-model.trim="formData.name", :maxlength="10", clearable)
         el-form-item(label="服务选择", prop="")
           el-checkbox-group(v-model="formData.items")
             div.list

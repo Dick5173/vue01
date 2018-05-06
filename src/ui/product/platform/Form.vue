@@ -11,15 +11,15 @@
         upload-image(ref="uploadPageCover", :image.sync="formData.page_cover", :host="getHost", :token="getToken")
         div.input-bottom-desc 在首页中以单品形式显示时适用，建议尺寸702×440像素
       el-form-item(label="商品名称", prop="name")
-        el-input.medium-el-input(v-model.trim="formData.name", clearable :maxlength="50")
+        el-input.medium-el-input(v-model.trim="formData.name", clearable, :maxlength="50")
         span.input-right-desc {{ formData.name.length }} / 50
       el-form-item(label="卖点", prop="sell_point")
-        el-input.medium-el-input(v-model.trim="formData.sell_point", clearable :maxlength="30")
+        el-input.medium-el-input(v-model.trim="formData.sell_point", clearable, :maxlength="30")
         span.input-right-desc {{ formData.sell_point.length }} / 30
       el-form-item(label="商品规格", prop="skus", required)
         skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supply_levels="this.formData.supply_levels")
       el-form-item(label="划线价", prop="st_price")
-        el-input.tiny-el-input(v-model.trim="formData.st_price" clearable)
+        el-input.tiny-el-input(v-model.trim="formData.st_price", clearable)
         span.input-right-desc 元
       el-form-item(label="供货价", prop="supply_levels")
         supply-price-comp(:data-list="formData.supply_levels")

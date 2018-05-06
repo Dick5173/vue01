@@ -1,7 +1,7 @@
 <template lang="pug">
   el-form.freight-tab(ref="form", :model="formData", :rules="formRules", labelWidth="80px", v-loading="loading")
     el-form-item(label="模板名称", prop="name")
-      el-input.small-el-input(v-model.trim="formData.name", :maxlength="20", placeholder="最多20个字" clearable)
+      el-input.small-el-input(v-model.trim="formData.name", :maxlength="20", placeholder="最多20个字", clearable)
     el-form-item(label="计费类型", prop="compute_tp")
       el-radio-group(v-model="formData.compute_tp", @change="handleUnitTpChange", :disabled="isEditMode")
         el-radio(v-for!="item in allUnitTp", :label="item.value", :key="item.value") {{ item.text }}

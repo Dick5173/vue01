@@ -15,9 +15,9 @@
           :label="item.principal_name_id",
           :value="item.id")
       el-form-item(label="")
-        el-input(v-model.trim="formData.text", placeholder="商品名/编码" clearable)
+        el-input(v-model.trim="formData.text", placeholder="商品名/编码", clearable)
       el-form-item(label="")
-        el-input(v-model.trim="formData.id",placeholder="商品ID" clearable)
+        el-input(v-model.trim="formData.id",placeholder="商品ID", clearable)
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置

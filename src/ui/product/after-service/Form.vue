@@ -2,7 +2,7 @@
   div
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
       el-form-item(label="名称", prop="name")
-        el-input.small-el-input(v-model.trim="formData.name", clearable placeholder="最多10个字", :maxlength="10")
+        el-input.small-el-input(v-model.trim="formData.name", clearable, placeholder="最多10个字", :maxlength="10")
       el-form-item(label="内容")
         content-comp(:content.sync="formData.items")
       el-form-item(style="margin-top: 50px;")

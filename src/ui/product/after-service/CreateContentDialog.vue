@@ -2,7 +2,7 @@
   mixin textContent
     el-form-item.show-validate-el-form(ref="fiShowText", v-if!="formData.tp === allContentTp.text.value", label="", prop="text")
       div.input-text-wrapper
-        el-input(v-model.trim="formData.text", :maxlength="26" clearable)
+        el-input(v-model.trim="formData.text", :maxlength="26", clearable)
         div.input-right-desc {{ formData.text.length }} / 26
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="image")

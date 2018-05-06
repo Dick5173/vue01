@@ -9,7 +9,7 @@
           el-form-item.show-validate-in-tab-el-form(:prop="'supply_levels.' + props.$index + '.supply_price'", :rules="formRules.supply_price")
             div.supply-price
               div
-                el-input(v-model.trim="props.row.supply_price" clearable)
+                el-input(v-model.trim="props.row.supply_price", clearable)
               div.input-right-desc 元
 </template>
 
