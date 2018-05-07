@@ -22,7 +22,7 @@
         el-input.tiny-el-input(v-model.trim="formData.st_price")
         span.input-right-desc 元
       el-form-item(label="采购价", prop="purchase_price")
-        el-input.tiny-el-input(v-model.trim="formData.purchase_price")
+        el-input.tiny-el-input(v-model="formData.purchase_price")
         span.input-right-desc
       el-form-item(label="供货价", prop="supply_levels")
         supply-price-comp(:data-list="formData.supply_levels")
@@ -180,6 +180,10 @@
           callback(new Error('采购价必须为正数'))
           return
         }
+        if (value > 999999) {
+          callback(new Error('最大值999999'))
+          return
+        }
         callback()
       }
 
@@ -223,6 +227,7 @@
           }],
           supply_levels: [],
           st_price: '',
+          purchase_price: '',
           category_id: '',
           oversea: false,
           content: [],
@@ -267,8 +272,7 @@
             {validator: supplyLevelsValidator, trigger: 'change'}
           ],
           purchase_price: [
-            {required: true, message: '不能为空', trigger: 'blur'},
-            {validator: purchasePriceValidator, trigger: 'blur'}
+            {required: true, validator: purchasePriceValidator, trigger: 'blur'}
           ]
         }
       }
@@ -375,6 +379,7 @@
         })
       },
       async update () {
+        console.log(this.isRecycle, 3)
         if (this.isRecycle) {
           await FormApi.update(this.formData.id, this.formData)
           await FormApi.cancelDeleteProduct(this.formData.id)
