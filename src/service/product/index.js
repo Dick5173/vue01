@@ -312,3 +312,26 @@ export const buildSupplyPriceWithConvertFenToYuan = (tenantLevelList, supplyPric
     }
   })(tenantLevelList || [])
 }
+
+export const supplyPrice = (purchasePrice, skus, lowLevel) => {
+  let A = parseFloat(purchasePrice)
+  if (A >= 0) {
+    let suggestPrice = 0
+    for (let i = 0; i < skus.length; i++) {
+      if (skus[i].suggest_price === '') {
+        skus[i].suggest_price = 0
+      }
+      suggestPrice += parseFloat(skus[i].suggest_price)
+    }
+    let B = suggestPrice / skus.length
+    let P = parseFloat(purchasePrice) * 0.0842
+    if (lowLevel) {
+      if (P < 5) {
+        P = 5
+      }
+      return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
+    } else {
+      return B === 0 ? 0 : (A + P).toFixed(2)
+    }
+  }
+}

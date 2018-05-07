@@ -17,7 +17,7 @@
         el-input.medium-el-input(v-model.trim="formData.sell_point", :maxlength="30")
         span.input-right-desc {{ formData.sell_point.length }} / 30
       el-form-item(label="商品规格", prop="skus", required)
-        skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supply_levels="this.formData.supply_levels")
+        skus(ref="skus", :skus.sync="formData.skus", :stPrice="formData.st_price", :purchase_price="formData.purchase_price")
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price")
         span.input-right-desc 元
