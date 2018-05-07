@@ -72,13 +72,6 @@
           callback(new Error('供货价没有设置'))
           return
         }
-        if (this.R_.isPrice(this.supply_levels[0].supply_price)) {
-          const sp = this.R_.convertYuanToFen(this.supply_levels[0].supply_price)
-          if (suggestPrice < sp) {
-            callback(new Error('不能小于供货价'))
-            return
-          }
-        }
         if (this.R_.isPrice(this.stPrice)) {
           const st = this.R_.convertYuanToFen(this.stPrice)
           if (suggestPrice > st) {
