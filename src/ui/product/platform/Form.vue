@@ -184,11 +184,21 @@ export default {
         callback(new Error('最大值999999'))
         return
       }
+      if (this.formData.st_price && parseInt(this.formData.st_price) <= parseInt(value)) {
+        callback(new Error('采购价必须小于划线价'))
+        return
+      }
+      const errPurchase = this.formData.skus.some(item => {
+        return parseInt(item.suggest_price) <= parseInt(value)
+      })
+      if (errPurchase) {
+        callback(new Error('采购价必须小于建议售价'))
+        return
+      }
       callback()
     }
 
     return {
-      newDataList: [],
       loading: false,
       initialData: {},
       serviceGroupList: [],

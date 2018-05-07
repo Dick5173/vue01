@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    el-table.small-el-table(:data="filterDataList(dataList)", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
+    el-table.small-el-table(:data="filterDataList", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
       el-table-column(label="等级" )
         template(slot-scope="props")
           div {{props.row.tenant_level.name}}
@@ -37,16 +37,18 @@
         }
       }
     },
-    methods: {
-      filterDataList (data) {
+    computed: {
+      filterDataList () {
         let newData = []
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].tenant_level.name !== '中级店铺') {
-            newData.push(data[i])
+        for (var i = 0; i < this.dataList.length; i++) {
+          if (this.dataList[i].tenant_level.name !== '中级店铺') {
+            newData.push(this.dataList[i])
           }
         }
         return newData
-      },
+      }
+    },
+    methods: {
       conutPrice (price, row) {
         let A = parseFloat(price)
         if (A >= 0) {
@@ -62,17 +64,13 @@
           if (P < 5) {
             P = 5
           }
-          console.log('A' + A + ' P ' + P + ' B ' + B)
           if (row.tenant_level.name === '普通店铺') {
             return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
           } else if (row.tenant_level.name === '高级店铺' || row.tenant_level.name === '中级店铺') {
             return B === 0 ? 0 : (A + P).toFixed(2)
           }
         }
-      },
-      ...$global.$mapMethods(
-        {}
-      )
+      }
     }
   }
 </script>
