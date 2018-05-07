@@ -188,6 +188,7 @@ export default {
     }
 
     return {
+      newDataList: [],
       loading: false,
       initialData: {},
       serviceGroupList: [],
@@ -314,6 +315,9 @@ export default {
     }
   },
   methods: {
+    filterData (data) {
+      console.log(data, 222)
+    },
     async initData () {
       try {
         this.loading = true
@@ -434,6 +438,8 @@ export default {
   },
   async mounted () {
     this.initData()
+    console.log(this.formData.supply_levels, 22)
+    this.filterData(this.formData.supply_levels)
   }
 }
 </script>

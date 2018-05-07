@@ -1,15 +1,13 @@
 <template lang="pug">
   div
-    el-table.small-el-table(:data="dataList", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
+    el-table.small-el-table(:data="filterDataList(dataList)", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
       el-table-column(label="等级" )
-        template(slot-scope="props" ,)
+        template(slot-scope="props")
           div {{props.row.tenant_level.name}}
       el-table-column(label="价格")
         template(slot-scope="props")
-          <!--el-form-item.show-validate-in-tab-el-form(:prop="'supply_levels.' + props.$index + '.supply_price'", :rules="formRules.supply_price")-->
           div.supply-price
             div {{ conutPrice(dataPrice, props.row)}}
-              <!--el-input(v-model.trim="props.row.supply_price")-->
             div.input-right-desc 元
 </template>
 
@@ -40,6 +38,15 @@
       }
     },
     methods: {
+      filterDataList (data) {
+        let newData = []
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].tenant_level.name !== '中级店铺') {
+            newData.push(data[i])
+          }
+        }
+        return newData
+      },
       conutPrice (price, row) {
         let A = parseFloat(price)
         if (A >= 0) {
