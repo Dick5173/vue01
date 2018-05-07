@@ -66,27 +66,27 @@
 </template>
 
 <script>
-import * as AliyunApi from "src/api/aliyun";
-import Skus from "./Skus.vue";
-import * as TenantApi from "src/api/tenant";
-import { UploadImage, UploadImageList } from "@baibao/zeratul";
-import ContentComp from "./Content.vue";
-import SupplyPriceComp from "./SupplyPrice";
-import * as FormApi from "src/api/product";
-import * as CategoryApi from "src/api/category";
-import * as ProductService from "src/service/product";
-import * as ServiceGroupApi from "src/api/servicetag";
-import * as AfterServiceApi from "src/api/after-service";
-import * as deliveryRegionApi from "src/api/delivery-region";
-import * as freightTemplateApi from "src/api/freight-template";
-import { priceValidator } from "src/util/validator";
-import BatchTagDialog from "src/ui/product/platform/dialog/BatchTagDialog.vue";
-import ChooseSupplyTenantsDialog from "src/ui/product/platform/dialog/ChooseSupplyTenantsDialog.vue";
-import * as ElUtil from "src/util/el";
+import * as AliyunApi from 'src/api/aliyun'
+import Skus from './Skus.vue'
+import * as TenantApi from 'src/api/tenant'
+import { UploadImage, UploadImageList } from '@baibao/zeratul'
+import ContentComp from './Content.vue'
+import SupplyPriceComp from './SupplyPrice'
+import * as FormApi from 'src/api/product'
+import * as CategoryApi from 'src/api/category'
+import * as ProductService from 'src/service/product'
+import * as ServiceGroupApi from 'src/api/servicetag'
+import * as AfterServiceApi from 'src/api/after-service'
+import * as deliveryRegionApi from 'src/api/delivery-region'
+import * as freightTemplateApi from 'src/api/freight-template'
+import { priceValidator } from 'src/util/validator'
+import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
+import ChooseSupplyTenantsDialog from 'src/ui/product/platform/dialog/ChooseSupplyTenantsDialog.vue'
+import * as ElUtil from 'src/util/el'
 
-const MAX_HEAD_COUNT = 5;
-const FREIGHT_FREE_DELIVERY = 0;
-const FREIGHT_SPECIFY_TEMPLATE = 1;
+const MAX_HEAD_COUNT = 5
+const FREIGHT_FREE_DELIVERY = 0
+const FREIGHT_SPECIFY_TEMPLATE = 1
 
 export default {
   MAX_HEAD_COUNT,
@@ -101,95 +101,91 @@ export default {
     SupplyPriceComp,
     ChooseSupplyTenantsDialog
   },
-  data() {
+  data () {
     const headValidator = (rule, value, callback) => {
       if (this.$refs.uploadHead.isUpdating) {
-        callback(new Error("正在上传图片"));
-        return;
+        callback(new Error('正在上传图片'))
+        return
       }
       if (value) {
         if (value.length <= 0) {
-          callback(new Error("请选择图片"));
+          callback(new Error('请选择图片'))
         } else if (value.length > MAX_HEAD_COUNT) {
-          callback(new Error(`最多选择${MAX_HEAD_COUNT}图片`));
+          callback(new Error(`最多选择${MAX_HEAD_COUNT}图片`))
         } else {
-          callback();
+          callback()
         }
       } else {
-        callback(new Error("请选择图片"));
+        callback(new Error('请选择图片'))
       }
-    };
+    }
     const coverValidator = (rule, value, callback) => {
       if (this.$refs.uploadCover.isUpdating) {
-        callback(new Error("正在上传图片"));
-        return;
+        callback(new Error('正在上传图片'))
+        return
       }
-      callback();
-    };
+      callback()
+    }
     const pageCoverValidator = (rule, value, callback) => {
       if (this.$refs.uploadPageCover.isUpdating) {
-        callback(new Error("正在上传图片"));
-        return;
+        callback(new Error('正在上传图片'))
+        return
       }
-      callback();
-    };
+      callback()
+    }
     const skuValidator = (rule, value, callback) => {
       if (!value || value.length <= 0) {
-        callback(new Error("Sku不能为空"));
-        return;
+        callback(new Error('Sku不能为空'))
+        return
       }
       if (this.$refs.skus.isUpdating()) {
-        callback(new Error("正在上传图片"));
-        return;
+        callback(new Error('正在上传图片'))
+        return
       }
-      callback();
-    };
+      callback()
+    }
     const freightTemplateValidator = (rule, value, callback) => {
       if (this.radFreightVal === FREIGHT_SPECIFY_TEMPLATE && !value) {
-        callback(new Error("请选择运费模板"));
-        return;
+        callback(new Error('请选择运费模板'))
+        return
       }
-      callback();
-    };
+      callback()
+    }
 
     const supplyLevelsValidator = (rule, value, callback) => {
       if (!value || value.length <= 0) {
-        callback(new Error("供货价格不能为空"));
-        return;
+        callback(new Error('供货价格不能为空'))
+        return
       }
-      var prevPrice = 0;
+      var prevPrice = 0
       for (var i = 0; i < value.length; i++) {
         if (!this.R_.isPrice(value[i].supply_price)) {
-          callback(new Error("不正确的价格"));
-          return;
+          callback(new Error('不正确的价格'))
+          return
         }
-        var p = this.R_.convertYuanToFen(value[i].supply_price);
+        var p = this.R_.convertYuanToFen(value[i].supply_price)
         if (prevPrice !== 0 && p > prevPrice) {
-          callback(new Error("供货价格不合法"));
+          callback(new Error('供货价格不合法'))
         }
-        prevPrice = p;
+        prevPrice = p
       }
-      callback();
-    };
+      callback()
+    }
     const purchasePriceValidator = (rule, value, callback) => {
       if (!value || value.length <= 0) {
-        callback(new Error("采购价格不能为空"));
-        return;
+        callback(new Error('采购价格不能为空'))
+        return
       }
       if (value < 0) {
-        callback(new Error("采购价必须为正数"));
-        return;
+        callback(new Error('采购价必须为正数'))
+        return
       }
       if (value > 999999) {
-        callback(new Error("最大值999999"));
-        return;
+        callback(new Error('最大值999999'))
+        return
       }
-      if (!Vue.R_.isPrice(value)) {
-        callback(new Error("不正确的价格"));
-        return;
-      }
-      callback();
-    };
+      callback()
+    }
 
     return {
       loading: false,
@@ -206,241 +202,240 @@ export default {
         status: 1,
         head: [],
         cover: {
-          url: "",
+          url: '',
           width: 0,
           height: 0
         },
         page_cover: {
-          url: "",
+          url: '',
           width: 0,
           height: 0
         },
-        name: "",
-        sell_point: "",
+        name: '',
+        sell_point: '',
         skus: [
           {
-            spec: "默认规格",
-            suggest_price: "888",
-            stock: "",
-            code: "",
-            weight: "",
+            spec: '默认规格',
+            suggest_price: 0,
+            stock: '',
+            code: '',
+            weight: '',
             image: {
-              url: "",
+              url: '',
               width: 0,
               height: 0
             }
           }
         ],
         supply_levels: [],
-        st_price: "",
-        category_id: "",
+        st_price: '',
+        category_id: '',
         oversea: false,
         content: [],
         tags: [],
-        service_tag_group_id: "",
-        after_service_id: "",
-        delivery_region_id: "",
-        freight_template_id: "",
+        service_tag_group_id: '',
+        after_service_id: '',
+        delivery_region_id: '',
+        freight_template_id: '',
         supply_scope_tp: 1,
         supply_tenants: [],
-        purchase_price: ""
+        purchase_price: ''
       },
       formRules: {
-        head: [{ validator: headValidator, trigger: "change" }],
-        cover: [{ validator: coverValidator, trigger: "change" }],
-        page_cover: [{ validator: pageCoverValidator, trigger: "change" }],
+        head: [{ validator: headValidator, trigger: 'change' }],
+        cover: [{ validator: coverValidator, trigger: 'change' }],
+        page_cover: [{ validator: pageCoverValidator, trigger: 'change' }],
         name: [
-          { required: true, message: "不能为空", trigger: "blur" },
-          { max: 50, message: "最多可以输入50个字符", trigger: "blur" }
+          { required: true, message: '不能为空', trigger: 'blur' },
+          { max: 50, message: '最多可以输入50个字符', trigger: 'blur' }
         ],
         sell_point: [
-          { max: 30, message: "最多可以输入30个字符", trigger: "blur" }
+          { max: 30, message: '最多可以输入30个字符', trigger: 'blur' }
         ],
-        skus: [{ validator: skuValidator, trigger: "change" }],
-        st_price: [{ validator: priceValidator, trigger: "blur" }],
+        skus: [{ validator: skuValidator, trigger: 'change' }],
+        st_price: [{ validator: priceValidator, trigger: 'blur' }],
         category_id: [
-          { required: true, message: "分类不能为空", trigger: "change" }
+          { required: true, message: '分类不能为空', trigger: 'change' }
         ],
         freight_template_id: [
-          { validator: freightTemplateValidator, trigger: "change" }
+          { validator: freightTemplateValidator, trigger: 'change' }
         ],
         supply_levels: [
-          { validator: supplyLevelsValidator, trigger: "change" }
+          { validator: supplyLevelsValidator, trigger: 'change' }
         ],
         purchase_price: [
-          { required: true, validator: purchasePriceValidator, trigger: "blur" }
+          { required: true, validator: purchasePriceValidator, trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   computed: {
-    isCopy() {
-      return this.$route.params.copy === true;
+    isCopy () {
+      return this.$route.params.copy === true
     },
-    isRecycle() {
-      return this.$route.params.recycle === true;
+    isRecycle () {
+      return this.$route.params.recycle === true
     },
-    isEditMode() {
-      return this.$route.name === "PlatformProductEdit";
+    isEditMode () {
+      return this.$route.name === 'PlatformProductEdit'
     },
-    remainHeadCount() {
-      return MAX_HEAD_COUNT - (this.formData.head || []).length;
+    remainHeadCount () {
+      return MAX_HEAD_COUNT - (this.formData.head || []).length
     },
-    oraTags() {
-      return this.formData.tags ? [{ tags: this.formData.tags }] : [];
+    oraTags  () {
+      return this.formData.tags ? [{ tags: this.formData.tags }] : []
     },
-    showSupplyTenants() {
+    showSupplyTenants () {
       if (
         !this.formData.supply_scope_tp ||
         this.formData.supply_scope_tp === 1
       ) {
-        return "无限制";
+        return '无限制'
       }
-      let tenants = "";
+      let tenants = ''
       this.R.forEachObjIndexed((item, index) => {
-        tenants += `${parseInt(index) === 0 ? "" : "、"}${item.id}-${
+        tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${
           item.nick_name
-        }`;
-      })(this.formData.supply_tenants || []);
-      return tenants;
+        }`
+      })(this.formData.supply_tenants || [])
+      return tenants
     }
   },
   watch: {
-    radFreightVal(newVal, oldVal) {
+    radFreightVal (newVal, oldVal) {
       if (newVal === FREIGHT_FREE_DELIVERY) {
-        this.formData.freight_template_id = "";
+        this.formData.freight_template_id = ''
       }
     },
-    "formData.freight_template_id"(newVal, oldVal) {
+    'formData.freight_template_id' (newVal, oldVal) {
       if (newVal) {
-        this.radFreightVal = FREIGHT_SPECIFY_TEMPLATE;
+        this.radFreightVal = FREIGHT_SPECIFY_TEMPLATE
       }
     }
   },
   methods: {
-    async initData() {
+    async initData () {
       try {
-        this.loading = true;
-        this.getCategoryList();
-        this.getServiceGroupList();
-        this.getAfterServiceList();
-        this.getDeliveryRegionList();
-        this.getFreightTemplateList();
-        await this.getTenantLevel();
+        this.loading = true
+        this.getCategoryList()
+        this.getServiceGroupList()
+        this.getAfterServiceList()
+        this.getDeliveryRegionList()
+        this.getFreightTemplateList()
+        await this.getTenantLevel()
         if (this.isEditMode || this.isCopy) {
-          const resItem = await FormApi.getItem(this.$route.params.id);
-          this.formData = ProductService.convertModelToForm(resItem.data);
+          const resItem = await FormApi.getItem(this.$route.params.id)
+          this.formData = ProductService.convertModelToForm(resItem.data)
         }
         this.formData.supply_levels = ProductService.buildSupplyPrice(
           this.tenantLevelList,
           this.formData.supply_levels
-        );
-        this.initialData = this.R.clone(this.formData);
-        this.loading = false;
+        )
+        this.initialData = this.R.clone(this.formData)
+        this.loading = false
       } catch (err) {
-        this.loading = false;
+        this.loading = false
       }
     },
-    async getTenantLevel() {
-      const res = await TenantApi.getTenantLevelList();
-      this.tenantLevelList = res.data.data;
-      console.log("this.tenantLevelList", this.tenantLevelList);
+    async getTenantLevel () {
+      const res = await TenantApi.getTenantLevelList()
+      this.tenantLevelList = res.data.data
     },
-    async getCategoryList() {
-      const resCategory = await CategoryApi.getList();
-      this.allCategories = resCategory.data.data;
+    async getCategoryList () {
+      const resCategory = await CategoryApi.getList()
+      this.allCategories = resCategory.data.data
     },
-    async getServiceGroupList() {
-      const resServiceGroup = await ServiceGroupApi.getTagGroupList();
-      this.serviceGroupList = resServiceGroup.data.data;
+    async getServiceGroupList () {
+      const resServiceGroup = await ServiceGroupApi.getTagGroupList()
+      this.serviceGroupList = resServiceGroup.data.data
     },
-    async getAfterServiceList() {
-      const resAfterService = await AfterServiceApi.getList();
-      this.afterServiceList = resAfterService.data.data;
+    async getAfterServiceList () {
+      const resAfterService = await AfterServiceApi.getList()
+      this.afterServiceList = resAfterService.data.data
     },
-    async getDeliveryRegionList() {
-      const resDeliveryRegion = await deliveryRegionApi.getList();
-      this.deliveryRegionList = resDeliveryRegion.data.data;
+    async getDeliveryRegionList () {
+      const resDeliveryRegion = await deliveryRegionApi.getList()
+      this.deliveryRegionList = resDeliveryRegion.data.data
     },
-    async getFreightTemplateList() {
-      const resFreightTemplate = await freightTemplateApi.getList();
-      this.freightTemplateList = resFreightTemplate.data.data;
+    async getFreightTemplateList () {
+      const resFreightTemplate = await freightTemplateApi.getList()
+      this.freightTemplateList = resFreightTemplate.data.data
     },
-    async create(up) {
-      this.formData.id = 0;
-      let frm = Object.assign({}, this.formData);
+    async create (up) {
+      this.formData.id = 0
+      let frm = Object.assign({}, this.formData)
       if (up) {
-        frm.status = ProductService.allStatus.up.value;
+        frm.status = ProductService.allStatus.up.value
       }
       if (this.isCopy) {
-        frm = ProductService.copyCreate(frm);
+        frm = ProductService.copyCreate(frm)
       }
-      await FormApi.create(frm);
-      this.$router.back();
+      await FormApi.create(frm)
+      this.$router.back()
       this.$message({
-        type: "success",
-        message: "添加成功"
-      });
+        type: 'success',
+        message: '添加成功'
+      })
     },
-    async update() {
+    async update () {
       if (this.isRecycle) {
-        await FormApi.update(this.formData.id, this.formData);
-        await FormApi.cancelDeleteProduct(this.formData.id);
+        await FormApi.update(this.formData.id, this.formData)
+        await FormApi.cancelDeleteProduct(this.formData.id)
         this.$message({
-          type: "success",
-          message: "编辑成功,商品已经恢复为下架商品"
-        });
-        this.$router.back();
+          type: 'success',
+          message: '编辑成功,商品已经恢复为下架商品'
+        })
+        this.$router.back()
       } else {
-        await FormApi.update(this.formData.id, this.formData);
+        await FormApi.update(this.formData.id, this.formData)
         this.$message({
-          type: "success",
-          message: "编辑成功"
-        });
-        this.$router.back();
+          type: 'success',
+          message: '编辑成功'
+        })
+        this.$router.back()
       }
     },
-    handleSave(up) {
-      this.loading = true;
+    handleSave (up) {
+      this.loading = true
       this.$refs.form.validate(valid => {
         if (valid) {
           try {
             if (!this.isEditMode) {
-              this.create(up);
+              this.create(up)
             } else {
-              this.update();
+              this.update()
             }
           } catch (err) {}
         } else {
-          ElUtil.scrollToInvalidFirstElement(this.$refs.form);
+          ElUtil.scrollToInvalidFirstElement(this.$refs.form)
         }
-        this.loading = false;
-      });
+        this.loading = false
+      })
     },
-    chooseTag() {
-      this.$refs.chooseTagDialog.show();
+    chooseTag () {
+      this.$refs.chooseTagDialog.show()
     },
-    chooseTagComplete(result) {
-      this.formData.tags = result.component.chooseTags;
-      result.component.hide();
+    chooseTagComplete (result) {
+      this.formData.tags = result.component.chooseTags
+      result.component.hide()
     },
-    chooseSupplyTenants() {
-      this.$refs.chooseSupplyTenantsDialog.show(this.formData);
+    chooseSupplyTenants () {
+      this.$refs.chooseSupplyTenantsDialog.show(this.formData)
     },
-    chooseSupplyTenantsComplete(tenant) {
-      console.log(tenant);
-      this.formData.supply_scope_tp = tenant.supply_scope_tp;
-      this.formData.supply_tenants = tenant.supply_tenants;
+    chooseSupplyTenantsComplete (tenant) {
+      console.log(tenant)
+      this.formData.supply_scope_tp = tenant.supply_scope_tp
+      this.formData.supply_tenants = tenant.supply_tenants
     },
     ...$global.$mapMethods({
       getHost: AliyunApi.getOssHost,
       getToken: AliyunApi.getOssToken
     })
   },
-  async mounted() {
-    this.initData();
+  async mounted () {
+    this.initData()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
