@@ -184,6 +184,17 @@ export default {
         callback(new Error('最大值999999'))
         return
       }
+      if (this.formData.st_price && parseInt(this.formData.st_price) < parseInt(value)) {
+        callback(new Error('采购价必须小于划线价'))
+        return
+      }
+      const errPurchase = this.formData.skus.some(item => {
+        return parseInt(item.suggest_price) < parseInt(value)
+      })
+      if (errPurchase) {
+        callback(new Error('采购价必须小于建议售价'))
+        return
+      }
       callback()
     }
 
@@ -423,7 +434,6 @@ export default {
       this.$refs.chooseSupplyTenantsDialog.show(this.formData)
     },
     chooseSupplyTenantsComplete (tenant) {
-      console.log(tenant)
       this.formData.supply_scope_tp = tenant.supply_scope_tp
       this.formData.supply_tenants = tenant.supply_tenants
     },
