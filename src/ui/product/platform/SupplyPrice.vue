@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    el-table.small-el-table(:data="filterDataList", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
+    el-table.small-el-table(:data="filterDataList", border, :show-header="false")
       el-table-column(label="等级" )
         template(slot-scope="props")
           div {{props.row.tenant_level.name}}
@@ -61,10 +61,10 @@
           }
           let B = suggestPrice / this.skus.length
           let P = parseFloat(price) * 0.0842
-          if (P < 5) {
-            P = 5
-          }
           if (row.tenant_level.name === '普通店铺') {
+            if (P < 5) {
+              P = 5
+            }
             return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
           } else if (row.tenant_level.name === '高级店铺' || row.tenant_level.name === '中级店铺') {
             return B === 0 ? 0 : (A + P).toFixed(2)
