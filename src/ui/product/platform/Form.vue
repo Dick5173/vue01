@@ -21,6 +21,9 @@
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price")
         span.input-right-desc 元
+      el-form-item(label="采购价", prop="purchase_price")
+        el-input.tiny-el-input(v-model.trim="formData.purchase_price")
+        span.input-right-desc
       el-form-item(label="供货价", prop="supply_levels")
         supply-price-comp(:data-list="formData.supply_levels")
       el-form-item(label="商品分类", prop="category_id")
@@ -168,6 +171,17 @@
         }
         callback()
       }
+      const purchasePriceValidator = (rule, value, callback) => {
+        if (!value || value.length <= 0) {
+          callback(new Error('采购价格不能为空'))
+          return
+        }
+        if (value < 0) {
+          callback(new Error('采购价必须为正数'))
+          return
+        }
+        callback()
+      }
 
       return {
         loading: false,
@@ -251,6 +265,10 @@
           ],
           supply_levels: [
             {validator: supplyLevelsValidator, trigger: 'change'}
+          ],
+          purchase_price: [
+            {required: true, message: '不能为空', trigger: 'blur'},
+            {validator: purchasePriceValidator, trigger: 'blur'}
           ]
         }
       }
