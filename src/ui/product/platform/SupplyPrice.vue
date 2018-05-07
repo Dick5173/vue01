@@ -46,7 +46,7 @@
           var suggestPrice = 0
           for (var i = 0; i < this.skus.length; i++) {
             if (this.skus[i].suggest_price === '') {
-              return
+              this.skus[i].suggest_price = 0
             }
             suggestPrice += parseFloat(this.skus[i].suggest_price)
           }
@@ -55,10 +55,11 @@
           if (P < 5) {
             P = 5
           }
+          console.log('A' + A + ' P ' + P + ' B ' + B)
           if (row.tenant_level.name === '普通店铺') {
-            return (A + P + (B - A - P) * 0.3).toFixed(2)
+            return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
           } else if (row.tenant_level.name === '高级店铺' || row.tenant_level.name === '中级店铺') {
-            return (A + P).toFixed(2)
+            return B === 0 ? 0 : (A + P).toFixed(2)
           }
         }
       },
