@@ -232,7 +232,8 @@
           delivery_region_id: '',
           freight_template_id: '',
           supply_scope_tp: 1,
-          supply_tenants: []
+          supply_tenants: [],
+          purchase_price: ''
         },
         formRules: {
           head: [
