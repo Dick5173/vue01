@@ -39,6 +39,7 @@
   import emitter from 'element-ui/src/mixins/emitter'
   import { SmartTable, SmartTableColumn, UploadImage } from '@baibao/zeratul'
   import { nonZeroIntegerValidator } from 'src/util/validator'
+  import * as ProductSer from 'src/service/product/index'
 
   export default {
     mixins: [emitter],
@@ -52,8 +53,8 @@
         type: Array,
         required: true
       },
-      supply_levels: {
-        type: Array,
+      purchase_price: {
+        type: String,
         required: true
       },
       stPrice: {
@@ -62,18 +63,20 @@
       }
     },
     data () {
-      const suggestPriceValidator = (rule, value, callback) => {
+      const suggestPriceValidator = async (rule, value, callback) => {
+        await this.$nextTick()
         if (!this.R_.isPrice(value)) {
           callback(new Error('请输入正数，最多2位小数'))
           return
         }
         const suggestPrice = this.R_.convertYuanToFen(value)
-        if (this.supply_levels.length === 0) {
-          callback(new Error('供货价没有设置'))
+        if (!this.purchase_price) {
+          callback()
           return
         }
-        if (this.R_.isPrice(this.supply_levels[0].supply_price)) {
-          const sp = this.R_.convertYuanToFen(this.supply_levels[0].supply_price)
+        const sypplyPrice = ProductSer.supplyPrice(this.purchase_price, this.skus, true)
+        if (this.R_.isPrice(sypplyPrice)) {
+          const sp = this.R_.convertYuanToFen(sypplyPrice)
           if (suggestPrice < sp) {
             callback(new Error('不能小于供货价'))
             return

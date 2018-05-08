@@ -97,6 +97,18 @@ export const showDeliverytButtonName = (row) => {
   }
   return text
 }
+export const showMatrixButtonName = (row) => {
+  let text = ''
+  switch (row.tp) {
+    case 1:
+      text = '矩阵'
+      break
+    case 2:
+      text = '非矩阵'
+      break
+  }
+  return text
+}
 export const showErpBindButtonName = (row) => {
   if (row.erp_shop_id) {
     return 'ERP已绑'

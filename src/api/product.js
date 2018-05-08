@@ -24,6 +24,7 @@ export const create = (form) => {
 }
 
 export const update = (id, form) => {
+  console.log(form)
   const params = ProductService.convertFormToParam(form)
   return Axios.post(`/admin/product/s/${id}`, params)
 }
