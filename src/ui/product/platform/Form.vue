@@ -178,7 +178,7 @@
             return
           }
         }
-        const suggestPriceValidator = this.formData.skus.some(item => {
+        const errPurchase = this.formData.skus.some(item => {
           if (item.suggest_price && this.R_.isPrice(item.suggest_price)) {
             const suggestFen = this.R_.convertYuanToFen(item.suggest_price)
             return purchaseFen > suggestFen
