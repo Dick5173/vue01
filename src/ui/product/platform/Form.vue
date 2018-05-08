@@ -170,7 +170,7 @@
           callback(new Error('采购价不能大于999999'))
           return
         }
-        // 划线价格输入的正确
+        // 划线价格输入的验证
         if (this.formData.st_price && this.R_.isPrice(this.formData.st_price)) {
           const stFen = this.R_.convertYuanToFen(this.formData.st_price)
           if (purchaseFen > stFen) {
