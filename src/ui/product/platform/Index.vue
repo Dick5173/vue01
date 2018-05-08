@@ -42,6 +42,7 @@
               el-table-column(prop="sold", label="销量")
                 div(slot-scope="skuProps") {{ skuProps.row.sold }}
               el-table-column(prop="stock", label="库存")
+              el-table-column(prop="code", label="编码" width="220px")
         el-table-column(label="操作", width="120px", fixed="right")
           div(slot-scope="props")
             el-dropdown()
@@ -384,5 +385,8 @@
     display: block;
     margin-top: 10px;
     margin-left: 93%;
+  }
+  .small-el-table{
+    width:541px !important;
   }
 </style>
