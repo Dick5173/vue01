@@ -70,8 +70,8 @@
           return
         }
         const suggestPrice = this.R_.convertYuanToFen(value)
-        if (!this.purchase_price || parseInt(this.purchase_price) === 0) {
-          callback(new Error('供货价没有设置'))
+        if (!this.purchase_price) {
+          callback()
           return
         }
         const sypplyPrice = ProductSer.supplyPrice(this.purchase_price, this.skus, true)
