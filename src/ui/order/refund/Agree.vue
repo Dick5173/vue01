@@ -136,7 +136,11 @@
               type: 'warning'
             }).then(async () => {
               this.loading = true
-              this.form.is_refund_voucher = true
+              if (this.orderItem.can_refund_voucher) {
+                this.form.is_refund_voucher = true
+              } else {
+                this.form.is_refund_voucher = false
+              }
               try {
                 const resResult = await agree(this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark, this.form.is_refund_voucher)
                 this.$message({
