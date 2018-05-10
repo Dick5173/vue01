@@ -1,25 +1,9 @@
 import Axios from 'axios'
 import qs from 'qs'
-import {date} from '../filter/datetime'
+import * as Refund from 'src/service/refund/refund'
 
 export const refuseList = (params) => {
-  let myParams = {}
-  if (parseInt(params.start_time) > 0) {
-    myParams.start_time = date(parseInt(params.start_time))
-  } else {
-    myParams.start_time = ''
-  }
-  if (parseInt(params.end_time) > 0) {
-    myParams.end_time = date(parseInt(params.end_time))
-  } else {
-    myParams.end_time = ''
-  }
-  myParams.prod = params.prod
-  myParams.prod_tp = params.prod_tp
-  myParams.refund_status = params.refund_status
-  myParams.tenant_id = params.tenant_id
-  myParams.page = params.page
-  myParams.limit = params.limit
+  const myParams = Refund.coverSearchFormToParam(params)
   return Axios.get(`/admin/oi/refund`, {params: myParams})
 }
 
