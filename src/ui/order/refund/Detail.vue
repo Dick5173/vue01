@@ -11,9 +11,9 @@
           span(v-if="!data.dev_status") 物流：{{devStatusText}}
           span(v-else) 物流：
             el-button(type="text", @click="showExpress") {{devStatusText}}
-        div.txt-border(v-if="false")
-          div 分摊优惠：-{{3500 | price}}
-          div 优惠总额：-{{8500 | price}}
+        div.txt-border(v-if="data.can_refund_voucher")
+          div 分摊优惠：-{{data.user_voucher_amount | price}}
+          div 优惠总额：-{{data.order_user_voucher_amount | price}}
     div.right
       div(v-if="isActionVisible")
         el-button(size="small", type="primary", @click="reply") 回复
