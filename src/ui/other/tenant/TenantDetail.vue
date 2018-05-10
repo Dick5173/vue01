@@ -19,13 +19,8 @@
         div.body-item 退款授权：{{showRefundStatus(tenantData.refund_status)}}
         div.body-border
         div.body-item 首次上线：{{tenantData.first_uptime | datetime}}
-        //- div.body-border
-        //- div.body-item 支付服务商：{{payService(tenantData.pay_service)}}
       div.body-status
         div.body-item-status 店铺状态：
-        //- {{showTenantStatus(tenantData.tenant_status)}}
-        //- el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
-        //- el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
         el-button(type="text", size="mini", @click="setTenantStatus") {{showTenantStatus(tenantData.tenant_status)}}
       div.body-status.margin-left
         div.body-item-status 店铺等级：
@@ -36,9 +31,6 @@
       div.body-status.margin-left
         div.body-item-status 商品权限：
           el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
-        //- el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
-        //- el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
-        //- el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
       div.body-status.margin-left
         div.body-item-status 发货方式：
           el-button(type="text", @click="showDeliveryAuthDialog(tenantData)", size="mini") {{showDeliverytButtonName(tenantData)}}
@@ -242,14 +234,6 @@ export default {
       }
     },
     async enable (id) {
-      // this.$confirm('启用店铺？', '提示？', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(async () => {
-
-      // }).catch(() => {
-      // })
       try {
         this.loading = true
         await TenantApi.enableTenant(id)
@@ -264,14 +248,6 @@ export default {
       }
     },
     async disable (id) {
-      // this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(async () => {
-
-      // }).catch(() => {
-      // })
       try {
         this.loading = true
         await TenantApi.disableTenant(id)
@@ -321,7 +297,7 @@ export default {
     ...$global.$mapMethods({ 'showQiyuBindButtonName': showQiyuBindButtonName }),
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
-    ...$global.$mapMethods({'showMatrixButtonName': showMatrixButtonName})
+    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName })
   },
   created () {
     const status = this.$route.query.status
