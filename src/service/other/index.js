@@ -111,14 +111,14 @@ export const showMatrixButtonName = (row) => {
 }
 export const showErpBindButtonName = (row) => {
   if (row.erp_shop_id) {
-    return 'ERP已绑'
+    return row.erp_shop_id
   }
   return 'ERP未绑'
 }
 
 export const showQiyuBindButtonName = (row) => {
   if (row.qiyu_id) {
-    return '七鱼号已绑'
+    return row.qiyu_id
   }
   return '七鱼号未绑'
 }
