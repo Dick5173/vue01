@@ -23,9 +23,9 @@ export const refuseList = (params) => {
   return Axios.get(`/admin/oi/refund`, {params: myParams})
 }
 
-export const agree = (id, amount, txt, total, remark) => {
+export const agree = (id, amount, txt, total, remark, isRefundVoucher) => {
   return Axios.post(`/admin/oi/s/${id}/agree`,
-    qs.stringify({txt: txt, amount: amount, total: total, remark: remark}), {
+    qs.stringify({txt: txt, amount: amount, total: total, remark: remark, is_refund_voucher: isRefundVoucher}), {
       fullError: true
     })
 }
