@@ -139,7 +139,12 @@ export const isMchBind = (row) => {
 
 export const showMchBindButtonName = (row) => {
   if (isMchBind(row)) {
-    return '商户号已绑'
+    if (row.pay_service === 1 && row.sub_mch_id) {
+      return '微信' + row.sub_mch_id
+    }
+    if (row.pay_service === 2 && row.sp_sub_mch_id) {
+      return '全付通' + row.sp_sub_mch_id
+    }
   }
   return '商户号未绑'
 }
