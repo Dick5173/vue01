@@ -9,7 +9,7 @@
           span 其中商品总额{{orderItem.total_price | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
       el-form-item(label="")
-        el-checkbox(v-if="orderItem.order_user_voucher_amount > 0") 退回优惠券
+        el-checkbox(v-if="orderItem.can_refund_voucher") 退回优惠券
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}
