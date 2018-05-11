@@ -29,7 +29,6 @@
   import ResetPwdDialog from 'src/ui/other/tenant-user/ResetPwdDialog.vue'
   import * as TenantUserApi from 'src/api/tenant-user'
   import SearchToolbar from 'src/ui/other/tenant-user/SearchToolbar.vue'
-  import * as Obj from 'src/util/obj'
 
   export default {
     mixins: [
@@ -74,14 +73,7 @@
         return '无店铺'
       },
       search (data) {
-        this.queryParams = Object.assign(this.queryParams, data)
-        let query = Obj.filterEmpty(this.queryParams)
-        query._t = new Date().getTime()
-        this.$router.push({
-          path: '/tenantuser',
-          query: query
-        })
-        this.$refs.searchtoolbar.getTenantList()
+        this.queryChange(data)
       },
       createItem () {
         this.$router.push({

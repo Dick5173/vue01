@@ -25,15 +25,6 @@
 
   export default {
     props: {
-      /* model: {
-        type: Object,
-        default: () => {
-          return {
-            tenant_id: '',
-            key: ''
-          }
-        }
-      } */
       queryParams: {}
     },
     components: {},
@@ -41,6 +32,7 @@
       return {
         selectLoading: false,
         tenantList: [],
+        initialData: null,
         formData: {
           tenant_id: '',
           key: ''
@@ -58,7 +50,7 @@
         this.$emit('submit', this.formData)
       },
       handleReset () {
-        this.formData = this.R.clone(this.tenantList)
+        this.formData = this.R.clone(this.initialData)
         this.$emit('submit', this.formData)
       },
       async getTenantList () {
@@ -80,6 +72,7 @@
       }
     },
     mounted () {
+      this.initialData = this.R.clone(this.formData)
       this.getTenantList()
       this.convertQueryParamsToForm()
     }
