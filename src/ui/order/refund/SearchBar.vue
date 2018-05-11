@@ -14,7 +14,8 @@
       div.input-div
         el-input(placeholder="商品名/订单号", v-model="form.prod", width="400px")
     el-form-item
-      el-button(type="primary", icon="el-icon-search", @click="search") 搜索
+      el-button(type="primary", icon="el-icon-search", @click="search") 搜&nbsp索
+      el-button(@click="handelReset") 重&nbsp置
 
 </template>
 
@@ -38,6 +39,7 @@
           start_time: 0,
           end_time: 0
         },
+        initialData: null,
         refundStatus: [{
           value: 0,
           label: '全部退款状态'
@@ -67,9 +69,19 @@
     },
     computed: {},
     methods: {
+      async initData () {
+        this.initialData = this.R.clone(this.form)
+      },
       search () {
         this.$emit('search', this.form)
+      },
+      handelReset () {
+        this.form = this.R.clone(this.initialData)
+        this.$emit('search', this.form)
       }
+    },
+    mounted () {
+      this.initData()
     }
   }
 </script>

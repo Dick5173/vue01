@@ -1,7 +1,7 @@
 <template lang="pug">
   div(v-loading="loading")
     div
-      search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="search")
+      search-toolbar(:queryParams="queryParams", ref="searchtoolbar", @submit="search")
     div
       el-button(size="medium", icon="el-icon-plus", type="primary", @click="createItem") 创建
     div
@@ -29,7 +29,6 @@
   import ResetPwdDialog from 'src/ui/other/tenant-user/ResetPwdDialog.vue'
   import * as TenantUserApi from 'src/api/tenant-user'
   import SearchToolbar from 'src/ui/other/tenant-user/SearchToolbar.vue'
-  import * as Obj from 'src/util/obj'
 
   export default {
     mixins: [
@@ -73,15 +72,8 @@
         }
         return '无店铺'
       },
-      search (model) {
-        this.queryParams = Object.assign(this.queryParams, model)
-        let query = Obj.filterEmpty(this.queryParams)
-        query._t = new Date().getTime()
-        this.$router.push({
-          path: '/tenantuser',
-          query: query
-        })
-        this.$refs.searchtoolbar.getTenantList()
+      search (data) {
+        this.queryChange(data)
       },
       createItem () {
         this.$router.push({
