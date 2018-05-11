@@ -14,7 +14,7 @@
         div.body-item 小程序状态：{{showAppStatus(tenantData.app_status)}}
         div.body-border
         div.body-item 店铺管理员：
-        div.body-item.btn(type="text", @click="toTenantUser(tenantData.admin_id)") {{tenantData.admin_name}}
+        div.body-item.btn(type="text", @click="toTenantUserList(tenantData)") {{tenantData.admin_name}}
         div.body-border
         div.body-item 退款授权：{{showRefundStatus(tenantData.refund_status)}}
         div.body-border
@@ -205,12 +205,11 @@ export default {
       link.click()
       this.dialogVisible = false
     },
-    toTenantUser (id) {
+    toTenantUserList (row) {
       this.$router.push({
-        name: 'TenantUser',
+        name: 'TenantUserList',
         params: {
-          id: id,
-          tenantDetail: true
+          tid: row.admin_id
         }
       })
     },
