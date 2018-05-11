@@ -16,6 +16,7 @@
           el-option(v-for="item in tenantLevelList", :key="item.id", :label="item.description", :value="`${item.id}`")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
+        el-button(@click="handleReset") 重&nbsp置
 </template>
 
 <script>
@@ -75,6 +76,11 @@
         this.tenantLevelList = res.data.data
       },
       handleSearch () {
+        this.$emit('submit', this.formData)
+      },
+      handleReset () {
+        this.formData = this.R.clone(this.tenantLevelList)
+        this.defaultDate = []
         this.$emit('submit', this.formData)
       },
       convertQueryParamsToForm () {
