@@ -423,6 +423,22 @@ const router = new Router({
           }
         },
         {
+          path: 'tenantuser/list/:tid',
+          name: 'TenantUserList',
+          component: () => import('src/ui/other/tenant-user/TenantUserList.vue'),
+          meta: {
+            group: 'Other',
+            title: '店铺管理员详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '店铺管理员',
+              to: {name: 'TenantUser'}
+            }, {
+              text: '详情'
+            }]
+          }
+        },
+        {
           path: 'tenantuser/create',
           name: 'CreateTenantUser',
           component: () => import('src/ui/other/tenant-user/Create.vue'),

@@ -8,6 +8,7 @@
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="id", label="店铺管理员ID")
         el-table-column(prop="name", label="名字")
+          div.infoText(slot-scope="scope", @click="toTenantUserList(scope.row)") {{ scope.row.name }}
         el-table-column(prop="mobile", label="手机号")
         el-table-column(prop="", label="公司")
           div(slot-scope="scope") {{showCompany(scope.row)}}
@@ -49,6 +50,14 @@
     computed: {},
     watch: {},
     methods: {
+      toTenantUserList (row) {
+        this.$router.push({
+          name: 'TenantUserList',
+          params: {
+            tid: row.id
+          }
+        })
+      },
       getQueryApi (params) {
         return TenantUserApi.getList(params)
       },
@@ -106,5 +115,12 @@
 
 
 <style lang="scss" scoped>
+  .list-el-table{
+    .infoText {
+      color: #409EFF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 
 </style>
