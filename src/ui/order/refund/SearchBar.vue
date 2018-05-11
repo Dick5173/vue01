@@ -14,7 +14,8 @@
       div.input-div
         el-input(placeholder="商品名/订单号", v-model="form.prod", width="400px")
     el-form-item
-      el-button(type="primary", icon="el-icon-search", @click="search") 搜索
+      el-button(type="primary", icon="el-icon-search", @click="search") 搜&nbsp索
+      el-button(@click="handelReset") 重&nbsp置
 
 </template>
 
@@ -68,6 +69,10 @@
     computed: {},
     methods: {
       search () {
+        this.$emit('search', this.form)
+      },
+      handelReset () {
+        this.form = this.R.clone(this.refundStatus)
         this.$emit('search', this.form)
       }
     }
