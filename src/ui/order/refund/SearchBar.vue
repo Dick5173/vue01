@@ -39,6 +39,7 @@
           start_time: 0,
           end_time: 0
         },
+        initialData: null,
         refundStatus: [{
           value: 0,
           label: '全部退款状态'
@@ -68,13 +69,19 @@
     },
     computed: {},
     methods: {
+      async initData () {
+        this.initialData = this.R.clone(this.form)
+      },
       search () {
         this.$emit('search', this.form)
       },
       handelReset () {
-        this.form = this.R.clone(this.refundStatus)
+        this.form = this.R.clone(this.initialData)
         this.$emit('search', this.form)
       }
+    },
+    mounted () {
+      this.initData()
     }
   }
 </script>
