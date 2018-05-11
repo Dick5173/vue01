@@ -2,7 +2,7 @@
   div
     el-form(:inline="true")
       el-form-item(label="店铺：")
-        el-select(v-model="model.tenant_id",
+        el-select(v-model="formData.tenant_id",
         filterable,
         clearable,
         :loading="selectLoading",
@@ -13,9 +13,10 @@
           :label="item.principal_name_id",
           :value="item.id")
       el-form-item.input
-        el-input.medium-el-input(v-model.trim="model.key", placeholder="名字/手机号/公司/店铺管理员ID", clearable)
+        el-input.medium-el-input(v-model.trim="formData.key", placeholder="名字/手机号/公司/店铺管理员ID", clearable)
       el-form-item
-        el-button(type="primary", icon="el-icon-search", @click="submit") 搜索
+        el-button(type="primary", icon="el-icon-search", @click="submit") 搜&nbsp索
+        el-button(@click="handleReset") 重&nbsp置
 </template>
 
 <script>
@@ -24,7 +25,7 @@
 
   export default {
     props: {
-      model: {
+      /* model: {
         type: Object,
         default: () => {
           return {
@@ -32,20 +33,33 @@
             key: ''
           }
         }
-      }
+      } */
+      queryParams: {}
     },
     components: {},
     data () {
       return {
         selectLoading: false,
-        tenantList: []
+        tenantList: [],
+        formData: {
+          tenant_id: '',
+          key: ''
+        }
       }
     },
     computed: {},
-    watch: {},
+    watch: {
+      queryParams () {
+        this.convertQueryParamsToForm()
+      }
+    },
     methods: {
       submit () {
-        this.$emit('submit', this.model)
+        this.$emit('submit', this.formData)
+      },
+      handleReset () {
+        this.formData = this.R.clone(this.tenantList)
+        this.$emit('submit', this.formData)
       },
       async getTenantList () {
         try {
@@ -57,10 +71,17 @@
         } catch (err) {
           this.selectLoading = false
         }
+      },
+      convertQueryParamsToForm () {
+        this.formData = {
+          tenant_id: this.queryParams.tenant_id,
+          key: this.queryParams.key
+        }
       }
     },
     mounted () {
       this.getTenantList()
+      this.convertQueryParamsToForm()
     }
   }
 </script>

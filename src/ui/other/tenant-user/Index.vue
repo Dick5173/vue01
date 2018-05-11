@@ -1,7 +1,7 @@
 <template lang="pug">
   div(v-loading="loading")
     div
-      search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="search")
+      search-toolbar(:queryParams="queryParams", ref="searchtoolbar", @submit="search")
     div
       el-button(size="medium", icon="el-icon-plus", type="primary", @click="createItem") 创建
     div
@@ -73,8 +73,8 @@
         }
         return '无店铺'
       },
-      search (model) {
-        this.queryParams = Object.assign(this.queryParams, model)
+      search (data) {
+        this.queryParams = Object.assign(this.queryParams, data)
         let query = Obj.filterEmpty(this.queryParams)
         query._t = new Date().getTime()
         this.$router.push({
