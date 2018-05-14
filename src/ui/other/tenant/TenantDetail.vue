@@ -369,6 +369,7 @@ export default {
   }
   .head-name-box {
     margin-left: 10px;
+    position: relative;
     .head-name {
       display: flex;
       align-items: center;
@@ -381,7 +382,7 @@ export default {
         line-height: 16px;
         .img {
           position: relative;
-          top: 32px;
+          top: 3px;
           left: 0px;
           width: 16px;
           height: 16px;
@@ -390,8 +391,9 @@ export default {
         }
         .head-status {
           display: inline-block;
-          margin-top: 41px;
-          margin-left: -69px;
+          position: absolute;
+          left:0px;
+          top:30px;
           width: 80px;
           height: 20px;
           font-size: 14px;
