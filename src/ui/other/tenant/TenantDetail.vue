@@ -224,7 +224,7 @@ export default {
           msg = '数据已更新'
         } else {
           this.tenantData.nick_name = res.data.nick_name
-          msg = `小程序名称已更新为${this.tenantData.nick_name}`
+          msg = `小程序名称已更新为${this.tenantData.nick_name}发版后再美市生效`
         }
         console.timeEnd()
         this.$alert(msg, {
