@@ -8,6 +8,8 @@
           span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
           span 其中商品总额{{orderItem.total_price | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
+      el-form-item(label="")
+        el-checkbox(v-if="orderItem.can_refund_voucher") 退回优惠券
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}
@@ -67,7 +69,8 @@
           txt: '',
           amount: '',
           count: 0,
-          remark: ''
+          remark: '',
+          is_refund_voucher: false
         },
         rules: {
           amount: [
@@ -116,7 +119,8 @@
           txt: '',
           amount: '',
           count: this.orderItem.count,
-          remark: ''
+          remark: '',
+          is_refund_voucher: false
         }
       },
       closeCallback () {
@@ -132,8 +136,13 @@
               type: 'warning'
             }).then(async () => {
               this.loading = true
+              if (this.orderItem.can_refund_voucher) {
+                this.form.is_refund_voucher = true
+              } else {
+                this.form.is_refund_voucher = false
+              }
               try {
-                const resResult = await agree(this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark)
+                const resResult = await agree(this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark, this.form.is_refund_voucher)
                 this.$message({
                   message: '退款成功',
                   type: 'success'
