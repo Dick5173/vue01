@@ -217,7 +217,6 @@ export default {
     },
     async haddleUpdate (id) {
       var msg = ''
-      console.time()
       try {
         let res = await TenantApi.postRefresh(id)
         if (this.tenantData.nick_name === res.data.nick_name) {
@@ -226,7 +225,6 @@ export default {
           this.tenantData.nick_name = res.data.nick_name
           msg = `小程序名称已更新为${this.tenantData.nick_name}发版后再美市生效`
         }
-        console.timeEnd()
         this.$alert(msg, {
           confirmButtonText: '确定'
         })
