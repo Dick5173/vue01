@@ -217,6 +217,7 @@ export default {
     },
     async haddleUpdate (id) {
       var msg = ''
+      this.loading = true
       try {
         let res = await TenantApi.postRefresh(id)
         if (this.tenantData.nick_name === res.data.nick_name) {
@@ -228,7 +229,9 @@ export default {
         this.$alert(msg, {
           confirmButtonText: '确定'
         })
-      } catch (err) {}
+      } catch (err) {
+      }
+      this.loading = false
     },
     setTenantStatus () {
       this.tenantDialogVisible = true
