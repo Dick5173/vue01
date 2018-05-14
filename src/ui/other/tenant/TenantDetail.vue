@@ -13,6 +13,8 @@
         div.body-border
         div.body-item 小程序状态：{{showAppStatus(tenantData.app_status)}}
         div.body-border
+        el-button(@click="haddleUpdate(tenantData.id)") 更新小程序信息
+        div.body-border
         div.body-item 店铺管理员：
         div.body-item.btn(type="text", @click="toTenantUserList(tenantData)") {{tenantData.admin_name}}
         div.body-border
@@ -212,6 +214,23 @@ export default {
           tid: row.admin_id
         }
       })
+    },
+    async haddleUpdate (id) {
+      var msg = ''
+      console.time()
+      try {
+        let res = await TenantApi.postRefresh(id)
+        if (this.tenantData.nick_name === res.data.nick_name) {
+          msg = '数据已更新'
+        } else {
+          this.tenantData.nick_name = res.data.nick_name
+          msg = `小程序名称已更新为${this.tenantData.nick_name}`
+        }
+        console.timeEnd()
+        this.$alert(msg, {
+          confirmButtonText: '确定'
+        })
+      } catch (err) {}
     },
     setTenantStatus () {
       this.tenantDialogVisible = true
@@ -424,6 +443,9 @@ export default {
   }
   .btn {
     text-decoration: underline;
+  }
+  .el-button{
+    padding:8px 10px;
   }
 }
 
