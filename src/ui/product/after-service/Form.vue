@@ -3,8 +3,8 @@
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
       el-form-item(label="名称", prop="name")
         el-input.small-el-input(v-model.trim="formData.name", clearable, placeholder="最多10个字", :maxlength="10")
-      el-form-item(label="内容", prop="items")
-        content-comp(:content.sync="formData.items")
+      el-form-item(label="内容", ref="fiItems" prop="items")
+        content-comp(:items.sync="formData.items", @cleanValidate="cleanValidate")
       el-form-item(style="margin-top: 50px;")
         el-button(@click="$router.back()") 取 消
         el-button(type="primary", @click="submit") 确 定
@@ -37,8 +37,7 @@
         },
         formRules: {
           name: [
-            {required: true, message: '请输入名称', trigger: 'blur'},
-            {max: 10, message: '最大10个字符', trigger: 'blur'}
+            {required: true, message: '请输入名称', trigger: 'blur'}
           ],
           items: [
             {required: true, validator: contentValidator, trigger: 'blur'}
@@ -51,8 +50,17 @@
         return this.$route.name === 'AfterServiceEdit'
       }
     },
-    watch: {},
+    watch: {
+      'formData.items': {
+        handler (val) {
+          this.$refs.fiItems.onFieldChange()
+        }
+      }
+    },
     methods: {
+      cleanValidate () {
+        this.$refs.fiItems && this.$refs.fiItems.clearValidate()
+      },
       submit () {
         this.$refs.form.validate(async (valid) => {
           if (valid) {
@@ -63,7 +71,7 @@
                 this.create()
               }
             } catch (err) {
-              // console.log(err)
+              console.log(err)
             }
           } else {
             ElUtil.scrollToInvalidFirstElement(this.$refs.form)
@@ -75,6 +83,10 @@
           this.loading = true
           await AfterServiceApi.editItem(this.formData)
           this.loading = false
+          this.$message({
+            type: 'success',
+            message: '编辑成功'
+          })
           this.$router.back()
         } catch (err) {
           this.loading = false
@@ -85,6 +97,10 @@
           this.loading = true
           await AfterServiceApi.createItem(this.formData)
           this.loading = false
+          this.$message({
+            type: 'success',
+            message: '添加成功'
+          })
           this.$router.back()
         } catch (err) {
           this.loading = false
