@@ -203,10 +203,6 @@ export default {
   margin-right: 10px;
 }
 
-.freight-wrapper {
-  line-height: 18px;
-}
-
 .tenants {
   max-width: 400px;
   color: $font-color-common;
