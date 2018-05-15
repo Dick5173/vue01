@@ -3,7 +3,7 @@
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
       el-form-item(label="名称", prop="name")
         el-input.small-el-input(v-model.trim="formData.name", clearable, placeholder="最多10个字", :maxlength="10")
-      el-form-item(label="内容", prop="content")
+      el-form-item(label="内容", prop="items")
         content-comp(:content.sync="formData.items")
       el-form-item(style="margin-top: 50px;")
         el-button(@click="$router.back()") 取 消
@@ -13,6 +13,7 @@
 <script>
   import ContentComp from './Content.vue'
   import * as AfterServiceApi from 'src/api/after-service'
+  import * as ElUtil from 'src/util/el'
 
   export default {
     props: {},
@@ -20,6 +21,13 @@
       ContentComp
     },
     data () {
+      const contentValidator = (rule, value, callback) => {
+        if (!value || value.length === 0) {
+          callback(new Error('请填写内容'))
+          return
+        }
+        callback()
+      }
       return {
         loading: false,
         formData: {
@@ -32,8 +40,8 @@
             {required: true, message: '请输入名称', trigger: 'blur'},
             {max: 10, message: '最大10个字符', trigger: 'blur'}
           ],
-          content: [
-            {required: true, message: '请输入内容', trigger: 'blur'}
+          items: [
+            {required: true, validator: contentValidator, trigger: 'blur'}
           ]
         }
       }
@@ -46,26 +54,21 @@
     watch: {},
     methods: {
       submit () {
-        if (this.formData.items.length === 0) {
-          this.$message({
-            type: 'warning',
-            message: '请选择内容'
-          })
-        } else if (this.formData.name === '') {
-          this.$message({
-            type: 'warning',
-            message: '请输入名称'
-          })
-        } else {
-          try {
-            if (this.isEditMode) {
-              this.update()
-            } else {
-              this.create()
+        this.$refs.form.validate(async (valid) => {
+          if (valid) {
+            try {
+              if (this.isEditMode) {
+                this.update()
+              } else {
+                this.create()
+              }
+            } catch (err) {
+              // console.log(err)
             }
-          } catch (err) {
+          } else {
+            ElUtil.scrollToInvalidFirstElement(this.$refs.form)
           }
-        }
+        })
       },
       async update () {
         try {
