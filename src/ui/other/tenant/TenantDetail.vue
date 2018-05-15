@@ -229,9 +229,9 @@ export default {
         this.$alert(msg, {
           confirmButtonText: '确定'
         })
-      } catch (err) {
-      }
+      } catch (err) {}
       this.loading = false
+      this.getDetail()
     },
     setTenantStatus () {
       this.tenantDialogVisible = true
