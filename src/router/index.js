@@ -353,7 +353,7 @@ const router = new Router({
             title: '编辑运费模板',
             breadcrumbItems: [
               {
-                text: '售后模板',
+                text: '运费模板',
                 to: {
                   name: 'FreightIndex'
                 }
