@@ -3,7 +3,7 @@
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
       el-form-item(label="名称", prop="name")
         el-input.small-el-input(v-model.trim="formData.name", clearable, placeholder="最多10个字", :maxlength="10")
-      el-form-item(label="内容")
+      el-form-item(label="内容", prop="content")
         content-comp(:content.sync="formData.items")
       el-form-item(style="margin-top: 50px;")
         el-button(@click="$router.back()") 取 消
@@ -31,6 +31,9 @@
           name: [
             {required: true, message: '请输入名称', trigger: 'blur'},
             {max: 10, message: '最大10个字符', trigger: 'blur'}
+          ],
+          content: [
+            {required: true, message: '请输入内容', trigger: 'blur'}
           ]
         }
       }
