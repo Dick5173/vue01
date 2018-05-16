@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 export const nonZeroIntegerValidator = (rule, value, callback) => {
   if (!Vue.R_.isInteger(value)) {
-    callback(new Error('不正确的数字'))
+    callback(new Error('请输入正整数'))
     return
   }
   const i = parseInt(value)

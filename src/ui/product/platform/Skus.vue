@@ -18,7 +18,7 @@
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`code${props.index}`", :prop="'skus.' + props.index + '.code'", :rules="formRules.code")
             el-input(v-model.trim="props.row.code", clearable)
-      smart-table-column(label="重量(kg)")
+      smart-table-column(label="重量(kg)" width="100px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`weight{props.index}`", :prop="'skus.' + props.index + '.weight'", :rules="formRules.weight")
             el-input(v-model.trim="props.row.weight", clearable)
@@ -96,9 +96,9 @@
           callback()
           return
         }
-        let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1})?$)|(^(0){1}$)|(^[0-9]\.[0-9]$)/
+        let reg = /(^[1-9]([0-9]{0，3})?(\.[0-9]{1})?$)|(^(0){1}$)|(^[0-9]\.[0-9]$)/
         if (!reg.test(value)) {
-          callback(new Error('请输入正数，最多1位小数'))
+          callback(new Error('不大于9999，最多1位小数'))
           return
         }
         callback()
