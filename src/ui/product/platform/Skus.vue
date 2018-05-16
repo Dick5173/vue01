@@ -89,6 +89,10 @@
             return
           }
         }
+        if (suggestPrice > 99999999) {
+          callback(new Error('价格不能大于999999'))
+          return
+        }
         callback()
       }
       const weightValidator = (rule, value, callback) => {
