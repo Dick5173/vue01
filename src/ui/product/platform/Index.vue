@@ -117,10 +117,7 @@
         })
       },
       changeStatusEnable () {
-        return this.R.any(item => {
-          console.log(item.status)
-          return item.status === 1
-        })(this.multipleSelection || [])
+        return this.R.any(item => item.status === 1)(this.multipleSelection || [])
       }
     },
     methods: {
