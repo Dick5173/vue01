@@ -7,7 +7,7 @@
       el-button-group
         el-button(size="small", @click="batchCategory", :disabled="multipleSelection.length === 0") 批量分类
         el-button(size="small", @click="batchTag", :disabled="multipleSelection.length === 0") 批量标签
-        el-button(size="small", @click="batchChangeStatus", :disabled="multipleSelection.length === 0") 批量下架
+        el-button(size="small", @click="batchChangeStatus", :disabled="!changeStatusEnable") 批量下架
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border, @selection-change="handleSelectionChange")
         el-table-column(type="selection", width="55px")
@@ -115,6 +115,9 @@
           }
           return tagsArr
         })
+      },
+      changeStatusEnable () {
+        return this.R.any(item => item.status === 1)(this.multipleSelection || [])
       }
     },
     methods: {
@@ -200,6 +203,7 @@
             })
             this.loadDataListByQueryPage()
           }).catch(() => {
+            this.loading = false
           })
         }
       },
@@ -247,6 +251,7 @@
             this.loading = false
           }
         }).catch(() => {
+          this.loading = false
         })
       },
       handleSync (row) {
@@ -268,9 +273,9 @@
               type: 'success',
               message: row.prop.stock_sync ? '暂停自动补货成功' : '恢复自动补货成功'
             })
-            this.loading = false
             this.loadDataListByQueryPage()
           }).catch(() => {
+            this.loading = false
           })
         } catch (err) {
           this.loading = false
@@ -292,6 +297,7 @@
               })
               this.loadDataListByQueryPage()
             }).catch(() => {
+              this.loading = false
             })
           } else {
             this.$confirm('上架商品？', '提示', {
@@ -307,6 +313,7 @@
               })
               this.loadDataListByQueryPage()
             }).catch(() => {
+              this.loading = false
             })
           }
         } catch (err) {

@@ -217,20 +217,21 @@ export default {
     },
     async haddleUpdate (id) {
       var msg = ''
-      console.time()
+      this.loading = true
       try {
         let res = await TenantApi.postRefresh(id)
         if (this.tenantData.nick_name === res.data.nick_name) {
           msg = '数据已更新'
         } else {
           this.tenantData.nick_name = res.data.nick_name
-          msg = `小程序名称已更新为${this.tenantData.nick_name}`
+          msg = `小程序名称已更新为${this.tenantData.nick_name}发版后再美市生效`
         }
-        console.timeEnd()
         this.$alert(msg, {
           confirmButtonText: '确定'
         })
       } catch (err) {}
+      this.loading = false
+      this.getDetail()
     },
     setTenantStatus () {
       this.tenantDialogVisible = true
@@ -368,6 +369,7 @@ export default {
   }
   .head-name-box {
     margin-left: 10px;
+    position: relative;
     .head-name {
       display: flex;
       align-items: center;
@@ -380,7 +382,7 @@ export default {
         line-height: 16px;
         .img {
           position: relative;
-          top: 32px;
+          top: 3px;
           left: 0px;
           width: 16px;
           height: 16px;
@@ -389,8 +391,9 @@ export default {
         }
         .head-status {
           display: inline-block;
-          margin-top: 41px;
-          margin-left: -69px;
+          position: absolute;
+          left:0px;
+          top:30px;
           width: 80px;
           height: 20px;
           font-size: 14px;

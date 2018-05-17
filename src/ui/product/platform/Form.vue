@@ -16,7 +16,7 @@
       el-form-item(label="卖点", prop="sell_point")
         el-input.medium-el-input(v-model.trim="formData.sell_point", clearable, :maxlength="30")
         span.input-right-desc {{ formData.sell_point.length }} / 30
-      el-form-item(label="商品规格", prop="skus", required)
+      el-form-item(label="商品规格", :required="true")
         skus(ref="skus", :skus.sync="formData.skus", :stPrice="formData.st_price", :purchase_price="formData.purchase_price")
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price", clearable)
@@ -128,17 +128,6 @@
       }
       const pageCoverValidator = (rule, value, callback) => {
         if (this.$refs.uploadPageCover.isUpdating) {
-          callback(new Error('正在上传图片'))
-          return
-        }
-        callback()
-      }
-      const skuValidator = (rule, value, callback) => {
-        if (!value || value.length <= 0) {
-          callback(new Error('Sku不能为空'))
-          return
-        }
-        if (this.$refs.skus.isUpdating()) {
           callback(new Error('正在上传图片'))
           return
         }
@@ -257,7 +246,6 @@
           sell_point: [
             {max: 30, message: '最多可以输入30个字符', trigger: 'blur'}
           ],
-          skus: [{validator: skuValidator, trigger: 'change'}],
           st_price: [{validator: priceValidator, trigger: 'blur'}],
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}
