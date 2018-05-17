@@ -56,7 +56,9 @@ export const batchShelveDown = (arr) => {
   let formData = {
     pids: arr
   }
-  return Axios.delete(`/admin/batch/product/up`, formData)
+  return Axios.delete(`/admin/batch/product/up`, {
+    params: formData
+  })
 }
 export const getTenantSelectList = (id) => {
   let params = {
