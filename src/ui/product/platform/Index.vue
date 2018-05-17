@@ -200,6 +200,7 @@
             })
             this.loadDataListByQueryPage()
           }).catch(() => {
+            this.loading = false
           })
         }
       },
@@ -247,6 +248,7 @@
             this.loading = false
           }
         }).catch(() => {
+          this.loading = false
         })
       },
       handleSync (row) {
@@ -268,9 +270,9 @@
               type: 'success',
               message: row.prop.stock_sync ? '暂停自动补货成功' : '恢复自动补货成功'
             })
-            this.loading = false
             this.loadDataListByQueryPage()
           }).catch(() => {
+            this.loading = false
           })
         } catch (err) {
           this.loading = false
@@ -292,6 +294,7 @@
               })
               this.loadDataListByQueryPage()
             }).catch(() => {
+              this.loading = false
             })
           } else {
             this.$confirm('上架商品？', '提示', {
@@ -307,6 +310,7 @@
               })
               this.loadDataListByQueryPage()
             }).catch(() => {
+              this.loading = false
             })
           }
         } catch (err) {
