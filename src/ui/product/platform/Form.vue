@@ -60,7 +60,7 @@
     bottom-container
       el-button(@click="$router.back()") 取消
       el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
-      el-button(type="primary", :loading="loading", @click="handleSave") 保存
+      el-button(type="primary", :loading="loading", @click="handleSave(false)") 保存
     batch-tag-dialog(ref="chooseTagDialog", :origin="oraTags", @submit="chooseTagComplete")
     choose-supply-tenants-dialog(ref="chooseSupplyTenantsDialog", @choose="chooseSupplyTenantsComplete")
 </template>
@@ -366,9 +366,7 @@
       async create (up) {
         this.formData.id = 0
         let frm = Object.assign({}, this.formData)
-        if (up) {
-          frm.status = ProductService.allStatus.up.value
-        }
+        frm.status = up ? ProductService.allStatus.up.value : ProductService.allStatus.down.value
         if (this.isCopy) {
           frm = ProductService.copyCreate(frm)
         }
