@@ -4,7 +4,7 @@
     :visible.sync="dialogVisible",
     width="750px",
     )
-      div(v-loading="loading")
+      div.product-detail-wrap(v-loading="loading")
         product-detail(:rowFormData="formData", :isPrompt="prompt")
       </span>
 
@@ -80,6 +80,9 @@ export default {
   .el-dialog__body {
     overflow: auto;
     height: 410px;
+  }
+  .product-detail-wrap {
+    padding-bottom: 60px;
   }
   .btn-fixed {
     position: absolute;

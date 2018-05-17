@@ -74,3 +74,6 @@ export const postMartix = (tid) => {
 export const postNonMartix = (tid) => {
   return Axios.post(`/admin/tenant/s/${tid}/tp/non_matrix`)
 }
+export const postRefresh = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/info/refresh`)
+}

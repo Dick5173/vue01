@@ -8,12 +8,12 @@
         div.name {{tenantData.nick_name}}
       el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="110px")
         el-form-item(label="AppID：", prop="app_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.app_id")
+          el-input.tiny-x-el-input(v-model.trim="formData.app_id", clearable)
         el-form-item(label="支付服务商：", prop="pay_service")
           el-select(v-model="formData.pay_service", placeholder="请选择")
             el-option(v-for="item in payServiceList", :key="item.pay_service", :label="item.name", :value="item.pay_service")
         el-form-item(label="商户号：", prop="sub_mch_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.sub_mch_id")
+          el-input.tiny-x-el-input(v-model.trim="formData.sub_mch_id", clearable)
         el-form-item
           el-button(type="", @click="hide", plain) 取 消
           el-button(type="primary", @click="handleBind") 确 定

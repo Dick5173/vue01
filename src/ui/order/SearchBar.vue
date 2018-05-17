@@ -9,7 +9,7 @@
       select-tenant(v-model!="formData.tenant_id")
     el-form-item
       div.input-div
-        el-input.input-data(:placeholder="moreCondition[formData.searchType]", v-model!="formData.searchKey")
+        el-input.input-data(:placeholder="moreCondition[formData.searchType]", clearable v-model!="formData.searchKey")
         el-dropdown(trigger="click", @command="clickMoreConditions", :show-timeout="10", :hide-timeout="10")
           el-button.more-btn(type="primary") 更多条件
             i.el-icon-arrow-down.el-icon--right
@@ -164,7 +164,7 @@
 
 <style lang="scss" scoped>
   .status-select {
-    width: 260px;
+    width: 280px;
   }
 
   .input-div {

@@ -2,14 +2,14 @@
   mixin textContent
     el-form-item.show-validate-el-form(ref="fiShowText", v-if!="formData.tp === allContentTp.text.value", label="", prop="text")
       div.input-text-wrapper
-        el-input(v-model.trim="formData.text", :maxlength="26")
+        el-input(v-model.trim="formData.text", clearable, :maxlength="26")
         div.input-right-desc {{ formData.text.length }} / 26
   mixin imageContent
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="image")
       upload-image(ref="uploadImage", :image.sync="formData.image", :host="getHost", :token="getToken")
 
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="commonDialogWidth", @close="closeCallback")
-    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
+    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="60px")
       el-form-item(label="类型", prop="tp")
         el-radio-group(v-model="formData.tp", @change="handleTpChange")
           el-radio(v-for!="item in allContentTp", :label="item.value", :key="item.value") {{ item.text }}
@@ -25,6 +25,7 @@
   import { commonDialogWidth } from 'src/config/el'
   import * as ResourceService from 'src/service/resource/index'
   import { UploadImage } from '@baibao/zeratul'
+  import * as ElUtil from 'src/util/el'
 
   export default {
     components: {
@@ -54,8 +55,7 @@
         },
         formRules: {
           text: [
-            {required: true, message: '请输入文本', trigger: 'blur'},
-            {max: 26, message: '最多可输入26个字符', trigger: 'blur'}
+            {required: true, message: '请输入文本', trigger: 'blur'}
           ],
           image: [
             {validator: validateImage, trigger: 'change'}
@@ -71,6 +71,7 @@
     methods: {
       async show () {
         this.dialogVisible = true
+        this.handleTpChange()
       },
       hide () {
         this.dialogVisible = false
@@ -111,15 +112,17 @@
               }
               this.$emit('success', result)
               this.hide()
+            } else {
+              ElUtil.scrollToInvalidFirstElement(this.$refs.form)
             }
           } finally {
             this.loading = false
           }
         })
       },
-      handleTpChange () {
-        this.$refs.fiShowText && this.$refs.fiShowText.clearValidate()
-        this.$refs.fiImage && this.$refs.fiImage.clearValidate()
+      async handleTpChange () {
+        await this.$nextTick()
+        this.$refs.form && this.$refs.form.clearValidate()
       },
       ...$global.$mapMethods({
         'getHost': AliyunApi.getOssHost,

@@ -15,7 +15,9 @@
           :label="item.principal_name_id",
           :value="item.id")
       el-form-item(label="")
-        el-input(v-model.trim="formData.text", placeholder="商品名/ID/编码")
+        el-input(v-model.trim="formData.text", placeholder="商品名/编码", clearable)
+      el-form-item(label="")
+        el-input(v-model.trim="formData.id",placeholder="商品ID", clearable)
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
@@ -40,7 +42,8 @@
           tenant_id: '',
           start: 0,
           end: 0,
-          text: ''
+          text: '',
+          id: ''
         },
         // endregion
         initialData: null,
@@ -82,7 +85,8 @@
           start: this.R_.parseDateTick(0, this.queryParams.start),
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
-          tenant_id: this.queryParams.tenant_id
+          tenant_id: this.queryParams.tenant_id,
+          id: this.queryParams.id
         }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]

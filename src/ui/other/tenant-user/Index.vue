@@ -1,13 +1,14 @@
 <template lang="pug">
   div(v-loading="loading")
     div
-      search-toolbar(:model="queryParams", ref="searchtoolbar", @submit="search")
+      search-toolbar(:queryParams="queryParams", ref="searchtoolbar", @submit="search")
     div
       el-button(size="medium", icon="el-icon-plus", type="primary", @click="createItem") 创建
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="id", label="店铺管理员ID")
         el-table-column(prop="name", label="名字")
+          div.infoText(slot-scope="scope", @click="toTenantUserList(scope.row)") {{ scope.row.name }}
         el-table-column(prop="mobile", label="手机号")
         el-table-column(prop="", label="公司")
           div(slot-scope="scope") {{showCompany(scope.row)}}
@@ -29,7 +30,6 @@
   import ResetPwdDialog from 'src/ui/other/tenant-user/ResetPwdDialog.vue'
   import * as TenantUserApi from 'src/api/tenant-user'
   import SearchToolbar from 'src/ui/other/tenant-user/SearchToolbar.vue'
-  import * as Obj from 'src/util/obj'
 
   export default {
     mixins: [
@@ -50,6 +50,14 @@
     computed: {},
     watch: {},
     methods: {
+      toTenantUserList (row) {
+        this.$router.push({
+          name: 'TenantUserList',
+          params: {
+            tid: row.id
+          }
+        })
+      },
       getQueryApi (params) {
         return TenantUserApi.getList(params)
       },
@@ -73,15 +81,8 @@
         }
         return '无店铺'
       },
-      search (model) {
-        this.queryParams = Object.assign(this.queryParams, model)
-        let query = Obj.filterEmpty(this.queryParams)
-        query._t = new Date().getTime()
-        this.$router.push({
-          path: '/tenantuser',
-          query: query
-        })
-        this.$refs.searchtoolbar.getTenantList()
+      search (data) {
+        this.queryChange(data)
       },
       createItem () {
         this.$router.push({
@@ -114,5 +115,12 @@
 
 
 <style lang="scss" scoped>
+  .list-el-table{
+    .infoText {
+      color: #409EFF;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 
 </style>

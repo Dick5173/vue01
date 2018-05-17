@@ -353,7 +353,7 @@ const router = new Router({
             title: '编辑运费模板',
             breadcrumbItems: [
               {
-                text: '售后模板',
+                text: '运费模板',
                 to: {
                   name: 'FreightIndex'
                 }
@@ -420,6 +420,22 @@ const router = new Router({
             group: 'Other',
             title: '店铺管理员',
             showInSide: true
+          }
+        },
+        {
+          path: 'tenantuser/list/:tid',
+          name: 'TenantUserList',
+          component: () => import('src/ui/other/tenant-user/TenantUserList.vue'),
+          meta: {
+            group: 'Other',
+            title: '店铺管理员详情',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '店铺管理员',
+              to: {name: 'TenantUser'}
+            }, {
+              text: '详情'
+            }]
           }
         },
         {

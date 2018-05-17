@@ -31,6 +31,7 @@
                 div(slot-scope="skuProps") {{ skuProps.row.suggest_price | price(false) }}
               el-table-column(prop="sold", label="销量")
               el-table-column(prop="stock", label="库存")
+              el-table-column(prop="code", label="编码" width="220px")
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       product-detail-dialog(ref="dlgProductDetail")
 </template>
@@ -59,7 +60,8 @@
           tenant_id: '',
           start: 0,
           end: 0,
-          text: ''
+          text: '',
+          id: ''
         },
         multipleSelection: []
       }
@@ -118,5 +120,8 @@
       margin-bottom: 15px;
       float: right;
     }
+  }
+  .small-el-table{
+    width:541px !important;
   }
 </style>

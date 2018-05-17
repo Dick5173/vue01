@@ -13,19 +13,16 @@
         div.body-border
         div.body-item 小程序状态：{{showAppStatus(tenantData.app_status)}}
         div.body-border
+        el-button(@click="haddleUpdate(tenantData.id)") 更新小程序信息
+        div.body-border
         div.body-item 店铺管理员：
-        div.body-item.btn(type="text", @click="toTenantUser(tenantData.admin_id)") {{tenantData.admin_name}}
+        div.body-item.btn(type="text", @click="toTenantUserList(tenantData)") {{tenantData.admin_name}}
         div.body-border
         div.body-item 退款授权：{{showRefundStatus(tenantData.refund_status)}}
         div.body-border
         div.body-item 首次上线：{{tenantData.first_uptime | datetime}}
-        //- div.body-border
-        //- div.body-item 支付服务商：{{payService(tenantData.pay_service)}}
       div.body-status
         div.body-item-status 店铺状态：
-        //- {{showTenantStatus(tenantData.tenant_status)}}
-        //- el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
-        //- el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
         el-button(type="text", size="mini", @click="setTenantStatus") {{showTenantStatus(tenantData.tenant_status)}}
       div.body-status.margin-left
         div.body-item-status 店铺等级：
@@ -36,16 +33,13 @@
       div.body-status.margin-left
         div.body-item-status 商品权限：
           el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
-        //- el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
-        //- el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
-        //- el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
       div.body-status.margin-left
         div.body-item-status 发货方式：
           el-button(type="text", @click="showDeliveryAuthDialog(tenantData)", size="mini") {{showDeliverytButtonName(tenantData)}}
       div
         div.body-status
           div.body-item-status 支付商户号：
-            el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{payService(tenantData.pay_service)}}
+            el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
         div.body-status.margin-left
           div.body-item-status ERP：
             el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
@@ -198,15 +192,6 @@ export default {
         }
       })
     },
-    payService (value) {
-      if (value === 1) {
-        return '微信'
-      }
-      if (value === 2) {
-        return '全付通'
-      }
-      return ''
-    },
     toTenantProduct (id) {
       this.$router.push({
         name: 'TenantProduct',
@@ -222,14 +207,31 @@ export default {
       link.click()
       this.dialogVisible = false
     },
-    toTenantUser (id) {
+    toTenantUserList (row) {
       this.$router.push({
-        name: 'TenantUser',
+        name: 'TenantUserList',
         params: {
-          id: id,
-          tenantDetail: true
+          tid: row.admin_id
         }
       })
+    },
+    async haddleUpdate (id) {
+      var msg = ''
+      this.loading = true
+      try {
+        let res = await TenantApi.postRefresh(id)
+        if (this.tenantData.nick_name === res.data.nick_name) {
+          msg = '数据已更新'
+        } else {
+          this.tenantData.nick_name = res.data.nick_name
+          msg = `小程序名称已更新为${this.tenantData.nick_name}发版后再美市生效`
+        }
+        this.$alert(msg, {
+          confirmButtonText: '确定'
+        })
+      } catch (err) {}
+      this.loading = false
+      this.getDetail()
     },
     setTenantStatus () {
       this.tenantDialogVisible = true
@@ -242,14 +244,6 @@ export default {
       }
     },
     async enable (id) {
-      // this.$confirm('启用店铺？', '提示？', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(async () => {
-
-      // }).catch(() => {
-      // })
       try {
         this.loading = true
         await TenantApi.enableTenant(id)
@@ -264,14 +258,6 @@ export default {
       }
     },
     async disable (id) {
-      // this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(async () => {
-
-      // }).catch(() => {
-      // })
       try {
         this.loading = true
         await TenantApi.disableTenant(id)
@@ -321,7 +307,7 @@ export default {
     ...$global.$mapMethods({ 'showQiyuBindButtonName': showQiyuBindButtonName }),
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
-    ...$global.$mapMethods({'showMatrixButtonName': showMatrixButtonName})
+    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName })
   },
   created () {
     const status = this.$route.query.status
@@ -383,6 +369,7 @@ export default {
   }
   .head-name-box {
     margin-left: 10px;
+    position: relative;
     .head-name {
       display: flex;
       align-items: center;
@@ -395,16 +382,18 @@ export default {
         line-height: 16px;
         .img {
           position: relative;
-          top: 32px;
+          top: 3px;
           left: 0px;
           width: 16px;
           height: 16px;
           cursor: pointer;
+          height: 16px;
         }
         .head-status {
           display: inline-block;
-          margin-top: 41px;
-          margin-left: -69px;
+          position: absolute;
+          left:0px;
+          top:30px;
           width: 80px;
           height: 20px;
           font-size: 14px;
@@ -457,6 +446,9 @@ export default {
   }
   .btn {
     text-decoration: underline;
+  }
+  .el-button{
+    padding:8px 10px;
   }
 }
 

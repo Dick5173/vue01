@@ -2,7 +2,7 @@
   div
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="78px", v-loading="loading")
       el-form-item(label="名称", prop="name")
-        el-input.small-el-input(v-model.trim="formData.name", placeholder="最多10个字", :maxlength="10")
+        el-input.small-el-input(v-model.trim="formData.name", placeholder="最多10个字", :maxlength="10", clearable)
       el-form-item(label="选择地区", prop="include", :required="true")
         div
           el-radio.radio(v-model="formData.include", :label="false") 无法配送

@@ -11,15 +11,15 @@
         upload-image(ref="uploadPageCover", :image.sync="formData.page_cover", :host="getHost", :token="getToken")
         div.input-bottom-desc 在首页中以单品形式显示时适用，建议尺寸702×440像素
       el-form-item(label="商品名称", prop="name")
-        el-input.medium-el-input(v-model.trim="formData.name", :maxlength="50")
+        el-input.medium-el-input(v-model.trim="formData.name", clearable, :maxlength="50")
         span.input-right-desc {{ formData.name.length }} / 50
       el-form-item(label="卖点", prop="sell_point")
-        el-input.medium-el-input(v-model.trim="formData.sell_point", :maxlength="30")
+        el-input.medium-el-input(v-model.trim="formData.sell_point", clearable, :maxlength="30")
         span.input-right-desc {{ formData.sell_point.length }} / 30
-      el-form-item(label="商品规格", prop="skus", required)
+      el-form-item(label="商品规格", :required="true")
         skus(ref="skus", :skus.sync="formData.skus", :stPrice="formData.st_price", :purchase_price="formData.purchase_price")
       el-form-item(label="划线价", prop="st_price")
-        el-input.tiny-el-input(v-model.trim="formData.st_price")
+        el-input.tiny-el-input(v-model.trim="formData.st_price", clearable)
         span.input-right-desc 元
       el-form-item(label="采购价", prop="purchase_price")
         el-input.tiny-el-input(v-model.trim="formData.purchase_price")
@@ -128,17 +128,6 @@
       }
       const pageCoverValidator = (rule, value, callback) => {
         if (this.$refs.uploadPageCover.isUpdating) {
-          callback(new Error('正在上传图片'))
-          return
-        }
-        callback()
-      }
-      const skuValidator = (rule, value, callback) => {
-        if (!value || value.length <= 0) {
-          callback(new Error('Sku不能为空'))
-          return
-        }
-        if (this.$refs.skus.isUpdating()) {
           callback(new Error('正在上传图片'))
           return
         }
@@ -257,7 +246,6 @@
           sell_point: [
             {max: 30, message: '最多可以输入30个字符', trigger: 'blur'}
           ],
-          skus: [{validator: skuValidator, trigger: 'change'}],
           st_price: [{validator: priceValidator, trigger: 'blur'}],
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}

@@ -15,14 +15,14 @@
     "release": "npm run build && scp -r -P 7322 dist/. root@meishi.51baibao.com:/opt/meishi/public/admin"
   },
   "dependencies": {
-    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.3.9",
+    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.3.11",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "dropzone": "^5.3.0",
     "element-ui": "^2.3.3",
     "js-cookie": "^2.2.0",
     "normalize.css": "^7.0.0",
-    "npm": "^6.0.0",
+    "npm": "^6.0.1",
     "qs": "^6.5.1",
     "ramda": "^0.25.0",
     "ramda-adjunct": "^2.4.1",

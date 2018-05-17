@@ -11,6 +11,9 @@
           span(v-if="!data.dev_status") 物流：{{devStatusText}}
           span(v-else) 物流：
             el-button(type="text", @click="showExpress") {{devStatusText}}
+        div.txt-border(v-if="data.can_refund_voucher")
+          div 分摊优惠：-{{data.user_voucher_amount | price}}
+          div 优惠总额：-{{data.order_user_voucher_amount | price}}
     div.right
       div(v-if="isActionVisible")
         el-button(size="small", type="primary", @click="reply") 回复
@@ -194,6 +197,15 @@
       margin-bottom: 8px;
       background-size: cover;
       background-image: url("http://temp.im/754x754");
+    }
+    .txt-border{
+      border:1px solid #999;
+      padding:5px;
+      div{
+        padding:5px 0px;
+        height:20px;
+        line-height:20px;
+      }
     }
   }
 </style>

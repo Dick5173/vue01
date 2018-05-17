@@ -5,23 +5,23 @@
       smart-table-column(label="规格", width="220px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`spec{props.index}`", :prop="'skus.' + props.index + '.spec'", :rules="formRules.spec")
-            el-input(v-model.trim="props.row.spec")
+            el-input(v-model.trim="props.row.spec", clearable)
       smart-table-column(label="建议售价")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`suggest_price${props.index}`", :prop="'skus.' + props.index + '.suggest_price'", :rules="formRules.suggest_price")
-            el-input(v-model.trim="props.row.suggest_price")
+            el-input(v-model.trim="props.row.suggest_price", clearable)
       smart-table-column(label="库存")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`stock${props.index}`", :prop="'skus.' + props.index + '.stock'", :rules="formRules.stock")
-            el-input(v-model.trim="props.row.stock")
+            el-input(v-model.trim="props.row.stock", clearable)
       smart-table-column(label="编码" width="220px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`code${props.index}`", :prop="'skus.' + props.index + '.code'", :rules="formRules.code")
-            el-input(v-model.trim="props.row.code")
-      smart-table-column(label="重量(kg)")
+            el-input(v-model.trim="props.row.code", clearable)
+      smart-table-column(label="重量(kg)" width="100px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`weight{props.index}`", :prop="'skus.' + props.index + '.weight'", :rules="formRules.weight")
-            el-input(v-model.trim="props.row.weight")
+            el-input(v-model.trim="props.row.weight", clearable)
       smart-table-column(label="图片", width="80px")
         div(slot-scope="props")
           el-form-item.show-validate-el-form(:ref="`image${props.index}`", :prop="'skus.' + props.index + '.image'", :rules="formRules.image")
@@ -66,7 +66,7 @@
       const suggestPriceValidator = async (rule, value, callback) => {
         await this.$nextTick()
         if (!this.R_.isPrice(value)) {
-          callback(new Error('不正确的价格'))
+          callback(new Error('请输入正数，最多2位小数'))
           return
         }
         const suggestPrice = this.R_.convertYuanToFen(value)
@@ -89,6 +89,10 @@
             return
           }
         }
+        if (suggestPrice > 99999999) {
+          callback(new Error('价格不能大于999999'))
+          return
+        }
         callback()
       }
       const weightValidator = (rule, value, callback) => {
@@ -96,9 +100,9 @@
           callback()
           return
         }
-        let reg = /(^[1-9]([0-9]+)?(\.[0-9]{1})?$)|(^(0){1}$)|(^[0-9]\.[0-9]$)/
+        let reg = /(^[1-9]([0-9]{0,3})?(\.[0-9]{1})?$)|(^(0){1}$)|(^[0-9]\.[0-9]$)/
         if (!reg.test(value)) {
-          callback(new Error('最多1位小数数字'))
+          callback(new Error('不大于9999，最多1位小数'))
           return
         }
         callback()

@@ -2,7 +2,7 @@
   div
     el-form(:inline="true")
       el-form-item()
-        el-input.tiny-x-el-input(v-model="formData.text", placeholder="名称/手机号")
+        el-input.tiny-x-el-input(v-model="formData.text", placeholder="名称/手机号", clearable)
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置

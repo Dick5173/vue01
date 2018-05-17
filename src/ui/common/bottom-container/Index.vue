@@ -10,6 +10,7 @@
 <style lang="scss" scoped>
   .bottom-container {
     position: fixed;
+    z-index: 100;
     right: 0;
     bottom: 0;
     height: $bottom-height;

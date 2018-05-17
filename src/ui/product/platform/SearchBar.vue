@@ -22,7 +22,9 @@
       el-form-item(label="上架:")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
       el-form-item(label="")
-        el-input(v-model.trim="formData.text", placeholder="商品名/ID/编码")
+        el-input(v-model.trim="formData.text", clearable, placeholder="商品名/编码")
+      el-form-item(label="")
+        el-input(v-model.trim="formData.id", clearable, placeholder="商品ID")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
@@ -50,7 +52,8 @@
           end: 0,
           text: '',
           tags: [],
-          supply_scope_tp: 0
+          supply_scope_tp: 0,
+          id: ''
         },
         supply_scope: false,
         // endregion
@@ -109,7 +112,8 @@
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
           tags: this.queryParams.tags,
-          supply_scope_tp: this.queryParams.supply_scope_tp
+          supply_scope_tp: this.queryParams.supply_scope_tp,
+          id: this.queryParams.id
         }
         this.supply_scope = this.queryParams.supply_scope_tp === 2
         if (this.formData.start && this.formData.end) {

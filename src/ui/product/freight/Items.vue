@@ -10,19 +10,19 @@
       el-table-column(:label="isWeight ? '首件(Kg)' : '首件(个)'")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.first_unit'", :rules="formRules.first_unit")
-            el-input(v-model.trim="props.row.first_unit")
+            el-input(v-model.trim="props.row.first_unit", clearable)
       el-table-column(label="运费(元)")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.first_price'", :rules="formRules.first_price")
-            el-input(v-model.trim="props.row.first_price")
+            el-input(v-model.trim="props.row.first_price", clearable)
       el-table-column(:label="isWeight ? '续件(Kg)' : '续件(个)'")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.next_unit'", :rules="formRules.next_unit")
-            el-input(v-model.trim="props.row.next_unit")
+            el-input(v-model.trim="props.row.next_unit", clearable)
       el-table-column(label="续费(元)")
         template(slot-scope="props")
           el-form-item.show-validate-in-tab-el-form(:prop="'items.' + props.$index + '.next_price'", :rules="formRules.next_price")
-            el-input(v-model.trim="props.row.next_price")
+            el-input(v-model.trim="props.row.next_price", clearable)
       el-table-column(label="操作")
         div.show-margin-cell(slot-scope="props", v-if="props.$index !== 0")
           el-button(type="danger", size="small", plain, @click="handleDeleteItem(props.$index)") 删除
@@ -59,7 +59,7 @@
       const numValidator = (rule, value, callback) => {
         if (this.tp === FreightService.allUnitTp.piece.value) {
           if (!this.R_.isInteger(value)) {
-            callback(new Error('不正确的数字'))
+            callback(new Error('请输入正整数'))
             return
           }
           const i = parseInt(value)
@@ -153,5 +153,8 @@
 
   .show-margin-cell {
     margin-bottom: 20px;
+  }
+  .show-validate-in-tab-el-form{
+    margin-bottom: 30px !important;
   }
 </style>

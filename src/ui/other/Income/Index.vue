@@ -86,8 +86,8 @@
           return val
         })(params))
       },
-      getProfitOverview (params) {
-        return BillApi.getProfitOverview(this.R.mapObjIndexed((val, key, obj) => {
+      async getProfitOverview (params) {
+        const res = await BillApi.getProfitOverview(this.R.mapObjIndexed((val, key, obj) => {
           if (key === 'start' || key === 'end') {
             if (val === 0) {
               return ''
@@ -97,6 +97,7 @@
           }
           return val
         })(params))
+        this.overview = res.data.stat
       },
       toTenantDetail (row) {
         this.$router.push({
@@ -119,8 +120,7 @@
       },
       async handleSearch (data) {
         this.queryChange(data)
-        const res = await this.getProfitOverview(data)
-        this.overview = res.data.stat
+        await this.getProfitOverview(data)
       }
     },
     async mounted () {
@@ -129,10 +129,9 @@
       }
       if (this.$route.params.tenant) {
         params.tenant_id = this.$route.params.tid
+        this.queryChange(params)
       }
-      const res = await BillApi.getProfitOverview(params)
-      this.overview = res.data.stat
-      this.queryChange(params)
+      await this.getProfitOverview(params)
     }
   }
 </script>
