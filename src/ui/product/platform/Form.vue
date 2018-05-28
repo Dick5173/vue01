@@ -57,9 +57,9 @@
       el-form-item(label="售后模板", prop="after_service_id")
         el-select(v-model="formData.after_service_id", placeholder="请选择", clearable)
           el-option(v-for="item in afterServiceList", :key="item.id", :label="item.name", :value="`${item.id}`")
-      el-form-item(label="备注")
-        el-input.medium-el-input(v-model="formData.name")
-        span.input-right-desc {{ formData.name.length }} / 50
+      el-form-item(label="备注", prop="sys_remark")
+        el-input.medium-el-input(v-model="formData.sys_remark", clearable, :maxlength="50")
+        span.input-right-desc {{ formData.sys_remark.length }} / 50
         div.input-bottom-desc 用户及店铺不可见
     bottom-container
       el-button(@click="$router.back()") 取消
@@ -199,6 +199,7 @@
           id: 0,
           status: 1,
           head: [],
+          sys_remark: '',
           cover: {
             url: '',
             width: 0,
