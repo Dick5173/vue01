@@ -388,6 +388,7 @@
     color: #B4BCCC;
     font-size: 13px;
     margin-top:5px;
+    white-space: normal !important;
   }
 
   .batch {
