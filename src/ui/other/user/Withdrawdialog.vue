@@ -37,11 +37,9 @@
               callback(new Error('价格必须大于0'))
               return
             }
-          } else {
-            callback(new Error('请输入适合的数字'))
           }
-          if (convertYuanToFen(value) > this.canRefundPrice) {
-            callback(new Error('请输入适合的数字'))
+          if (convertYuanToFen(value) > 18) {
+            callback(new Error('不能大于最多核销金额'))
           }
         }
         callback()

@@ -115,21 +115,6 @@
         }
         callback()
       }
-      const validatePurpose = (rule, value, callback) => {
-        if (value) {
-          if (checkIsMoney(value)) {
-            if (parseFloat(value) <= 0) {
-              callback(new Error('价格必须大于0'))
-              return
-            }
-          } else {
-            callback(new Error('请输入合适的数字'))
-          }
-          if (convertYuanToFen(value) > this.orderItem.full_reduce_amount) {
-            callback(new Error('超出最大值，请输入合适的数字'))
-          }
-        }
-      }
       return {
         loading: false,
         dialogVisible: false,
