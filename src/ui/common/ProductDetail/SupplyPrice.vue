@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    el-table.small-el-table(:data="filterDataList", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
+    el-table.small-el-table(:data="dataList", border, cell-class-name="hidden-bottom-padding-el-tab", :show-header="false")
       el-table-column(label="等级")
         template(slot-scope="props")
           div.supply-price
@@ -34,22 +34,6 @@
           ]
         }
       }
-    },
-    computed: {
-      filterDataList () {
-        let newData = []
-        for (var i = 0; i < this.dataList.length; i++) {
-          if (this.dataList[i].tenant_level.name !== '中级店铺') {
-            newData.push(this.dataList[i])
-          }
-        }
-        return newData
-      }
-    },
-    methods: {
-      ...$global.$mapMethods({
-        // 'showProvince': FreightService.showProvince
-      })
     }
   }
 </script>
