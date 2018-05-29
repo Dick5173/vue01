@@ -158,11 +158,6 @@
           remark: [
             {max: 30, message: '最大30个字符', trigger: 'blur'}
           ],
-<<<<<<< HEAD
-          purpose: [
-            {required: true, message: '请输入适合的数字', trigger: 'blur'},
-            {validator: validatePurpose, trigger: 'blur'}
-=======
           wallet_use_amount: [
             {required: true, message: '请输入适合的数字', trigger: 'blur'},
             {validator: validateWallet, trigger: 'blur'}
@@ -170,7 +165,6 @@
           share_reward_amount: [
             {required: true, message: '请输入适合的数字', trigger: 'blur'},
             {validator: validateShare, trigger: 'blur'}
->>>>>>> e53eb36d980227bcb6d0a0051af0b1bd90e9149a
           ]
         }
       }
