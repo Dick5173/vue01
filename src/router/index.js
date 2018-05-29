@@ -522,6 +522,21 @@ const router = new Router({
           }
         },
         {
+          path: 'user/userServerPurpose/:uid',
+          name: 'UserServerPurpose',
+          component: () => import('src/ui/other/user/ServerPurpose.vue'),
+          meta: {
+            title: '抵用',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'UserInfoInde'}
+            }, {
+              text: '抵用'
+            }]
+          }
+        },
+        {
           path: 'sysuser',
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),

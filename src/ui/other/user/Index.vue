@@ -13,6 +13,9 @@
         el-table-column(prop="",label="收入")
           div(slot-scope="scope")
             el-button(type="text", @click="toIncome(scope.row)") {{1800 | price}}
+        el-table-column(prop="", label="抵用")
+          div(slot-scope="scope")
+            el-button(type="text", @click="ToServerpurpose(scope.row)") {{1900 | price}}
         el-table-column(prop="",label="余额")
           div(slot-scope="scope") {{1900 | price}}
         el-table-column(prop="",label="核销提现")
@@ -90,6 +93,14 @@
       toWithdraw (row) {
         this.$router.push({
           name: 'UserWithDraw',
+          params: {
+            uid: row.id
+          }
+        })
+      },
+      ToServerpurpose (row) {
+        this.$router.push({
+          name: 'UserServerPurpose',
           params: {
             uid: row.id
           }
