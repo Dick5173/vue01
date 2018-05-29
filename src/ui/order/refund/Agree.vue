@@ -7,16 +7,25 @@
           span 最多退款
           span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
           span 其中商品总额{{orderItem.total_price | price}}，
+          span(v-if="orderItem.wallet_used_amount > 0") 余额抵用{{orderItem.wallet_used_amount | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
       el-form-item(label="")
         el-checkbox(v-if="orderItem.can_refund_voucher" v-model="form.is_refund_voucher") 退回优惠券
+      el-form-item(label="退回余额抵用", prop="wallet_use_amount" v-if="orderItem.wallet_used_amount > 0")
+        el-input.input(v-model="form.wallet_use_amount")
+        div.tip
+          span 最多退回{{orderItem.wallet_used_amount | price}}，退至用户"钱包-余额"
+      el-form-item(label="追回分享奖励", prop="share_reward_amount" v-if="orderItem.share_reward_amount > 0")
+        el-input.input(v-model="form.share_reward_amount")
+        div.tip
+          span 最多退回{{orderItem.share_reward_amount | price}}
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}
       div.line
       div.txt 以下内容用户不可见
-      el-form-item(label="退货数量", prop="count")
-        el-select(v-model="form.count", placeholder="请选择")
+      el-form-item(label="退货数量", prop="total")
+        el-select(v-model="form.total", placeholder="请选择")
           el-option(v-for="item in chooseCount", :key="item", :label="item", :value="item")
         div.tip
           span 未给用户发货的商品也要记作退货数量
@@ -53,9 +62,47 @@
             }
           } else {
             callback(new Error('请输入适合的数字'))
+            return
           }
           if (convertYuanToFen(value) > this.canRefundPrice) {
             callback(new Error('请输入适合的数字'))
+            return
+          }
+        }
+        callback()
+      }
+      const validateWallet = (rule, value, callback) => {
+        if (value) {
+          if (checkIsMoney(value)) {
+            if (parseFloat(value) <= 0) {
+              callback(new Error('价格必须大于0'))
+              return
+            }
+          } else {
+            callback(new Error('请输入合适的数字'))
+            return
+          }
+          if (convertYuanToFen(value) > this.orderItem.wallet_use_amount) {
+            callback(new Error('超出最大值，请输入合适的数字'))
+            return
+          }
+        }
+        callback()
+      }
+      const validateShare = (rule, value, callback) => {
+        if (value) {
+          if (checkIsMoney(value)) {
+            if (parseFloat(value) <= 0) {
+              callback(new Error('价格必须大于0'))
+              return
+            }
+          } else {
+            callback(new Error('请输入合适的数字'))
+            return
+          }
+          if (convertYuanToFen(value) > this.orderItem.share_reward_amount) {
+            callback(new Error('超出最大值，请输入合适的数字'))
+            return
           }
         }
         callback()
@@ -66,9 +113,11 @@
         maxLength: 100,
         remarkMaxLength: 30,
         form: {
-          txt: '',
           amount: '',
-          count: 0,
+          wallet_use_amount: '',
+          share_reward_amount: '',
+          txt: '',
+          total: 0,
           remark: '',
           is_refund_voucher: false
         },
@@ -77,7 +126,7 @@
             {required: true, message: '请输入适合的数字', trigger: 'blur'},
             {validator: validateAmount, trigger: 'blur'}
           ],
-          count: [
+          total: [
             {required: true}
           ],
           txt: [
@@ -85,6 +134,14 @@
           ],
           remark: [
             {max: 30, message: '最大30个字符', trigger: 'blur'}
+          ],
+          wallet_use_amount: [
+            {required: true, message: '请输入适合的数字', trigger: 'blur'},
+            {validator: validateWallet, trigger: 'blur'}
+          ],
+          share_reward_amount: [
+            {required: true, message: '请输入适合的数字', trigger: 'blur'},
+            {validator: validateShare, trigger: 'blur'}
           ]
         }
       }
@@ -118,7 +175,7 @@
         this.form = {
           txt: '',
           amount: '',
-          count: this.orderItem.count,
+          total: this.orderItem.count,
           remark: '',
           is_refund_voucher: false
         }
@@ -137,7 +194,7 @@
             }).then(async () => {
               this.loading = true
               try {
-                const resResult = await agree(this.orderItem.id, convertYuanToFen(this.form.amount), this.form.txt, this.form.count, this.form.remark, this.form.is_refund_voucher)
+                const resResult = await agree(this.orderItem.id, this.form)
                 this.$message({
                   message: '退款成功',
                   type: 'success'

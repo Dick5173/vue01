@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import * as DateUtil from 'src/util/format'
+import { convertYuanToFen } from 'src/util/money'
 
 import {
   STATUS_PAID,
@@ -65,4 +66,24 @@ export const coverSearchFormToParam = R.curry((data) => {
     }
     return val
   })(data)
+})
+
+export const coverFormToParam = R.curry((form) => {
+  return R.pipe(
+    R.clone,
+    (obj) => {
+      return R.mapObjIndexed((val, key) => {
+        if (key === 'amount' || key === 'wallet_use_amount' || key === 'share_reward_amount') {
+          if (val) {
+            return convertYuanToFen(val)
+          } else {
+            return ''
+          }
+        } else if (key === 'total') {
+          return parseInt(val)
+        }
+        return val
+      })(obj)
+    }
+  )(form)
 })
