@@ -97,14 +97,7 @@ export const convertFormToParam = R.curry((form) => {
         purchase_price: R_.convertYuanToFen(obj.purchase_price),
         supply_tenants: R.map(item => {
           return item.id
-        })(obj.supply_tenants || []),
-        supply_levels: R.map(spItem => {
-          return {
-            id: spItem.id,
-            tenant_level_id: spItem.tenant_level.id,
-            supply_price: R_.convertYuanToFen(spItem.supply_price)
-          }
-        })(obj.supply_levels || [])
+        })(obj.supply_tenants || [])
       }
       return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'content', 'prop', 'sys_remark'])(obj)
     }
@@ -316,7 +309,7 @@ export const buildSupplyPriceWithConvertFenToYuan = (tenantLevelList, supplyPric
   })(tenantLevelList || [])
 }
 
-export const supplyPrice = (purchasePrice, skus, lowLevel) => {
+export const supplyPrice = (purchasePrice, skus, levelName) => {
   const newSkus = R.clone(skus)
   let A = parseFloat(purchasePrice)
   if (A >= 0) {
@@ -329,11 +322,16 @@ export const supplyPrice = (purchasePrice, skus, lowLevel) => {
     }
     let B = suggestPrice / newSkus.length
     let P = parseFloat(purchasePrice) * 0.0842
-    if (lowLevel) {
+    if (levelName === '普通店铺') {
       if (P < 5) {
         P = 5
       }
       return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
+    } else if (levelName === '中级店铺') {
+      if (P < 5) {
+        P = 5
+      }
+      return B === 0 ? 0 : (A + P + (B - A - P) * 0.25).toFixed(2)
     } else {
       return B === 0 ? 0 : (A + P).toFixed(2)
     }
