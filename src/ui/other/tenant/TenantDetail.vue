@@ -125,15 +125,10 @@ import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
 import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
 import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
 import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
-// <<<<<<< HEAD
 import BindWithdrawDialog from 'src/ui/other/tenant/BindWithdrawDialog.vue'
-// import * as TenantApi from 'src/api/tenant'
-import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showWithdrawBindButtonName } from 'src/service/other/index'
-// =======
 import BindMatrixDialog from 'src/ui/other/tenant/BindMatrixDialog.vue'
 import * as TenantApi from 'src/api/tenant'
-import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showMatrixButtonName } from 'src/service/other/index'
-// >>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
+import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showWithdrawBindButtonName, showMatrixButtonName } from 'src/service/other/index'
 import { showCover } from 'src/service/product/index'
 import { dateFormat } from 'src/util/format'
 import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
@@ -146,13 +141,9 @@ export default {
     BindErpShopIdDialog,
     BindQiyuDialog,
     BindDeliveryModeDialog,
-// <<<<<<< HEAD
-//     TenantLevelDialog,
     BindWithdrawDialog,
-// =======
     BindMatrixDialog,
     TenantLevelDialog
-// >>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
   },
   data () {
     return {
@@ -325,11 +316,8 @@ export default {
     ...$global.$mapMethods({ 'showQiyuBindButtonName': showQiyuBindButtonName }),
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
-<<<<<<< HEAD
-    ...$global.$mapMethods({ 'showWithdrawBindButtonName': showWithdrawBindButtonName })
-=======
+    ...$global.$mapMethods({ 'showWithdrawBindButtonName': showWithdrawBindButtonName }),
     ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName })
->>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
   },
   created () {
     const status = this.$route.query.status

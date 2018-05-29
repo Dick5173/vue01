@@ -97,7 +97,6 @@ export const showDeliverytButtonName = (row) => {
   }
   return text
 }
-<<<<<<< HEAD
 export const showWithdrawBindButtonName = (row) => {
   let text = ''
   switch (row.delivery_mode) {
@@ -106,7 +105,10 @@ export const showWithdrawBindButtonName = (row) => {
       break
     case 2:
       text = '关闭'
-=======
+      break
+  }
+  return text
+}
 export const showMatrixButtonName = (row) => {
   let text = ''
   switch (row.tp) {
@@ -116,7 +118,6 @@ export const showMatrixButtonName = (row) => {
     case 2:
       text = '非矩阵'
       break
->>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
   }
   return text
 }
