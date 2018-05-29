@@ -1,3 +1,6 @@
+import * as R from 'ramda'
+import * as DateUtil from 'src/util/format'
+
 import {
   STATUS_PAID,
   STATUS_DELIVERED,
@@ -50,3 +53,16 @@ export const enableRefund = (orderItem) => {
   }
   return false
 }
+
+export const coverSearchFormToParam = R.curry((data) => {
+  return R.mapObjIndexed((val, key) => {
+    if (key === 'start_time' || key === 'end_time') {
+      if (val === 0) {
+        return ''
+      } else {
+        return DateUtil.dateFormat(val, 'YYYY-MM-DD')
+      }
+    }
+    return val
+  })(data)
+})

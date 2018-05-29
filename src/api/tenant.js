@@ -68,3 +68,12 @@ export const postDilvery = (tid, formData) => {
 export const settleBill = (billId) => {
   return Axios.post(`/admin/bill/s/${billId}/settle`)
 }
+export const postMartix = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/tp/matrix`)
+}
+export const postNonMartix = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/tp/non_matrix`)
+}
+export const postRefresh = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/info/refresh`)
+}

@@ -97,6 +97,7 @@ export const showDeliverytButtonName = (row) => {
   }
   return text
 }
+<<<<<<< HEAD
 export const showWithdrawBindButtonName = (row) => {
   let text = ''
   switch (row.delivery_mode) {
@@ -105,19 +106,30 @@ export const showWithdrawBindButtonName = (row) => {
       break
     case 2:
       text = '关闭'
+=======
+export const showMatrixButtonName = (row) => {
+  let text = ''
+  switch (row.tp) {
+    case 1:
+      text = '矩阵'
+      break
+    case 2:
+      text = '非矩阵'
+      break
+>>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
   }
   return text
 }
 export const showErpBindButtonName = (row) => {
   if (row.erp_shop_id) {
-    return 'ERP已绑'
+    return row.erp_shop_id
   }
   return 'ERP未绑'
 }
 
 export const showQiyuBindButtonName = (row) => {
   if (row.qiyu_id) {
-    return '七鱼号已绑'
+    return row.qiyu_id
   }
   return '七鱼号未绑'
 }
@@ -138,7 +150,12 @@ export const isMchBind = (row) => {
 
 export const showMchBindButtonName = (row) => {
   if (isMchBind(row)) {
-    return '商户号已绑'
+    if (row.pay_service === 1 && row.sub_mch_id) {
+      return '微信' + row.sub_mch_id
+    }
+    if (row.pay_service === 2 && row.sp_sub_mch_id) {
+      return '全付通' + row.sp_sub_mch_id
+    }
   }
   return '商户号未绑'
 }

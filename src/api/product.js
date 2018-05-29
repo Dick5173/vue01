@@ -24,6 +24,7 @@ export const create = (form) => {
 }
 
 export const update = (id, form) => {
+  console.log(form)
   const params = ProductService.convertFormToParam(form)
   return Axios.post(`/admin/product/s/${id}`, params)
 }
@@ -55,7 +56,9 @@ export const batchShelveDown = (arr) => {
   let formData = {
     pids: arr
   }
-  return Axios.delete(`/admin/batch/product/up`, formData)
+  return Axios.delete(`/admin/batch/product/up`, {
+    params: formData
+  })
 }
 export const getTenantSelectList = (id) => {
   let params = {

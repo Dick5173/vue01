@@ -61,8 +61,8 @@
     computed: {},
     watch: {},
     methods: {
-      getQueryApi () {
-        return ProductApi.getRecycleList(this.queryParams)
+      getQueryApi (params) {
+        return ProductApi.getRecycleList({...params, ...this.queryParams})
       },
       search () {
         this.queryChange(this.queryParams)

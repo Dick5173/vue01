@@ -8,9 +8,9 @@
         div.name {{tenantData.nick_name}}
       el-form.small-el-form(ref="form", :model="formData", :rules="rules", label-width="90px")
         el-form-item(label="AppID：", prop="app_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.app_id" clearable)
+          el-input.tiny-x-el-input(v-model.trim="formData.app_id", clearable)
         el-form-item(label="erp商户：", prop="erp_shop_id")
-          el-input.tiny-x-el-input(v-model.trim="formData.erp_shop_id" clearable)
+          el-input.tiny-x-el-input(v-model.trim="formData.erp_shop_id", clearable)
           el-alert.erp_bind_warn(title="ERP账号错误将无法发货", type="warning", left, :closable="false", show-icon)
         el-form-item
           el-button(type="", @click="hide", plain) 取 消

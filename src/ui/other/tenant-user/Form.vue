@@ -5,29 +5,30 @@
       el-form(ref="form", :model="formData", :rules="rules", label-width="300px")
         el-form-item(v-if="mode===1", label="店铺管理员ID：") {{formData.id}}
         el-form-item(label="名字：", prop="name")
-          el-input.input(placeholder="最多20个字", :maxlength="20", v-model.trim="formData.name" clearable)
+          el-input.input(placeholder="最多20个字", :maxlength="20", v-model.trim="formData.name", clearable)
         el-form-item(label="手机号码：", prop="mobile")
-          el-input.input(placeholder="手机号11位1开头", :maxlength="11", v-model.trim="formData.mobile" clearable)
+          el-input.input(placeholder="手机号11位1开头", :maxlength="11", v-model.trim="formData.mobile", clearable)
         el-form-item(v-if="mode===0", label="密码：", prop="passwd")
-          el-input.input(type="password",clearable placeholder="请输入密码", v-model.trim="formData.passwd")
+          el-input.input(type="password", clearable, placeholder="请输入密码", v-model.trim="formData.passwd")
         el-form-item(v-if="mode===0", label="重复密码：", prop="checkpasswd")
-          el-input.input(type="password",clearable placeholder="请重复密码", v-model.trim="formData.checkpasswd")
+          el-input.input(type="password", clearable, placeholder="请重复密码", v-model.trim="formData.checkpasswd")
         div.border 公司信息
         el-form-item(label="公司名称：", prop="company_name")
-          el-input.input(v-model.trim="formData.company_name" clearable)
+          el-input.input(v-model.trim="formData.company_name", clearable)
         el-form-item(label="公司地址：", prop="company_addr")
-          el-input.input(v-model.trim="formData.company_addr" clearable)
+          el-input.input(v-model.trim="formData.company_addr", clearable)
         el-form-item(label="公司官网：", prop="company_website")
-          el-input.input(v-model.trim="formData.company_website" clearable)
+          el-input.input(v-model.trim="formData.company_website", clearable)
         el-form-item(label="公司描述：", prop="company_desc")
-          el-input.input(type="textarea",clearable :autosize="{ minRows: 3, maxRows: 5}", v-model.trim="formData.company_desc")
+          el-input.input(type="textarea", clearable, :autosize="{ minRows: 3, maxRows: 5}", v-model.trim="formData.company_desc")
         el-form-item(label="联系人：", prop="company_contact")
-          el-input.input(v-model.trim="formData.company_contact" clearable)
+          el-input.input(v-model.trim="formData.company_contact", clearable)
         el-form-item(label="手机号：", prop="company_mobile")
-          el-input.input(v-model.trim="formData.company_mobile" clearable)
+          el-input.input(v-model.trim="formData.company_mobile", clearable)
         el-form-item(label="邮箱：", prop="company_email")
-          el-input.input(v-model.trim="formData.company_email" clearable)
+          el-input.input(v-model.trim="formData.company_email", clearable)
         el-form-item
+          el-button(@click="$router.back()") 取消
           el-button(type="primary", @click="submit") 确定
 </template>
 

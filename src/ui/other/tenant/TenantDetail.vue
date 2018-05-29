@@ -13,36 +13,33 @@
         div.body-border
         div.body-item 小程序状态：{{showAppStatus(tenantData.app_status)}}
         div.body-border
+        el-button(@click="haddleUpdate(tenantData.id)") 更新小程序信息
+        div.body-border
         div.body-item 店铺管理员：
-        div.body-item.btn(type="text", @click="toTenantUser(tenantData.admin_id)") {{tenantData.admin_name}}
+        div.body-item.btn(type="text", @click="toTenantUserList(tenantData)") {{tenantData.admin_name}}
         div.body-border
         div.body-item 退款授权：{{showRefundStatus(tenantData.refund_status)}}
         div.body-border
         div.body-item 首次上线：{{tenantData.first_uptime | datetime}}
-        //- div.body-border
-        //- div.body-item 支付服务商：{{payService(tenantData.pay_service)}}
       div.body-status
         div.body-item-status 店铺状态：
-        //- {{showTenantStatus(tenantData.tenant_status)}}
-        //- el-button(v-if="tenantData.tenant_status === 1", type="danger", size="mini", @click="disable(tenantData.id)") 禁用
-        //- el-button(v-else, type="primary", size="mini", @click="enable(tenantData.id)") 启用
         el-button(type="text", size="mini", @click="setTenantStatus") {{showTenantStatus(tenantData.tenant_status)}}
       div.body-status.margin-left
         div.body-item-status 店铺等级：
           el-button(type="text", @click="showTenantLevelDialog(tenantData)", size="mini") {{tenantData.tenant_level.description}}
       div.body-status.margin-left
+        div.body-item-status 矩阵属性：
+          el-button(type="text", @click="showMatrixDialog(tenantData)" size="mini") {{showMatrixButtonName(tenantData)}}
+      div.body-status.margin-left
         div.body-item-status 商品权限：
           el-button(type="text", @click="showProductAuthDialog(tenantData)", size="mini") {{showProductAuth(tenantData)}}
-        //- el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
-        //- el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
-        //- el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
       div.body-status.margin-left
         div.body-item-status 发货方式：
           el-button(type="text", @click="showDeliveryAuthDialog(tenantData)", size="mini") {{showDeliverytButtonName(tenantData)}}
       div
         div.body-status
           div.body-item-status 支付商户号：
-            el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{payService(tenantData.pay_service)}}{{payServiceId(tenantData.pay_service)}}
+            el-button(type="text", @click="showMchBindDialog(tenantData)", size="mini") {{showMchBindButtonName(tenantData)}}
         div.body-status.margin-left
           div.body-item-status ERP：
             el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
@@ -106,6 +103,7 @@
     bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
     bind-withdraw-dialog(ref="dlgTenantWithDraw", @refresh="getDetail")
     tenant-level-dialog(ref="dlgTenantLevel", @refresh="getDetail")
+    bind-matrix-dialog(ref="dlgBindMatrix", @refresh="getDetail")
     el-dialog.tenant-status(title="店铺状态", :visible.sync="tenantDialogVisible", width="480px", :modal-append-to-body="false")
       div.head
         div.head-cover(v-lazy:background-image="tenantData.head_img")
@@ -127,9 +125,15 @@ import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
 import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
 import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
 import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
+// <<<<<<< HEAD
 import BindWithdrawDialog from 'src/ui/other/tenant/BindWithdrawDialog.vue'
-import * as TenantApi from 'src/api/tenant'
+// import * as TenantApi from 'src/api/tenant'
 import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showWithdrawBindButtonName } from 'src/service/other/index'
+// =======
+import BindMatrixDialog from 'src/ui/other/tenant/BindMatrixDialog.vue'
+import * as TenantApi from 'src/api/tenant'
+import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showMatrixButtonName } from 'src/service/other/index'
+// >>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
 import { showCover } from 'src/service/product/index'
 import { dateFormat } from 'src/util/format'
 import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
@@ -142,8 +146,13 @@ export default {
     BindErpShopIdDialog,
     BindQiyuDialog,
     BindDeliveryModeDialog,
-    TenantLevelDialog,
-    BindWithdrawDialog
+// <<<<<<< HEAD
+//     TenantLevelDialog,
+    BindWithdrawDialog,
+// =======
+    BindMatrixDialog,
+    TenantLevelDialog
+// >>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
   },
   data () {
     return {
@@ -178,6 +187,9 @@ export default {
     showDeliveryAuthDialog (row) {
       this.$refs.dlgBindDelivery.show(row)
     },
+    showMatrixDialog (row) {
+      this.$refs.dlgBindMatrix.show(row)
+    },
     showTenantLevelDialog (row) {
       this.$refs.dlgTenantLevel.show(row)
     },
@@ -198,22 +210,6 @@ export default {
         }
       })
     },
-    payService (value) {
-      if (value === 1) {
-        return '微信'
-      }
-      if (value === 2) {
-        return '全付通'
-      }
-      return ''
-    },
-    payServiceId (val) {
-      if (val === 1) {
-        return this.tenantData.sub_mch_id
-      } else if (val === 2) {
-        return this.tenantData.sp_sub_mch_id
-      }
-    },
     toTenantProduct (id) {
       this.$router.push({
         name: 'TenantProduct',
@@ -229,14 +225,31 @@ export default {
       link.click()
       this.dialogVisible = false
     },
-    toTenantUser (id) {
+    toTenantUserList (row) {
       this.$router.push({
-        name: 'TenantUser',
+        name: 'TenantUserList',
         params: {
-          id: id,
-          tenantDetail: true
+          tid: row.admin_id
         }
       })
+    },
+    async haddleUpdate (id) {
+      var msg = ''
+      this.loading = true
+      try {
+        let res = await TenantApi.postRefresh(id)
+        if (this.tenantData.nick_name === res.data.nick_name) {
+          msg = '数据已更新'
+        } else {
+          this.tenantData.nick_name = res.data.nick_name
+          msg = `小程序名称已更新为${this.tenantData.nick_name}发版后再美市生效`
+        }
+        this.$alert(msg, {
+          confirmButtonText: '确定'
+        })
+      } catch (err) {}
+      this.loading = false
+      this.getDetail()
     },
     setTenantStatus () {
       this.tenantDialogVisible = true
@@ -249,14 +262,6 @@ export default {
       }
     },
     async enable (id) {
-      // this.$confirm('启用店铺？', '提示？', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(async () => {
-
-      // }).catch(() => {
-      // })
       try {
         this.loading = true
         await TenantApi.enableTenant(id)
@@ -271,14 +276,6 @@ export default {
       }
     },
     async disable (id) {
-      // this.$confirm('小程序将无法访问，店铺后台将无法登录', '禁用？', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(async () => {
-
-      // }).catch(() => {
-      // })
       try {
         this.loading = true
         await TenantApi.disableTenant(id)
@@ -328,7 +325,11 @@ export default {
     ...$global.$mapMethods({ 'showQiyuBindButtonName': showQiyuBindButtonName }),
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
+<<<<<<< HEAD
     ...$global.$mapMethods({ 'showWithdrawBindButtonName': showWithdrawBindButtonName })
+=======
+    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName })
+>>>>>>> 3460d6cbe03b0ab6cdb870da91dbc750bd0b6818
   },
   created () {
     const status = this.$route.query.status
@@ -390,6 +391,7 @@ export default {
   }
   .head-name-box {
     margin-left: 10px;
+    position: relative;
     .head-name {
       display: flex;
       align-items: center;
@@ -402,7 +404,7 @@ export default {
         line-height: 16px;
         .img {
           position: relative;
-          top: 32px;
+          top: 3px;
           left: 0px;
           width: 16px;
           height: 16px;
@@ -411,8 +413,9 @@ export default {
         }
         .head-status {
           display: inline-block;
-          margin-top: 41px;
-          margin-left: -69px;
+          position: absolute;
+          left:0px;
+          top:30px;
           width: 80px;
           height: 20px;
           font-size: 14px;
@@ -465,6 +468,9 @@ export default {
   }
   .btn {
     text-decoration: underline;
+  }
+  .el-button{
+    padding:8px 10px;
   }
 }
 

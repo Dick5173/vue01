@@ -11,18 +11,21 @@
         upload-image(ref="uploadPageCover", :image.sync="formData.page_cover", :host="getHost", :token="getToken")
         div.input-bottom-desc 在首页中以单品形式显示时适用，建议尺寸702×440像素
       el-form-item(label="商品名称", prop="name")
-        el-input.medium-el-input(v-model.trim="formData.name", clearable :maxlength="50")
+        el-input.medium-el-input(v-model.trim="formData.name", clearable, :maxlength="50")
         span.input-right-desc {{ formData.name.length }} / 50
       el-form-item(label="卖点", prop="sell_point")
-        el-input.medium-el-input(v-model.trim="formData.sell_point", clearable :maxlength="30")
+        el-input.medium-el-input(v-model.trim="formData.sell_point", clearable, :maxlength="30")
         span.input-right-desc {{ formData.sell_point.length }} / 30
-      el-form-item(label="商品规格", prop="skus", required)
-        skus(ref="skus", :skus.sync="formData.skus", :stPrice="this.formData.st_price", :supply_levels="this.formData.supply_levels")
+      el-form-item(label="商品规格", :required="true")
+        skus(ref="skus", :skus.sync="formData.skus", :stPrice="formData.st_price", :purchase_price="formData.purchase_price")
       el-form-item(label="划线价", prop="st_price")
-        el-input.tiny-el-input(v-model.trim="formData.st_price" clearable)
+        el-input.tiny-el-input(v-model.trim="formData.st_price", clearable)
         span.input-right-desc 元
+      el-form-item(label="采购价", prop="purchase_price")
+        el-input.tiny-el-input(v-model.trim="formData.purchase_price")
+        span.input-right-desc
       el-form-item(label="供货价", prop="supply_levels")
-        supply-price-comp(:data-list="formData.supply_levels")
+        supply-price-comp(:data-list="formData.supply_levels", :data-price="formData.purchase_price", :skus.sync="formData.skus")
       el-form-item(label="商品分类", prop="category_id")
         el-select(v-model="formData.category_id", placeholder="请选择")
           el-option-group(v-for!="parentItem in allCategories", :label="parentItem.name", :key="parentItem.id")
@@ -57,7 +60,7 @@
     bottom-container
       el-button(@click="$router.back()") 取消
       el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
-      el-button(type="primary", :loading="loading", @click="handleSave") 保存
+      el-button(type="primary", :loading="loading", @click="handleSave(false)") 保存
     batch-tag-dialog(ref="chooseTagDialog", :origin="oraTags", @submit="chooseTagComplete")
     choose-supply-tenants-dialog(ref="chooseSupplyTenantsDialog", @choose="chooseSupplyTenantsComplete")
 </template>
@@ -130,17 +133,6 @@
         }
         callback()
       }
-      const skuValidator = (rule, value, callback) => {
-        if (!value || value.length <= 0) {
-          callback(new Error('Sku不能为空'))
-          return
-        }
-        if (this.$refs.skus.isUpdating()) {
-          callback(new Error('正在上传图片'))
-          return
-        }
-        callback()
-      }
       const freightTemplateValidator = (rule, value, callback) => {
         if (this.radFreightVal === FREIGHT_SPECIFY_TEMPLATE && !value) {
           callback(new Error('请选择运费模板'))
@@ -149,22 +141,42 @@
         callback()
       }
 
-      const supplyLevelsValidator = (rule, value, callback) => {
+      const purchasePriceValidator = (rule, value, callback) => {
         if (!value || value.length <= 0) {
-          callback(new Error('供货价格不能为空'))
+          callback(new Error('采购价格不能为空'))
           return
         }
-        var prevPrice = 0
-        for (var i = 0; i < value.length; i++) {
-          if (!this.R_.isPrice(value[i].supply_price)) {
-            callback(new Error('不正确的价格'))
+        if (!this.R_.isPrice(value)) {
+          callback(new Error('不正确的价格'))
+          return
+        }
+        const purchaseFen = this.R_.convertYuanToFen(value)
+        if (purchaseFen < 0) {
+          callback(new Error('采购价必须为正数'))
+          return
+        }
+        if (purchaseFen > 999999 * 100) {
+          callback(new Error('采购价不能大于999999'))
+          return
+        }
+        // 划线价格输入的验证
+        if (this.formData.st_price && this.R_.isPrice(this.formData.st_price)) {
+          const stFen = this.R_.convertYuanToFen(this.formData.st_price)
+          if (purchaseFen > stFen) {
+            callback(new Error('采购价必须小于划线价'))
             return
           }
-          var p = this.R_.convertYuanToFen(value[i].supply_price)
-          if (prevPrice !== 0 && p > prevPrice) {
-            callback(new Error('供货价格不合法'))
+        }
+        const errPurchase = this.formData.skus.some(item => {
+          if (item.suggest_price && this.R_.isPrice(item.suggest_price)) {
+            const suggestFen = this.R_.convertYuanToFen(item.suggest_price)
+            return purchaseFen > suggestFen
           }
-          prevPrice = p
+          return false
+        })
+        if (errPurchase) {
+          callback(new Error('采购价必须小于建议售价'))
+          return
         }
         callback()
       }
@@ -195,18 +207,20 @@
           },
           name: '',
           sell_point: '',
-          skus: [{
-            spec: '默认规格',
-            suggest_price: '',
-            stock: '',
-            code: '',
-            weight: '',
-            image: {
-              url: '',
-              width: 0,
-              height: 0
+          skus: [
+            {
+              spec: '默认规格',
+              suggest_price: '',
+              stock: '',
+              code: '',
+              weight: '',
+              image: {
+                url: '',
+                width: 0,
+                height: 0
+              }
             }
-          }],
+          ],
           supply_levels: [],
           st_price: '',
           category_id: '',
@@ -218,18 +232,13 @@
           delivery_region_id: '',
           freight_template_id: '',
           supply_scope_tp: 1,
-          supply_tenants: []
+          supply_tenants: [],
+          purchase_price: ''
         },
         formRules: {
-          head: [
-            {validator: headValidator, trigger: 'change'}
-          ],
-          cover: [
-            {validator: coverValidator, trigger: 'change'}
-          ],
-          page_cover: [
-            {validator: pageCoverValidator, trigger: 'change'}
-          ],
+          head: [{validator: headValidator, trigger: 'change'}],
+          cover: [{validator: coverValidator, trigger: 'change'}],
+          page_cover: [{validator: pageCoverValidator, trigger: 'change'}],
           name: [
             {required: true, message: '不能为空', trigger: 'blur'},
             {max: 50, message: '最多可以输入50个字符', trigger: 'blur'}
@@ -237,20 +246,15 @@
           sell_point: [
             {max: 30, message: '最多可以输入30个字符', trigger: 'blur'}
           ],
-          skus: [
-            {validator: skuValidator, trigger: 'change'}
-          ],
-          st_price: [
-            {validator: priceValidator, trigger: 'blur'}
-          ],
+          st_price: [{validator: priceValidator, trigger: 'blur'}],
           category_id: [
             {required: true, message: '分类不能为空', trigger: 'change'}
           ],
           freight_template_id: [
             {validator: freightTemplateValidator, trigger: 'change'}
           ],
-          supply_levels: [
-            {validator: supplyLevelsValidator, trigger: 'change'}
+          purchase_price: [
+            {required: true, validator: purchasePriceValidator, trigger: 'blur'}
           ]
         }
       }
@@ -272,12 +276,17 @@
         return this.formData.tags ? [{tags: this.formData.tags}] : []
       },
       showSupplyTenants () {
-        if (!this.formData.supply_scope_tp || this.formData.supply_scope_tp === 1) {
+        if (
+          !this.formData.supply_scope_tp ||
+          this.formData.supply_scope_tp === 1
+        ) {
           return '无限制'
         }
         let tenants = ''
         this.R.forEachObjIndexed((item, index) => {
-          tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+          tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${
+            item.nick_name
+            }`
         })(this.formData.supply_tenants || [])
         return tenants
       }
@@ -308,7 +317,10 @@
             const resItem = await FormApi.getItem(this.$route.params.id)
             this.formData = ProductService.convertModelToForm(resItem.data)
           }
-          this.formData.supply_levels = ProductService.buildSupplyPrice(this.tenantLevelList, this.formData.supply_levels)
+          this.formData.supply_levels = ProductService.buildSupplyPrice(
+            this.tenantLevelList,
+            this.formData.supply_levels
+          )
           this.initialData = this.R.clone(this.formData)
           this.loading = false
         } catch (err) {
@@ -318,7 +330,6 @@
       async getTenantLevel () {
         const res = await TenantApi.getTenantLevelList()
         this.tenantLevelList = res.data.data
-        console.log('this.tenantLevelList', this.tenantLevelList)
       },
       async getCategoryList () {
         const resCategory = await CategoryApi.getList()
@@ -343,9 +354,7 @@
       async create (up) {
         this.formData.id = 0
         let frm = Object.assign({}, this.formData)
-        if (up) {
-          frm.status = ProductService.allStatus.up.value
-        }
+        frm.status = up ? ProductService.allStatus.up.value : ProductService.allStatus.down.value
         if (this.isCopy) {
           frm = ProductService.copyCreate(frm)
         }
@@ -376,7 +385,7 @@
       },
       handleSave (up) {
         this.loading = true
-        this.$refs.form.validate((valid) => {
+        this.$refs.form.validate(valid => {
           if (valid) {
             try {
               if (!this.isEditMode) {
@@ -384,8 +393,7 @@
               } else {
                 this.update()
               }
-            } catch (err) {
-            }
+            } catch (err) {}
           } else {
             ElUtil.scrollToInvalidFirstElement(this.$refs.form)
           }
@@ -403,13 +411,12 @@
         this.$refs.chooseSupplyTenantsDialog.show(this.formData)
       },
       chooseSupplyTenantsComplete (tenant) {
-        console.log(tenant)
         this.formData.supply_scope_tp = tenant.supply_scope_tp
         this.formData.supply_tenants = tenant.supply_tenants
       },
       ...$global.$mapMethods({
-        'getHost': AliyunApi.getOssHost,
-        'getToken': AliyunApi.getOssToken
+        getHost: AliyunApi.getOssHost,
+        getToken: AliyunApi.getOssToken
       })
     },
     async mounted () {
@@ -433,7 +440,8 @@
       color: $font-color-common;
     }
   }
-  .bottom-container{
-    z-index:100;
+
+  .bottom-container {
+    z-index: 100;
   }
 </style>

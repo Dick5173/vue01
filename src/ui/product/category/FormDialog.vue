@@ -2,7 +2,7 @@
   el-dialog(:visible.sync="dialogVisible", title="添加分类", :width="commonDialogWidth", @close="closeCallback")
     el-form(ref="form", :model="formData", :rules="rules", labelWidth="60px")
       el-form-item(label="名称:", prop="name")
-        el-input(v-model.trim="formData.name" clearable)
+        el-input(v-model.trim="formData.name", clearable)
     div.dialog-footer(slot="footer")
       el-button(@click="dialogVisible = false") 取消
       el-button(type="primary", :loading="loading", @click="submit") 确定
@@ -79,9 +79,7 @@
         if (this.initialData) {
           this.formData = CategoryService.convertModelToForm(this.initialData)
         }
-        if (parentId !== 0) {
-          this.formData.parent_id = parentId
-        }
+        this.formData.parent_id = parentId
       },
       hide () {
         this.dialogVisible = false

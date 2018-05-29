@@ -1,6 +1,6 @@
 {
   "name": "meishi_admin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "优品平销平台后台管理系统",
   "author": "wangyang <superyfwy@gmail.com>",
   "private": true,
@@ -15,16 +15,19 @@
     "release": "npm run build && scp -r -P 7322 dist/. root@meishi.51baibao.com:/opt/meishi/public/admin"
   },
   "dependencies": {
-    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.3.9",
+    "@baibao/zeratul": "git+http://git.51baibao.com/frontend/zeratul.git#v0.3.11",
     "axios": "^0.17.1",
     "babel-polyfill": "^6.26.0",
     "dropzone": "^5.3.0",
     "element-ui": "^2.3.3",
     "js-cookie": "^2.2.0",
     "normalize.css": "^7.0.0",
+    "npm": "^6.0.1",
     "qs": "^6.5.1",
     "ramda": "^0.25.0",
     "ramda-adjunct": "^2.4.1",
+    "to": "^0.2.9",
+    "update": "^0.7.4",
     "vue": "^2.5.2",
     "vue-lazyload": "^1.1.4",
     "vue-router": "^3.0.1",

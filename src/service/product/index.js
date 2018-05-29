@@ -93,6 +93,7 @@ export const convertFormToParam = R.curry((form) => {
         delivery_region_id: obj.delivery_region_id,
         freight_template_id: obj.freight_template_id,
         supply_scope_tp: obj.supply_scope_tp,
+        purchase_price: R_.convertYuanToFen(obj.purchase_price),
         supply_tenants: R.map(item => {
           return item.id
         })(obj.supply_tenants || []),
@@ -124,7 +125,8 @@ export const convertModelToForm = R.curry((form) => {
         delivery_region_id: ['prop', 'ext', 'delivery_region', 'id'],
         freight_template_id: ['prop', 'ext', 'freight_template', 'id'],
         supply_scope_tp: ['prop', 'supply_scope_tp'],
-        supply_tenants: ['prop', 'supply_tenants']
+        supply_tenants: ['prop', 'supply_tenants'],
+        purchase_price: ['prop', 'purchase_price']
       }
       R.forEachObjIndexed((val, key) => {
         obj[key] = R.path(val)(obj)
@@ -168,6 +170,12 @@ export const convertModelToForm = R.curry((form) => {
           if (!val) {
             return []
           }
+        } else if (key === 'purchase_price') {
+          if (val) {
+            return `${R_.convertFenToYuan(val)}`
+          } else {
+            return ''
+          }
         } else if (key === 'supply_levels') {
           return R.map(item => {
             item.supply_price = `${R_.convertFenToYuan(item.supply_price)}`
@@ -186,7 +194,7 @@ export const convertModelToForm = R.curry((form) => {
         supply_price: obj.supply_price,
         supply_levels: obj.supply_levels
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants', 'purchase_price'])(obj)
     }
   )(form)
 })
@@ -303,4 +311,28 @@ export const buildSupplyPriceWithConvertFenToYuan = (tenantLevelList, supplyPric
       supply_price: itemSupplyPrice ? `${R_.convertFenToYuan(itemSupplyPrice.supply_price)}` : ''
     }
   })(tenantLevelList || [])
+}
+
+export const supplyPrice = (purchasePrice, skus, lowLevel) => {
+  const newSkus = R.clone(skus)
+  let A = parseFloat(purchasePrice)
+  if (A >= 0) {
+    let suggestPrice = 0
+    for (let i = 0; i < newSkus.length; i++) {
+      if (newSkus[i].suggest_price === '') {
+        newSkus[i].suggest_price = 0
+      }
+      suggestPrice += parseFloat(newSkus[i].suggest_price)
+    }
+    let B = suggestPrice / newSkus.length
+    let P = parseFloat(purchasePrice) * 0.0842
+    if (lowLevel) {
+      if (P < 5) {
+        P = 5
+      }
+      return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
+    } else {
+      return B === 0 ? 0 : (A + P).toFixed(2)
+    }
+  }
 }
