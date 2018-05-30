@@ -7,7 +7,7 @@
       div.head
         div.head-cover.round(v-lazy:background-image="userData.logo")
         div.head-name {{userData.nickname}}
-      el-form(:model="form",label-width="80px" :rules="rules" style="margin-top:30px" )
+      el-form(:model="form",label-width="80px" :rules="rules" style="margin-top:30px", ref="form" )
         el-form-item(label="核销金额" prop="amount")
           el-input.input(v-model="form.amount")
           div.tip
@@ -34,8 +34,8 @@
       const validateAmount = (rule, value, callback) => {
         if (value) {
           if (checkIsMoney(value)) {
-            if (parseFloat(value) < 0) {
-              callback(new Error('输入内容不能小于0'))
+            if (parseFloat(value) <= 0) {
+              callback(new Error('输入内容不能小于等于0'))
               return
             }
           }
@@ -88,12 +88,20 @@
           return row.wallet.available_balance
         }
       },
-      async submit () {
-        try {
-          this.form.amount = parseFloat(this.form.amount)
-          await UserWallet.postWalletWithdraw(this.userData.id, this.form)
-        } catch (err) {}
-        this.dialogVisible = false
+      submit () {
+        this.$refs.form.validate(async (valid) => {
+          if (valid) {
+            try {
+              this.form.amount = parseFloat(this.form.amount)
+              await UserWallet.postWalletWithdraw(this.userData.id, this.form)
+              this.$message({
+                message: '提现成功',
+                type: 'success'
+              })
+              this.dialogVisible = false
+            } catch (err) {}
+          }
+        })
       },
       async getDetail () {
         try {
