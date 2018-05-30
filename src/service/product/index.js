@@ -323,14 +323,14 @@ export const supplyPrice = (purchasePrice, skus, levelName) => {
       if (P < 5) {
         P = 5
       }
-      return B === 0 ? 0 : (A + P + (B - A - P) * 0.3).toFixed(2)
+      return B === 0 ? 0 : Math.floor((A + P + (B - A - P) * 0.3) * 100) / 100
     } else if (levelName === '中级店铺') {
       if (P < 5) {
         P = 5
       }
-      return B === 0 ? 0 : (A + P + (B - A - P) * 0.25).toFixed(2)
+      return B === 0 ? 0 : Math.floor((A + P + (B - A - P) * 0.20) * 100) / 100
     } else {
-      return B === 0 ? 0 : (A + P).toFixed(2)
+      return B === 0 ? 0 : Math.floor((A + P) * 100) / 100
     }
   }
 }
