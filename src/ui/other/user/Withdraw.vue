@@ -5,28 +5,34 @@
         div.head-cover.round(v-lazy:background-image="userData.logo")
         div.head-name {{userData.nickname}}
       div.list
-        el-table.list-el-table(:data="dataList", border)
+        el-table.list-el-table(:data="dataList.data", border)
           el-table-column(label="金额(元)", prop="recent_pay_tick")
             template(slot-scope="scope")
-              div {{1888 | price}}
+              div {{scope.row.amount | price}}
           el-table-column(label="时间", prop="")
             template(slot-scope="scope")
               div {{showtime(scope.row) | date}}
           el-table-column(label="备注", prop="")
             template(slot-scope="scope")
-              div {{scope.row.total_amount | price}}
+              div {{scope.row.remark | price}}
           el-table-column(label="操作者", prop="total_count")
             template(slot-scope="scope")
-              div {{scope.row.time | date}}
+              div {{scope.row.operator_name}}
+        el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 
 </template>
 
 <script>
   import { getUserShowData } from 'src/service/other/index'
   import * as UserApi from 'src/api/user'
+  import * as UserWallet from 'src/api/wallet'
   import { dateFormat } from 'src/util/format'
+  import LoadPagerData from 'src/mixins/load-pager-data'
 
   export default {
+    mixins: [
+      LoadPagerData
+    ],
     data () {
       return {
         loading: false,
@@ -38,6 +44,9 @@
       }
     },
     methods: {
+      getQueryApi (params) {
+        return UserWallet.getWalletWithdraw(this.$route.params.uid, params)
+      },
       async getDetail () {
         try {
           this.loading = true

@@ -5,16 +5,16 @@
       div.head-cover.round(v-lazy:background-image="userData.logo")
       div.head-name {{userData.nickname}}
     div.list
-      el-table.list-el-table(:data="dataList", border)
+      el-table.list-el-table(:data="dataList.data", border)
         el-table-column(label="详情", sortable, prop="recent_pay_tick")
           template(slot-scope="scope")
-            div(@click="toOderDetail(scope.row)") 订单号：{{scope.row.code}}
+            div(@click="toOderDetail(scope.row)") 订单号：{{scope.row.order_code}}
         el-table-column(label="类型", sortable, prop="")
           template(slot-scope="scope")
-            div {{showAverage(scope.row)}}
+            div {{scope.row.reason}}
         el-table-column(label="金额（元）", sortable, prop="")
           template(slot-scope="scope")
-            div {{scope.row.total_amount | price}}
+            div {{scope.row.amount | price}}
         el-table-column(label="时间", sortable, prop="total_count")
           template(slot-scope="scope")
             div {{showtime(scope.row) | date}}
@@ -65,7 +65,7 @@
         })
       },
       showtime (row) {
-        const timeee = dateFormat(row.timeee)
+        const timeee = dateFormat(row.timestamp)
         return timeee
       }
     },
