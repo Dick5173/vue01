@@ -11,7 +11,7 @@
         el-form-item(label="核销金额" prop="amount")
           el-input.input(v-model="form.amount")
           div.tip
-            span 最多核销{{18 | price}}
+            span 最多核销{{getAvailableBalance(userData) | price}}
         div.line
         div.txt 以下内容用户不可见
         el-form-item(label="备注", prop="remark")
@@ -26,6 +26,7 @@
 <script>
   import * as UserApi from 'src/api/user'
   import {getUserShowData} from 'src/service/other/index'
+  import * as UserWallet from 'src/api/wallet'
   import {convertYuanToFen, checkIsMoney} from 'src/util/money'
 
   export default {
@@ -33,13 +34,18 @@
       const validateAmount = (rule, value, callback) => {
         if (value) {
           if (checkIsMoney(value)) {
-            if (parseFloat(value) <= 0) {
-              callback(new Error('价格必须大于0'))
+            if (parseFloat(value) < 0) {
+              callback(new Error('输入内容不能小于0'))
               return
             }
           }
-          if (convertYuanToFen(value) > 18) {
-            callback(new Error('不能大于最多核销金额'))
+          let reg = /^(([1-9][0-9]*)|[0-9])(\.[0-9]{1,2})?$/
+          if (!reg.test(value)) {
+            callback(new Error('最多限两位小数'))
+            return
+          }
+          if (convertYuanToFen(value) > this.userData.wallet.available_balance * 100) {
+            callback(new Error('不能超过最多核销'))
           }
         }
         callback()
@@ -49,7 +55,8 @@
         remarkMaxLength: 30,
         userData: {
           logo: '',
-          nickname: ''
+          nickname: '',
+          wallet: {}
         },
         form: {
           amount: '',
@@ -74,7 +81,18 @@
       hide () {
         this.dialogVisible = false
       },
-      submit () {
+      getAvailableBalance (row) {
+        if (row.wallet === null) {
+          return 0
+        } else {
+          return row.wallet.available_balance
+        }
+      },
+      async submit () {
+        try {
+          this.form.amount = parseFloat(this.form.amount)
+          await UserWallet.postWalletWithdraw(this.userData.id, this.form)
+        } catch (err) {}
         this.dialogVisible = false
       },
       async getDetail () {
