@@ -12,15 +12,15 @@
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nickname}}
         el-table-column(prop="",label="收入")
           div(slot-scope="scope")
-            el-button(type="text", @click="toIncome(scope.row)") {{1800 | price}}
+            el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price}}
         el-table-column(prop="", label="抵用")
           div(slot-scope="scope")
-            el-button(type="text", @click="ToServerpurpose(scope.row)") {{1900 | price}}
+            el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price}}
         el-table-column(prop="",label="余额")
-          div(slot-scope="scope") {{1900 | price}}
+          div(slot-scope="scope") {{getAvailableBalance(scope.row) | price}}
         el-table-column(prop="",label="核销提现")
           div(slot-scope="scope")
-            el-button(type="text", @click="toWithdraw(scope.row)") {{2000 | price}}
+            el-button(type="text", @click="toWithdraw(scope.row)") {{getTotalWithdraw(scope.row) | price}}
         el-table-column(prop="", label="首次访问")
           template(slot-scope="scope")
             div {{showDate(scope.row)}}
@@ -120,6 +120,34 @@
           return row.tenant.nick_name
         } else {
           return '无店铺'
+        }
+      },
+      getIncome (row) {
+        if (row.wallet === null) {
+          return 0
+        } else {
+          return row.wallet.total_income
+        }
+      },
+      getTotalUse (row) {
+        if (row.wallet === null) {
+          return 0
+        } else {
+          return row.wallet.total_use
+        }
+      },
+      getAvailableBalance (row) {
+        if (row.wallet === null) {
+          return 0
+        } else {
+          return row.wallet.available_balance
+        }
+      },
+      getTotalWithdraw (row) {
+        if (row.wallet === null) {
+          return 0
+        } else {
+          return row.wallet.total_withdraw
         }
       }
     },
