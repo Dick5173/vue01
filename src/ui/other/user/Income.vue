@@ -6,16 +6,16 @@
       div.head-name {{userData.nickname}}
     div.list
       el-table.list-el-table(:data="dataList", border)
-        el-table-column(label="详情", prop="recent_pay_tick")
+        el-table-column(label="详情", sortable, prop="recent_pay_tick")
           template(slot-scope="scope")
             div(@click="toOderDetail(scope.row)") 订单号：{{scope.row.code}}
-        el-table-column(label="类型", prop="")
+        el-table-column(label="类型", sortable, prop="")
           template(slot-scope="scope")
             div {{showAverage(scope.row)}}
-        el-table-column(label="金额（元）", prop="")
+        el-table-column(label="金额（元）", sortable, prop="")
           template(slot-scope="scope")
             div {{scope.row.total_amount | price}}
-        el-table-column(label="时间", prop="total_count")
+        el-table-column(label="时间", sortable, prop="total_count")
           template(slot-scope="scope")
             div {{showtime(scope.row) | date}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
@@ -24,6 +24,7 @@
 <script>
   import { getUserShowData } from 'src/service/other/index'
   import * as UserApi from 'src/api/user'
+  import * as UserWallet from 'src/api/wallet'
   import { dateFormat } from 'src/util/format'
   import LoadPagerData from 'src/mixins/load-pager-data'
 
@@ -42,6 +43,9 @@
       }
     },
     methods: {
+      getQueryApi (params) {
+        return UserWallet.getWalletIncome(this.$route.params.uid, params)
+      },
       async getDetail () {
         try {
           this.loading = true

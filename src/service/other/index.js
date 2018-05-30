@@ -99,11 +99,11 @@ export const showDeliverytButtonName = (row) => {
 }
 export const showWithdrawBindButtonName = (row) => {
   let text = ''
-  switch (row.delivery_mode) {
-    case 1:
+  switch (row.allow_withdraw) {
+    case true:
       text = '开启'
       break
-    case 2:
+    case false:
       text = '关闭'
       break
   }

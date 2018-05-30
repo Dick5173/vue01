@@ -8,10 +8,10 @@
         div.name {{tenantData.nick_name}}
       el-form.small-el-form(ref="form", label-width="110px")
         div.body-text
-          el-radio-group(v-model="delivery_mode")
-            el-radio(:label="1") 开启
+          el-radio-group(v-model="operate")
+            el-radio(:label="'open'") 开启
             div.text-margin 允许店铺为用户线下提现，线上记账
-            el-radio(:label="2") 关闭
+            el-radio(:label="'close'") 关闭
         el-form-item()
           el-button.btn1(type="", @click="hide", plain) 取 消
           el-button.btn2(type="primary", @click="handleBind") 确 定
@@ -25,7 +25,7 @@
       return {
         dialogVisible: false,
         loading: false,
-        delivery_mode: 0,
+        operate: 'close',
         tenantData: {
           head_img: '',
           nick_name: ''
@@ -48,11 +48,11 @@
       },
       handleBind () {
         const h = this.$createElement
-        var title = '开启"核销提现"'
-        var delivM = 1
-        if (this.delivery_mode === 2) {
-          title = '关闭"核销提现"'
-          delivM = 2
+        var title = '关闭"核销提现"'
+        var allowWithdraw = 'close'
+        if (this.operate === 'open') {
+          title = '开启"核销提现"'
+          allowWithdraw = 'open'
         }
         this.$msgbox({
           title: title,
@@ -65,10 +65,8 @@
           center: true
         }).then(async () => {
           try {
-            var formData = {
-              delivery_mode: delivM
-            }
-            await TenantApi.postDilvery(this.tenantData.id, formData)
+            this.operate = allowWithdraw
+            await TenantApi.postWithdrawOperate(this.tenantData.id, this.operate)
             this.$message({
               type: 'success',
               message: '更新成功 '
