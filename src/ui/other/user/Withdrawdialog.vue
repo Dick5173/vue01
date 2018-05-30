@@ -92,7 +92,6 @@
         this.$refs.form.validate(async (valid) => {
           if (valid) {
             try {
-              this.form.amount = parseFloat(this.form.amount)
               await UserWallet.postWalletWithdraw(this.userData.id, this.form)
               this.$message({
                 message: '提现成功',
