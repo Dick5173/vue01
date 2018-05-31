@@ -83,7 +83,11 @@
           this.loading = true
           let res = await TenantApi.getDetail(this.$route.params.tid)
           this.tenantData = res.data.tenant
-          this.delivery_mode = this.tenantData.delivery_mode
+          if (this.tenantData.allow_withdraw) {
+            this.operate = 'open'
+          } else {
+            this.operate = 'close'
+          }
         } catch (err) {
         } finally {
           this.loading = false
