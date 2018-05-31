@@ -17,6 +17,8 @@
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
         el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
+          div(slot-scope="props") {{props.row.name}}
+            div.remarks {{props.row.prop.sys_remark}}备注
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
         el-table-column(prop="collect_count", label="收藏", sortable, width="110px")
@@ -381,6 +383,12 @@
 
   .name {
 
+  }
+  .remarks {
+    color: #B4BCCC;
+    font-size: 13px;
+    margin-top:5px;
+    white-space: normal !important;
   }
 
   .batch {

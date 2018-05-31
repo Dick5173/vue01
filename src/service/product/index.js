@@ -88,6 +88,7 @@ export const convertFormToParam = R.curry((form) => {
         oversea: !!obj.oversea,
         skus: obj.skus,
         tags: obj.tags,
+        sys_remark: obj.sys_remark,
         service_tag_group_id: obj.service_tag_group_id,
         after_service_id: obj.after_service_id,
         delivery_region_id: obj.delivery_region_id,
@@ -98,7 +99,7 @@ export const convertFormToParam = R.curry((form) => {
           return item.id
         })(obj.supply_tenants || [])
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'content', 'prop'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'content', 'prop', 'sys_remark'])(obj)
     }
   )(form)
 })
@@ -113,6 +114,7 @@ export const convertModelToForm = R.curry((form) => {
         skus: ['prop', 'skus'],
         supply_levels: ['prop', 'supply_levels'],
         tags: ['prop', 'tags'],
+        sys_remark: ['prop', 'sys_remark'],
         service_tag_group_id: ['prop', 'ext', 'service_tag_group', 'id'],
         after_service_id: ['prop', 'ext', 'after_service', 'id'],
         delivery_region_id: ['prop', 'ext', 'delivery_region', 'id'],
@@ -184,10 +186,11 @@ export const convertModelToForm = R.curry((form) => {
         category_id: obj.category_id,
         oversea: !!obj.oversea,
         skus: obj.skus,
+        sys_remark: obj.sys_remark,
         supply_price: obj.supply_price,
         supply_levels: obj.supply_levels
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants', 'purchase_price'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants', 'purchase_price', 'sys_remark'])(obj)
     }
   )(form)
 })
