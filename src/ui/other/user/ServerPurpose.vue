@@ -8,7 +8,8 @@
       el-table.list-el-table(:data="dataList.data", border)
         el-table-column(label="详情", prop="recent_pay_tick")
           template(slot-scope="scope")
-            div(@click="toOderDetail(scope.row)") 订单号：{{scope.row.order_code}}
+            div 订单号：
+              el-button(type="text", @click="toOderDetail(scope.row.order_id)") {{scope.row.order_code}}
         el-table-column(label="类型", prop="")
           template(slot-scope="scope")
             div {{scope.row.reason}}
@@ -56,11 +57,11 @@
           this.loading = false
         }
       },
-      OrderDetail (row) {
+      toOderDetail (id) {
         this.$router.push({
           name: 'OrderDetail',
           params: {
-            uid: row.id
+            id: id
           }
         })
       },
