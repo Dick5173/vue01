@@ -28,7 +28,7 @@
           div(slot-scope="scope") {{getTenantName(scope.row)}}
         el-table-column(prop="",label="操作")
           div.control-wrapper(slot-scope="scope")
-            el-button.btn.text-code(size="mini", type="primary", @click="showWithDrawDialog(scope.row)", plain) 核销提现
+            el-button.btn.text-code(size="mini", type="primary", v-if="scope.row.tenant.allow_withdraw", @click="showWithDrawDialog(scope.row)", plain) 核销提现
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       with-draw-dialog(ref="withDrawDilog")
 </template>
