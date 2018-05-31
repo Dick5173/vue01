@@ -18,6 +18,9 @@
         div.body-item-status 收入：
           el-button(type="text", @click="toIncome(userData)", size="mini") {{this.userData.wallet.total_income| price}}
       div.body-status.margin-left
+        div.body-item-status 抵用：
+          el-button(type="text", @click="toServerPurpose(userData)", size="mini") {{userData.wallet.total_use | price}}
+      div.body-status.margin-left
         div.body-item-status 余额：
           span {{this.userData.wallet.available_balance | price}}
       div.body-status.margin-left
@@ -100,6 +103,14 @@
       toWithDraw (row) {
         this.$router.push({
           name: 'UserWithDraw',
+          params: {
+            uid: row.id
+          }
+        })
+      },
+      toServerPurpose (row) {
+        this.$router.push({
+          name: 'UserServerPurpose',
           params: {
             uid: row.id
           }
