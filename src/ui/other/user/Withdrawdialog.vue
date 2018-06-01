@@ -3,6 +3,7 @@
     el-dialog(title="核销提现",
     :visible.sync="dialogVisible",
     width="750px",
+    @close="closeCallback"
     )
       div.headT
         div.headTxt 此操作不能让用户收到提现，仅作为记账手段
@@ -104,6 +105,9 @@
             } catch (err) {}
           }
         })
+      },
+      closeCallback () {
+        this.$refs.form.resetFields()
       },
       async getDetail () {
         try {
