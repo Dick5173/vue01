@@ -10,18 +10,18 @@
         el-table-column(prop="", label="用户")
           div(slot-scope="scope")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nickname}}
-        el-table-column(prop="",label="收入")
+        el-table-column(prop="", sortable, label="收入")
           div(slot-scope="scope")
             el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price}}
-        el-table-column(prop="", label="抵用")
+        el-table-column(prop="", sortable, label="抵用")
           div(slot-scope="scope")
             el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price}}
-        el-table-column(prop="",label="余额")
+        el-table-column(prop="", sortable, label="余额")
           div(slot-scope="scope") {{getAvailableBalance(scope.row) | price}}
-        el-table-column(prop="",label="核销提现")
+        el-table-column(prop="", sortable, label="核销提现")
           div(slot-scope="scope")
             el-button(type="text", @click="toWithdraw(scope.row)") {{getTotalWithdraw(scope.row) | price}}
-        el-table-column(prop="", label="首次访问")
+        el-table-column(prop="", sortable, label="首次访问")
           template(slot-scope="scope")
             div {{showDate(scope.row)}}
         el-table-column(prop="", label="店铺")

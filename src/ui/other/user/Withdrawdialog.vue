@@ -4,6 +4,9 @@
     :visible.sync="dialogVisible",
     width="750px",
     )
+      div.headT
+        div.headTxt 此操作不能让用户收到提现，仅作为记账手段
+        div.headTxt 操作不可撤销，请确认已为用户用其他方式提现
       div.head
         div.head-cover.round(v-lazy:background-image="userData.logo")
         div.head-name {{userData.nickname}}
@@ -123,6 +126,7 @@
     display: flex;
     height: 50px;
     align-items: center;
+    margin-top:30px;
     .head-cover {
       display: inline-block;
       width: 50px;
@@ -152,5 +156,15 @@
     color: #868686;
     margin-top: 5px;
     margin-bottom: 20px;
+  }
+  .headT {
+    position: absolute;
+    top: 45px;
+    .headTxt {
+      color: #FA5555;
+      font-size: 12px;
+      height:16px;
+      line-height: 16px;
+    }
   }
 </style>
