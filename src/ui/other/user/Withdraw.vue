@@ -14,7 +14,7 @@
               div {{showtime(scope.row) | date}}
           el-table-column(label="备注", prop="")
             template(slot-scope="scope")
-              div {{scope.row.remark | price}}
+              div {{scope.row.remark}}
           el-table-column(label="操作者", prop="total_count")
             template(slot-scope="scope")
               div {{scope.row.operator_name}}
