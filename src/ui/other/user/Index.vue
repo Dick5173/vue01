@@ -13,7 +13,7 @@
         el-table-column(prop="income", sortable, label="收入")
           div(slot-scope="scope")
             el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price}}
-        el-table-column(prop="", sortable, label="抵用")
+        el-table-column(prop="use", sortable, label="抵用")
           div(slot-scope="scope")
             el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price}}
         el-table-column(prop="balance", sortable, label="余额")
