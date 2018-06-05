@@ -11,7 +11,7 @@
               div {{scope.row.amount | price}}
           el-table-column(label="时间", prop="")
             template(slot-scope="scope")
-              div {{showtime(scope.row) | date}}
+              div {{showtime(scope.row)}}
           el-table-column(label="备注", prop="")
             template(slot-scope="scope")
               div {{scope.row.remark}}
@@ -26,7 +26,6 @@
   import { getUserShowData } from 'src/service/other/index'
   import * as UserApi from 'src/api/user'
   import * as UserWallet from 'src/api/wallet'
-  import { dateFormat } from 'src/util/format'
   import LoadPagerData from 'src/mixins/load-pager-data'
 
   export default {
@@ -58,7 +57,7 @@
         }
       },
       showtime (row) {
-        const timeee = dateFormat(row.timeee)
+        const timeee = row.timestamp
         return timeee
       }
     },
