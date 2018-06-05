@@ -15,7 +15,8 @@
             div {{scope.row.reason}}
         el-table-column(label="金额（元）", prop="")
           template(slot-scope="scope")
-            div {{scope.row.amount | price}}
+            div(v-if="scope.row.type === 2") {{scope.row.amount | price}}
+            div(v-else) -{{scope.row.amount | price}}
         el-table-column(label="时间", prop="total_count")
           template(slot-scope="scope")
             div {{showtime(scope.row)}}
