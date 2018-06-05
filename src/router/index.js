@@ -530,7 +530,7 @@ const router = new Router({
             showInSide: false,
             breadcrumbItems: [{
               text: '用户',
-              to: {name: 'UserInfoInde'}
+              to: {name: 'User'}
             }, {
               text: '抵用'
             }]
