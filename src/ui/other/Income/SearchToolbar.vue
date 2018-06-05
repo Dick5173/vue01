@@ -12,7 +12,7 @@
           :key="item.id",
           :label="item.principal_name_id",
           :value="item.id")
-      el-form-item(label="首次上线：")
+      el-form-item
         date-picker(:defaultDate="defaultDate", @change = "changeDate", type="datetimerange")
       el-form-item
       el-form-item
