@@ -19,7 +19,7 @@
             div(v-else) -{{scope.row.amount | price}}
         el-table-column(label="时间", prop="total_count")
           template(slot-scope="scope")
-            div {{showtime(scope.row)}}
+            div {{scope.row.timestamp | datetime}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 
@@ -28,7 +28,6 @@
   import * as UserApi from 'src/api/user'
   import * as UserWallet from 'src/api/wallet'
   import LoadPagerData from 'src/mixins/load-pager-data'
-  import { dateFormat } from 'src/util/format'
 
   export default {
     mixins: [
@@ -65,10 +64,6 @@
             id: id
           }
         })
-      },
-      showtime (row) {
-        const timeee = dateFormat(row.timestamp)
-        return timeee
       }
     },
     mounted () {
