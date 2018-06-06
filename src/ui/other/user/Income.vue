@@ -28,6 +28,7 @@
   import * as UserApi from 'src/api/user'
   import * as UserWallet from 'src/api/wallet'
   import LoadPagerData from 'src/mixins/load-pager-data'
+  import { dateFormat } from 'src/util/format'
 
   export default {
     mixins: [
@@ -66,7 +67,7 @@
         })
       },
       showtime (row) {
-        const timeee = row.timestamp
+        const timeee = dateFormat(row.timestamp)
         return timeee
       }
     },
