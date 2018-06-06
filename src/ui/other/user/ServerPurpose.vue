@@ -19,7 +19,7 @@
             div(v-else) -{{scope.row.amount | price}}
         el-table-column(label="时间", prop="total_count")
           template(slot-scope="scope")
-            div {{scope.row.timestamp | datetime}}
+            div {{scope.row.ct | datetime}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 

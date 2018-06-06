@@ -11,7 +11,7 @@
               div {{scope.row.amount | price}}
           el-table-column(label="时间", prop="")
             template(slot-scope="scope")
-              div {{scope.row.timestamp | datetime}}
+              div {{scope.row.ct | datetime}}
           el-table-column(label="备注", prop="")
             template(slot-scope="scope")
               div {{scope.row.remark}}

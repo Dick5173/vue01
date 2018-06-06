@@ -57,6 +57,9 @@
           key: '',
           start: new Date().getTime(),
           end: new Date().getTime()
+        },
+        dataList: {
+          html_control_data: {}
         }
       }
     },
