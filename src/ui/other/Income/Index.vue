@@ -29,12 +29,14 @@
         el-table-column(label="利润（元）", prop="total_profit")
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
-        el-table-column(label="操作", prop="")
+        el-table-column(label="状态", prop="")
           template(slot-scope="scope")
-            el-button(type="text" v-if="scope.row.show_settle_btn" @click="showBalanceDialog(scope.row)") 确认结算
-            div(v-if="!scope.row.show_settle_btn") 已结算
+            div.unsettle(v-if="scope.row.unsettle_amount > 0")
+              div.unsettle-text 未结算
+              div （{{scope.row.unsettle_amount | price}}）
+            div(v-else) 已结算
       div.total
-      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 向美市结算:{{overview.settle_total_amount | price}} 销售总额: {{overview.sale_total_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 平台服务费:{{overview.total_platform_fee | price}}, 利润: {{overview.tenant_total_amount | price}}
+      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 向美市结算:{{overview.settle_total_amount | price}} 销售总额: {{overview.sale_total_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 平台服务费: {{overview.total_platform_fee | price}}, 利润: {{overview.tenant_total_amount | price}}，未结算: {{overview.unsettle_total_amount | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       bind-balance-dialog(ref="dlgBindBalance",@refresh="handleSearch")
 </template>
@@ -58,7 +60,8 @@
         queryParams: {
           start: 0,
           end: 0,
-          tenant_id: ''
+          tenant_id: '',
+          status: ''
         },
         defaultDate: [],
         overview: {
@@ -67,7 +70,10 @@
           total_platform_fee: 0,
           tenant_gross_total_amount: 0,
           tenant_total_amount: 0,
-          settle_total_amount: 0
+          settle_total_amount: 0,
+          unsettle_total_amount: 0,
+          platform_sp_amount: 0,
+          self_sp_amount: 0
         }
       }
     },
@@ -120,7 +126,7 @@
       },
       async handleSearch (data) {
         this.queryChange(data)
-        await this.getProfitOverview(data)
+        this.getProfitOverview(data)
       }
     },
     async mounted () {
@@ -131,7 +137,7 @@
         params.tenant_id = this.$route.params.tid
         this.queryChange(params)
       }
-      await this.getProfitOverview(params)
+      this.getProfitOverview(params)
     }
   }
 </script>
@@ -148,4 +154,16 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
+
+  .unsettle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .unsettle-text {
+      color: $color-danger;
+    }
+  }
+
 </style>
