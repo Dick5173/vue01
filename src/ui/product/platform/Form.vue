@@ -219,6 +219,7 @@
               stock: '',
               code: '',
               weight: '',
+              isControlPrice: false,
               image: {
                 url: '',
                 width: 0,
