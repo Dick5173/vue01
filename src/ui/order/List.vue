@@ -15,7 +15,7 @@
                 div.left {{scope.row.show_order_items[0].product_name}}
                 div.right {{scope.row.prod_count}}件商品
               div
-                span.total-price 实付{{scope.row.total_pay_price | price}}
+                span.total-price 实付{{scope.row.total_price | price}}
                 span.txt-ex(v-if="scope.row.status === 3  && scope.row.order_item_count > 1 && scope.row.dev_item_count > 0") {{scope.row.dev_item_count}}/{{scope.row.order_item_count}}已发货
                 span.txt-ex.txt-blod.refund-color(v-if="scope.row.refunding_count") {{scope.row.refunding_count}}件退款中
       el-table-column(label="买家信息" width="334")
