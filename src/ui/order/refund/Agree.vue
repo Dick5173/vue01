@@ -7,7 +7,6 @@
           span 最多退款
           span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
           span 其中商品总额{{orderItem.total_price | price}}，
-          span(v-if="orderItem.wallet_used_amount > 0") 余额抵用{{orderItem.wallet_used_amount | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
       el-form-item(label="")
         el-checkbox(v-if="orderItem.can_refund_voucher" v-model="form.is_refund_voucher") 退回优惠券
@@ -161,7 +160,7 @@
         if (this.canFullRefund) {
           return this.orderItem.total_price + this.orderItem.order_postage
         }
-        return this.orderItem.order_left_amount
+        return this.orderItem.total_price
       }
     },
     methods: {

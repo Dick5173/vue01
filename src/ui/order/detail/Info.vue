@@ -33,7 +33,7 @@
           span(v-if="order.user_voucher_amount > 0") 优惠券：-{{order.user_voucher_amount | price}}，
           span(v-if="order.postage > 0") 运费：{{order.postage | price}}，
           span(v-if="order.wallet_used_amount > 0") 余额抵用：-{{order.wallet_used_amount | price}}，
-          span 实付：{{order.total_pay_price | price}}，
+          span 实付：{{order.total_price | price}}，
           span 利润
             el-tooltip(effect="light", placement="bottom-start")
               div(slot="content") 利润未扣除平台服务费
