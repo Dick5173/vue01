@@ -1,3 +1,14 @@
+export const allSettleStatus = {
+  settle: {
+    value: 1,
+    text: '已结算'
+  },
+  unsettle: {
+    value: 2,
+    text: '未结算'
+  }
+}
+
 export const getTenantNameId = (arr) => {
   let resArr = arr.map((i) => {
     let merge = []

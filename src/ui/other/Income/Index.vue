@@ -29,7 +29,7 @@
         el-table-column(label="利润（元）", prop="total_profit")
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}
-        el-table-column(label="操作", prop="")
+        el-table-column(label="状态", prop="")
           template(slot-scope="scope")
             div(v-if="scope.row.unsettle_amount > 0")
               div.unsettle-text 未结算
@@ -60,7 +60,8 @@
         queryParams: {
           start: 0,
           end: 0,
-          tenant_id: ''
+          tenant_id: '',
+          settle_status: ''
         },
         defaultDate: [],
         overview: {
@@ -125,7 +126,7 @@
       },
       async handleSearch (data) {
         this.queryChange(data)
-        await this.getProfitOverview(data)
+        this.getProfitOverview(data)
       }
     },
     async mounted () {
@@ -136,7 +137,7 @@
         params.tenant_id = this.$route.params.tid
         this.queryChange(params)
       }
-      await this.getProfitOverview(params)
+      this.getProfitOverview(params)
     }
   }
 </script>
