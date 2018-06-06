@@ -9,14 +9,6 @@
           span 其中商品总额{{orderItem.total_price | price}}，
           span(v-if="orderItem.wallet_used_amount > 0") 余额抵用{{orderItem.wallet_used_amount | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
-      el-form-item(label="退回余额抵用", prop="purpose" v-if="orderItem.full_reduce_amount > 0")
-        el-input.input(v-model="form.purpose")
-        div.tip
-          span 最多退回{{orderItem.full_reduce_amount | price}}，退至用户"钱包-余额"
-      el-form-item(label="追回分享奖励", prop="purpose" v-if="orderItem.full_reduce_amount > 0")
-        el-input.input(v-model="form.purpose")
-        div.tip
-          span 最多退回{{orderItem.full_reduce_amount | price}}
       el-form-item(label="")
         el-checkbox(v-if="orderItem.can_refund_voucher" v-model="form.is_refund_voucher") 退回优惠券
       el-form-item(label="退回余额抵用", prop="wallet_use_amount" v-if="orderItem.wallet_used_amount > 0")
@@ -105,7 +97,7 @@
               return
             }
           } else {
-            callback(new Error('请输入合适的数字'))
+            callback(new Error('请输入合适的数字，最多限两位小数'))
             return
           }
           if (convertYuanToFen(value) > this.orderItem.share_reward_amount) {
