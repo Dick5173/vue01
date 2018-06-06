@@ -95,14 +95,21 @@
       submit () {
         this.$refs.form.validate(async (valid) => {
           if (valid) {
-            try {
-              await UserWallet.postWalletWithdraw(this.userData.id, this.form)
-              this.$message({
-                message: '提现成功',
-                type: 'success'
-              })
-              this.dialogVisible = false
-            } catch (err) {}
+            this.$confirm('确认提现', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(async () => {
+              try {
+                await UserWallet.postWalletWithdraw(this.userData.id, this.form)
+                this.$message({
+                  message: '提现成功',
+                  type: 'success'
+                })
+                this.dialogVisible = false
+                this.$emit('refresh')
+              } catch (err) {}
+            })
           }
         })
       },
