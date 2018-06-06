@@ -31,7 +31,7 @@
             div {{scope.row.tenant_total_amount | price}}
         el-table-column(label="状态", prop="")
           template(slot-scope="scope")
-            div(v-if="scope.row.unsettle_amount > 0")
+            div.unsettle(v-if="scope.row.unsettle_amount > 0")
               div.unsettle-text 未结算
               div （{{scope.row.unsettle_amount | price}}）
             div(v-else) 已结算
@@ -61,7 +61,7 @@
           start: 0,
           end: 0,
           tenant_id: '',
-          settle_status: ''
+          status: ''
         },
         defaultDate: [],
         overview: {
@@ -155,8 +155,15 @@
     margin-bottom: 10px;
   }
 
-  .unsettle-text {
-    color: $color-danger;
+  .unsettle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .unsettle-text {
+      color: $color-danger;
+    }
   }
 
 </style>

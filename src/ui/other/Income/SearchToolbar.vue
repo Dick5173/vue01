@@ -15,7 +15,7 @@
       el-form-item(label="首次上线：")
         date-picker(:defaultDate="defaultDate", @change = "changeDate", type="datetimerange")
       el-form-item(label="状态：")
-        el-select(v-model="formData.settle_status", clearable, placeholder="请选择")
+        el-select(v-model="formData.status", clearable, placeholder="请选择")
           el-option(v-for="item in allSettleStatus", :key="item.value", :label="item.text", :value="item.value")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
@@ -40,7 +40,7 @@
           tenant_id: '',
           start: 0,
           end: 0,
-          settle_status: ''
+          status: ''
         },
         initialData: {},
         defaultDate: [],
@@ -91,7 +91,7 @@
           tenant_id: this.queryParams.tenant_id,
           start: this.R_.parseDateTick(0, this.queryParams.start),
           end: this.R_.parseDateTick(0, this.queryParams.end),
-          settle_status: this.queryParams.settle_status ? parseInt(this.queryParams.settle_status) : ''
+          status: this.queryParams.status ? parseInt(this.queryParams.status) : ''
         }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]
