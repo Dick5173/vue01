@@ -1,10 +1,10 @@
 export const allSettleStatus = {
   settle: {
-    value: 1,
+    value: 2,
     text: '已结算'
   },
   unsettle: {
-    value: 2,
+    value: 1,
     text: '未结算'
   }
 }
