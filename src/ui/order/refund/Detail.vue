@@ -15,10 +15,10 @@
           div 分摊优惠：-{{data.user_voucher_amount | price}}
           div 优惠总额：-{{data.order_user_voucher_amount | price}}
     div.right
-      div(v-if="isActionVisible")
-        el-button(size="small", type="primary", @click="reply") 回复
-        el-button(size="small", type="primary", @click="reject") 拒绝退款
-        el-button(size="small", type="danger", @click="agree") 同意退款
+      div()
+        el-button(v-if="isActionVisible", size="small", type="primary", @click="reply") 回复
+        el-button(v-if="isActionVisible", size="small", type="primary", @click="reject") 拒绝退款
+        el-button(v-if="isActionVisibles", size="small", type="danger", @click="agree") 同意退款
       div
         message-item(v-for="item in data.refunds", :data="item", :key="item.id")
     reply(ref="reply", :oiid="data.id", @submit="replySuccess")
@@ -68,6 +68,10 @@
       isActionVisible () {
         // return true
         return this.data.refund_status === RefundStatus.STATUS_WAIT_ADMIN || this.data.refund_status === RefundStatus.STATUS_WAIT_CUSTOMER
+      },
+      isActionVisibles () {
+        // return true
+        return this.data.refund_status === RefundStatus.STATUS_WAIT_ADMIN || this.data.refund_status === RefundStatus.STATUS_WAIT_CUSTOMER || this.data.refund_status === RefundStatus.STATUS_CANCELED || this.data.refund_status === RefundStatus.STATUS_REJECTED
       }
     },
     methods: {
