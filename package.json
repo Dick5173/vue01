@@ -12,6 +12,7 @@
     "lint": "eslint --ext .js,.vue src",
     "build": "npm install && node build/build.js",
     "release-beta": "npm run build beta && scp -r -P 7322 dist/. root@doc.51baibao.com:/opt/meishi_beta/public/admin",
+    "release-staging": "npm run build beta && scp -r -P 7322 dist/. root@doc.51baibao.com:/opt/meishi_staging/public/home",
     "release": "npm run build && scp -r -P 7322 dist/. root@meishi.51baibao.com:/opt/meishi/public/admin"
   },
   "dependencies": {
