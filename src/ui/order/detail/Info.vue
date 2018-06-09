@@ -22,8 +22,10 @@
           div.status
             div(v-if="scope.row.dev_status === 1")
               el-button(type="text", @click="showExpress(scope.row)") 已发货(点击查看物流信息)
-            div(v-else) 待发货
-            div(v-if="scope.row.dev_status === 1") {{scope.row.dt | datetime}}
+              div {{scope.row.dt | datetime}}
+            div(v-else)
+              div 待发货
+              el-button(type="text", @click="clickUndeliver(scope.row)") 无需发货
     div.items-wrapper
       div.info-item-wrapper
         div.txt-info
@@ -40,6 +42,7 @@
           span ：{{order.total_profit | price}}
     express-dialog(ref="dlgExpress")
     agree(ref="agree", :orderItem="currentOrderItem", @submit="$emit('refresh')")
+    dialog-undeliver(ref="dlgUndeliver")
 </template>
 
 
@@ -51,11 +54,13 @@
   import { refundToWx } from '../../../api/refuse'
   import Agree from '../refund/Agree'
   import ExpressDialog from 'src/ui/order/express/Index'
+  import DialogUndeliver from './DialogUndeliver'
 
   export default {
     components: {
       Agree,
-      ExpressDialog
+      ExpressDialog,
+      DialogUndeliver
     },
     props: {
       order: {
@@ -95,6 +100,9 @@
       },
       showExpress (orderItem) {
         this.$refs.dlgExpress.show(this.order.id, orderItem.dev_name, orderItem.dev_no)
+      },
+      clickUndeliver (orderItem) {
+        this.$refs.dlgUndeliver.show(orderItem)
       },
       async goRefundDetail (row) {
         if (row.refund_status === REFUND_STATUS_NO_APPLY) {
