@@ -35,6 +35,7 @@
   import MessageItem from './MessageItem'
   import OiExpressDialog from '../express/OiIndex'
   import {orderItems} from '../../../api/order'
+  import * as OrderItemStatus from 'src/constants/orderItem'
 
   export default {
     components: {
@@ -71,7 +72,7 @@
       },
       isActionVisibles () {
         // return true
-        return this.data.refund_status === RefundStatus.STATUS_WAIT_ADMIN || this.data.refund_status === RefundStatus.STATUS_WAIT_CUSTOMER || this.data.refund_status === RefundStatus.STATUS_CANCELED || this.data.refund_status === RefundStatus.STATUS_REJECTED
+        return this.data.refund_status === RefundStatus.STATUS_WAIT_ADMIN || this.data.refund_status === RefundStatus.STATUS_WAIT_CUSTOMER || ((this.data.refund_status === RefundStatus.STATUS_REJECTED || this.data.refund_status === RefundStatus.STATUS_CANCELED) && this.data.status === OrderItemStatus.STATUS_PAID)
       }
     },
     methods: {
