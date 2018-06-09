@@ -21,9 +21,15 @@
         template(slot-scope="scope")
           div.status
             div(v-if="scope.row.dev_status === 1")
-              el-button(type="text", @click="showExpress(scope.row)") 已发货(点击查看物流信息)
-            div(v-else) 待发货
-            div(v-if="scope.row.dev_status === 1") {{scope.row.dt | datetime}}
+              div(v-if="scope.row.no_need_delivery")
+                el-button(type="text", @click="showUnDelivery") 已发货
+                div {{scope.row.no_delivery_oper_name}}：{{scope.row.no_delivery_txt}}
+              div(v-else)
+                el-button(type="text", @click="showExpress(scope.row)") 已发货(点击查看物流信息)
+                div {{scope.row.dt | datetime}}
+            div(v-else)
+              div 待发货
+              el-button(type="text", v-if="isShowUnDeliver(scope.row)", @click="clickUnDeliver(scope.row)") 无需发货
     div.items-wrapper
       div.info-item-wrapper
         div.txt-info
@@ -40,22 +46,25 @@
           span ：{{order.total_profit | price}}
     express-dialog(ref="dlgExpress")
     agree(ref="agree", :orderItem="currentOrderItem", @submit="$emit('refresh')")
+    dialog-un-deliver(ref="dlgUndeliver", @submit="$emit('refresh')")
 </template>
 
 
 <script>
   import * as RefundUtil from 'src/service/refund/refund'
   import * as OrderUtil from 'src/service/order/orderUtil'
-  import { REFUND_STATUS_NO_APPLY } from '../../../constants/orderItem'
+  import { REFUND_STATUS_NO_APPLY, STATUS_PAID } from '../../../constants/orderItem'
   import { orderItems } from '../../../api/order'
   import { refundToWx } from '../../../api/refuse'
   import Agree from '../refund/Agree'
   import ExpressDialog from 'src/ui/order/express/Index'
+  import DialogUnDeliver from './DialogUnDeliver'
 
   export default {
     components: {
       Agree,
-      ExpressDialog
+      ExpressDialog,
+      DialogUnDeliver
     },
     props: {
       order: {
@@ -93,8 +102,19 @@
         }
         return text
       },
+      showUnDelivery () {
+        this.$alert('此订单无需发货', '提示', {
+          confirmButtonText: '确定'
+        })
+      },
+      isShowUnDeliver (orderItem) {
+        return orderItem.status === STATUS_PAID
+      },
       showExpress (orderItem) {
         this.$refs.dlgExpress.show(this.order.id, orderItem.dev_name, orderItem.dev_no)
+      },
+      clickUnDeliver (orderItem) {
+        this.$refs.dlgUndeliver.show(orderItem)
       },
       async goRefundDetail (row) {
         if (row.refund_status === REFUND_STATUS_NO_APPLY) {
