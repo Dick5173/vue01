@@ -29,7 +29,7 @@
                 div {{scope.row.dt | datetime}}
             div(v-else)
               div 待发货
-              el-button(type="text", v-if="showUnDeliver", @click="clickUnDeliver(scope.row)") 无需发货
+              el-button(type="text", v-if="isShowUnDeliver(scope.row)", @click="clickUnDeliver(scope.row)") 无需发货
     div.items-wrapper
       div.info-item-wrapper
         div.txt-info
@@ -53,7 +53,7 @@
 <script>
   import * as RefundUtil from 'src/service/refund/refund'
   import * as OrderUtil from 'src/service/order/orderUtil'
-  import { REFUND_STATUS_NO_APPLY } from '../../../constants/orderItem'
+  import { REFUND_STATUS_NO_APPLY, STATUS_PAID } from '../../../constants/orderItem'
   import { orderItems } from '../../../api/order'
   import { refundToWx } from '../../../api/refuse'
   import Agree from '../refund/Agree'
@@ -89,9 +89,6 @@
       },
       showStatue () {
         return this.order.status !== 1
-      },
-      showUnDeliver () {
-        return this.order.status === 3
       }
     },
     methods: {
@@ -109,6 +106,9 @@
         this.$alert('此订单无需发货', '提示', {
           confirmButtonText: '确定'
         })
+      },
+      isShowUnDeliver (orderItem) {
+        return orderItem.status === STATUS_PAID
       },
       showExpress (orderItem) {
         this.$refs.dlgExpress.show(this.order.id, orderItem.dev_name, orderItem.dev_no)
