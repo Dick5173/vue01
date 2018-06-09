@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import { date } from '../filter/datetime'
+import Qs from 'qs'
 
 export const orderList = (params) => {
   let myParams = {}
@@ -35,4 +36,8 @@ export const getExpress = (oid) => {
 
 export const getOiExpress = (oiid) => {
   return Axios.get(`/admin/oi/s/${oiid}/express`)
+}
+
+export const noNeedDelivery = (oiid, form) => {
+  return Axios.post(`/admin/oi/s/${oiid}/no_need_delivery`, Qs.stringify(form))
 }

@@ -3,10 +3,10 @@
     el-form(ref="form", :model="formData", :rules="formRules")
       el-form-item(label-width="20px")
         div {{orderItem.product_name}}, {{orderItem.spec}}, {{orderItem.price | price}} x {{orderItem.count}}
-      el-form-item(label="备注：", prop="remark", label-width="80px")
-        el-input(v-model="formData.remark", placeholder="请输入内容", type="textarea", :rows="3", maxlength="30", style="width: 400px")
+      el-form-item(label="备注：", prop="txt", label-width="80px")
+        el-input(v-model="formData.txt", placeholder="请输入内容", type="textarea", :rows="3", maxlength="30", style="width: 400px")
       el-form-item(label-width="80px")
-        div.txt-desc {{formData.remark.length}} / 30 用户不可见
+        div.txt-desc {{formData.txt.length}} / 30 用户不可见
     div(slot="footer", class="dialog-footer")
       el-button(size="mini", @click="dialogVisible = false") 取 消
       el-button(size="mini", type="primary", @click="submitForm", :loading="loading") 确 定
@@ -14,6 +14,7 @@
 
 <script>
   import * as ElUtil from 'src/util/el'
+  import * as OrderApi from 'src/api/order'
 
   export default {
     components: {},
@@ -24,10 +25,10 @@
         orderItem: {},
         dialogVisible: false,
         formData: {
-          remark: ''
+          txt: ''
         },
         formRules: {
-          remark: [
+          txt: [
             {required: true, message: '不能为空', trigger: 'blur'},
             {max: 30, message: '名称最长30个字符', trigger: 'blur'}
           ]
@@ -38,7 +39,7 @@
     methods: {
       show (orderItem) {
         this.orderItem = orderItem
-        this.formData.remark = ''
+        this.formData.txt = ''
         this.dialogVisible = true
       },
       submitForm () {
@@ -46,7 +47,23 @@
         this.$refs.form.validate(async (valid) => {
           if (valid) {
             try {
-              //
+              await this.$confirm('确定无需发货？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              })
+              await this.$confirm('真的确定无需发货？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              })
+              await OrderApi.noNeedDelivery(this.orderItem.id, this.formData)
+              this.$message({
+                message: '设置无需发货成功',
+                type: 'success'
+              })
+              this.$emit('submit')
+              this.dialogVisible = false
             } catch (err) {
               console.log(err)
             }
