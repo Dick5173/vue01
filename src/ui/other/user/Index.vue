@@ -10,17 +10,17 @@
         el-table-column(prop="", label="用户")
           div(slot-scope="scope")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nickname}}
-        el-table-column(prop="income", sortable, label="收入")
+        el-table-column(prop="income", sortable, label="收入(币)")
           div(slot-scope="scope")
-            el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price}}
-        el-table-column(prop="use", sortable, label="抵用")
+            el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price(false)}}
+        el-table-column(prop="use", sortable, label="抵用(币)")
           div(slot-scope="scope")
-            el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price}}
-        el-table-column(prop="balance", sortable, label="余额")
-          div(slot-scope="scope") {{getAvailableBalance(scope.row) | price}}
-        el-table-column(prop="withdraw", sortable, label="核销提现", v-if="dataList.html_control_data.withdraw_col_show")
+            el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price(false)}}
+        el-table-column(prop="balance", sortable, label="余额(币)")
+          div(slot-scope="scope") {{getAvailableBalance(scope.row) | price(false)}}
+        el-table-column(prop="withdraw", sortable, label="核销提现(币)", v-if="dataList.html_control_data.withdraw_col_show")
           div(slot-scope="scope")
-            el-button(type="text", @click="toWithdraw(scope.row)") {{getTotalWithdraw(scope.row) | price}}
+            el-button(type="text", @click="toWithdraw(scope.row)") {{getTotalWithdraw(scope.row) | price(false)}}
         el-table-column(prop="ct", sortable, label="首次访问")
           template(slot-scope="scope")
             div {{showDate(scope.row)}}

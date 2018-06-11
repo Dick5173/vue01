@@ -12,12 +12,14 @@
         el-checkbox(v-if="orderItem.can_refund_voucher" v-model="form.is_refund_voucher") 退回优惠券
       el-form-item(label="退回余额抵用", prop="wallet_use_amount" v-if="orderItem.wallet_used_amount > 0")
         el-input.input(v-model="form.wallet_use_amount")
+        span 币
         div.tip
-          span 最多退回{{orderItem.wallet_used_amount | price}}，退至用户"钱包-余额"
+          span 最多退回{{orderItem.wallet_used_amount | price(false)}}币，退至用户"钱包-余额"
       el-form-item(label="追回分享奖励", prop="share_reward_amount" v-if="orderItem.share_reward_amount > 0")
         el-input.input(v-model="form.share_reward_amount")
+        span 币
         div.tip
-          span 最多退回{{orderItem.share_reward_amount | price}}
+          span 最多退回{{orderItem.share_reward_amount | price(false)}}币
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}

@@ -6,9 +6,9 @@
         div.head-name {{userData.nickname}}
       div.list
         el-table.list-el-table(:data="dataList.data", border)
-          el-table-column(label="金额(元)", prop="recent_pay_tick")
+          el-table-column(label="金额(币)", prop="recent_pay_tick")
             template(slot-scope="scope")
-              div {{scope.row.amount | price}}
+              div {{scope.row.amount | price(false)}}
           el-table-column(label="时间", prop="")
             template(slot-scope="scope")
               div {{scope.row.ct | datetime}}

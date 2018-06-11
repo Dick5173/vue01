@@ -14,8 +14,9 @@
       el-form(:model="form",label-width="80px" :rules="rules" style="margin-top:30px", ref="form" )
         el-form-item(label="核销金额" prop="amount")
           el-input.input(v-model="form.amount")
+          span 币
           div.tip
-            span 最多核销{{getAvailableBalance(userData) | price}}
+            span 最多核销{{getAvailableBalance(userData) | price(false)}}币
         div.line
         div.txt 以下内容用户不可见
         el-form-item(label="备注", prop="remark")
