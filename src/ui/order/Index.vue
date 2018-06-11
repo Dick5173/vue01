@@ -31,7 +31,8 @@
           searchType: 'prod',
           tenant_id: '',
           start_time: 0,
-          end_time: 0
+          end_time: 0,
+          prod_tp: 3
         }
       }
     },

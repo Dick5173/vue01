@@ -18,6 +18,7 @@ export const orderList = (params) => {
   myParams[params.searchType] = params.searchKey
   myParams.page = params.page
   myParams.tenant_id = params.tenant_id
+  myParams.prod_tp = params.prod_tp
   myParams.limit = params.limit
   return Axios.get(`/admin/order`, {params: myParams})
 }
