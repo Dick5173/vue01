@@ -386,9 +386,11 @@
   }
   .remarks {
     color: #B4BCCC;
-    font-size: 13px;
+    font-size: 12px;
     margin-top:5px;
-    white-space: normal !important;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .batch {
