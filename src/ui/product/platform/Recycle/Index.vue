@@ -2,8 +2,10 @@
   div
     div
       el-form(:inline="true")
-        el-form-item
-          el-input(v-model.trim="queryParams.text", placeholder="商品名/ID/编码")
+        el-form-item(label="商品：")
+          el-input(v-model.trim="queryParams.text", clearable, placeholder="商品名/编码")
+        el-form-item(label="商品ID：", style="margin: 0 50px")
+          el-input(v-model.trim="queryParams.id", clearable, style="width: 140px")
         el-form-item
           el-button(type="primary", icon="el-icon-search", @click="search") 搜 索
     div(v-loading="loading")
@@ -54,7 +56,8 @@
       return {
         queryParams: {
           trash: 1,
-          text: ''
+          text: '',
+          id: ''
         }
       }
     },
