@@ -34,6 +34,7 @@
       span.input-right-desc 商品编码不能重复，且必须首先在ERP系统上线，否则将无法发货
     div
       el-checkbox(v-model="skus.isControlPrice") 控价
+      span.input-right-desc 禁止店铺售价低于建议售价
 </template>
 
 <script>
