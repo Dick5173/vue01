@@ -72,7 +72,7 @@
       },
       isActionVisibles () {
         // return true
-        return this.data.refund_status === RefundStatus.STATUS_WAIT_ADMIN || this.data.refund_status === RefundStatus.STATUS_WAIT_CUSTOMER || ((this.data.refund_status === RefundStatus.STATUS_REJECTED || this.data.refund_status === RefundStatus.STATUS_CANCELED) && this.data.status === OrderItemStatus.STATUS_PAID)
+        return this.data.refund_status === RefundStatus.STATUS_WAIT_ADMIN || this.data.refund_status === RefundStatus.STATUS_WAIT_CUSTOMER || this.data.refund_status === RefundStatus.STATUS_REJECTED || this.data.refund_status === RefundStatus.STATUS_CANCELED
       }
     },
     methods: {
