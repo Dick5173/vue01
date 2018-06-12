@@ -47,9 +47,7 @@ export const enableRefund = (orderItem) => {
     return true
   }
   if (orderItem.status === STATUS_COMPLETED) {
-    if (new Date().getTime() - orderItem.rt <= process.env.REFUND_SPAN) {
-      return true
-    }
+    return true
   }
   return false
 }
