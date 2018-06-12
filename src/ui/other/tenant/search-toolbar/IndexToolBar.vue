@@ -15,7 +15,7 @@
         el-select(v-model="formData.level", clearable, placeholder="店铺等级")
           el-option(v-for="item in tenantLevelList", :key="item.id", :label="item.description", :value="`${item.id}`")
       el-form-item(style="margin: 0 30px")
-        el-checkbox(v-model="formData.with_hidden", true-label="true", false-label="") 隐藏店铺
+        el-checkbox(v-model="with_hidden_cek", @change="changeHidden") 隐藏店铺
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
         el-button(@click="handleReset") 重&nbsp置
@@ -43,6 +43,7 @@
           level: '',
           with_hidden: ''
         },
+        with_hidden_cek: false,
         defaultDate: [],
         tenantLevelList: [],
         statusList: [
@@ -65,6 +66,13 @@
       }
     },
     methods: {
+      changeHidden () {
+        if (this.with_hidden_cek) {
+          this.formData.with_hidden = true
+        } else {
+          this.formData.with_hidden = ''
+        }
+      },
       changeDate (event) {
         if (event && event.length === 2) {
           this.formData.start = event[0].getTime()
@@ -84,6 +92,7 @@
       handleReset () {
         this.formData = this.R.clone(this.tenantLevelList)
         this.defaultDate = []
+        this.with_hidden_cek = false
         this.$emit('submit', this.formData)
       },
       convertQueryParamsToForm () {
