@@ -14,6 +14,8 @@
       el-form-item
         el-select(v-model="formData.level", clearable, placeholder="店铺等级")
           el-option(v-for="item in tenantLevelList", :key="item.id", :label="item.description", :value="`${item.id}`")
+      el-form-item(style="margin: 0 30px")
+        el-checkbox(v-model="formData.with_hidden", true-label="true", false-label="") 隐藏店铺
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
         el-button(@click="handleReset") 重&nbsp置
@@ -38,7 +40,8 @@
           end: 0,
           key: '',
           product_auth: '',
-          level: ''
+          level: '',
+          with_hidden: ''
         },
         defaultDate: [],
         tenantLevelList: [],
