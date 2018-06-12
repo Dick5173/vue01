@@ -162,3 +162,11 @@ export const showMchBindButtonName = (row) => {
   }
   return '商户号未绑'
 }
+
+export const showWithHiddenBindButtonName = (row) => {
+  if (row.hidden === false) {
+    return '否'
+  } else if (row.hidden === true) {
+    return '是'
+  }
+}

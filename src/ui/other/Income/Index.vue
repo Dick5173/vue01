@@ -23,9 +23,6 @@
         el-table-column(label="平台货款（元）", prop="platform_sp_amount")
           template(slot-scope="scope")
             div {{scope.row.platform_sp_amount | price}}
-        el-table-column(label="平台服务费（元）", prop="platform_fee")
-          template(slot-scope="scope")
-            div {{scope.row.platform_fee | price}}
         el-table-column(label="利润（元）", prop="total_profit")
           template(slot-scope="scope")
             div {{scope.row.tenant_total_amount | price}}

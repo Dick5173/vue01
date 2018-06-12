@@ -78,7 +78,12 @@ export const postNonMartix = (tid) => {
 export const postRefresh = (tid) => {
   return Axios.post(`/admin/tenant/s/${tid}/info/refresh`)
 }
-
 export const postWithdrawOperate = (tid, operate) => {
   return Axios.post(`/admin/tenant/s/${tid}/withdraw/${operate}`)
+}
+export const postWithHidden = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/hide`)
+}
+export const postWithDisplay = (tid) => {
+  return Axios.post(`/admin/tenant/s/${tid}/display`)
 }
