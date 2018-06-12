@@ -10,8 +10,7 @@
         div
           span(v-if="!data.dev_status") 物流：{{devStatusText}}
           span(v-else) 物流：
-            el-button(type="text", @click="showExpressed", v-if="data.no_need_delivery") {{devStatusText}}
-            el-button(type="text", @click="showExpress", v-else) {{devStatusText}}
+            el-button(type="text", @click="showExpress") {{devStatusText}}
         div.txt-border(v-if="data.can_refund_voucher")
           div 分摊优惠：-{{data.user_voucher_amount | price}}
           div 优惠总额：-{{data.order_user_voucher_amount | price}}
@@ -110,15 +109,12 @@
         }
       },
       showExpress () {
-        this.$refs.dlgExpress.show(this.$route.params.oiid)
-      },
-      showExpressed () {
         if (this.data.no_need_delivery) {
           this.$alert('此订单无需发货', '提示', {
             confirmButtonText: '确定'
           })
         } else {
-          this.$refs.dlgExpress.show(this.data.id)
+          this.$refs.dlgExpress.show(this.$route.params.oiid)
         }
       }
     },
