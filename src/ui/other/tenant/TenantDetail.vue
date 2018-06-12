@@ -46,6 +46,9 @@
         div.body-status.margin-left
           div.body-item-status 七鱼：
             el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
+        div.body-status.margin-left
+          div.body-item-status 隐藏店铺：
+            el-button(type="text", @click="showWithHiddenDialog(tenantData)", size="mini") {{showWithHiddenBindButtonName(tenantData)}}
       div.body-bottom-line
       div.list-title
         div.list-title-head
@@ -100,6 +103,7 @@
     bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
     tenant-level-dialog(ref="dlgTenantLevel", @refresh="getDetail")
     bind-matrix-dialog(ref="dlgBindMatrix", @refresh="getDetail")
+    bind-with-hidden-dialog(ref="dlgWithHidden", @refresh="getDetail")
     el-dialog.tenant-status(title="店铺状态", :visible.sync="tenantDialogVisible", width="480px", :modal-append-to-body="false")
       div.head
         div.head-cover(v-lazy:background-image="tenantData.head_img")
@@ -122,8 +126,9 @@ import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
 import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
 import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
 import BindMatrixDialog from 'src/ui/other/tenant/BindMatrixDialog.vue'
+import BindWithHiddenDialog from 'src/ui/other/tenant/BindWithHiddenDialog.vue'
 import * as TenantApi from 'src/api/tenant'
-import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showMatrixButtonName } from 'src/service/other/index'
+import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showMatrixButtonName, showWithHiddenBindButtonName } from 'src/service/other/index'
 import { showCover } from 'src/service/product/index'
 import { dateFormat } from 'src/util/format'
 import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
@@ -137,7 +142,8 @@ export default {
     BindQiyuDialog,
     BindDeliveryModeDialog,
     BindMatrixDialog,
-    TenantLevelDialog
+    TenantLevelDialog,
+    BindWithHiddenDialog
   },
   data () {
     return {
@@ -177,6 +183,9 @@ export default {
     },
     showTenantLevelDialog (row) {
       this.$refs.dlgTenantLevel.show(row)
+    },
+    showWithHiddenDialog (row) {
+      this.$refs.dlgWithHidden.show(row)
     },
     showStatPeriod (row) {
       const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH:mm:ss')
@@ -307,7 +316,8 @@ export default {
     ...$global.$mapMethods({ 'showQiyuBindButtonName': showQiyuBindButtonName }),
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
-    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName })
+    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName }),
+    ...$global.$mapMethods({ 'showWithHiddenBindButtonName': showWithHiddenBindButtonName })
   },
   created () {
     const status = this.$route.query.status
