@@ -28,6 +28,9 @@
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
+      el-form-item
+        el-button(@click="createExportTask") 导出商品
+        el-button(@click="gotoListExportTask") 查看已导出
 </template>
 <script>
   import * as CategoryApi from 'src/api/category'
@@ -121,6 +124,34 @@
         } else {
           this.defaultDate = []
         }
+      },
+      createExportTask () {
+        const h = this.$createElement
+        var data = []
+        if (this.formData.text) {
+          data.push(h('p', null, '商品名称/编码：' + this.formData.text))
+        }
+        this.$confirm(`确认导出平台商品？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消'
+        }).then(() => {
+          const form = this.R.clone(this.formData)
+          if (this.tenant_category_ids && this.tenant_category_ids.length > 0) {
+            const labels = this.$refs.cascaderCategory.currentLabels
+            form.category_name = labels.join('/')
+            form.tenant_category_id = this.tenant_category_ids[this.tenant_category_ids.length - 1]
+          } else {
+            form.tenant_category_id = ''
+            form.category_name = ''
+          }
+          this.$emit('create_export_task', form)
+        }).catch(() => { })
+      },
+      gotoListExportTask () {
+        this.$router.push({
+          name: 'exportTask',
+          query: { tp: 2 }
+        })
       }
     },
     async mounted () {

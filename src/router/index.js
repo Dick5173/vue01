@@ -149,6 +149,15 @@ const router = new Router({
           }
         },
         {
+          path: 'export/task',
+          name: 'exportTask',
+          component: () => import('src/ui/export_task/Index'),
+          meta: {
+            customBreadcrumb: true,
+            showInSide: false
+          }
+        },
+        {
           path: 'pfproduct/recycle',
           name: 'PlatformProductRecycle',
           component: () => import('src/ui/product/platform/Recycle/Index.vue'),

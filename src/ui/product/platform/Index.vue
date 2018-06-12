@@ -1,6 +1,6 @@
 <template lang="pug">
   div(v-loading="loading")
-    search-bar(:queryParams="queryParams", @submit="handleSearch")
+    search-bar(:queryParams="queryParams", @submit="handleSearch", @create_export_task="handleExportTask")
     router-link(:to="{name:'PlatformProductCreate'}")
       el-button(type="primary", icon="el-icon-plus") 创建
     div.batch
@@ -353,6 +353,14 @@
         this.$router.push({
           name: 'PlatformProductRecycle'
         })
+      },
+      handleExportTask (model) {
+        ProductApi.exportProduct(model).then((res) => {
+          this.$message({
+            message: res.data,
+            type: 'success'
+          })
+        }).catch(() => {})
       },
       handleCopy (product) {
         this.$router.push({
