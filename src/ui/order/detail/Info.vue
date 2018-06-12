@@ -10,6 +10,9 @@
           div.info-wrapper
             div.icon-wrapper(v-lazy:background-image="scope.row.product_img_res.url")
             div.name {{scope.row.product_name}}, {{scope.row.spec}}, {{scope.row.price | price}} x {{scope.row.count}}
+      el-table-column(label="编码", width="210")
+        template(slot-scope="scope")
+          div.code-id {{scope.row.sku_code}}
       el-table-column(label="退款", width="210", v-if="hasRefund")
         template(slot-scope="scope")
           div.status
@@ -43,7 +46,7 @@
           span 利润
             el-tooltip(effect="light", placement="bottom-start")
               div(slot="content") 利润未扣除平台服务费
-              i.el-icon-question
+              i.el-icon-question(v-if="false")
           span ：{{order.total_profit | price}}
     express-dialog(ref="dlgExpress")
     agree(ref="agree", :orderItem="currentOrderItem", @submit="$emit('refresh')")
@@ -82,7 +85,6 @@
     },
     computed: {
       hasRefund () {
-        console.log(this.order)
         return OrderUtil.hasRefund(this.order) && !this.buyGroupOrder
       },
       buyGroupOrder () {
@@ -120,7 +122,6 @@
       async goRefundDetail (row) {
         if (row.refund_status === REFUND_STATUS_NO_APPLY) {
           const resRefund = await orderItems(row.id)
-          console.log(resRefund)
           this.currentOrderItem = resRefund.data
           this.$refs.agree.show()
         } else {

@@ -101,7 +101,8 @@
           key: '',
           product_auth: '',
           level: '',
-          delivery_mode: ''
+          delivery_mode: '',
+          with_hidden: ''
         }
       }
     },
