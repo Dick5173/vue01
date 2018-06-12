@@ -49,8 +49,16 @@
             callback(new Error('最多限两位小数'))
             return
           }
-          if (convertYuanToFen(value) > this.userData.wallet.available_balance) {
-            callback(new Error('不能超过最多核销'))
+          if (this.userData.wallet) {
+            if (convertYuanToFen(value) > this.userData.wallet.available_balance) {
+              callback(new Error('不能超过最多核销'))
+              return
+            }
+          } else {
+            if (convertYuanToFen(value) > 0) {
+              callback(new Error('不能超过最多核销'))
+              return
+            }
           }
         }
         callback()
