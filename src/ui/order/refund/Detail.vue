@@ -35,7 +35,6 @@
   import MessageItem from './MessageItem'
   import OiExpressDialog from '../express/OiIndex'
   import {orderItems} from '../../../api/order'
-  import * as OrderItemStatus from 'src/constants/orderItem'
 
   export default {
     components: {
@@ -110,7 +109,13 @@
         }
       },
       showExpress () {
-        this.$refs.dlgExpress.show(this.$route.params.oiid)
+        if (this.data.no_need_delivery) {
+          this.$alert('此订单无需发货', '提示', {
+            confirmButtonText: '确定'
+          })
+        } else {
+          this.$refs.dlgExpress.show(this.$route.params.oiid)
+        }
       }
     },
     created () {
