@@ -84,10 +84,10 @@
             el-table-column(label="商品", prop="name")
             el-table-column(label="利润（元）", prop="")
               template(slot-scope="scope")
-                div {{scope.row.min_profit | price}}～{{scope.row.max_profit | price}}
+                div {{scope.row | productProfit}}
             el-table-column(label="售价（元）", prop="")
               template(slot-scope="scope")
-                div {{scope.row.min_price | price}}～{{scope.row.max_price | price}}
+                div {{scope.row | productPrice}}
             el-table-column(label="销量", prop="sold")
             el-table-column(label="库存", prop="")
               div(slot-scope="scope") {{scope.row.prop.stock}}
