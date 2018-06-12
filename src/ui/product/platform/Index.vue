@@ -16,9 +16,14 @@
             el-button(type="text", @click="showProductDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
-        el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
-          div(slot-scope="props") {{props.row.name}}
-            div.remarks {{props.row.prop.sys_remark}}
+        el-table-column(prop="name", label="商品")
+          div(slot-scope="props")
+            el-tooltip(placement="top")
+              div(slot="content") {{props.row.name}}
+              div.name {{props.row.name}}
+            el-tooltip(placement="bottom")
+              div(slot="content") {{props.row.prop.sys_remark}}
+              div.remarks {{props.row.prop.sys_remark}}
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
         el-table-column(prop="collect_count", label="收藏", sortable, width="110px")
@@ -382,7 +387,9 @@
   }
 
   .name {
-
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .remarks {
     color: #B4BCCC;
