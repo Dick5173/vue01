@@ -83,7 +83,7 @@
             callback(new Error('请输入合适的数字'))
             return
           }
-          if (convertYuanToFen(value) > this.orderItem.wallet_use_amount) {
+          if (convertYuanToFen(value) > this.orderItem.wallet_used_amount) {
             callback(new Error('超出最大值，请输入合适的数字'))
             return
           }
