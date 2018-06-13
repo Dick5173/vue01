@@ -2,6 +2,7 @@ import * as R from 'ramda'
 import R_ from 'src/util/R_'
 import * as ResourceService from 'src/service/resource/index'
 import { convertKgToG, convertGToKg } from 'src/util/weight'
+import * as Data from 'src/filter/datetime'
 
 export const allTp = {
   platform: {
@@ -337,3 +338,22 @@ export const supplyPrice = (purchasePrice, skus, levelName) => {
     }
   }
 }
+
+export const convertFormToParams = R.curry(form => {
+  return R.mapObjIndexed((val, key) => {
+    if (key === 'start' || key === 'end') {
+      if (val === 0) {
+        return ''
+      } else {
+        return Data.date(val)
+      }
+    } else if (key === 'top') {
+      if (val) {
+        return 1
+      } else {
+        return 0
+      }
+    }
+    return val
+  })(form)
+})

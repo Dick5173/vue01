@@ -14,6 +14,9 @@
             div {{scope.row.settle_amount | price}}
         el-table-column(label="销售额（元）", prop="sale_total_amount")
           template(slot-scope="scope") {{scope.row.sale_total_amount | price}}
+        el-table-column(prop="total_refund_amount", label="退款(元)", sortable)
+          template(slot-scope="props")
+            div {{props.row.total_refund_amount | price}}
         el-table-column(label="总货款（元）", prop="sp_total_amount")
           template(slot-scope="scope")
             div {{scope.row.sp_total_amount | price}}
@@ -33,7 +36,7 @@
               div （{{scope.row.unsettle_amount | price}}）
             div(v-else) 已结算
       div.total
-      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 向美市结算:{{overview.settle_total_amount | price}} 销售总额: {{overview.sale_total_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 平台服务费: {{overview.total_platform_fee | price}}, 利润: {{overview.tenant_total_amount | price}}，未结算: {{overview.unsettle_total_amount | price}}
+      div.bottom.txt-head(v-if="dataList.data && dataList.data.length>=1") 向美市结算:{{overview.settle_total_amount | price}} 销售总额: {{overview.pure_sale_total_amount | price}}，退款: {{overview.total_refund_amount | price}}，总货款: {{overview.sp_total_amount | price}}，自营货款: {{overview.self_sp_amount | price}}, 平台货款: {{overview.platform_sp_amount | price}}, 利润: {{overview.tenant_total_amount | price}}，未结算: {{overview.unsettle_total_amount | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       bind-balance-dialog(ref="dlgBindBalance",@refresh="handleSearch")
 </template>
@@ -62,7 +65,7 @@
         },
         defaultDate: [],
         overview: {
-          sale_total_amount: 0,
+          pure_sale_total_amount: 0,
           sp_total_amount: 0,
           total_platform_fee: 0,
           tenant_gross_total_amount: 0,
@@ -70,7 +73,8 @@
           settle_total_amount: 0,
           unsettle_total_amount: 0,
           platform_sp_amount: 0,
-          self_sp_amount: 0
+          self_sp_amount: 0,
+          total_refund_amount: 0
         }
       }
     },
