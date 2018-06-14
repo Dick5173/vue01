@@ -1,7 +1,8 @@
 import Axios from 'axios'
 import * as ProductService from 'src/service/product'
 
-export const getList = (params) => {
+export const getList = (form) => {
+  const params = ProductService.convertFormToParams(form)
   return Axios.get('/admin/product', {
     params: params
   })
@@ -24,7 +25,6 @@ export const create = (form) => {
 }
 
 export const update = (id, form) => {
-  console.log(form)
   const params = ProductService.convertFormToParam(form)
   return Axios.post(`/admin/product/s/${id}`, params)
 }
@@ -80,4 +80,10 @@ export const deleteSyncStatus = (id) => {
 }
 export const getTenantCollects = (id, params) => {
   return Axios.get(`/admin/product/s/${id}/tenant/product/collect`, {params: params})
+}
+export const exportProduct = (form) => {
+  const params = ProductService.convertFormToParams(form)
+  return Axios.get(`/admin/product/export`, {
+    params: params
+  })
 }

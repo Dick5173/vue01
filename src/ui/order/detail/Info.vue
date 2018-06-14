@@ -38,9 +38,11 @@
         div.txt-info
         div.txt-info
           span 商品金额：{{order.product_total_price | price}}，
-          span(v-if="order.full_reduce_amount > 0") 立减：-{{order.full_reduce_amount | price}}，
+          span(v-if="order.discount_amount > 0") 第N件M折立减：-{{order.discount_amount | price}}，
+          span(v-if="order.full_reduce_amount > 0") 满减立减：-{{order.full_reduce_amount | price}}，
           span(v-if="order.user_voucher_amount > 0") 优惠券：-{{order.user_voucher_amount | price}}，
           span(v-if="order.postage > 0") 运费：{{order.postage | price}}，
+          span(v-if="order.wallet_used_amount > 0") 余额抵用：-{{order.wallet_used_amount | price}}，
           span 实付：{{order.total_price | price}}，
           span 利润
             el-tooltip(effect="light", placement="bottom-start")

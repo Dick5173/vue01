@@ -10,10 +10,25 @@
         div.body-item 用户ID：{{userData.id}}
         div.body-border
         div.body-item 店铺：
-        div.body-item.btn(@click="toTenant(userData.tid)") {{userData.tenantNickName}}
+        div.body-item {{userData.tenantNickName}}
         div.body-border
         div.body-item 首次访问：{{showTime(userData.ct)}}
       div.body-bottom-line
+      div.body-status
+        div.body-item-status 收入：
+          el-button(type="text", @click="toIncome(userData)", size="mini") {{this.userData.wallet.total_income| price(false)}}
+          span 币
+      div.body-status.margin-left
+        div.body-item-status 抵用：
+          el-button(type="text", @click="toServerPurpose(userData)", size="mini") {{userData.wallet.total_use | price(false)}}
+          span 币
+      div.body-status.margin-left
+        div.body-item-status 余额：
+          span {{this.userData.wallet.available_balance | price(false)}}币
+      div.body-status.margin-left
+        div.body-item-status 核销提现：
+          el-button(type="text", @click="toWithDraw(userData)", size="mini") {{this.userData.wallet.total_withdraw | price(false)}}
+          span 币
       div.list-title
         div.list-title-head
           div.list-title-item 订单统计
@@ -50,21 +65,14 @@
           tenantNickName: '',
           id: '',
           mobile: '',
-          ct: ''
+          ct: '',
+          wallet: {}
         }
       }
     },
     computed: {},
     watch: {},
     methods: {
-      toTenant (tid) {
-        this.$router.push({
-          name: 'TenantDetail',
-          params: {
-            tid: tid
-          }
-        })
-      },
       async getDetail () {
         try {
           this.loading = true
@@ -84,6 +92,30 @@
           },
           query: {
             status: PUSH_STATUS_USER
+          }
+        })
+      },
+      toIncome (row) {
+        this.$router.push({
+          name: 'UserIncome',
+          params: {
+            uid: row.id
+          }
+        })
+      },
+      toWithDraw (row) {
+        this.$router.push({
+          name: 'UserWithDraw',
+          params: {
+            uid: row.id
+          }
+        })
+      },
+      toServerPurpose (row) {
+        this.$router.push({
+          name: 'UserServerPurpose',
+          params: {
+            uid: row.id
           }
         })
       },
@@ -149,5 +181,24 @@
       line-height: 22px;
       font-size: 16px;
     }
+  }
+  .body-status {
+    display: inline-flex;
+    align-items: center;
+    margin-top: -4px;
+    margin-bottom: 30px;
+    .body-item-status {
+      display: inline-block;
+      margin-right: 10px;
+      height: 17px;
+      font-size: 12px;
+      line-height: 17px;
+    }
+    .el-button--text {
+      text-decoration: underline;
+    }
+  }
+  .margin-left {
+    margin-left: 20px;
   }
 </style>

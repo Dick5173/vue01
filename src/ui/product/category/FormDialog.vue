@@ -79,9 +79,7 @@
         if (this.initialData) {
           this.formData = CategoryService.convertModelToForm(this.initialData)
         }
-        if (parentId !== 0) {
-          this.formData.parent_id = parentId
-        }
+        this.formData.parent_id = parentId
       },
       hide () {
         this.dialogVisible = false

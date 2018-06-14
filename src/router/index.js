@@ -149,6 +149,15 @@ const router = new Router({
           }
         },
         {
+          path: 'export/task',
+          name: 'exportTask',
+          component: () => import('src/ui/export_task/Index'),
+          meta: {
+            customBreadcrumb: true,
+            showInSide: false
+          }
+        },
+        {
           path: 'pfproduct/recycle',
           name: 'PlatformProductRecycle',
           component: () => import('src/ui/product/platform/Recycle/Index.vue'),
@@ -489,6 +498,51 @@ const router = new Router({
             group: 'Other',
             title: '用户详情',
             showInSide: false
+          }
+        },
+        {
+          path: '/user/userincome/:uid',
+          name: 'UserIncome',
+          component: () => import('src/ui/other/user/Income.vue'),
+          meta: {
+            title: '收入',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'User'}
+            }, {
+              text: '收入'
+            }]
+          }
+        },
+        {
+          path: '/user/userwithdraw/:uid',
+          name: 'UserWithDraw',
+          component: () => import('src/ui/other/user/Withdraw.vue'),
+          meta: {
+            title: '核销提现',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'User'}
+            }, {
+              text: '核销提现'
+            }]
+          }
+        },
+        {
+          path: 'user/userServerPurpose/:uid',
+          name: 'UserServerPurpose',
+          component: () => import('src/ui/other/user/ServerPurpose.vue'),
+          meta: {
+            title: '抵用',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '用户',
+              to: {name: 'User'}
+            }, {
+              text: '抵用'
+            }]
           }
         },
         {

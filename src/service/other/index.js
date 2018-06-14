@@ -1,3 +1,14 @@
+export const allSettleStatus = {
+  settle: {
+    value: 2,
+    text: '已结算'
+  },
+  unsettle: {
+    value: 1,
+    text: '未结算'
+  }
+}
+
 export const getTenantNameId = (arr) => {
   let resArr = arr.map((i) => {
     let merge = []
@@ -22,6 +33,7 @@ export const getUserShowData = (data) => {
     resData.mobile = data.user.mobile ? data.user.mobile : ''
     resData.ct = data.user.ct ? data.user.ct : ''
     resData.tid = data.user.tenant_id ? data.user.tenant_id : ''
+    resData.wallet = data.user.wallet ? data.user.wallet : {}
   } else {
     resData.id = ''
     resData.logo = ''
@@ -30,6 +42,7 @@ export const getUserShowData = (data) => {
     resData.mobile = ''
     resData.ct = ''
     resData.tid = ''
+    resData.wallet = ''
   }
   return resData
 }
@@ -93,6 +106,18 @@ export const showDeliverytButtonName = (row) => {
       break
     case 2:
       text = '实时发货'
+      break
+  }
+  return text
+}
+export const showWithdrawBindButtonName = (row) => {
+  let text = ''
+  switch (row.allow_withdraw) {
+    case true:
+      text = '开启'
+      break
+    case false:
+      text = '关闭'
       break
   }
   return text

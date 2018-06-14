@@ -47,6 +47,8 @@
           div.body-item-status 七鱼：
             el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
         div.body-status.margin-left
+          div.body-item-status 核销提现：
+            el-button(type="text", @click="showWithDrawDialog(tenantData)", size="mini") {{showWithdrawBindButtonName(tenantData)}}
           div.body-item-status 隐藏店铺：
             el-button(type="text", @click="showWithHiddenDialog(tenantData)", size="mini") {{showWithHiddenBindButtonName(tenantData)}}
       div.body-bottom-line
@@ -82,10 +84,10 @@
             el-table-column(label="商品", prop="name")
             el-table-column(label="利润（元）", prop="")
               template(slot-scope="scope")
-                div {{scope.row.min_profit | price}}～{{scope.row.max_profit | price}}
+                div {{scope.row | productProfit}}
             el-table-column(label="售价（元）", prop="")
               template(slot-scope="scope")
-                div {{scope.row.min_price | price}}～{{scope.row.max_price | price}}
+                div {{scope.row | productPrice}}
             el-table-column(label="销量", prop="sold")
             el-table-column(label="库存", prop="")
               div(slot-scope="scope") {{scope.row.prop.stock}}
@@ -101,6 +103,7 @@
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="getDetail")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="getDetail")
     bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
+    bind-withdraw-dialog(ref="dlgTenantWithDraw", @refresh="getDetail")
     tenant-level-dialog(ref="dlgTenantLevel", @refresh="getDetail")
     bind-matrix-dialog(ref="dlgBindMatrix", @refresh="getDetail")
     bind-with-hidden-dialog(ref="dlgWithHidden", @refresh="getDetail")
@@ -125,10 +128,11 @@ import BindErpShopIdDialog from 'src/ui/other/tenant/BindErpShopIdDialog.vue'
 import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
 import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
 import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
+import BindWithdrawDialog from 'src/ui/other/tenant/BindWithdrawDialog.vue'
 import BindMatrixDialog from 'src/ui/other/tenant/BindMatrixDialog.vue'
 import BindWithHiddenDialog from 'src/ui/other/tenant/BindWithHiddenDialog.vue'
 import * as TenantApi from 'src/api/tenant'
-import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showMatrixButtonName, showWithHiddenBindButtonName } from 'src/service/other/index'
+import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showWithdrawBindButtonName, showMatrixButtonName, showWithHiddenBindButtonName } from 'src/service/other/index'
 import { showCover } from 'src/service/product/index'
 import { dateFormat } from 'src/util/format'
 import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
@@ -141,6 +145,7 @@ export default {
     BindErpShopIdDialog,
     BindQiyuDialog,
     BindDeliveryModeDialog,
+    BindWithdrawDialog,
     BindMatrixDialog,
     TenantLevelDialog,
     BindWithHiddenDialog
@@ -183,6 +188,9 @@ export default {
     },
     showTenantLevelDialog (row) {
       this.$refs.dlgTenantLevel.show(row)
+    },
+    showWithDrawDialog (row) {
+      this.$refs.dlgTenantWithDraw.show(row)
     },
     showWithHiddenDialog (row) {
       this.$refs.dlgWithHidden.show(row)
@@ -316,6 +324,7 @@ export default {
     ...$global.$mapMethods({ 'showQiyuBindButtonName': showQiyuBindButtonName }),
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
+    ...$global.$mapMethods({ 'showWithdrawBindButtonName': showWithdrawBindButtonName }),
     ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName }),
     ...$global.$mapMethods({ 'showWithHiddenBindButtonName': showWithHiddenBindButtonName })
   },

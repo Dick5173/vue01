@@ -57,10 +57,14 @@
       el-form-item(label="售后模板", prop="after_service_id")
         el-select(v-model="formData.after_service_id", placeholder="请选择", clearable)
           el-option(v-for="item in afterServiceList", :key="item.id", :label="item.name", :value="`${item.id}`")
+      el-form-item(label="备注", prop="sys_remark")
+        el-input.medium-el-input(v-model="formData.sys_remark", clearable, :maxlength="50")
+        span.input-right-desc {{ formData.sys_remark.length }} / 50
+        div.input-bottom-desc 用户及店铺不可见
     bottom-container
       el-button(@click="$router.back()") 取消
       el-button(v-if="!isEditMode", :loading="loading", @click="handleSave(true)") 保存并上架
-      el-button(type="primary", :loading="loading", @click="handleSave") 保存
+      el-button(type="primary", :loading="loading", @click="handleSave(false)") 保存
     batch-tag-dialog(ref="chooseTagDialog", :origin="oraTags", @submit="chooseTagComplete")
     choose-supply-tenants-dialog(ref="chooseSupplyTenantsDialog", @choose="chooseSupplyTenantsComplete")
 </template>
@@ -195,6 +199,7 @@
           id: 0,
           status: 1,
           head: [],
+          sys_remark: '',
           cover: {
             url: '',
             width: 0,
@@ -354,9 +359,7 @@
       async create (up) {
         this.formData.id = 0
         let frm = Object.assign({}, this.formData)
-        if (up) {
-          frm.status = ProductService.allStatus.up.value
-        }
+        frm.status = up ? ProductService.allStatus.up.value : ProductService.allStatus.down.value
         if (this.isCopy) {
           frm = ProductService.copyCreate(frm)
         }

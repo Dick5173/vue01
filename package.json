@@ -8,6 +8,7 @@
     "dev": "npm install && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "local": "cross-env PROXY=http://localhost:5000 npm run dev",
     "beta": "cross-env PROXY=http://beta.meishi.51baibao.com npm run dev",
+    "staging": "cross-env PROXY=http://staging.meishi.51baibao.com npm run dev",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "npm install && node build/build.js",

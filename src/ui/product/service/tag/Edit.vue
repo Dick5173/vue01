@@ -3,7 +3,7 @@
     el-dialog(title="服务说明", :visible.sync="dialogVisible", width="30%")
       el-form(ref="form", :model="formData", :rules="rules", label-width="80px", v-loading="loading")
         el-form-item(label="服务名称" prop="name")
-          el-input(placeholder="最多5个字", v-model.trim="formData.name", :maxlength="5", clearable)
+          el-input(placeholder="最多8个字", v-model.trim="formData.name", :maxlength="8", clearable)
         el-form-item(label="服务描述", prop="description")
           el-input(type="textarea", :autosize="{ minRows: 5, maxRows: 5}", placeholder="", v-model.trim="formData.description", :maxlength="100")
           span.input-tip {{formData.description ? formData.description.length : 0}}/100
