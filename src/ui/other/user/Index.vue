@@ -55,8 +55,8 @@
         queryParams: {
           tenant_id: '',
           key: '',
-          start: new Date().getTime(),
-          end: new Date().getTime()
+          start: 0,
+          end: 0
         },
         dataList: {
           html_control_data: {}
