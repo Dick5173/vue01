@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import R_ from 'src/util/R_'
 import * as ResourceService from 'src/service/resource/index'
 import { convertKgToG, convertGToKg } from 'src/util/weight'
-import * as Data from 'src/filter/datetime'
+import { dateFormat } from 'src/util/format'
 
 export const allTp = {
   platform: {
@@ -19,6 +19,10 @@ export const allTp = {
   }
 }
 export const allStatus = {
+  all: {
+    value: 0,
+    text: '全部'
+  },
   up: {
     value: 1,
     text: '上架'
@@ -26,6 +30,10 @@ export const allStatus = {
   down: {
     value: 2,
     text: '下架'
+  },
+  stockout: {
+    value: 3,
+    text: '缺货'
   }
 }
 
@@ -345,13 +353,21 @@ export const convertFormToParams = R.curry(form => {
       if (val === 0) {
         return ''
       } else {
-        return Data.date(val)
+        return dateFormat(val, 'YYYY-MM-DD')
       }
     } else if (key === 'top') {
       if (val) {
         return 1
       } else {
         return 0
+      }
+    } else if (key === 'tags') {
+      if (val.length !== 0) {
+        return val.map((i) => {
+          return parseInt(i)
+        })
+      } else {
+        return []
       }
     }
     return val

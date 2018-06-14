@@ -77,7 +77,6 @@
   import * as ProductApi from 'src/api/product'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { showCover } from 'src/service/product/index'
-  import { dateFormat } from 'src/util/format'
   import BatchCategoryDialog from 'src/ui/product/platform/dialog/BatchCategoryDialog.vue'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
   import TenantCountDialog from 'src/ui/product/platform/dialog/TenantCountDialog.vue'
@@ -129,30 +128,7 @@
     },
     methods: {
       getQueryApi (params) {
-        return ProductApi.getList(this.R.mapObjIndexed((val, key, obj) => {
-          if (key === 'start' || key === 'end') {
-            if (val === 0) {
-              return ''
-            } else {
-              return dateFormat(val, 'YYYY-MM-DD')
-            }
-          } else if (key === 'top') {
-            if (val) {
-              return 1
-            } else {
-              return 0
-            }
-          } else if (key === 'tags') {
-            if (val.length !== 0) {
-              return val.map((i) => {
-                return parseInt(i)
-              })
-            } else {
-              return []
-            }
-          }
-          return val
-        })(params))
+        return ProductApi.getList(params)
       },
       showProductDetail (row) {
         this.$refs.dlgProductDetail.show(row)
