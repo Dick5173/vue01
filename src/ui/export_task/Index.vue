@@ -30,21 +30,12 @@ export default {
     }
   },
   created () {
-    if (this.$route.query.tp === 1) {
-      this.$parent.updateBreadcrumb([{
-        text: '订单',
-        to: {name: 'OrderIndex'}
-      }, {
-        text: '导出任务'
-      }])
-    } else {
-      this.$parent.updateBreadcrumb([{
-        text: '平台商品',
-        to: {name: 'PlatformProductIndex'}
-      }, {
-        text: '导出任务'
-      }])
-    }
+    this.$parent.updateBreadcrumb([{
+      text: '平台商品',
+      to: {name: 'PlatformProductIndex'}
+    }, {
+      text: '导出任务'
+    }])
   }
 }
 </script>

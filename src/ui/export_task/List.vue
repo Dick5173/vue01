@@ -25,8 +25,8 @@
 
 <script>
 import * as EXPORT_TASK from 'src/constants/export_task'
-import * as orderIndex from 'src/service/order/index'
 import { dateFormat } from 'src/util/format'
+import { allStatus } from 'src/service/product/index'
 export default {
   components: {
   },
@@ -69,66 +69,38 @@ export default {
       window.open(task.download_url)
     },
     setStatus (val) {
-      if (val === 0) {
-        return '全部'
-      } else if (val === 1) {
-        return '上架'
-      } else if (val === 2) {
-        return '下架'
-      } else if (val === 3) {
-        return '下架'
+      if (val === allStatus.all.value) {
+        return '上架/下架/缺货'
+      } else if (val === allStatus.up.value) {
+        return allStatus.up.text
+      } else if (val === allStatus.down.value) {
+        return allStatus.down.text
+      } else if (val === allStatus.stockout.value) {
+        return allStatus.stockout.text
       }
     },
     getText (row) {
-      if (row.condition === '{}') {
-        return '全部'
-      }
       let data = ''
       let condition = JSON.parse(row.condition)
-      if (this.$route.query.tp === 1) {
-        if (condition.status) {
-          var statusStr = ''
-          var arr = condition.status.split(',')
-          for (var i = 0; i < arr.length; i++) {
-            statusStr += orderIndex.orderStatusMap[arr[i]]
-            if (i < arr.length - 1) {
-              statusStr += ','
-            }
-          }
-          data += '订单状态：' + statusStr + '</br>'
-        }
-        if (condition.start) {
-          data += '起始时间：' + dateFormat(condition.start_time) + '</br>'
-        }
-        if (condition.end) {
-          //          服务器返回的时间是第二天的凌晨，为了统一，显示前一天的最后一秒钟
-          data += '结束时间：' + dateFormat(condition.end_time - 1) + '</br>'
-        }
-        if (condition.prod) {
-          data += '商品/订单号：' + condition.prod + '</br>'
-        }
-        if (condition.buyer) {
-          data += '买家姓名/手机：' + condition.buyer + '</br>'
-        }
-        if (condition.devNo) {
-          data += '物流单号：' + condition.devNo + '</br>'
-        }
-        if (condition.user) {
-          data += '用户昵称/ID：' + condition.user + '</br>'
-        }
-      } else {
-        if (condition.status) {
-          data += '状态：' + this.setStatus(condition.status) + '</br>'
-        }
-        if (condition.text) {
-          data += '商品ID/编码/名称：' + condition.text + '</br>'
-        }
-        if (condition.tp) {
-          data += '来源：' + '平台供货' + '</br>'
-        }
-        if (condition.category_name) {
-          data += '分类：' + condition.category_name + '</br>'
-        }
+      data += '商品状态：' + this.setStatus(condition.status) + '</br>'
+      if (condition.text) {
+        data += '商品编码/名称：' + condition.text + '</br>'
+      }
+      if (condition.id) {
+        data += '商品ID：' + condition.id + '</br>'
+      }
+      if (condition.tp) {
+        data += '商品来源：' + '平台供货' + '</br>'
+      }
+      if (condition.category_name) {
+        data += '商品分类：' + condition.category_name + '</br>'
+      }
+      if (condition.start) {
+        const start = dateFormat(condition.start, 'YYYY-MM-DD')
+        data += '上架时间：' + start + '</br>'
+      }
+      if (condition.supply_scope_tp) {
+        data += '供货类型：定项供货' + '</br>'
       }
       return data
     },
