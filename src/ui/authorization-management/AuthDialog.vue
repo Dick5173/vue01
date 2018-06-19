@@ -89,7 +89,6 @@
                 this.dialogVisible = false
                 this.$emit('refresh')
               } else {
-                console.log(this.formData)
                 await AuthorizationManagementApi.createAuth(this.formData)
                 this.dialogVisible = false
                 this.$emit('refresh')

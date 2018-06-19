@@ -94,15 +94,9 @@
     watch: {},
     methods: {
       disableAddGroup (row) {
-        // if (!this.disableDelete(row)) {
-        //   return false
-        // }
         return row.auths && row.auths.length > 0
       },
       disableAddAuth (row) {
-        // if (!this.disableDelete(row)) {
-        //   return false
-        // }
         return row.children && row.children.length > 0
       },
       disableDelete (row) {
@@ -112,7 +106,6 @@
         this.$refs.dlgAuthGroup.show(tp, pid, row)
       },
       handleAuth (tp, group, row) {
-        console.log(tp, group)
         this.$refs.dlgAuth.show(tp, group, row)
       },
       async deleteAuthGroup (row) {
@@ -172,7 +165,6 @@
       },
       refreshData () {
         Promise.all([AuthManagementApi.getAuthGroupList(TP_SYS), AuthManagementApi.getAuthGroupList(TP_TENANT)]).then(([platRes, tenantRes]) => {
-          console.log(platRes, tenantRes)
           this.authGroup[0].groups = platRes.data.data
           this.authGroup[1].groups = tenantRes.data.data
         })
