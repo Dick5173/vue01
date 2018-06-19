@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-dialog(:title="showTitle()", :visible.sync="dialogVisible", @close="handleClose()", width="800px")
+  el-dialog(:title="showTitle()", :visible.sync="dialogVisible", @close="handleClose()", width="1000px")
     el-form(ref="form", :model="formData", :rules="formRules", v-loading="loading")
       el-form-item(label="名称：", prop="name", labelWidth="120px")
         el-input.tiny-x-el-input(v-model="formData.name", :maxlength="20")
@@ -11,18 +11,29 @@
           el-radio(:label="2") 其他
       el-button(@click="addPath", type="primary", size="small") 添加权限路径
       el-form-item(prop="paths")
-        smart-table(:dataList.sync="formData.paths")
-          smart-table-column(label="名称")
-            div(slot-scope="scope")
-              el-form-item.show-validate-el-form(:prop="'paths.' + scope.index + '.name'", :rules="formRules.name")
-                el-input(v-model.trim="scope.row.name")
-          smart-table-column(label="API路径")
-            div(slot-scope="scope")
-              el-form-item.show-validate-el-form(:prop="'paths.' + scope.index + '.path'", :rules="formRules.path")
-                el-input(v-model.trim="scope.row.path")
-          smart-table-column(label="操作", width="80px")
-            div(slot-scope="scope")
-              el-button.show-validate-el-form(plain, type="danger", @click="deletePath(scope.row)", size="small") 删除
+        div(style="width: 950px")
+          smart-table(:dataList.sync="formData.paths")
+            smart-table-column(label="名称", width="150px")
+              div(slot-scope="scope")
+                el-form-item.show-validate-el-form(:prop="'paths.' + scope.index + '.name'", :rules="formRules.name")
+                  el-input(v-model.trim="scope.row.name")
+            smart-table-column(label="API路径", width="440px")
+              div(slot-scope="scope")
+                el-form-item.show-validate-el-form(:prop="'paths.' + scope.index + '.path'", :rules="formRules.path")
+                  el-input(v-model.trim="scope.row.path")
+            smart-table-column(label="正则", width="80px")
+              div(slot-scope="scope")
+                el-checkbox(v-model.trim="scope.row.match_tp", :trueLabel="1", :falseLabel="0")
+            smart-table-column(label="请求方式", width="150px")
+              div(slot-scope="scope")
+                el-select(v-model.trim="scope.row.method_tp")
+                  el-option(:value="1", label="全部")
+                  el-option(:value="2", label="GET")
+                  el-option(:value="3", label="POST")
+                  el-option(:value="4", label="DELETE")
+            smart-table-column(label="操作", width="80px")
+              div(slot-scope="scope")
+                el-button.show-validate-el-form(plain, type="danger", @click="deletePath(scope.row)", size="small") 删除
     span(slot="footer" class="dialog-footer")
       el-button(@click="dialogVisible = false") 取 消
       el-button(type="primary", @click="submit", v-loading="loading") 确 定
@@ -60,7 +71,9 @@
           paths: [{
             id: 0,
             name: '',
-            path: ''
+            path: '',
+            method_tp: 1,
+            match_tp: 1
           }]
         },
         initialData: null,
