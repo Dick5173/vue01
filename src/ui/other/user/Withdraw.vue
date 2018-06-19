@@ -6,12 +6,12 @@
         div.head-name {{userData.nickname}}
       div.list
         el-table.list-el-table(:data="dataList.data", border)
-          el-table-column(label="金额(元)", prop="recent_pay_tick")
+          el-table-column(label="金额(币)", prop="recent_pay_tick")
             template(slot-scope="scope")
-              div {{scope.row.amount | price}}
+              div {{scope.row.amount | price(false)}}
           el-table-column(label="时间", prop="")
             template(slot-scope="scope")
-              div {{showtime(scope.row) | date}}
+              div {{scope.row.ct | datetime}}
           el-table-column(label="备注", prop="")
             template(slot-scope="scope")
               div {{scope.row.remark}}
@@ -26,7 +26,6 @@
   import { getUserShowData } from 'src/service/other/index'
   import * as UserApi from 'src/api/user'
   import * as UserWallet from 'src/api/wallet'
-  import { dateFormat } from 'src/util/format'
   import LoadPagerData from 'src/mixins/load-pager-data'
 
   export default {
@@ -56,10 +55,6 @@
         } catch (err) {
           this.loading = false
         }
-      },
-      showtime (row) {
-        const timeee = dateFormat(row.timeee)
-        return timeee
       }
     },
     mounted () {

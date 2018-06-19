@@ -1,13 +1,14 @@
 {
   "name": "meishi_admin",
-  "version": "1.2.4",
-  "description": "优品平销平台后台管理系统",
+  "version": "1.2.7",
+  "description": "美市系统后台",
   "author": "wangyang <superyfwy@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "npm install && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "local": "cross-env PROXY=http://localhost:5000 npm run dev",
     "beta": "cross-env PROXY=http://beta.meishi.51baibao.com npm run dev",
+    "staging": "cross-env PROXY=http://staging.meishi.51baibao.com npm run dev",
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "npm install && node build/build.js",

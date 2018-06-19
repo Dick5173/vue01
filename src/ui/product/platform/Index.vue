@@ -1,6 +1,6 @@
 <template lang="pug">
   div(v-loading="loading")
-    search-bar(:queryParams="queryParams", @submit="handleSearch")
+    search-bar(:queryParams="queryParams", @submit="handleSearch", @create_export_task="handleExportTask")
     router-link(:to="{name:'PlatformProductCreate'}")
       el-button(type="primary", icon="el-icon-plus") 创建
     div.batch
@@ -16,9 +16,14 @@
             el-button(type="text", @click="showProductDetail(props.row)") {{props.row.id}}
         el-table-column(prop="cover", label="", width="70px")
           div.cover(slot-scope="props", v-lazy:background-image="showCover(props.row)")
-        el-table-column(prop="name", label="商品", :show-overflow-tooltip="true")
-          div(slot-scope="props") {{props.row.name}}
-            div.remarks {{props.row.prop.sys_remark}}备注
+        el-table-column(prop="name", label="商品")
+          div(slot-scope="props")
+            el-tooltip(placement="top")
+              div(slot="content") {{props.row.name}}
+              div.name {{props.row.name}}
+            el-tooltip(placement="bottom")
+              div(slot="content") {{props.row.prop.sys_remark}}
+              div.remarks {{props.row.prop.sys_remark}}
         el-table-column(prop="suggest_price", label="建议售价", sortable, width="110px")
           div(slot-scope="props") {{ props.row | productSuggestPrice }}
         el-table-column(prop="collect_count", label="收藏", sortable, width="110px")
@@ -72,7 +77,6 @@
   import * as ProductApi from 'src/api/product'
   import LoadPagerData from 'src/mixins/load-pager-data'
   import { showCover } from 'src/service/product/index'
-  import { dateFormat } from 'src/util/format'
   import BatchCategoryDialog from 'src/ui/product/platform/dialog/BatchCategoryDialog.vue'
   import BatchTagDialog from 'src/ui/product/platform/dialog/BatchTagDialog.vue'
   import TenantCountDialog from 'src/ui/product/platform/dialog/TenantCountDialog.vue'
@@ -124,30 +128,7 @@
     },
     methods: {
       getQueryApi (params) {
-        return ProductApi.getList(this.R.mapObjIndexed((val, key, obj) => {
-          if (key === 'start' || key === 'end') {
-            if (val === 0) {
-              return ''
-            } else {
-              return dateFormat(val, 'YYYY-MM-DD')
-            }
-          } else if (key === 'top') {
-            if (val) {
-              return 1
-            } else {
-              return 0
-            }
-          } else if (key === 'tags') {
-            if (val.length !== 0) {
-              return val.map((i) => {
-                return parseInt(i)
-              })
-            } else {
-              return []
-            }
-          }
-          return val
-        })(params))
+        return ProductApi.getList(params)
       },
       showProductDetail (row) {
         this.$refs.dlgProductDetail.show(row)
@@ -356,6 +337,14 @@
           name: 'PlatformProductRecycle'
         })
       },
+      handleExportTask (model) {
+        ProductApi.exportProduct(model).then((res) => {
+          this.$message({
+            message: res.data,
+            type: 'success'
+          })
+        }).catch(() => {})
+      },
       handleCopy (product) {
         this.$router.push({
           name: 'PlatformProductCreate',
@@ -382,13 +371,17 @@
   }
 
   .name {
-
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .remarks {
     color: #B4BCCC;
-    font-size: 13px;
+    font-size: 12px;
     margin-top:5px;
-    white-space: normal !important;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .batch {

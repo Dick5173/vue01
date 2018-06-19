@@ -12,9 +12,11 @@
           :key="item.id",
           :label="item.principal_name_id",
           :value="item.id")
-      el-form-item(label="首次上线：")
-        date-picker(:defaultDate="defaultDate", @change = "changeDate", type="datetimerange")
       el-form-item
+        date-picker(:defaultDate="defaultDate", @change = "changeDate", type="datetimerange")
+      el-form-item(label="状态：")
+        el-select(v-model="formData.status", clearable, placeholder="请选择")
+          el-option(v-for="item in allSettleStatus", :key="item.value", :label="item.text", :value="item.value")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜&nbsp索
         el-button(@click="handleReset") 重&nbsp置
@@ -23,7 +25,7 @@
 <script>
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
   import * as TenantApi from 'src/api/tenant'
-  import { getTenantNameId } from 'src/service/other/index'
+  import * as OtherService from 'src/service/other/index'
 
   export default {
     props: {
@@ -37,11 +39,16 @@
         formData: {
           tenant_id: '',
           start: 0,
-          end: 0
+          end: 0,
+          status: ''
         },
+        initialData: {},
         defaultDate: [],
         tenantList: [],
-        selectLoading: false
+        selectLoading: false,
+        ...$global.$mapConst({
+          'allSettleStatus': OtherService.allSettleStatus
+        })
       }
     },
     computed: {},
@@ -61,21 +68,21 @@
         }
       },
       async getTenantList () {
+        this.selectLoading = true
         try {
-          this.selectLoading = true
           let res = await TenantApi.getListAll()
           res = res.data.data
-          this.tenantList = getTenantNameId(res)
-          this.selectLoading = false
+          this.tenantList = OtherService.getTenantNameId(res)
         } catch (err) {
-          this.selectLoading = false
+          console.log(err)
         }
+        this.selectLoading = false
       },
       handleSearch () {
         this.$emit('submit', this.formData)
       },
       handleReset () {
-        this.formData = this.R.clone(this.tenantList)
+        this.formData = this.R.clone(this.initialData)
         this.defaultDate = []
         this.$emit('submit', this.formData)
       },
@@ -83,7 +90,8 @@
         this.formData = {
           tenant_id: this.queryParams.tenant_id,
           start: this.R_.parseDateTick(0, this.queryParams.start),
-          end: this.R_.parseDateTick(0, this.queryParams.end)
+          end: this.R_.parseDateTick(0, this.queryParams.end),
+          status: this.queryParams.status ? parseInt(this.queryParams.status) : ''
         }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]
@@ -93,6 +101,7 @@
       }
     },
     mounted () {
+      this.initialData = this.R.clone(this.formData)
       this.convertQueryParamsToForm()
       this.getTenantList()
     }

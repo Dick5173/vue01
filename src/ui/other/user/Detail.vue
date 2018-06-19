@@ -16,16 +16,19 @@
       div.body-bottom-line
       div.body-status
         div.body-item-status 收入：
-          el-button(type="text", @click="toIncome(userData)", size="mini") {{this.userData.wallet.total_income| price}}
+          el-button(type="text", @click="toIncome(userData)", size="mini") {{this.userData.wallet.total_income| price(false)}}
+          span 币
       div.body-status.margin-left
         div.body-item-status 抵用：
-          el-button(type="text", @click="toServerPurpose(userData)", size="mini") {{userData.wallet.total_use | price}}
+          el-button(type="text", @click="toServerPurpose(userData)", size="mini") {{userData.wallet.total_use | price(false)}}
+          span 币
       div.body-status.margin-left
         div.body-item-status 余额：
-          span {{this.userData.wallet.available_balance | price}}
+          span {{this.userData.wallet.available_balance | price(false)}}币
       div.body-status.margin-left
         div.body-item-status 核销提现：
-          el-button(type="text", @click="toWithDraw(userData)", size="mini") {{this.userData.wallet.total_withdraw | price}}
+          el-button(type="text", @click="toWithDraw(userData)", size="mini") {{this.userData.wallet.total_withdraw | price(false)}}
+          span 币
       div.list-title
         div.list-title-head
           div.list-title-item 订单统计

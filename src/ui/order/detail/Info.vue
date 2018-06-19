@@ -10,6 +10,9 @@
           div.info-wrapper
             div.icon-wrapper(v-lazy:background-image="scope.row.product_img_res.url")
             div.name {{scope.row.product_name}}, {{scope.row.spec}}, {{scope.row.price | price}} x {{scope.row.count}}
+      el-table-column(label="编码", width="210")
+        template(slot-scope="scope")
+          div.code-id {{scope.row.sku_code}}
       el-table-column(label="退款", width="210", v-if="hasRefund")
         template(slot-scope="scope")
           div.status
@@ -35,7 +38,8 @@
         div.txt-info
         div.txt-info
           span 商品金额：{{order.product_total_price | price}}，
-          span(v-if="order.full_reduce_amount > 0") 立减：-{{order.full_reduce_amount | price}}，
+          span(v-if="order.discount_amount > 0") 第N件M折立减：-{{order.discount_amount | price}}，
+          span(v-if="order.full_reduce_amount > 0") 满减立减：-{{order.full_reduce_amount | price}}，
           span(v-if="order.user_voucher_amount > 0") 优惠券：-{{order.user_voucher_amount | price}}，
           span(v-if="order.postage > 0") 运费：{{order.postage | price}}，
           span(v-if="order.wallet_used_amount > 0") 余额抵用：-{{order.wallet_used_amount | price}}，
@@ -43,7 +47,7 @@
           span 利润
             el-tooltip(effect="light", placement="bottom-start")
               div(slot="content") 利润未扣除平台服务费
-              i.el-icon-question
+              i.el-icon-question(v-if="false")
           span ：{{order.total_profit | price}}
     express-dialog(ref="dlgExpress")
     agree(ref="agree", :orderItem="currentOrderItem", @submit="$emit('refresh')")
@@ -119,7 +123,6 @@
       async goRefundDetail (row) {
         if (row.refund_status === REFUND_STATUS_NO_APPLY) {
           const resRefund = await orderItems(row.id)
-          console.log(resRefund)
           this.currentOrderItem = resRefund.data
           this.$refs.agree.show()
         } else {

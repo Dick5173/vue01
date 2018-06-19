@@ -7,26 +7,19 @@
           span 最多退款
           span.can-refund-price(:class="{red: !canFullRefund}") {{canRefundPrice | price}}，
           span 其中商品总额{{orderItem.total_price | price}}，
-          span(v-if="orderItem.wallet_used_amount > 0") 余额抵用{{orderItem.wallet_used_amount | price}}，
           span {{orderItem.order_total_count}}件商品运费总额{{orderItem.order_postage | price}}
-      el-form-item(label="退回余额抵用", prop="purpose" v-if="orderItem.full_reduce_amount > 0")
-        el-input.input(v-model="form.purpose")
-        div.tip
-          span 最多退回{{orderItem.full_reduce_amount | price}}，退至用户"钱包-余额"
-      el-form-item(label="追回分享奖励", prop="purpose" v-if="orderItem.full_reduce_amount > 0")
-        el-input.input(v-model="form.purpose")
-        div.tip
-          span 最多退回{{orderItem.full_reduce_amount | price}}
       el-form-item(label="")
         el-checkbox(v-if="orderItem.can_refund_voucher" v-model="form.is_refund_voucher") 退回优惠券
       el-form-item(label="退回余额抵用", prop="wallet_use_amount" v-if="orderItem.wallet_used_amount > 0")
         el-input.input(v-model="form.wallet_use_amount")
+        span 币
         div.tip
-          span 最多退回{{orderItem.wallet_used_amount | price}}，退至用户"钱包-余额"
+          span 最多退回{{orderItem.wallet_used_amount | price(false)}}币，退至用户"钱包-余额"
       el-form-item(label="追回分享奖励", prop="share_reward_amount" v-if="orderItem.share_reward_amount > 0")
         el-input.input(v-model="form.share_reward_amount")
+        span 币
         div.tip
-          span 最多退回{{orderItem.share_reward_amount | price}}
+          span 最多退回{{orderItem.share_reward_amount | price(false)}}币
       el-form-item(label="描述", prop="txt")
         el-input(v-model="form.txt", placeholder="请输入内容", type="textarea", :rows="3", :maxlength="maxLength")
         span.input-tip {{form.txt.length}} / {{maxLength}}
@@ -90,7 +83,7 @@
             callback(new Error('请输入合适的数字'))
             return
           }
-          if (convertYuanToFen(value) > this.orderItem.wallet_use_amount) {
+          if (convertYuanToFen(value) > this.orderItem.wallet_used_amount) {
             callback(new Error('超出最大值，请输入合适的数字'))
             return
           }
@@ -105,7 +98,7 @@
               return
             }
           } else {
-            callback(new Error('请输入合适的数字'))
+            callback(new Error('请输入合适的数字，最多限两位小数'))
             return
           }
           if (convertYuanToFen(value) > this.orderItem.share_reward_amount) {
@@ -169,7 +162,7 @@
         if (this.canFullRefund) {
           return this.orderItem.total_price + this.orderItem.order_postage
         }
-        return this.orderItem.order_left_amount
+        return this.orderItem.total_price
       }
     },
     methods: {

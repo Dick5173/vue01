@@ -14,8 +14,9 @@
       el-form(:model="form",label-width="80px" :rules="rules" style="margin-top:30px", ref="form" )
         el-form-item(label="核销金额" prop="amount")
           el-input.input(v-model="form.amount")
+          span 币
           div.tip
-            span 最多核销{{getAvailableBalance(userData) | price}}
+            span 最多核销{{getAvailableBalance(userData) | price(false)}}币
         div.line
         div.txt 以下内容用户不可见
         el-form-item(label="备注", prop="remark")
@@ -48,8 +49,16 @@
             callback(new Error('最多限两位小数'))
             return
           }
-          if (convertYuanToFen(value) > this.userData.wallet.available_balance) {
-            callback(new Error('不能超过最多核销'))
+          if (this.userData.wallet) {
+            if (convertYuanToFen(value) > this.userData.wallet.available_balance) {
+              callback(new Error('不能超过最多核销'))
+              return
+            }
+          } else {
+            if (convertYuanToFen(value) > 0) {
+              callback(new Error('不能超过最多核销'))
+              return
+            }
           }
         }
         callback()
@@ -95,14 +104,21 @@
       submit () {
         this.$refs.form.validate(async (valid) => {
           if (valid) {
-            try {
-              await UserWallet.postWalletWithdraw(this.userData.id, this.form)
-              this.$message({
-                message: '提现成功',
-                type: 'success'
-              })
-              this.dialogVisible = false
-            } catch (err) {}
+            this.$confirm('确认提现', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(async () => {
+              try {
+                await UserWallet.postWalletWithdraw(this.userData.id, this.form)
+                this.$message({
+                  message: '提现成功',
+                  type: 'success'
+                })
+                this.dialogVisible = false
+                this.$emit('refresh')
+              } catch (err) {}
+            })
           }
         })
       },

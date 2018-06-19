@@ -13,12 +13,13 @@
         el-table-column(label="类型", prop="")
           template(slot-scope="scope")
             div {{scope.row.reason}}
-        el-table-column(label="金额（元）", prop="")
+        el-table-column(label="金额（币）", prop="")
           template(slot-scope="scope")
-            div {{scope.row.amount | price}}
+            div(v-if="scope.row.type === 2") {{scope.row.amount | price(false)}}
+            div(v-else) -{{scope.row.amount | price(false)}}
         el-table-column(label="时间", prop="total_count")
           template(slot-scope="scope")
-            div {{showtime(scope.row) | date}}
+            div {{scope.row.ct | datetime}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
 </template>
 
@@ -26,7 +27,6 @@
   import { getUserShowData } from 'src/service/other/index'
   import * as UserApi from 'src/api/user'
   import * as UserWallet from 'src/api/wallet'
-  import { dateFormat } from 'src/util/format'
   import LoadPagerData from 'src/mixins/load-pager-data'
 
   export default {
@@ -64,10 +64,6 @@
             id: id
           }
         })
-      },
-      showtime (row) {
-        const timeee = dateFormat(row.timestamp)
-        return timeee
       }
     },
     mounted () {

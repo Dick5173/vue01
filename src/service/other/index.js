@@ -1,3 +1,14 @@
+export const allSettleStatus = {
+  settle: {
+    value: 2,
+    text: '已结算'
+  },
+  unsettle: {
+    value: 1,
+    text: '未结算'
+  }
+}
+
 export const getTenantNameId = (arr) => {
   let resArr = arr.map((i) => {
     let merge = []
@@ -161,4 +172,12 @@ export const showMchBindButtonName = (row) => {
     }
   }
   return '商户号未绑'
+}
+
+export const showWithHiddenBindButtonName = (row) => {
+  if (row.hidden === false) {
+    return '否'
+  } else if (row.hidden === true) {
+    return '是'
+  }
 }

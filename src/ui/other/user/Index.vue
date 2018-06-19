@@ -10,28 +10,28 @@
         el-table-column(prop="", label="用户")
           div(slot-scope="scope")
             el-button(type="text", @click="toDetail(scope.row)") {{scope.row.nickname}}
-        el-table-column(prop="income", sortable, label="收入")
+        el-table-column(prop="income", sortable, label="收入(币)")
           div(slot-scope="scope")
-            el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price}}
-        el-table-column(prop="use", sortable, label="抵用")
+            el-button(type="text", @click="toIncome(scope.row)") {{getIncome(scope.row) | price(false)}}
+        el-table-column(prop="use", sortable, label="抵用(币)")
           div(slot-scope="scope")
-            el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price}}
-        el-table-column(prop="balance", sortable, label="余额")
-          div(slot-scope="scope") {{getAvailableBalance(scope.row) | price}}
-        el-table-column(prop="withdraw", sortable, label="核销提现")
+            el-button(type="text", @click="ToServerpurpose(scope.row)") {{getTotalUse(scope.row) | price(false)}}
+        el-table-column(prop="balance", sortable, label="余额(币)")
+          div(slot-scope="scope") {{getAvailableBalance(scope.row) | price(false)}}
+        el-table-column(prop="withdraw", sortable, label="核销提现(币)", v-if="dataList.html_control_data.withdraw_col_show")
           div(slot-scope="scope")
-            el-button(type="text", @click="toWithdraw(scope.row)") {{getTotalWithdraw(scope.row) | price}}
+            el-button(type="text", @click="toWithdraw(scope.row)") {{getTotalWithdraw(scope.row) | price(false)}}
         el-table-column(prop="ct", sortable, label="首次访问")
           template(slot-scope="scope")
             div {{showDate(scope.row)}}
         el-table-column(prop="", label="店铺")
           div(slot-scope="scope") {{getTenantName(scope.row)}}
-        el-table-column(prop="",label="操作")
+        el-table-column(prop="",label="操作", v-if="dataList.html_control_data.withdraw_opt_col_show")
           div.control-wrapper(slot-scope="scope")
-            el-button.btn.text-code(size="mini", type="primary", v-if="scope.row.tenant.allow_withdraw", @click="showWithDrawDialog(scope.row)", plain) 核销提现
+            el-button.btn.text-code(size="mini", type="primary", v-if="dataList.html_control_data.withdraw_opt_col_button_show", @click="showWithDrawDialog(scope.row)", plain) 核销提现
       div.order-bottom.txt-head(v-if="dataList.data && dataList.data.length>0") 收入{{dataList.stat_data.sum_total_income | price}}，余额{{dataList.stat_data.sum_available_balance | price}}，核销提现{{dataList.stat_data.sum_total_withdraw | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
-      with-draw-dialog(ref="withDrawDilog")
+      with-draw-dialog(ref="withDrawDilog", @refresh="loadDataList")
 </template>
 
 <script>
@@ -55,8 +55,11 @@
         queryParams: {
           tenant_id: '',
           key: '',
-          start: new Date().getTime(),
-          end: new Date().getTime()
+          start: 0,
+          end: 0
+        },
+        dataList: {
+          html_control_data: {}
         }
       }
     },
