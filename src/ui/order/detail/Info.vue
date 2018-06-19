@@ -82,7 +82,6 @@
     },
     computed: {
       hasRefund () {
-        console.log(this.order)
         return OrderUtil.hasRefund(this.order) && !this.buyGroupOrder
       },
       buyGroupOrder () {
