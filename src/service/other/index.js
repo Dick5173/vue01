@@ -111,6 +111,18 @@ export const showWithdrawBindButtonName = (row) => {
   }
   return text
 }
+export const showPowByBindButtonName = (row) => {
+  let text = ''
+  switch (row.relate_info_show) {
+    case true:
+      text = '显示'
+      break
+    case false:
+      text = '隐藏'
+      break
+  }
+  return text
+}
 export const showMatrixButtonName = (row) => {
   let text = ''
   switch (row.tp) {

@@ -49,6 +49,9 @@
         div.body-status.margin-left
           div.body-item-status 核销提现：
             el-button(type="text", @click="showWithDrawDialog(tenantData)", size="mini") {{showWithdrawBindButtonName(tenantData)}}
+        div.body-status.margin-left
+          div.body-item-status powered by：
+            el-button(type="text", @click="showPowbyDialog(tenantData)", size="mini") {{showPowByBindButtonName(tenantData)}}
       div.body-bottom-line
       div.list-title
         div.list-title-head
@@ -100,8 +103,9 @@
     bind-child-tenant-dialog(ref="dlgMchBindDialog", @refresh="getDetail")
     bind-erp-shop-id-dialog(ref="dlgBindShopId", @refresh="getDetail")
     bind-qiyu-dialog(ref="dlgBindQiyu" , @refresh="getDetail")
-    bind-delivery-mode-dialog(ref="dlgBindDelivery",@refresh="getDetail")
+    bind-delivery-mode-dialog(ref="dlgBindDelivery", @refresh="getDetail")
     bind-withdraw-dialog(ref="dlgTenantWithDraw", @refresh="getDetail")
+    bind-powby-dialog(ref="dlgTenantPowBy", @refresh="getDetail")
     tenant-level-dialog(ref="dlgTenantLevel", @refresh="getDetail")
     bind-matrix-dialog(ref="dlgBindMatrix", @refresh="getDetail")
     el-dialog.tenant-status(title="店铺状态", :visible.sync="tenantDialogVisible", width="480px", :modal-append-to-body="false")
@@ -126,9 +130,10 @@ import BindQiyuDialog from 'src/ui/other/tenant/BindQiyuDialog.vue'
 import BindDeliveryModeDialog from 'src/ui/other/tenant/BindDeliveryModeDialog.vue'
 import TenantLevelDialog from 'src/ui/other/tenant/TenantLevelDialog.vue'
 import BindWithdrawDialog from 'src/ui/other/tenant/BindWithdrawDialog.vue'
+import BindPowbyDialog from 'src/ui/other/tenant/BindPowByDialog.vue'
 import BindMatrixDialog from 'src/ui/other/tenant/BindMatrixDialog.vue'
 import * as TenantApi from 'src/api/tenant'
-import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showWithdrawBindButtonName, showMatrixButtonName } from 'src/service/other/index'
+import { showAppStatus, showTenantStatus, showProductAuth, showMchBindButtonName, showErpBindButtonName, showQiyuBindButtonName, showDeliverytButtonName, showWithdrawBindButtonName, showMatrixButtonName, showPowByBindButtonName } from 'src/service/other/index'
 import { showCover } from 'src/service/product/index'
 import { dateFormat } from 'src/util/format'
 import { TENANT_STATUS_IN_COME, TENANT_STATUS_ORDER, TENANT_STATUS_PRODUCT } from 'src/constants/tenantPush'
@@ -143,7 +148,8 @@ export default {
     BindDeliveryModeDialog,
     BindWithdrawDialog,
     BindMatrixDialog,
-    TenantLevelDialog
+    TenantLevelDialog,
+    BindPowbyDialog
   },
   data () {
     return {
@@ -186,6 +192,9 @@ export default {
     },
     showWithDrawDialog (row) {
       this.$refs.dlgTenantWithDraw.show(row)
+    },
+    showPowbyDialog (row) {
+      this.$refs.dlgTenantPowBy.show(row)
     },
     showStatPeriod (row) {
       const start = dateFormat(row.start_tick, 'YYYY-MM-DD HH:mm:ss')
@@ -317,7 +326,8 @@ export default {
     ...$global.$mapMethods({ 'showMchBindButtonName': showMchBindButtonName }),
     ...$global.$mapMethods({ 'showDeliverytButtonName': showDeliverytButtonName }),
     ...$global.$mapMethods({ 'showWithdrawBindButtonName': showWithdrawBindButtonName }),
-    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName })
+    ...$global.$mapMethods({ 'showMatrixButtonName': showMatrixButtonName }),
+    ...$global.$mapMethods({ 'showPowByBindButtonName': showPowByBindButtonName })
   },
   created () {
     const status = this.$route.query.status

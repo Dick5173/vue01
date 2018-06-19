@@ -1,17 +1,16 @@
 <template lang="pug">
   div(v-loading="loading")
-    el-dialog( title="核销提现",
+    el-dialog( title="powered by",
     :visible.sync="dialogVisible",
     width="420px")
       div.head
         div.img(v-lazy:background-image="tenantData.head_img")
         div.name {{tenantData.nick_name}}
       el-form.small-el-form(ref="form", label-width="110px")
-        div.body-text
-          el-radio-group(v-model="operate")
-            el-radio(:label="'open'") 开启
-            div.text-margin 允许店铺为用户线下提现，线上记账
-            el-radio(:label="'close'") 关闭
+        el-form-item
+          template()
+            el-radio(v-model="operate", :label="'open'") 显示"美市提供平台支持"
+            el-radio.radio(v-model="operate", :label="'close'") 隐藏"美市提供平台支持"
         el-form-item()
           el-button.btn1(type="", @click="hide", plain) 取 消
           el-button.btn2(type="primary", @click="handleBind") 确 定
@@ -47,32 +46,38 @@
         }
       },
       handleBind () {
-        const h = this.$createElement
-        var title = '关闭"核销提现"'
+        var title = '隐藏powered by？'
+        var message = '隐藏"美市提供平台支持"'
         var allowWithdraw = 'close'
         if (this.operate === 'open') {
-          title = '开启"核销提现"'
+          title = '显示powered by？'
           allowWithdraw = 'open'
+          message = '显示"美市提供平台支持"'
         }
-        this.$msgbox({
-          title: title,
-          message: h('p', null, [
-            h('span', null)
-          ]),
-          showCancelButton: true,
+        this.$confirm(message, title, {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          center: true
+          type: 'warning'
         }).then(async () => {
           try {
             this.operate = allowWithdraw
-            await TenantApi.postWithdrawOperate(this.tenantData.id, this.operate)
-            this.$message({
-              type: 'success',
-              message: '更新成功 '
-            })
-            this.dialogVisible = false
-            this.$emit('refresh')
+            if (this.operate === 'close') {
+              await TenantApi.hidePowerInfo(this.tenantData.id)
+              this.$message({
+                type: 'success',
+                message: '隐藏成功 '
+              })
+              this.dialogVisible = false
+              this.$emit('refresh')
+            } else if (this.operate === 'open') {
+              await TenantApi.showPowerInfo(this.tenantData.id)
+              this.$message({
+                type: 'success',
+                message: '显示成功 '
+              })
+              this.dialogVisible = false
+              this.$emit('refresh')
+            }
           } catch (err) {
           }
         }).catch(() => {
@@ -83,7 +88,7 @@
           this.loading = true
           let res = await TenantApi.getDetail(this.$route.params.tid)
           this.tenantData = res.data.tenant
-          if (this.tenantData.allow_withdraw) {
+          if (this.tenantData.relate_info_show) {
             this.operate = 'open'
           } else {
             this.operate = 'close'
@@ -118,15 +123,7 @@
       margin-left: 10px;
     }
   }
-  .body-text{
-    margin-left:140px;
-    margin-bottom:20px;
-    div{
-      font-size:10px;
-      margin-left:24px;
-    }
-    .text-margin{
-      margin-bottom:20px;
-    }
+  .radio{
+    margin-left: 0;
   }
 </style>
