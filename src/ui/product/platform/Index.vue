@@ -133,8 +133,8 @@
       showProductDetail (row) {
         this.$refs.dlgProductDetail.show(row)
       },
-      shouldResetRouteQuery (to, from) {
-        return from.name === 'PlatformProductCreate'
+      shouldResetRouteQuery (to, fromRouter) {
+        return fromRouter.name === 'PlatformProductCreate'
       },
       showTenantCountDialog (row) {
         this.$refs.tenantCountDlg.show(row)
