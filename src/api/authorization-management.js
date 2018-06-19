@@ -40,14 +40,20 @@ export const deleteAuth = (id) => {
   return Axios.delete(`/admin/auth/s/${id}`)
 }
 
-export const sortAuthGroup = (tp, ids) => {
-  return Axios.post(`/admin/sort/auth_group/${tp}`, {
+export const sortSysAuthGroup = (pid, ids) => {
+  return Axios.post(`/admin/sort/auth_group/sys/${pid}`, {
     val: ids || []
   })
 }
 
-export const sortAuth = (tp, ids) => {
-  return Axios.post(`/admin/sort/auth/${tp}`, {
+export const sortTenantAuthGroup = (pid, ids) => {
+  return Axios.post(`/admin/sort/auth_group/tenant/${pid}`, {
+    val: ids || []
+  })
+}
+
+export const sortAuth = (gid, ids) => {
+  return Axios.post(`/admin/sort/auth/${gid}`, {
     val: ids || []
   })
 }

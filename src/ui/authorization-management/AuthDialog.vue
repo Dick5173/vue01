@@ -3,13 +3,15 @@
     el-form(ref="form", :model="formData", :rules="formRules", v-loading="loading")
       el-form-item(label="名称：", prop="name", labelWidth="120px")
         el-input.tiny-x-el-input(v-model="formData.name", :maxlength="20")
-      el-form-item(label="选择权限组：", prop="auth_group_id", labelWidth="120px")
-        el-select(v-model="formData.auth_group_id", clearable)
-          el-option(v-for="item in authGroupList", :key="item.id", :label="item.name", :value="item.id")
+      el-form-item(label="权限组：", labelWidth="120px")
+        div {{auth_group_name}}
+      el-form-item(label="类型：", labelWidth="120px")
+        el-radio-group(v-model="formData.s_tp")
+          el-radio(:label="1") 一般
+          el-radio(:label="2") 其他
       el-button(@click="addPath", type="primary", size="small") 添加权限路径
       el-form-item(prop="paths")
         smart-table(:dataList.sync="formData.paths")
-          smart-table-column(type="drag")
           smart-table-column(label="名称")
             div(slot-scope="scope")
               el-form-item.show-validate-el-form(:prop="'paths.' + scope.index + '.name'", :rules="formRules.name")
@@ -44,23 +46,17 @@
         }
         callback()
       }
-      const authGroupIdValidator = (rule, value, callback) => {
-        if (this.formData.auth_group_id === '') {
-          callback(new Error('请选择权限组'))
-          return
-        }
-        callback()
-      }
       return {
         loading: false,
         dialogVisible: false,
-        tp: 1,
         authGroupList: [],
+        auth_group_name: '',
         formData: {
           id: 0,
           name: '',
-          tp: '',
-          auth_group_id: '',
+          tp: 1,
+          s_tp: 1,
+          auth_group_id: 0,
           paths: [{
             id: 0,
             name: '',
@@ -72,8 +68,7 @@
           name: [{required: true, message: '不能为空', trigger: 'blur'},
             {max: 20, message: '名称最长20个字符', trigger: 'blur'}],
           path: [{required: true, message: '不能为空', trigger: 'blur'}],
-          paths: [{validator: pathsValidator, trigger: 'blur'}],
-          auth_group_id: [{validator: authGroupIdValidator, trigger: 'blur'}]
+          paths: [{validator: pathsValidator, trigger: 'blur'}]
         }
       }
     },
@@ -94,6 +89,7 @@
                 this.dialogVisible = false
                 this.$emit('refresh')
               } else {
+                console.log(this.formData)
                 await AuthorizationManagementApi.createAuth(this.formData)
                 this.dialogVisible = false
                 this.$emit('refresh')
@@ -117,12 +113,13 @@
       },
       handleClose () {
         this.initialData = null
-        this.authGroupList = []
+        this.auth_group_name = ''
         this.formData = {
           id: 0,
           name: '',
-          tp: '',
-          auth_group_id: '',
+          tp: 1,
+          s_tp: 1,
+          auth_group_id: 0,
           paths: [{id: 0,
             name: '',
             path: ''}]
@@ -131,15 +128,15 @@
           this.$refs['form'].resetFields()
         }
       },
-      show (tp, item) {
-        this.getAuthGroup(tp)
+      show (tp, group, item) {
         if (item) {
           this.getAuth(item.id)
           this.initialData = item
         } else {
           this.formData.tp = tp
+          this.formData.auth_group_id = group.id
         }
-        this.tp = tp
+        this.auth_group_name = group.name
         this.dialogVisible = true
       },
       async getAuth (id) {
@@ -156,18 +153,9 @@
           this.loading = false
         }
       },
-      async getAuthGroup (tp) {
-        this.loading = true
-        try {
-          let res = await AuthorizationManagementApi.getAuthGroupList(tp)
-          this.authGroupList = res.data.data
-        } finally {
-          this.loading = false
-        }
-      },
       showTitle () {
         let model = this.isEdit ? '编辑' : '创建'
-        let tp = this.tp === 1 ? '平台' : '店铺'
+        let tp = this.formData.tp === 1 ? '平台' : '店铺'
         return `${model}${tp}权限`
       }
     }
