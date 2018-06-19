@@ -257,7 +257,7 @@ const router = new Router({
           component: () => import('src/ui/product/service/Index.vue'),
           meta: {
             group: 'Product',
-            title: '服务',
+            title: '服务说明',
             showInSide: true
           }
         },
