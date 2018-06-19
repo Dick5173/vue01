@@ -3,6 +3,9 @@
     el-form(ref="form", :model="formData", :rules="formRules", labelWidth="66px")
       el-form-item(prop="name", label="名称")
         el-input(v-model.trim="formData.name", :maxlength="20", clearable)
+      el-form-item(prop="roles", label="角色")
+        el-select(v-model="formData.roles", multiple)
+          el-option(v-for="item in roleList", :key="item.id", :label="item.name", :value="item.id")
       el-form-item(prop="mobile", label="手机号")
         el-input(v-model.trim="formData.mobile", clearable)
       el-form-item(prop="passwd", label="密码")
@@ -17,10 +20,10 @@
 
   import * as SysUserApi from 'src/api/sysuser'
   import { REGEX_MOBILE } from 'src/util/regex'
+  import * as CharacterAuthApi from 'src/api/character-auth'
 
   export default {
     data () {
-      // todo: checkExist
       const validateMobile = async (rule, value, callback) => {
         if (value !== this.oldMobile) {
           try {
@@ -37,6 +40,7 @@
       return {
         loading: false,
         initialData: {},
+        roleList: [],
         formData: {
           id: 0,
           name: '',
@@ -61,7 +65,6 @@
             {required: true, message: '请输入密码', trigger: 'blur'}
           ]
         },
-        allRoles: [],
         dialogVisible: false,
         ...$global.$mapConst({
           'commonDialogWidth': commonDialogWidth
@@ -77,7 +80,18 @@
       }
     },
     methods: {
+      async getRoleList () {
+        this.loading = true
+        try {
+          const res = await CharacterAuthApi.getTenantRoleList()
+          this.roleList = res.data.data
+          console.log(this.roleList)
+        } finally {
+          this.loading = false
+        }
+      },
       show (editData) {
+        this.getRoleList()
         this.initialData = editData
         if (this.initialData) {
           this.formData = this.R.clone(this.initialData)
@@ -88,6 +102,14 @@
         this.dialogVisible = false
       },
       closeCallback () {
+        this.formData = {
+          id: 0,
+          name: '',
+          mobile: '',
+          passwd: '',
+          roles: []
+        }
+        this.roleList = []
         this.$refs.form && this.$refs.form.resetFields()
       },
       async handleSubmit () {

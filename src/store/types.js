@@ -1,1 +1,3 @@
 export const UPDATE_ME = 'UPDATE_ME'
+export const UPDATE_SYS_ROLES = 'UPDATE_SYS_ROLES'
+export const UPDATE_ROLES = 'UPDATE_ROLES'

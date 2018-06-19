@@ -1,7 +1,9 @@
-import { UPDATE_ME } from '../types'
+import { UPDATE_ME, UPDATE_SYS_ROLES } from '../types'
+import Vue from 'vue'
 
 const state = {
-  me: null
+  me: null,
+  roles: []
 }
 
 const getters = {
@@ -10,6 +12,31 @@ const getters = {
       return true
     }
     return false
+  },
+  isSuper: state => {
+    if (state.me && state.me.super) {
+      return true
+    } else {
+      return false
+    }
+  },
+  // sysRoles: state => {
+  //   if (state.me && state.me.roles && state.me.roles.length > 0) {
+  //     return state.me.roles
+  //   }
+  //   return []
+  // },
+  sysRoles: state => {
+    if (state.roles && state.roles.length > 0) {
+      return state.roles
+    } else {
+      const roles = JSON.parse(window.localStorage.getItem('UPDATE_SYS_ROLES') || '[]')
+      if (roles && roles.length > 0) {
+        Vue.$store.commit(UPDATE_SYS_ROLES, roles)
+        return roles
+      }
+    }
+    return []
   }
 }
 
@@ -22,6 +49,15 @@ const mutations = {
    */
   [UPDATE_ME] (state, me) {
     state.me = me
+    if (me && me.roles && me.roles.length > 0) {
+      Vue.$store.commit(UPDATE_SYS_ROLES, me.roles)
+    }
+  },
+  [UPDATE_SYS_ROLES] (state, roles) {
+    if (roles && roles.length > 0) {
+      window.localStorage.setItem('UPDATE_SYS_ROLES', JSON.stringify(roles))
+    }
+    state.roles = roles
   }
 }
 
