@@ -4,7 +4,7 @@
       el-select.status-select(v-model="formData.status", multiple, clearable)
         el-option(v-for="item in optionsStatus", :key="item.value", :label="item.label", :value="item.value")
     el-form-item(label="")
-      el-select.status-select(v-model="formData.prod_tp", clearable, style="width: 200px; margin: 0 50px")
+      el-select.status-select(v-model="formData.source", clearable, style="width: 200px; margin: 0 50px")
         el-option(v-for="item in productType", :key="item.value", :label="item.label", :value="item.value")
     el-form-item(label="下单")
       date-range-picker(:start.sync="formData.start_time", :end.sync="formData.end_time", placeholder="选择日期")
@@ -52,7 +52,7 @@
           tenant_id: '',
           start_time: 0,
           end_time: 0,
-          prod_tp: 3
+          source: 1
         },
         initialData: null,
         optionsStatus: [
@@ -83,7 +83,7 @@
           value: 2,
           label: '自营商品'
         }, {
-          value: 3,
+          value: 1,
           label: '平台商品'
         }
         ]
