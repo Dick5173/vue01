@@ -3,8 +3,10 @@
     el-form(ref="form", :model="formData", :rules="formRules", v-loading="loading")
       el-form-item(label="名称：", prop="name", labelWidth="120px")
         el-input.tiny-x-el-input(v-model="formData.name", :maxlength="20")
-      el-form-item(label="权限组：", labelWidth="120px")
-        div {{auth_group_name}}
+      el-form-item(label="选择权限组：", prop="auth_group_id", labelWidth="120px")
+        el-select(v-model="formData.auth_group_id", clearable)
+          el-option-group(v-for="item in authGroupList", :key="item.value", :label="item.label")
+            el-option(v-for="child in item.children", :key="child.value", :label="child.label", :value="child.value")
       el-form-item(label="类型：", labelWidth="120px")
         el-radio-group(v-model="formData.s_tp")
           el-radio(:label="1") 一般
@@ -42,6 +44,7 @@
 <script>
   import * as AuthorizationManagementApi from 'src/api/authorization-management'
   import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
+  import * as AuthorizationManagementService from 'src/service/authorization-management/index'
 
   export default {
     props: {},
@@ -81,7 +84,8 @@
           name: [{required: true, message: '不能为空', trigger: 'blur'},
             {max: 20, message: '名称最长20个字符', trigger: 'blur'}],
           path: [{required: true, message: '不能为空', trigger: 'blur'}],
-          paths: [{validator: pathsValidator, trigger: 'blur'}]
+          paths: [{validator: pathsValidator, trigger: 'blur'}],
+          auth_group_id: [{required: true, message: '不能为空', trigger: 'change'}]
         }
       }
     },
@@ -113,9 +117,11 @@
         })
       },
       addPath () {
-        this.formData.paths.push({id: 0,
+        this.formData.paths.push({
+          id: 0,
           name: '',
-          path: ''})
+          path: ''
+        })
       },
       deletePath (row) {
         let index = this.formData.paths.indexOf(row)
@@ -132,15 +138,18 @@
           tp: 1,
           s_tp: 1,
           auth_group_id: 0,
-          paths: [{id: 0,
+          paths: [{
+            id: 0,
             name: '',
-            path: ''}]
+            path: ''
+          }]
         }
         if (this.$refs['form']) {
           this.$refs['form'].resetFields()
         }
       },
       show (tp, group, item) {
+        this.getAuthGroup(tp)
         if (item) {
           this.getAuth(item.id)
           this.initialData = item
@@ -157,10 +166,21 @@
           let res = await AuthorizationManagementApi.getAuthItem(id)
           this.formData = res.data
           if (!this.formData.paths) {
-            this.formData.paths = [{id: 0,
+            this.formData.paths = [{
+              id: 0,
               name: '',
-              path: ''}]
+              path: ''
+            }]
           }
+        } finally {
+          this.loading = false
+        }
+      },
+      async getAuthGroup (tp) {
+        this.loading = true
+        try {
+          let res = await AuthorizationManagementApi.getAuthGroupList(tp)
+          this.authGroupList = AuthorizationManagementService.resetAuthGroup(res.data.data)
         } finally {
           this.loading = false
         }

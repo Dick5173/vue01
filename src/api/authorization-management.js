@@ -1,5 +1,5 @@
 import Axios from 'axios'
-// import qs from 'qs'
+import * as AuthorizationManagementService from 'src/service/authorization-management/index'
 
 export const getAuthGroupList = (tp) => {
   return Axios.get(`/admin/auth_group`, {
@@ -16,10 +16,12 @@ export const getAuthList = (pid) => {
   })
 }
 export const createAuthGroup = (formData) => {
-  return Axios.post(`/admin/auth_group`, formData)
+  const params = AuthorizationManagementService.convertAuthGroupFormToParams(formData)
+  return Axios.post(`/admin/auth_group`, params)
 }
 export const editAuthGroup = (formData) => {
-  return Axios.post(`/admin/auth_group/s/${formData.id}`, formData)
+  const params = AuthorizationManagementService.convertAuthGroupFormToParams(formData)
+  return Axios.post(`/admin/auth_group/s/${formData.id}`, params)
 }
 export const deleteAuthGroup = (id) => {
   return Axios.delete(`/admin/auth_group/s/${id}`)
