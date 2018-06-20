@@ -8,6 +8,12 @@
     div.text-content(v-if!="props.row.tp === allContentTp.text.value")
       el-form-item.show-validate-el-form(:ref="`text${props.index}`", :prop="'content.' + props.index + '.text'", :rules="formRules.text")
         el-input(v-model="props.row.text", :maxlength="2000", type="textarea", :autosize="{ minRows: 1, maxRows: 15}")
+  mixin videoContent
+    div.box(v-if!="props.row.tp === allContentTp.video.value")
+      div.image-content(v-lazy:background-image="props.row.poster")
+      div.text-content-video
+        div {{props.row.text}}
+        div {{props.row.name}}
 
   div
     smart-table.large-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")
@@ -16,8 +22,10 @@
         div(slot-scope="props")
           +imageContent
           +textContent
-      smart-table-column(label="", width="250px")
+          +videoContent
+      smart-table-column(label="", width="350px")
         div(slot-scope="props")
+          el-button(type="", size="mini", plain, v-if="props.row.tp === allContentTp.video.value", @click="handleEditVideoName(props.row, props.index)") 改名
           el-button(type="primary", size="mini", icon="el-icon-plus", plain, @click="handleCreateAbove(props.index)") 上面
           el-button(type="primary", size="mini",  icon="el-icon-plus", plain, @click="handleCreateBelow(props.index)") 下面
           el-button(type="danger", size="mini", plain, @click="handleDel(props.index)") 删除
@@ -26,6 +34,7 @@
       el-button(type="primary", size="mini", plain, @click="showPreview") 预览
     create-content-dialog(ref="dlgCreateContent", @success="handleCreateSuccess", imageTip="建议宽度750像素")
     preview-dialog(ref="dlgPreview", :resources="content")
+    dialog-edit-video-name(ref="dlgEditVideoName", @submit="handleChangeVideoName")
 </template>
 
 <script>
@@ -33,7 +42,8 @@
   import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
   import CreateContentDialog from './dialog/CreateContentDialog.vue'
   import PreviewDialog from 'src/ui/common/preview/PreviewDialog.vue'
-  import * as ResourceService from 'src/service/resource/index'
+  import * as ProductService from 'src/service/product/index'
+  import DialogEditVideoName from './dialog/DialogEditVideoName.vue'
 
   export default {
     mixins: [emitter],
@@ -41,7 +51,8 @@
       SmartTable,
       SmartTableColumn,
       CreateContentDialog,
-      PreviewDialog
+      PreviewDialog,
+      DialogEditVideoName
     },
     props: {
       content: {
@@ -60,7 +71,7 @@
         },
         createAtPos: -1,
         ...$global.$mapConst({
-          'allContentTp': ResourceService.allTp
+          'allContentTp': ProductService.allProductInfoTp
         })
       }
     },
@@ -82,6 +93,9 @@
         this.createAtPos = this.content.length
         this.$refs.dlgCreateContent.show()
       },
+      handleEditVideoName (row, index) {
+        this.$refs.dlgEditVideoName.show(row.text, index)
+      },
       handleCreateAbove (index) {
         this.createAtPos = index
         this.$refs.dlgCreateContent.show()
@@ -90,6 +104,9 @@
         this.createAtPos = index + 1
         this.$refs.dlgCreateContent.show()
       },
+      handleDel (index) {
+        this.content.splice(index, 1)
+      },
       handleCreateSuccess (data) {
         if (this.createAtPos < 0 || this.createAtPos >= this.content.length) {
           this.content.push(...this.R.clone(data))
@@ -97,8 +114,10 @@
           this.content.splice(this.createAtPos, 0, ...this.R.clone(data))
         }
       },
-      handleDel (index) {
-        this.content.splice(index, 1)
+      handleChangeVideoName (name, index) {
+        const video = this.content[index]
+        video.text = name
+        this.$set(this.content, index, video)
       },
       computeFileName (url) {
         var index = url.lastIndexOf('/')
@@ -117,7 +136,12 @@
     line-height: 50px;
     display: inline-block;
   }
-
+  .text-content-video {
+    height: 50px;
+    margin-left: 10px;
+    display: inline-block;
+    width: 95%;
+  }
   .box {
     display: flex;
   }

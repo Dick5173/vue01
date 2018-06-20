@@ -48,6 +48,21 @@ export const allSupplyType = {
   }
 }
 
+export const allProductInfoTp = {
+  text: {
+    value: 2,
+    text: '文本'
+  },
+  img: {
+    value: 1,
+    text: '图片'
+  },
+  video: {
+    value: 4,
+    text: '视频'
+  }
+}
+
 export const convertFormToParam = R.curry((form) => {
   return R.pipe(
     R.clone,
@@ -138,7 +153,7 @@ export const convertModelToForm = R.curry((form) => {
       return obj
     },
     (obj) => {
-      const pickContent = R.pickAll(['id', 'tp', 'text', 'url', 'width', 'height'])
+      const pickContent = R.pickAll(['id', 'tp', 'text', 'url', 'width', 'height', 'poster', 'name', 'duration'])
       const priceField = ['st_price']
       const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id']
       return R.mapObjIndexed((val, key) => {
@@ -168,6 +183,11 @@ export const convertModelToForm = R.curry((form) => {
           })(val || [])
         } else if (key === 'content') {
           return R.map(contentItem => {
+            if (contentItem.tp === allProductInfoTp.video.value) {
+              const names = contentItem.url.split('/')
+              const name = names[names.length - 1].replace(/%25/g, '%')
+              contentItem.name = decodeURIComponent(name)
+            }
             return pickContent(contentItem)
           })(val || [])
         } else if (key === 'tags') {

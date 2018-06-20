@@ -6,5 +6,9 @@ export const allTp = {
   img: {
     value: 1,
     text: '图片'
+  },
+  video: {
+    value: 4,
+    text: '视频'
   }
 }
