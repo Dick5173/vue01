@@ -9,9 +9,9 @@
       el-form-item.show-validate-el-form(:ref="`text${props.index}`", :prop="'content.' + props.index + '.text'", :rules="formRules.text")
         el-input(v-model="props.row.text", :maxlength="2000", type="textarea", :autosize="{ minRows: 1, maxRows: 15}")
   mixin videoContent
-    div.box(v-if!="props.row.tp === allContentTp.video.value")
-      div.image-content(v-lazy:background-image="props.row.poster")
-      div.text-content-video
+    div.box
+      div.image-content(v-lazy:background-image="props.row.poster", v-if!="props.row.tp === allContentTp.video.value")
+      div.text-content-video(v-if!="props.row.tp === allContentTp.video.value")
         div {{props.row.text}}
         div {{props.row.name}}
 
