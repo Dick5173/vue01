@@ -10,7 +10,7 @@
       div.desc-text {{imageTip}}
   mixin videoContent
     div(v-if!="formData.tp === allContentTp.video.value")
-      el-form-item.show-validate-el-form(ref="", prop="video")
+      el-form-item.video-show-validate-el-form(ref="", prop="video")
         upload-video(ref="fIUploadVideo", :host="getHost", :token="getToken", :video.sync="formData.video", :beforeUploadCheck="beforeUploadCheck", accept="video/mp4")
       el-form-item(label="封面", prop="")
         upload-image.uploadImage(ref="fIUploadCover", :image.sync="formData.videoImage", :host="getHost", :token="getToken")
@@ -66,6 +66,16 @@
         }
         callback(new Error('请选择图片'))
       }
+      const validateVideo = (rule, value, callback) => {
+        if (this.$refs.fIUploadVideo.isUpdating) {
+          callback(new Error('正在上传视频'))
+          return
+        } else if (!value || !value.url || value.url === '') {
+          callback(new Error('请选择视频'))
+          return
+        }
+        callback()
+      }
       return {
         loading: false,
         initialData: null,
@@ -96,6 +106,9 @@
           ],
           imageList: [
             {validator: validateImage, trigger: 'change'}
+          ],
+          video: [
+            {validator: validateVideo, trigger: 'change'}
           ]
         },
         dialogVisible: false,
@@ -236,6 +249,11 @@
     .input-right-desc {
       width: 60px;
     }
+  }
+
+  .video-show-validate-el-form {
+    margin-top: 15px !important;
+    margin-bottom: 25px !important;
   }
 
   .desc-text {
