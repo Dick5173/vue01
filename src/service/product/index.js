@@ -340,6 +340,7 @@ export const buildSupplyPriceWithConvertFenToYuan = (tenantLevelList, supplyPric
 
 export const supplyPrice = (purchasePrice, skus, levelName) => {
   const newSkus = R.clone(skus)
+  const N = 0.0478
   let A = parseFloat(purchasePrice)
   if (A >= 0) {
     let suggestPrice = 0
@@ -350,7 +351,7 @@ export const supplyPrice = (purchasePrice, skus, levelName) => {
       suggestPrice += parseFloat(newSkus[i].suggest_price)
     }
     let B = suggestPrice / newSkus.length
-    let P = parseFloat(purchasePrice) * 0.0842
+    let P = parseFloat(purchasePrice) * N
     if (levelName === '普通店铺') {
       if (P < 5) {
         P = 5
