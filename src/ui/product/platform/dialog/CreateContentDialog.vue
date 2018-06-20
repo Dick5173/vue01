@@ -69,7 +69,6 @@
       return {
         loading: false,
         initialData: null,
-        initialPoster: '',
         extArr: ['.mp4'],
         formData: {
           tp: ResourceService.allTp.text.value,
@@ -109,24 +108,12 @@
     watch: {
       'formData.video': {
         handler (val) {
-          this.initialPoster = val.poster
           if (!this.formData.videoImage.url) {
             this.formData.videoImage = {
               width: val.width,
               height: val.height,
               url: val.poster
             }
-          }
-        },
-        deep: true
-      },
-      'formData.videoImage': {
-        handler (val) {
-          console.log('=======videoImage=====', val)
-          if (val.url) {
-            this.formData.video.poster = val.url
-          } else {
-            this.formData.video.poster = this.initialPoster
           }
         },
         deep: true
@@ -210,6 +197,9 @@
                   })(this.formData.imageList)
                   break
                 case this.allContentTp.video.value:
+                  if (this.formData.videoImage.url) {
+                    this.formData.video.poster = this.formData.videoImage.url
+                  }
                   result = [{
                     tp: this.allContentTp.video.value,
                     ...this.formData.video
