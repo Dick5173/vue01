@@ -786,7 +786,6 @@ router.beforeEach(async (to, from, next) => {
     next()
     return
   }
-  console.log(Vue.$store.getters.sysRoles)
   // 登录后跳转到有权限的页面
   if (!from.name || from.name === 'Login') {
     if (!isAuthRouter(to.meta.title, router.options.routes[0].children, Vue.$store.getters.sysRoles, Vue.$store.getters.allRoles)) {
