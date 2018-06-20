@@ -78,7 +78,6 @@
       async resetItems () {
         try {
           const resRefund = await orderItems(this.$route.params.oiid)
-          console.log(resRefund)
           this.data = resRefund.data
           this.loading = false
         } catch (e) {

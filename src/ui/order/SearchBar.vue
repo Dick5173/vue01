@@ -86,7 +86,7 @@
         })
       },
       createExportTask () {
-        console.log('===createExportTask====')
+        // console.log('===createExportTask====')
         // if (!this.formData.start_time || !this.formData.end_time) {
         //   this.$message({
         //     message: '请选择下单时间',
@@ -115,7 +115,7 @@
         // })
       },
       gotoListExportTask () {
-        console.log('===gotoListExportTask====')
+        // console.log('===gotoListExportTask====')
         // this.$router.push({
         //   path: '/export/task',
         //   query: {

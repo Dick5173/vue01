@@ -37,7 +37,6 @@
     },
     watch: {
       dataList (val) {
-        console.log(val)
       }
     },
     computed: {},

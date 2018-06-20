@@ -185,7 +185,6 @@
         this.$refs.formAgree.resetFields()
       },
       submit () {
-        console.log('确认退款')
         this.$refs.formAgree.validate(async (valid) => {
           if (valid) {
             this.$confirm('同意退款', {

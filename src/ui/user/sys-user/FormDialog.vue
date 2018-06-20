@@ -85,7 +85,6 @@
         try {
           const res = await CharacterAuthApi.getTenantRoleList()
           this.roleList = res.data.data
-          console.log(this.roleList)
         } finally {
           this.loading = false
         }
