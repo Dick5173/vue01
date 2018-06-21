@@ -153,7 +153,7 @@ export const convertModelToForm = R.curry((form) => {
       return obj
     },
     (obj) => {
-      const pickContent = R.pickAll(['id', 'tp', 'text', 'url', 'width', 'height', 'poster', 'name', 'duration'])
+      const pickContent = R.pickAll(['id', 'tp', 'text', 'url', 'width', 'height', 'poster', 'name', 'duration', 'file_size'])
       const priceField = ['st_price']
       const intField = ['stock', 'category_id', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id']
       return R.mapObjIndexed((val, key) => {
