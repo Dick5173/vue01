@@ -88,6 +88,7 @@ export const convertFormToParam = R.curry((form) => {
         oversea: !!obj.oversea,
         skus: obj.skus,
         tags: obj.tags,
+        control_price: obj.control_price,
         sys_remark: obj.sys_remark,
         service_tag_group_id: obj.service_tag_group_id,
         after_service_id: obj.after_service_id,
@@ -112,6 +113,7 @@ export const convertModelToForm = R.curry((form) => {
         category_id: ['prop', 'category', 'id'],
         oversea: ['prop', 'ext', 'oversea'],
         skus: ['prop', 'skus'],
+        control_price: ['prop', 'control_price'],
         supply_levels: ['prop', 'supply_levels'],
         tags: ['prop', 'tags'],
         sys_remark: ['prop', 'sys_remark'],
@@ -186,11 +188,12 @@ export const convertModelToForm = R.curry((form) => {
         category_id: obj.category_id,
         oversea: !!obj.oversea,
         skus: obj.skus,
+        control_price: obj.control_price,
         sys_remark: obj.sys_remark,
         supply_price: obj.supply_price,
         supply_levels: obj.supply_levels
       }
-      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants', 'purchase_price', 'sys_remark'])(obj)
+      return R.pickAll(['id', 'status', 'head', 'cover', 'page_cover', 'name', 'sell_point', 'st_price', 'category_id', 'oversea', 'skus', 'control_price', 'supply_levels', 'content', 'tags', 'service_tag_group_id', 'after_service_id', 'delivery_region_id', 'freight_template_id', 'supply_scope_tp', 'supply_tenants', 'purchase_price', 'sys_remark'])(obj)
     }
   )(form)
 })
