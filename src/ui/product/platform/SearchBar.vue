@@ -41,8 +41,8 @@
   import * as CategoryApi from 'src/api/category'
   import * as TagApi from 'src/api/tag'
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
+  import { allStatus, allControlPrice } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
-  import * as ProductService from 'src/service/product/index'
 
   export default {
     components: {
@@ -74,7 +74,7 @@
         allTags: [],
         defaultDate: [],
         ...$global.$mapConst({
-          controlList: ProductService.allControlPrice.controlList
+          controlList: allControlPrice.controlList
         })
       }
     },
@@ -150,14 +150,14 @@
         if (this.formData.top) {
           data.push(h('p', null, '是否置顶：置顶'))
         }
-        if (this.formData.status === ProductService.allStatus.all.value) {
+        if (this.formData.status === allStatus.all.value) {
           data.push(h('p', null, `商品状态：上架/下架/缺货`))
-        } else if (this.formData.status === ProductService.allStatus.up.value) {
-          data.push(h('p', null, `商品状态：${ProductService.allStatus.up.text}`))
-        } else if (this.formData.status === ProductService.allStatus.down.value) {
-          data.push(h('p', null, `商品状态：${ProductService.allStatus.down.text}`))
-        } else if (this.formData.status === ProductService.allStatus.stockout.value) {
-          data.push(h('p', null, `商品状态：${ProductService.allStatus.stockout.text}`))
+        } else if (this.formData.status === allStatus.up.value) {
+          data.push(h('p', null, `商品状态：${allStatus.up.text}`))
+        } else if (this.formData.status === allStatus.down.value) {
+          data.push(h('p', null, `商品状态：${allStatus.down.text}`))
+        } else if (this.formData.status === allStatus.stockout.value) {
+          data.push(h('p', null, `商品状态：${allStatus.stockout.text}`))
         }
         if (this.formData.category_id) {
           const label = this.$refs.fIselectCid.selectedLabel

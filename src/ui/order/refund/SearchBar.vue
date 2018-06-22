@@ -59,10 +59,10 @@
           label: '全部商品'
         }, {
           value: 2,
-          label: '店铺自营'
+          label: '自营商品'
         }, {
           value: 3,
-          label: '平台提供'
+          label: '平台商品'
         }
         ]
       }
