@@ -4,6 +4,7 @@
       search-toolbar(:queryParams="queryParams", @submit="handleSearch")
     div
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
+        el-table-column(prop="id", label="ID", width="100")
         el-table-column(label="商品")
           template(slot-scope="scope")
             div.productInfo
@@ -49,6 +50,7 @@
     data () {
       return {
         queryParams: {
+          id: '',
           tp: 0,
           status: 1,
           text: ''
