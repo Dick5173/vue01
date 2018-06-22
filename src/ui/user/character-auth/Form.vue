@@ -13,12 +13,12 @@
               div.child-auth
                 div(v-for="child in item.children")
                   el-checkbox(:label="checkParentLabel(child.id)", :indeterminate="isIndeterminate(child)") {{child.name}}
-                  div.child-auth
+                  div.child-auth(v-show="showChild(child)")
                     div.checkbox(v-for="auth in child.auths")
                       el-checkbox(:label="auth.id") {{auth.name}}
             div(v-else)
               el-checkbox(:label="checkParentLabel(item.id)", :indeterminate="isIndeterminate(item)") {{item.name}}
-              div.child-auth
+              div.child-auth(v-show="showChild(item)")
                 div.checkbox(v-for="auth in item.auths")
                   el-checkbox(:label="auth.id") {{auth.name}}
       el-form-item()
@@ -158,6 +158,16 @@
           return child.indeterminate
         }
         return false
+      },
+      showChild (item) {
+        if (!item.auths || item.auths.length === 0) {
+          return false
+        }
+        // s_tp 1:一般 2:其他
+        if (item.auths.length === 1 && item.auths[0].s_tp === 2) {
+          return false
+        }
+        return true
       },
       showName (item) {
         if (this.isHasChildren(item)) {
