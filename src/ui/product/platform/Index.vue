@@ -32,7 +32,7 @@
           div(slot-scope="props") {{ props.row.sold }}
         el-table-column(prop="stock", label="库存", sortable, width="100px")
           template(slot-scope="props")
-            span {{ props.row.prop.stock }}&nbsp;
+            span(:class="{redWarning:props.row.prop.stock <= 10}") {{ props.row.prop.stock }}&nbsp;
             el-icon(name="circle-check", v-if="props.row.prop.stock_sync")
         el-table-column(prop="tenant_count", label="店铺选择", sortable, width="110px")
           div(slot-scope="props")
@@ -101,6 +101,7 @@
         queryParams: {
           top: false,
           status: 0,
+          stock_warning: 0,
           category_id: '',
           start: 0,
           end: 0,
@@ -397,5 +398,8 @@
   }
   .small-el-table{
     width:541px !important;
+  }
+  .redWarning {
+    color: red;
   }
 </style>
