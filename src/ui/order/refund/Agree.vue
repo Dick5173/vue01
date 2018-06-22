@@ -159,10 +159,7 @@
         return (this.orderItem.total_price + this.orderItem.order_postage) <= this.orderItem.order_left_amount
       },
       canRefundPrice () {
-        if (this.canFullRefund) {
-          return this.orderItem.total_price + this.orderItem.order_postage
-        }
-        return this.orderItem.total_price
+        return this.orderItem.can_refund_amount
       }
     },
     methods: {
