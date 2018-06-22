@@ -39,9 +39,8 @@
   import * as CategoryApi from 'src/api/category'
   import * as TagApi from 'src/api/tag'
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
-  import { allStatus } from 'src/service/product/index'
+  import { allStatus, allControlPrice } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
-  import * as ProductService from 'src/service/product/index'
 
   export default {
     components: {
@@ -72,7 +71,7 @@
         allTags: [],
         defaultDate: [],
         ...$global.$mapConst({
-          controlList: ProductService.allControlPrice.controlList
+          controlList: allControlPrice.controlList
         })
       }
     },
