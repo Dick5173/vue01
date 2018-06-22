@@ -21,6 +21,9 @@
         el-checkbox(v-model="supply_scope", @change="supplyChange") 定向供货
       el-form-item(label="上架:")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
+      el-form-item(label="控价:")
+        el-select(v-model="formData.control_price", placeholder="请选择", clearable)
+          el-option(v-for="item in controlList", :label="item.label", :value="item.value", :key="item.value")
       el-form-item(label="")
         el-input(v-model.trim="formData.text", clearable, placeholder="商品名/编码")
       el-form-item(label="")
@@ -38,6 +41,7 @@
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
   import { allStatus } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
+  import * as ProductService from 'src/service/product/index'
 
   export default {
     components: {
@@ -58,14 +62,18 @@
           text: '',
           tags: [],
           supply_scope_tp: 0,
-          id: ''
+          id: '',
+          control_price: 0
         },
         supply_scope: false,
         // endregion
         initialData: null,
         allCategories: [],
         allTags: [],
-        defaultDate: []
+        defaultDate: [],
+        ...$global.$mapConst({
+          controlList: ProductService.allControlPrice.controlList
+        })
       }
     },
     computed: {},
@@ -118,9 +126,13 @@
           text: this.queryParams.text,
           tags: this.queryParams.tags,
           supply_scope_tp: this.queryParams.supply_scope_tp,
-          id: this.queryParams.id
+          id: this.queryParams.id,
+          control_price: this.queryParams.control_price
         }
         this.supply_scope = this.queryParams.supply_scope_tp === 2
+        if (this.formData.control_price === 0) {
+          this.formData.control_price = ''
+        }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]
         } else {

@@ -63,6 +63,19 @@ export const allProductInfoTp = {
   }
 }
 
+export const allControlPrice = {
+  controlList: [
+    {
+      label: '控价商品',
+      value: 1
+    },
+    {
+      label: '非控价商品',
+      value: 2
+    }
+  ]
+}
+
 export const convertFormToParam = R.curry((form) => {
   return R.pipe(
     R.clone,

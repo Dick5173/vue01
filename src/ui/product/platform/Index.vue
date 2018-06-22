@@ -107,7 +107,8 @@
           text: '',
           tags: [],
           supply_scope_tp: 0,
-          id: ''
+          id: '',
+          control_price: 0
         },
         multipleSelection: []
       }
