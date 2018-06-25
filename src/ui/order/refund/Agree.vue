@@ -156,7 +156,7 @@
         return arr
       },
       canFullRefund () {
-        return (this.orderItem.total_price + this.orderItem.order_postage) <= this.orderItem.order_left_amount
+        return (this.orderItem.total_price + this.orderItem.order_postage) <= this.orderItem.can_refund_amount
       },
       canRefundPrice () {
         return this.orderItem.can_refund_amount
