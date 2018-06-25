@@ -316,7 +316,6 @@ export default {
     },
     showWeChatText (row) {
       if (row.tenant_setting) {
-        console.log(1)
         if (row.tenant_setting.cs === 1) {
           return ''
         } else {
