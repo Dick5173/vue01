@@ -44,9 +44,8 @@
           div.body-item-status ERP：
             el-button(type="text", @click="showErpBindDialog(tenantData)", size="mini") {{showErpBindButtonName(tenantData)}}
         div.body-status.margin-left
-          div.body-item-status 客服：
+          div.body-item-status 七鱼：
             el-button(type="text", @click="showQiyuBindDialog(tenantData)", size="mini") {{showQiyuBindButtonName(tenantData)}}
-            span.we-chat-text() {{showWeChatText(tenantData)}}
         div.body-status.margin-left
           div.body-item-status 核销提现：
             el-button(type="text", @click="showWithDrawDialog(tenantData)", size="mini") {{showWithdrawBindButtonName(tenantData)}}
@@ -314,15 +313,6 @@ export default {
       }
       return '已授权'
     },
-    showWeChatText (row) {
-      if (row.tenant_setting) {
-        if (row.tenant_setting.cs === 1) {
-          return ''
-        } else {
-          return '（微信客服已开启）'
-        }
-      }
-    },
     async getDetail () {
       try {
         this.loading = true
@@ -457,9 +447,6 @@ export default {
   }
   .el-button--text {
     text-decoration: underline;
-  }
-  .we-chat-text{
-    color: #606266;
   }
 }
 
