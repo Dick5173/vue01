@@ -24,6 +24,10 @@ const axiosErrorHandler = (err) => {
         name: 'Login'
       })
       return true
+    } else if (err.response.status === 403) {
+      Vue.$router.replace({
+        name: 'Dashboard'
+      })
     }
     let msg = err.response.data
     if (!(err.config && err.config.fullError)) {
