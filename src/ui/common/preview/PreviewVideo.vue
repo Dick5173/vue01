@@ -1,7 +1,6 @@
 <template lang="pug">
   div.preview-video
-    div.play(v-if="showPlay", v-html="resource.content")
-    div {{resource.title}}
+    video(:src="resource.url", controls="controls")
 </template>
 
 <script>
