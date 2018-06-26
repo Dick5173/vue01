@@ -13,7 +13,7 @@
       div.image-content(v-lazy:background-image="props.row.poster", v-if!="props.row.tp === allContentTp.video.value")
       div.text-content-video(v-if!="props.row.tp === allContentTp.video.value")
         div.videoText {{props.row.text}}
-        div {{props.row.name}}
+        div.videoText {{props.row.name}}
 
   div
     smart-table.large-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")
