@@ -6,11 +6,12 @@
       div.head
         div.img(v-lazy:background-image="tenantData.head_img")
         div.name {{tenantData.nick_name}}
-      el-form.small-el-form(ref="form", label-width="110px")
+      el-form.small-el-form(ref="form", label-width="100px")
         el-form-item
-          template()
+          div
             el-radio(v-model="operate", :label="'open'") 显示"美市提供平台支持"
-            el-radio.radio(v-model="operate", :label="'close'") 隐藏"美市提供平台支持"
+          div
+            el-radio(v-model="operate", :label="'close'") 隐藏"美市提供平台支持"
         el-form-item()
           el-button.btn1(type="", @click="hide", plain) 取 消
           el-button.btn2(type="primary", @click="handleBind") 确 定
@@ -122,8 +123,5 @@
       line-height: 50px;
       margin-left: 10px;
     }
-  }
-  .radio{
-    margin-left: 0;
   }
 </style>
