@@ -1,5 +1,6 @@
 <template lang="pug">
   div.preview-video
+    div.preview-text {{resource.text}}
     video(:src="resource.url", controls="controls")
 </template>
 
@@ -29,9 +30,12 @@
     text-align: center;
     padding-left: 5px;
     padding-right: 5px;
-    .play {
-      width: 100%;
-      height: auto;
+    .preview-text {
+      word-wrap:break-word;
+      text-align: left;
+      padding-left: 5px;
+      padding-right: 5px;
+      white-space: pre-wrap;
     }
   }
 </style>
