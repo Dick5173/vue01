@@ -7,7 +7,8 @@
         el-table-column(prop="name", label="名字")
         el-table-column(prop="", label="角色")
           template(slot-scope="scope")
-            div.roles(v-for="item in scope.row.roles") {{item.name}}
+            div.roles(v-if="scope.row.super") 超级管理员
+            div.roles(v-else, v-for="item in scope.row.roles") {{item.name}}
         el-table-column(prop="mobile", label="手机号")
         el-table-column(label="操作", width="220px")
           template(slot-scope="scope")

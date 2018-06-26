@@ -9,7 +9,7 @@
       el-form-item(prop="mobile", label="手机号")
         el-input(v-model.trim="formData.mobile", clearable)
       el-form-item(prop="passwd", label="密码")
-        el-input(type="password", v-model.trim="formData.passwd", clearable)
+        el-input(type="password", v-model.trim="formData.passwd", clearable, @focus="handlePwdFocus")
     div.dialog-footer(slot="footer")
       el-button(@click="dialogVisible = false") 取消
       el-button(type="primary", :loading="loading", @click="handleSubmit") 确定
@@ -39,6 +39,7 @@
       }
       return {
         loading: false,
+        initPwd: false,
         initialData: {},
         roleList: [],
         formData: {
@@ -91,9 +92,27 @@
       },
       show (editData) {
         this.getRoleList()
+        if (editData) {
+          editData.passwd = '********'
+        }
         this.initialData = editData
         if (this.initialData) {
           this.formData = this.R.clone(this.initialData)
+          if (!this.formData.roles) {
+            this.formData.roles = []
+          } else {
+            this.formData.roles = this.formData.roles.map(i => {
+              return i.id
+            })
+          }
+        } else {
+          this.formData = {
+            id: 0,
+            name: '',
+            mobile: '',
+            passwd: '',
+            roles: []
+          }
         }
         this.dialogVisible = true
       },
@@ -109,22 +128,33 @@
           roles: []
         }
         this.roleList = []
+        this.initPwd = false
         this.$refs.form && this.$refs.form.resetFields()
+      },
+      handlePwdFocus () {
+        if (!this.initPwd) {
+          this.formData.passwd = ''
+          this.initPwd = true
+        }
       },
       async handleSubmit () {
         this.loading = true
         this.$refs.form.validate(async (valid) => {
           try {
             if (valid) {
+              const frm = this.R.clone(this.formData)
+              if (!this.initPwd) {
+                frm.passwd = ''
+              }
               if (!this.isEditMode) {
-                await SysUserApi.create(this.formData)
+                await SysUserApi.create(frm)
                 this.$message({
                   message: '添加成功',
                   type: 'success'
                 })
                 this.$emit('created')
               } else {
-                await SysUserApi.update(this.initialData.id, this.formData)
+                await SysUserApi.update(this.initialData.id, frm)
                 this.$message({
                   message: '更新成功',
                   type: 'success'
