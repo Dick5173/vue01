@@ -43,7 +43,7 @@
           ],
           mobile: [
             {required: true, message: '请输入手机号', trigger: 'blur'},
-            {pattern: REGEX_MOBILE, message: '请输入正确的手机号', trigger: 'blur'},
+            {pattern: REGEX_MOBILE, message: '请输入正确的手机号', trigger: 'blur'}
           ],
           roles: [
             {type: 'array', required: true, message: '请至少选择一个角色', trigger: 'change'}
