@@ -10,8 +10,9 @@
       div.desc-text {{imageTip}}
   mixin videoContent
     div(v-if!="formData.tp === allContentTp.video.value")
-      el-form-item.video-show-validate-el-form(ref="", prop="video")
+      el-form-item.video-show-validate-el-form(ref="",label="视频", prop="video")
         upload-video(ref="fIUploadVideo", :host="getHost", :token="getToken", :video.sync="formData.video", :beforeUploadCheck="beforeUploadCheck", accept="video/mp4")
+        div.el-upload__tip mp4格式，50M以下，建议720P
       el-form-item(label="封面", prop="")
         upload-image.uploadImage(ref="fIUploadCover", :image.sync="formData.videoImage", :host="getHost", :token="getToken")
         span.el-upload__tip 建议与视频宽高比相同
@@ -19,7 +20,7 @@
         el-input(v-model="formData.video.text", placeholder="最多40个字符", :maxlength="40")
 
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="mediumDialogWidth", @close="closeCallback")
-    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
+    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="80px")
       el-form-item(label="类型", prop="tp")
         el-radio-group(v-model="formData.tp", @change="handleTpChange")
           el-radio(v-for!="item in allContentTp", :label="item.value", :key="item.value") {{ item.text }}
@@ -109,7 +110,7 @@
             {validator: validateImage, trigger: 'change'}
           ],
           video: [
-            {validator: validateVideo, trigger: 'change'}
+            {required: true, validator: validateVideo, trigger: 'change'}
           ]
         },
         dialogVisible: false,
@@ -256,6 +257,18 @@
   .video-show-validate-el-form {
     margin-top: 15px !important;
     margin-bottom: 25px !important;
+  }
+
+  div.el-upload__tip {
+    position: relative;
+    top:-43px;
+    left:80px;
+  }
+
+  .el-upload__tip {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #999;
   }
 
   .desc-text {
