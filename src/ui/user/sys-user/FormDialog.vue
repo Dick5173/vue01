@@ -24,19 +24,6 @@
 
   export default {
     data () {
-      const validateMobile = async (rule, value, callback) => {
-        if (value !== this.oldMobile) {
-          try {
-            const resData = await SysUserApi.checkExist({mobile: value})
-            if (resData.status === 200) {
-              callback(new Error('手机号已存在'))
-              return
-            }
-          } catch (err) {
-          }
-        }
-        callback()
-      }
       return {
         loading: false,
         initPwd: false,
@@ -57,7 +44,6 @@
           mobile: [
             {required: true, message: '请输入手机号', trigger: 'blur'},
             {pattern: REGEX_MOBILE, message: '请输入正确的手机号', trigger: 'blur'},
-            {validator: validateMobile, trigger: 'blur'}
           ],
           roles: [
             {type: 'array', required: true, message: '请至少选择一个角色', trigger: 'change'}
@@ -152,15 +138,14 @@
                   message: '添加成功',
                   type: 'success'
                 })
-                this.$emit('created')
               } else {
                 await SysUserApi.update(this.initialData.id, frm)
                 this.$message({
                   message: '更新成功',
                   type: 'success'
                 })
-                this.$emit('updated')
               }
+              this.$emit('success')
               this.hide()
             }
           } finally {

@@ -17,7 +17,7 @@
               el-button(:type="scope.row.enabled ? 'danger' : 'success'", size="mini", plain, @click="handleEnableItem(scope.row)") {{ scope.row.enabled ? '禁用' : '启用' }}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
     div
-      form-dialog(ref="dlgForm", @created="handleCreated")
+      form-dialog(ref="dlgForm", @success="handleSuccess")
 </template>
 
 <script>
@@ -68,7 +68,7 @@
       handleCreate () {
         this.$refs.dlgForm.show()
       },
-      handleCreated () {
+      handleSuccess () {
         this.resetQuery()
       },
       handleSearch (result) {
