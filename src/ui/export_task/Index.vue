@@ -26,7 +26,7 @@ export default {
   computed: {},
   methods: {
     getQueryApi (params) {
-      return getList(this.$tid, params)
+      return getList(params)
     }
   },
   created () {
