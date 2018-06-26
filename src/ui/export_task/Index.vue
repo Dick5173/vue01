@@ -18,15 +18,12 @@ export default {
   data () {
     return {
       loading: false,
-      queryParams: {
-        'tp': this.$route.query.tp
-      }
     }
   },
   computed: {},
   methods: {
     getQueryApi (params) {
-      return getList(params)
+      return getList(this.$route.query.tp, params)
     }
   },
   created () {
