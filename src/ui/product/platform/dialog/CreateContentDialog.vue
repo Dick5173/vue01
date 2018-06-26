@@ -11,7 +11,7 @@
   mixin videoContent
     div.videoContent(v-if!="formData.tp === allContentTp.video.value")
       el-form-item.video-show-validate-el-form(ref="",label="视频", prop="video")
-        upload-video(ref="fIUploadVideo", :host="getHost", :token="getToken", :video.sync="formData.video", :beforeUploadCheck="beforeUploadCheck", accept="video/mp4")
+        upload-video(ref="fIUploadVideo", :host="getHost", :token="getToken", :video.sync="formData.video", :beforeUploadCheck="beforeUploadCheck", accept="video/mp4", uploadButtonText="选择视频")
         div.el-upload__tip mp4格式，50M以下，建议720P
       el-form-item(label="封面", prop="")
         upload-image.uploadImage(ref="fIUploadCover", :image.sync="formData.videoImage", :host="getHost", :token="getToken")
