@@ -9,7 +9,7 @@
       upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
       div.desc-text {{imageTip}}
   mixin videoContent
-    div(v-if!="formData.tp === allContentTp.video.value")
+    div.videoContent(v-if!="formData.tp === allContentTp.video.value")
       el-form-item.video-show-validate-el-form(ref="",label="视频", prop="video")
         upload-video(ref="fIUploadVideo", :host="getHost", :token="getToken", :video.sync="formData.video", :beforeUploadCheck="beforeUploadCheck", accept="video/mp4")
         div.el-upload__tip mp4格式，50M以下，建议720P
@@ -258,11 +258,13 @@
     margin-top: 15px !important;
     margin-bottom: 25px !important;
   }
-
-  div.el-upload__tip {
+  .videoContent {
     position: relative;
-    top:-43px;
-    left:80px;
+    div.el-upload__tip {
+      position: absolute;
+      top:-7px;
+      left:80px;
+    }
   }
 
   .el-upload__tip {
