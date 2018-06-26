@@ -216,6 +216,7 @@
                   if (this.formData.videoImage.url) {
                     this.formData.video.poster = this.formData.videoImage.url
                   }
+                  this.formData.video.name = this.formData.video.name + '.mp4'
                   result = [{
                     tp: this.allContentTp.video.value,
                     ...this.formData.video
