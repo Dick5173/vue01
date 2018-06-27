@@ -46,7 +46,6 @@ export const getAuthRoute = (routeList, roles, allRoles) => {
   }
   let routeName = 'PageErr'
   if (authName) {
-    routeName = 'Dashboard'
     for (let i = 0; i < routeList.length; i++) {
       if (routeList[i].meta.title === authName) {
         routeName = routeList[i].name
