@@ -101,13 +101,13 @@
     },
     methods: {
       checkParentLabel (id) {
-        return `${id}`
+        return `gid-${id}`
       },
       getAuthItemIds (items) {
         return this.R.map(item => item.id)(items || [])
       },
       editChild (label) {
-        const parentId = parseInt(label)
+        const parentId = parseInt(label.split('-')[1])
         const parentIndex = this.R.findIndex(id => id === parentId)(this.allChildIds || [])
         if (parentIndex === -1) {
           return

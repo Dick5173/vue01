@@ -12,8 +12,8 @@
     div.box
       div.image-content(v-lazy:background-image="props.row.poster", v-if!="props.row.tp === allContentTp.video.value")
       div.text-content-video(v-if!="props.row.tp === allContentTp.video.value")
-        div {{props.row.text}}
-        div {{props.row.name}}
+        div.videoText {{props.row.text}}
+        div.videoText {{props.row.name}}
 
   div
     smart-table.large-el-table(ref="contentTable", :dataList="content", :showHeader="false",  @drag-change="handleDragChange",  @drag-end="handleDragEnd")
@@ -137,10 +137,17 @@
     display: inline-block;
   }
   .text-content-video {
+    display: flex;
     height: 50px;
     margin-left: 10px;
     display: inline-block;
-    width: 95%;
+    width: 80%;
+    .videoText {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
   .box {
     display: flex;

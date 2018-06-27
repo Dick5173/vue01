@@ -3,10 +3,10 @@
     el-button(type="primary", @click="create") 添加
     div.list
       el-table(style="width: 450px;", :data="serviceTagGroupList", row-key="id", border, :show-header="false", v-loading="loading")
-        el-table-column(label="", prop="name", width="150")
+        el-table-column(label="", prop="name", width="170")
           template(slot-scope="scope")
             el-button(type="text", @click="edit(scope.row)") {{scope.row.name}}
-        el-table-column(label="", prop="name", width="150")
+        el-table-column(label="", prop="name", width="130")
           template(slot-scope="scope")
             div {{scope.row.pc}}款商品
         el-table-column(label="", width="149")

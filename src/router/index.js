@@ -705,12 +705,21 @@ const router = new Router({
           }
         },
         {
+          path: '/application',
+          name: 'ApplicationIndex',
+          component: () => import('src/ui/minprog-application/Index.vue'),
+          meta: {
+            title: '入驻申请',
+            showInSide: true
+          }
+        },
+        {
           path: '/am',
           name: 'AuthorizationManagement',
           component: () => import('src/ui/authorization-management/Index.vue'),
           meta: {
             title: '权限管理',
-            showInSide: false
+            showInSide: true
           }
         },
         {
@@ -726,15 +735,6 @@ const router = new Router({
             }, {
               text: '权限'
             }]
-          }
-        },
-        {
-          path: '/application',
-          name: 'ApplicationIndex',
-          component: () => import('src/ui/minprog-application/Index.vue'),
-          meta: {
-            title: '入驻申请',
-            showInSide: true
           }
         }
       ]
@@ -787,7 +787,7 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   // 登录后跳转到有权限的页面
-  if (!from.name || from.name === 'Login') {
+  if (!from.name || from.name === 'Login' || to.name === 'Dashboard') {
     if (!isAuthRouter(to.meta.title, router.options.routes[0].children, Vue.$store.getters.sysRoles, Vue.$store.getters.allRoles)) {
       next({
         name: getAuthRoute(

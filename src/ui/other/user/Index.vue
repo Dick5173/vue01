@@ -28,7 +28,7 @@
           div(slot-scope="scope") {{getTenantName(scope.row)}}
         el-table-column(prop="",label="操作", v-if="dataList.html_control_data.withdraw_opt_col_show")
           div.control-wrapper(slot-scope="scope")
-            el-button.btn.text-code(size="mini", type="primary", v-if="dataList.html_control_data.withdraw_opt_col_button_show", @click="showWithDrawDialog(scope.row)", plain) 核销提现
+            el-button.btn.text-code(size="mini", type="primary", v-if="scope.row.tenant.allow_withdraw", @click="showWithDrawDialog(scope.row)", plain) 核销提现
       div.order-bottom.txt-head(v-if="dataList.data && dataList.data.length>0") 收入{{dataList.stat_data.sum_total_income | price}}，余额{{dataList.stat_data.sum_available_balance | price}}，核销提现{{dataList.stat_data.sum_total_withdraw | price}}
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
       with-draw-dialog(ref="withDrawDilog", @refresh="loadDataList")

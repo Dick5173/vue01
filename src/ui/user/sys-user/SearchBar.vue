@@ -5,7 +5,7 @@
         el-select(v-model="formData.role", placeholder="请选择角色", multiple)
           el-option(v-for="item in roleList", :key="item.id", :label="item.name", :value="item.id")
       el-form-item()
-        el-input.tiny-x-el-input(v-model="formData.text", placeholder="名称/手机号", clearable)
+        el-input.tiny-x-el-input(v-model="formData.text", placeholder="名字/手机号", clearable)
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置

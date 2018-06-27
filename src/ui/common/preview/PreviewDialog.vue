@@ -43,7 +43,7 @@
             return 'PreviewImage'
           case 2:
             return 'PreviewText'
-          case 3:
+          case 4:
             return 'PreviewVideo'
         }
       }

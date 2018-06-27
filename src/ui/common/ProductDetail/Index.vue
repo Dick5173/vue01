@@ -20,6 +20,7 @@
       span(v-if="isSelected") {{formData.supply_price | price}}
       span.input-right-desc(v-if="isSelected") 元
       supply-price-comp(v-if="isPlatform" :dataList="supply_levels")
+      div(v-if="formData.prop.control_price") 控价
     el-form-item(v-if="isPlatform", label="商品分类：", prop="delivery_region_id")
       div {{showName(formData.prop.category)}}
     el-form-item(v-if="showFormItem(formData.prop.ext.delivery_region)", label="配送区域：", prop="delivery_region_id")

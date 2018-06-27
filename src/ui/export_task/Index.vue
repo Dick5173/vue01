@@ -17,16 +17,13 @@ export default {
   },
   data () {
     return {
-      loading: false,
-      queryParams: {
-        'tp': this.$route.query.tp
-      }
+      loading: false
     }
   },
   computed: {},
   methods: {
     getQueryApi (params) {
-      return getList(this.$tid, params)
+      return getList(this.$route.query.tp, params)
     }
   },
   created () {

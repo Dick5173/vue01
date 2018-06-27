@@ -369,14 +369,8 @@ export const supplyPrice = (purchasePrice, skus, levelName) => {
     let B = suggestPrice / newSkus.length
     let P = parseFloat(purchasePrice) * N
     if (levelName === '普通店铺') {
-      if (P < 5) {
-        P = 5
-      }
       return B === 0 ? 0 : Math.floor((A + P + (B - A - P) * 0.3) * 100) / 100
     } else if (levelName === '中级店铺') {
-      if (P < 5) {
-        P = 5
-      }
       return B === 0 ? 0 : Math.floor((A + P + (B - A - P) * 0.20) * 100) / 100
     } else {
       return B === 0 ? 0 : Math.floor((A + P) * 100) / 100
