@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import { getMe } from 'src/api/uc'
-import { clearAuthCookie } from 'src/service/auth/index'
+import { clearAuthCookie, getAuthRoute, isAuthRouter } from 'src/service/auth/index'
 
 Vue.use(Router)
 
@@ -266,7 +266,7 @@ const router = new Router({
           component: () => import('src/ui/product/service/Index.vue'),
           meta: {
             group: 'Product',
-            title: '服务',
+            title: '服务说明',
             showInSide: true
           }
         },
@@ -556,6 +556,52 @@ const router = new Router({
           }
         },
         {
+          path: 'characterauth',
+          name: 'CharacterAuth',
+          component: () => import('src/ui/user/character-auth/Index.vue'),
+          meta: {
+            group: 'Administrator',
+            title: '角色管理',
+            showInSide: true
+          }
+        },
+        {
+          path: 'characterauth/create',
+          name: 'CreateCharacter',
+          component: () => import('src/ui/user/character-auth/Create.vue'),
+          meta: {
+            title: '创建角色',
+            showInSide: false,
+            breadcrumbItems: [
+              {
+                text: '角色管理',
+                to: { name: 'CharacterAuth' }
+              },
+              {
+                text: '创建角色'
+              }
+            ]
+          }
+        },
+        {
+          path: 'characterauth/edit/:id',
+          name: 'EditCharacter',
+          component: () => import('src/ui/user/character-auth/Edit.vue'),
+          meta: {
+            title: '编辑角色',
+            showInSide: false,
+            breadcrumbItems: [
+              {
+                text: '角色管理',
+                to: { name: 'CharacterAuth' }
+              },
+              {
+                text: '编辑角色'
+              }
+            ]
+          }
+        },
+        {
           path: 'appversion',
           name: 'AppVersion',
           component: () => import('src/ui/maintain/app-version/Index.vue'),
@@ -659,12 +705,21 @@ const router = new Router({
           }
         },
         {
+          path: '/application',
+          name: 'ApplicationIndex',
+          component: () => import('src/ui/minprog-application/Index.vue'),
+          meta: {
+            title: '入驻申请',
+            showInSide: true
+          }
+        },
+        {
           path: '/am',
           name: 'AuthorizationManagement',
           component: () => import('src/ui/authorization-management/Index.vue'),
           meta: {
             title: '权限管理',
-            showInSide: false
+            showInSide: true
           }
         },
         {
@@ -680,15 +735,6 @@ const router = new Router({
             }, {
               text: '权限'
             }]
-          }
-        },
-        {
-          path: '/application',
-          name: 'ApplicationIndex',
-          component: () => import('src/ui/minprog-application/Index.vue'),
-          meta: {
-            title: '入驻申请',
-            showInSide: true
           }
         }
       ]
@@ -734,6 +780,29 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 处理其它的路由
+  // 处理角色权限
+  // 超管无视权限
+  if (Vue.$store.getters.isSuper) {
+    next()
+    return
+  }
+  // 登录后跳转到有权限的页面
+  if (!from.name || from.name === 'Login' || to.name === 'Dashboard') {
+    if (!isAuthRouter(to.meta.title, router.options.routes[0].children, Vue.$store.getters.sysRoles, Vue.$store.getters.allRoles)) {
+      next({
+        name: getAuthRoute(
+          router.options.routes[0].children,
+          Vue.$store.getters.sysRoles,
+          Vue.$store.getters.allRoles
+        ),
+        replace: true
+      })
+      return
+    } else {
+      next()
+    }
+    return
+  }
   next()
 })
 

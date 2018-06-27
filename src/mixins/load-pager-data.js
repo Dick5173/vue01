@@ -148,6 +148,7 @@ export default {
           this.dataList.total = this.queryPager.limit * page
         }
         this.queryPager.page = page
+        this.loadDataList()
       }
     },
     /**

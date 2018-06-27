@@ -17,7 +17,7 @@
           div(slot-scope="props") {{ props.row.collect_count }}
         el-table-column(prop="sold", label="销量", sortable, width="100px")
         el-table-column(prop="stock", label="库存", sortable, width="100px")
-          div(slot-scope="props") {{ props.row.prop.stock }}
+          div(slot-scope="props", :class="{redWarning:props.row.prop.stock <= 10}") {{ props.row.prop.stock }}
         el-table-column(prop="", label="店铺ID", width="110px")
           div(slot-scope="props")
             el-button(type="text", @click="toTenantDetail(props.row)") {{props.row.tenant_id}}
@@ -61,7 +61,8 @@
           start: 0,
           end: 0,
           text: '',
-          id: ''
+          id: '',
+          stock_warning: 0
         },
         multipleSelection: []
       }
@@ -123,5 +124,8 @@
   }
   .small-el-table{
     width:541px !important;
+  }
+  .redWarning {
+    color: red;
   }
 </style>

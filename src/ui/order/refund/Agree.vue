@@ -156,13 +156,10 @@
         return arr
       },
       canFullRefund () {
-        return (this.orderItem.total_price + this.orderItem.order_postage) <= this.orderItem.order_left_amount
+        return (this.orderItem.total_price + this.orderItem.order_postage) <= this.orderItem.can_refund_amount
       },
       canRefundPrice () {
-        if (this.canFullRefund) {
-          return this.orderItem.total_price + this.orderItem.order_postage
-        }
-        return this.orderItem.total_price
+        return this.orderItem.can_refund_amount
       }
     },
     methods: {
@@ -185,7 +182,6 @@
         this.$refs.formAgree.resetFields()
       },
       submit () {
-        console.log('确认退款')
         this.$refs.formAgree.validate(async (valid) => {
           if (valid) {
             this.$confirm('同意退款', {

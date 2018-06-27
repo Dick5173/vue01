@@ -19,8 +19,13 @@
             el-option(v-for="childItem in parentItem.items", :label="childItem.name", :value="`${childItem.id}`", :key="childItem.id")
       el-form-item
         el-checkbox(v-model="supply_scope", @change="supplyChange") 定向供货
+      el-form-item()
+        el-checkbox(v-model="formData.stock_warning", :true-label="1", :false-label="0") 库存预警
       el-form-item(label="上架:")
         date-picker(:defaultDate="defaultDate", @change = "changeDate")
+      el-form-item(label="控价:")
+        el-select(v-model="formData.control_price", placeholder="请选择", clearable)
+          el-option(v-for="item in controlList", :label="item.label", :value="item.value", :key="item.value")
       el-form-item(label="")
         el-input(v-model.trim="formData.text", clearable, placeholder="商品名/编码")
       el-form-item(label="")
@@ -36,7 +41,7 @@
   import * as CategoryApi from 'src/api/category'
   import * as TagApi from 'src/api/tag'
   import DatePicker from 'src/ui/common/date-range-picker/Index.vue'
-  import { allStatus } from 'src/service/product/index'
+  import { allStatus, allControlPrice } from 'src/service/product/index'
   import { dateFormat } from 'src/util/format'
 
   export default {
@@ -52,20 +57,25 @@
         formData: {
           top: false,
           status: 0,
+          stock_warning: 0,
           category_id: '',
           start: 0,
           end: 0,
           text: '',
           tags: [],
           supply_scope_tp: 0,
-          id: ''
+          id: '',
+          control_price: 0
         },
         supply_scope: false,
         // endregion
         initialData: null,
         allCategories: [],
         allTags: [],
-        defaultDate: []
+        defaultDate: [],
+        ...$global.$mapConst({
+          controlList: allControlPrice.controlList
+        })
       }
     },
     computed: {},
@@ -113,14 +123,19 @@
           top: this.queryParams.top,
           category_id: this.queryParams.category_id,
           status: this.queryParams.status,
+          stock_warning: this.queryParams.stock_warning,
           start: this.R_.parseDateTick(0, this.queryParams.start),
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
           tags: this.queryParams.tags,
           supply_scope_tp: this.queryParams.supply_scope_tp,
-          id: this.queryParams.id
+          id: this.queryParams.id,
+          control_price: this.queryParams.control_price
         }
         this.supply_scope = this.queryParams.supply_scope_tp === 2
+        if (this.formData.control_price === 0) {
+          this.formData.control_price = ''
+        }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]
         } else {

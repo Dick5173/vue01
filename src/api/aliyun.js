@@ -13,7 +13,8 @@ export const getOssToken = () => {
       path: `${resToken.token.dir}${resToken.key}`,
       policy: resToken.token.policy,
       accessid: resToken.token.accessid,
-      signature: resToken.token.signature
+      signature: resToken.token.signature,
+      host: resToken.token.host
     }
   })
 }

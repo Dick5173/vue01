@@ -23,7 +23,7 @@
 <script>
   import * as AliyunApi from 'src/api/aliyun'
   import { commonDialogWidth } from 'src/config/el'
-  import * as ResourceService from 'src/service/resource/index'
+  import * as ResourceService from 'src/service/after_service/index'
   import { UploadImage } from '@baibao/zeratul'
   import * as ElUtil from 'src/util/el'
 

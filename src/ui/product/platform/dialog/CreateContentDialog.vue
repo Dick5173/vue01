@@ -8,14 +8,25 @@
     el-form-item.show-validate-el-form(ref="fiImage", v-if!="formData.tp === allContentTp.img.value", label="", prop="imageList")
       upload-image-list(ref="uploadImage", :imageList.sync="formData.imageList", :host="getHost", :token="getToken")
       div.desc-text {{imageTip}}
+  mixin videoContent
+    div.videoContent(v-if!="formData.tp === allContentTp.video.value")
+      el-form-item.video-show-validate-el-form(ref="",label="视频", prop="video")
+        upload-video(ref="fIUploadVideo", :host="getHost", :token="getToken", :video.sync="formData.video", :beforeUploadCheck="beforeUploadCheck", accept="video/mp4", uploadButtonText="选择视频")
+        div.el-upload__tip mp4格式，50M以下，建议720P
+      el-form-item(label="封面", prop="")
+        upload-image.uploadImage(ref="fIUploadCover", :image.sync="formData.videoImage", :host="getHost", :token="getToken")
+        span.el-upload__tip 建议与视频宽高比相同
+      el-form-item(label="标题")
+        el-input(v-model="formData.video.text", placeholder="最多40个字符", :maxlength="40")
 
   el-dialog(:visible.sync="dialogVisible", title="添加描述", :width="mediumDialogWidth", @close="closeCallback")
-    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="40px")
+    el-form(ref="form", :model="formData", :rules="formRules", labelWidth="80px")
       el-form-item(label="类型", prop="tp")
         el-radio-group(v-model="formData.tp", @change="handleTpChange")
           el-radio(v-for!="item in allContentTp", :label="item.value", :key="item.value") {{ item.text }}
       + textContent
       + imageContent
+      + videoContent
     div.dialog-footer(slot="footer")
       el-button(@click="dialogVisible = false") 取消
       el-button(type="primary", :loading="loading", @click="submit") 确定
@@ -25,11 +36,13 @@
   import * as AliyunApi from 'src/api/aliyun'
   import { mediumDialogWidth } from 'src/config/el'
   import * as ResourceService from 'src/service/resource/index'
-  import { UploadImageList } from '@baibao/zeratul'
+  import { UploadImageList, UploadVideo, UploadImage } from '@baibao/zeratul'
 
   export default {
     components: {
-      UploadImageList
+      UploadImageList,
+      UploadImage,
+      UploadVideo
     },
     props: {
       imageTip: {
@@ -54,13 +67,39 @@
         }
         callback(new Error('请选择图片'))
       }
+      const validateVideo = (rule, value, callback) => {
+        if (this.$refs.fIUploadVideo.isUpdating) {
+          callback(new Error('正在上传视频'))
+          return
+        } else if (!value || !value.url || value.url === '') {
+          callback(new Error('请选择视频'))
+          return
+        }
+        callback()
+      }
       return {
         loading: false,
         initialData: null,
+        extArr: ['.mp4'],
         formData: {
           tp: ResourceService.allTp.text.value,
           text: '',
-          imageList: []
+          imageList: [],
+          video: {
+            url: '',
+            name: '',
+            duration: 0,
+            file_size: 0,
+            width: 0,
+            height: 0,
+            poster: '',
+            text: ''
+          },
+          videoImage: {
+            url: '',
+            width: 0,
+            height: 0
+          }
         },
         formRules: {
           text: [
@@ -69,6 +108,9 @@
           ],
           imageList: [
             {validator: validateImage, trigger: 'change'}
+          ],
+          video: [
+            {required: true, validator: validateVideo, trigger: 'change'}
           ]
         },
         dialogVisible: false,
@@ -76,6 +118,20 @@
           'mediumDialogWidth': mediumDialogWidth,
           'allContentTp': ResourceService.allTp
         })
+      }
+    },
+    watch: {
+      'formData.video': {
+        handler (val) {
+          if (!this.formData.videoImage.url) {
+            this.formData.videoImage = {
+              width: val.width,
+              height: val.height,
+              url: val.poster
+            }
+          }
+        },
+        deep: true
       }
     },
     methods: {
@@ -95,6 +151,41 @@
         // 保持tp, 只重置数据
         this.formData.text = ''
         this.formData.imageList = []
+        this.formData.video = {
+          url: '',
+          name: '',
+          duration: 0,
+          file_size: 0,
+          width: 0,
+          height: 0,
+          poster: '',
+          text: ''
+        }
+        this.formData.videoImage = {
+          url: '',
+          width: 0,
+          height: 0
+        }
+      },
+      beforeUploadCheck (file) {
+        const err = this.R.none(item => {
+          return this.R.endsWith(item)(file.name)
+        })(this.extArr || [])
+        if (err) {
+          this.$message({
+            message: '请选择有效文件',
+            type: 'error'
+          })
+          return false
+        }
+        if (file.size > 1024 * 1024 * 50) {
+          this.$message({
+            message: '文件最大为50M',
+            type: 'error'
+          })
+          return false
+        }
+        return true
       },
       async submit () {
         this.loading = true
@@ -121,6 +212,16 @@
                     }
                   })(this.formData.imageList)
                   break
+                case this.allContentTp.video.value:
+                  if (this.formData.videoImage.url) {
+                    this.formData.video.poster = this.formData.videoImage.url
+                  }
+                  this.formData.video.name = this.formData.video.name + '.mp4'
+                  result = [{
+                    tp: this.allContentTp.video.value,
+                    ...this.formData.video
+                  }]
+                  break
               }
               this.$emit('success', result)
               this.hide()
@@ -139,7 +240,7 @@
         'getToken': AliyunApi.getOssToken
       })
     },
-    mounted () {
+    async mounted () {
     }
   }
 </script>
@@ -152,6 +253,25 @@
     .input-right-desc {
       width: 60px;
     }
+  }
+
+  .video-show-validate-el-form {
+    margin-top: 15px !important;
+    margin-bottom: 25px !important;
+  }
+  .videoContent {
+    position: relative;
+    div.el-upload__tip {
+      position: absolute;
+      top:-7px;
+      left:80px;
+    }
+  }
+
+  .el-upload__tip {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #999;
   }
 
   .desc-text {

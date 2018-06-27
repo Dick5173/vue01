@@ -1,7 +1,8 @@
 import { UPDATE_ME } from '../types'
 
 const state = {
-  me: null
+  me: null,
+  roles: []
 }
 
 const getters = {
@@ -10,6 +11,19 @@ const getters = {
       return true
     }
     return false
+  },
+  isSuper: state => {
+    if (state.me && state.me.super) {
+      return true
+    } else {
+      return false
+    }
+  },
+  sysRoles: state => {
+    if (state.me && state.me.roles && state.me.roles.length > 0) {
+      return state.me.roles
+    }
+    return []
   }
 }
 

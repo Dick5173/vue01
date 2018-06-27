@@ -18,6 +18,9 @@
         span.input-right-desc {{ formData.sell_point.length }} / 30
       el-form-item(label="商品规格", :required="true")
         skus(ref="skus", :skus.sync="formData.skus", :stPrice="formData.st_price", :purchase_price="formData.purchase_price")
+      el-form-item(label="")
+        el-checkbox(v-model="formData.control_price") 控价
+        span.input-right-desc 禁止店铺售价低于建议售价
       el-form-item(label="划线价", prop="st_price")
         el-input.tiny-el-input(v-model.trim="formData.st_price", clearable)
         span.input-right-desc 元
@@ -226,6 +229,7 @@
               }
             }
           ],
+          control_price: false,
           supply_levels: [],
           st_price: '',
           category_id: '',

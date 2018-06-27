@@ -75,7 +75,6 @@
         this.dialogVisible = false
       },
       toDetail (row) {
-        console.log(row, 88888)
         this.$router.push({
           name: 'TenantDetail',
           params: {
@@ -84,7 +83,6 @@
         })
       },
       resetPwd (row) {
-        console.log(row, 1111)
         this.$refs.dlgResetPwd.show(row)
       },
       editItem (row) {

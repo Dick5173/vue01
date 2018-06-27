@@ -31,13 +31,13 @@
           searchType: 'prod',
           tenant_id: '',
           start_time: 0,
-          end_time: 0
+          end_time: 0,
+          source: 1
         }
       }
     },
     watch: {
       dataList (val) {
-        console.log(val)
       }
     },
     computed: {},

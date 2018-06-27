@@ -9,8 +9,10 @@
       el-form-item
         div()
           el-checkbox(v-model="off_shelves") 显示已下架
-      el-form-item.input
+      el-form-item.input(label="商品：")
         el-input(v-model.trim="formData.text", placeholder="商品名称/编码")
+      el-form-item.input(label="商品ID：")
+        el-input(v-model.trim="formData.id")
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
@@ -25,6 +27,7 @@
     data () {
       return {
         formData: {
+          id: '',
           tp: 0,
           status: 1,
           text: ''
@@ -64,6 +67,7 @@
       },
       convertQueryParamsToForm () {
         this.formData = {
+          id: this.queryParams.id,
           status: this.queryParams.status,
           tp: this.queryParams.tp,
           text: this.queryParams.text

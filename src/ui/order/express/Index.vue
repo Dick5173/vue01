@@ -53,7 +53,6 @@
         try {
           this.expressDataList = []
           const res = await getExpress(this.oid)
-          console.log(res)
           this.expressDataList = res.data
           console.log(this.expressDataList)
           if (this.expressDataList.length > 0 && !this.activeName) {

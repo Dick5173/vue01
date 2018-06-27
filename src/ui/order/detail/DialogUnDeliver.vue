@@ -52,11 +52,6 @@
                 cancelButtonText: '取消',
                 type: 'warning'
               })
-              await this.$confirm('真的确定无需发货？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              })
               await OrderApi.noNeedDelivery(this.orderItem.id, this.formData)
               this.$message({
                 message: '设置无需发货成功',

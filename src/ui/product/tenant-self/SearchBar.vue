@@ -18,6 +18,8 @@
         el-input(v-model.trim="formData.text", placeholder="商品名/编码", clearable)
       el-form-item(label="")
         el-input(v-model.trim="formData.id",placeholder="商品ID", clearable)
+      el-form-item()
+        el-checkbox(v-model="formData.stock_warning", :true-label="1", :false-label="0") 库存预警
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="handleSearch") 搜索
         el-button(@click="handleReset") 重置
@@ -41,6 +43,7 @@
         formData: {
           tenant_id: '',
           start: 0,
+          stock_warning: 0,
           end: 0,
           text: '',
           id: ''
@@ -86,7 +89,8 @@
           end: this.R_.parseDateTick(0, this.queryParams.end),
           text: this.queryParams.text,
           tenant_id: this.queryParams.tenant_id,
-          id: this.queryParams.id
+          id: this.queryParams.id,
+          stock_warning: this.queryParams.stock_warning
         }
         if (this.formData.start && this.formData.end) {
           this.defaultDate = [this.formData.start, this.formData.end]

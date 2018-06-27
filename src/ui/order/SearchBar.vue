@@ -3,6 +3,9 @@
     el-form-item(label="状态")
       el-select.status-select(v-model="formData.status", multiple, clearable)
         el-option(v-for="item in optionsStatus", :key="item.value", :label="item.label", :value="item.value")
+    el-form-item(label="")
+      el-select.status-select(v-model="formData.source", clearable, style="width: 200px; margin: 0 50px")
+        el-option(v-for="item in productType", :key="item.value", :label="item.label", :value="item.value")
     el-form-item(label="下单")
       date-range-picker(:start.sync="formData.start_time", :end.sync="formData.end_time", placeholder="选择日期")
     el-form-item(label="店铺")
@@ -48,7 +51,8 @@
           searchType: 'prod',
           tenant_id: '',
           start_time: 0,
-          end_time: 0
+          end_time: 0,
+          source: 1
         },
         initialData: null,
         optionsStatus: [
@@ -71,7 +75,18 @@
           buyer: '买家姓名/手机',
           dev_no: '物流单号',
           user: '用户昵称/ID'
+        },
+        productType: [{
+          value: 0,
+          label: '全部商品'
+        }, {
+          value: 2,
+          label: '自营商品'
+        }, {
+          value: 1,
+          label: '平台商品'
         }
+        ]
       }
     },
     watch: {
@@ -86,7 +101,7 @@
         })
       },
       createExportTask () {
-        console.log('===createExportTask====')
+        // console.log('===createExportTask====')
         // if (!this.formData.start_time || !this.formData.end_time) {
         //   this.$message({
         //     message: '请选择下单时间',
@@ -115,7 +130,7 @@
         // })
       },
       gotoListExportTask () {
-        console.log('===gotoListExportTask====')
+        // console.log('===gotoListExportTask====')
         // this.$router.push({
         //   path: '/export/task',
         //   query: {
