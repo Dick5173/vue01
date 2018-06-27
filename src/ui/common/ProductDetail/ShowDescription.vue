@@ -1,5 +1,5 @@
 <template lang="pug">
-  div.small-el-form
+  div.full-el-table
     div(v-for!="item in description")
       div(v-if="item.tp === allTp.img.value")
         img.resource-img.small-el-form(:src="item.url")
