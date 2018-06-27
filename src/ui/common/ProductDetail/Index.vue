@@ -14,7 +14,7 @@
     el-form-item(v-if="showFormItem(formData.st_price)", label="划线价：", prop="st_price")
       span {{formData.st_price | price}}
       span.input-right-desc 元
-    el-form-item(label="供货价")
+    el-form-item(label="供货价：")
       span(v-if="isTenantProduct") {{formData.prop.ext.supply_price | price}}
       span.input-right-desc(v-if="isTenantProduct") 元
       span(v-if="isSelected") {{formData.supply_price | price}}
@@ -46,14 +46,14 @@
 </template>
 
 <script>
-import ShowDescription from './ShowDescription.vue'
-import SupplyPriceComp from './SupplyPrice'
-import Skus from 'src/ui/common/ProductDetail/Skus.vue'
-import * as FreightService from 'src/service/freight-template'
-import * as ServiceTagGroupService from 'src/service/service_tag_group'
-import ShowAfterService from './ShowAfterService.vue'
+  import ShowDescription from './ShowDescription.vue'
+  import SupplyPriceComp from './SupplyPrice'
+  import Skus from 'src/ui/common/ProductDetail/Skus.vue'
+  import * as FreightService from 'src/service/freight-template'
+  import * as ServiceTagGroupService from 'src/service/service_tag_group'
+  import ShowAfterService from './ShowAfterService.vue'
 
-export default {
+  export default {
   props: {
     isPrompt: {
       type: Boolean,
