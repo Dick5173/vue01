@@ -35,7 +35,7 @@
   import * as AliyunApi from 'src/api/aliyun'
   import { mediumDialogWidth } from 'src/config/el'
   import * as ResourceService from 'src/service/resource/index'
-  import { UploadImageList, UploadVideo, UploadImage } from '@baibao/zeratul'
+  import { UploadImage, UploadImageList, UploadVideo } from '@baibao/zeratul'
 
   export default {
     components: {
@@ -102,7 +102,7 @@
         },
         formRules: {
           text: [
-            {required: true, message: '请输入文本', trigger: 'blur'},
+            {required: true, whitespace: true, message: '请输入文本', trigger: 'blur'},
             {max: 2000, message: '最多可输入2000个字符', trigger: 'blur'}
           ],
           imageList: [
