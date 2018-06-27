@@ -54,157 +54,157 @@
   import ShowAfterService from './ShowAfterService.vue'
 
   export default {
-  props: {
-    isPrompt: {
-      type: Boolean,
-      default: () => {
-        return false
-      }
-    },
-    rowFormData: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
-  components: { ShowDescription, Skus, SupplyPriceComp, ShowAfterService },
-  data () {
-    return {
-      loading: false,
-      skus: [],
-      formData: {
-        head: [],
-        cover: {
-          url: ''
-        },
-        prop: {
-          ext: {}
+    props: {
+      isPrompt: {
+        type: Boolean,
+        default: () => {
+          return false
         }
       },
-      description: []
-    }
-  },
-  computed: {
-    isPlatform () {
-      if (this.rowFormData.tp === 1) {
-        return true
+      rowFormData: {
+        type: Object,
+        default: () => {
+          return {}
+        }
       }
-      return false
     },
-    isSelected () {
-      if (this.rowFormData.tp === 3) {
-        return true
+    components: {ShowDescription, Skus, SupplyPriceComp, ShowAfterService},
+    data () {
+      return {
+        loading: false,
+        skus: [],
+        formData: {
+          head: [],
+          cover: {
+            url: ''
+          },
+          prop: {
+            ext: {}
+          }
+        },
+        description: []
       }
-      return false
     },
-    isTenantProduct () {
-      if (this.rowFormData.tp === 2) {
-        return true
-      }
-      return false
-    },
-    showSupplyTenants () {
-      if (!this.formData.prop.supply_scope_tp || this.formData.prop.supply_scope_tp === 1) {
-        return '无限制'
-      }
-      let tenants = ''
-      this.R.forEachObjIndexed((item, index) => {
-        tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
-      })(this.formData.prop.supply_tenants || [])
-      return tenants
-    }
-  },
-  watch: {
-    rowFormData () {
-      this.formData = this.rowFormData
-      if (!this.isPlatform) {
-        this.skus = this.rowFormData.tenant_skus
-      } else {
-        this.skus = this.rowFormData.prop.skus
-      }
-      this.supply_levels = this.rowFormData.supply_levels
-      this.description = this.rowFormData.content ? this.rowFormData.content : []
-    }
-  },
-  methods: {
-    showFormItem (row) {
-      if (Array.isArray(row)) {
-        if (row.length !== 0) {
+    computed: {
+      isPlatform () {
+        if (this.rowFormData.tp === 1) {
           return true
         }
         return false
+      },
+      isSelected () {
+        if (this.rowFormData.tp === 3) {
+          return true
+        }
+        return false
+      },
+      isTenantProduct () {
+        if (this.rowFormData.tp === 2) {
+          return true
+        }
+        return false
+      },
+      showSupplyTenants () {
+        if (!this.formData.prop.supply_scope_tp || this.formData.prop.supply_scope_tp === 1) {
+          return '无限制'
+        }
+        let tenants = ''
+        this.R.forEachObjIndexed((item, index) => {
+          tenants += `${parseInt(index) === 0 ? '' : '、'}${item.id}-${item.nick_name}`
+        })(this.formData.prop.supply_tenants || [])
+        return tenants
       }
-      if (row) {
-        return true
-      }
-      return false
     },
-    edit (id) {
-      if (this.isPrompt) {
-        this.$confirm('离开当前页面，放弃未保存内容？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+    watch: {
+      rowFormData () {
+        this.formData = this.rowFormData
+        if (!this.isPlatform) {
+          this.skus = this.rowFormData.tenant_skus
+        } else {
+          this.skus = this.rowFormData.prop.skus
+        }
+        this.supply_levels = this.rowFormData.supply_levels
+        this.description = this.rowFormData.content ? this.rowFormData.content : []
+      }
+    },
+    methods: {
+      showFormItem (row) {
+        if (Array.isArray(row)) {
+          if (row.length !== 0) {
+            return true
+          }
+          return false
+        }
+        if (row) {
+          return true
+        }
+        return false
+      },
+      edit (id) {
+        if (this.isPrompt) {
+          this.$confirm('离开当前页面，放弃未保存内容？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$router.push({
+              name: 'PlatformProductEdit',
+              params: {
+                id: id
+              }
+            })
+          }).catch()
+        } else {
           this.$router.push({
             name: 'PlatformProductEdit',
             params: {
               id: id
             }
           })
-        }).catch()
-      } else {
-        this.$router.push({
-          name: 'PlatformProductEdit',
-          params: {
-            id: id
-          }
-        })
-      }
+        }
+      },
+      showOversea (row) {
+        if (row) {
+          return '清关商品'
+        }
+        return '非清关商品'
+      },
+      showImg (row) {
+        if (row) {
+          return row.url
+        }
+        return ''
+      },
+      showName (row) {
+        if (row) {
+          return row.name
+        }
+        return ''
+      },
+      ...$global.$mapConst({'serviceTagGroupShowText': ServiceTagGroupService.showItemsText}),
+      ...$global.$mapMethods({'freightDescText': FreightService.getDescText})
     },
-    showOversea (row) {
-      if (row) {
-        return '清关商品'
-      }
-      return '非清关商品'
-    },
-    showImg (row) {
-      if (row) {
-        return row.url
-      }
-      return ''
-    },
-    showName (row) {
-      if (row) {
-        return row.name
-      }
-      return ''
-    },
-    ...$global.$mapConst({ 'serviceTagGroupShowText': ServiceTagGroupService.showItemsText }),
-    ...$global.$mapMethods({ 'freightDescText': FreightService.getDescText })
-  },
-  mounted () {
+    mounted () {
+    }
   }
-}
 </script>
 
 
 <style lang="scss">
-.img {
-  display: inline-block;
-  margin-right: 10px;
-  width: 100px;
-  height: 100px;
-  background-size: cover;
-}
+  .img {
+    display: inline-block;
+    margin-right: 10px;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+  }
 
-.ptag {
-  margin-right: 10px;
-}
+  .ptag {
+    margin-right: 10px;
+  }
 
-.tenants {
-  max-width: 400px;
-  color: $font-color-common;
-}
+  .tenants {
+    max-width: 400px;
+    color: $font-color-common;
+  }
 </style>
