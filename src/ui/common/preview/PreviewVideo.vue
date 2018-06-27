@@ -1,7 +1,7 @@
 <template lang="pug">
   div.preview-video
     div.preview-text {{resource.text}}
-    video(:src="resource.url", controls="controls")
+    video(:src="resource.url", controls="controls", width="739px")
 </template>
 
 <script>
