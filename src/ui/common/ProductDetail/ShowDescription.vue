@@ -5,7 +5,7 @@
         img.resource-img.small-el-form(:src="item.url")
       div.preview-text(v-if="item.tp === allTp.text.value") {{ item.text }}
       div.preview-video(v-if="item.tp === allTp.video.value")
-        video(:src="item.url", crossOrigin="Anonymous", controls="controls", width="620px")
+        video(:src="item.url", crossOrigin="Anonymous", controls="controls", width="100%")
 </template>
 
 <script>
