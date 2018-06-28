@@ -13,16 +13,8 @@
               div.table-item(slot-scope="props")
                 el-form-item(label="频道名称：", :ref="`name${props.index}`", :prop="`items.${props.index + 1}.name`", :rules="formRules.name")
                   el-input(style="width:200px", v-model.trim="props.row.name", :maxlength="5")
-                div.bottom-content
-                  el-form-item(:ref="`item${props.index}`", :prop="`items.${props.index + 1}`", :rules="formRules.item")
-                    div.error-content(v-if="isErrorItem(props.row)") {{isErrorItem(props.row)}}
-                    div.name-content(v-else)
-                      div {{showChooseItemTitle(props.row)}}
-                      div.txt-btn.name(@click="previewMinPage(props.row)", v-if="showChooseItem(props.row)") {{showChooseItem(props.row)}}
             smart-table-column(width="120px")
               div(slot-scope="props")
-                el-button(style="margin-left:0; margin-top:5px; width: 100px", type="primary", plain, size="small", v-if="!isEmpty(props.row)", v-clipboard:copy="getAppUrl(props.row)", v-clipboard:success="onCopy", v-clipboard:error="onError") 小程序链接
-                el-button(style="margin-left:0; margin-top:5px; width: 100px", type="primary", plain, size="small", @click="handlePushItem(props.row, props.index)") 选择跳转
                 el-button(style="margin-left:0; margin-top:5px; width: 100px", type="danger", size="small", @click="handleDeleteItem(props.index)") 删除
       el-button(style="margin-top:10px", type="primary", plain, size="small", :disabled="disabledAdd", @click="handleAdd") 添加
       div.select-content
@@ -35,9 +27,6 @@
             el-radio-group(:disabled="!checkCorner", v-model="selectCorner", @change="selectCornerChange")
               el-radio(v-for="item in corners", :key="item.label", :label="item.label") {{item.value}}
             el-input(style="margin-left:10px; width: 100px", :disabled="selectCorner !== 3", v-model="diyCorner", :maxlength="3")
-    dialog-channel(ref="dialogChannel", @choose="handleChooseJump")
-    <!--min-preview(ref="minPreview")-->
-    product-Tags-dialog(ref="dlgTagPreview")
 </template>
 
 <script>
@@ -45,18 +34,14 @@
   import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
   import * as CustomPageService from 'src/service/home_template/index'
   import DialogChannel from '../dialog/DialogChannel'
-  // import MinPreview from 'src/ui/micropage/preview/Index.vue'
   import * as ElUtil from 'src/util/el'
-  import ProductTagsDialog from '../dialog/ProductTagsDialog'
 
   export default {
     components: {
       LeftArrow,
       SmartTable,
       SmartTableColumn,
-      DialogChannel,
-      // MinPreview,
-      ProductTagsDialog
+      DialogChannel
     },
     props: {
       queryParams: {
@@ -176,31 +161,6 @@
       isErrorItem (item) {
         return CustomPageService.isChannelError(item)
       },
-      getAppUrl (row) {
-        if (row.action_tp === CustomPageService.channelCustomTp.all_product.value) {
-          return `pages/goods/index?gid=0&isShare=1`
-        } else if (row.action_tp === CustomPageService.channelCustomTp.min_page.value) {
-          return `pages/micropage/index?mid=${row.min_page.id}&isShare=1`
-        } else if (row.action_tp === CustomPageService.channelCustomTp.tag_group.value) {
-          if (row.tag_group) {
-            return `pages/tag/index?tid=${row.tag_group.id}`
-          } else {
-            return `pages/tag/index`
-          }
-        }
-      },
-      onError () {
-        this.$message({
-          type: 'danger',
-          message: '复制失败'
-        })
-      },
-      onCopy () {
-        this.$message({
-          type: 'success',
-          message: '已复制小程序链接到剪贴板'
-        })
-      },
       handleAdd () {
         const cus = CustomPageService.createChannelItem()
         this.formData.wgt_channel.items.push(cus)
@@ -264,64 +224,10 @@
           })
         }
       },
-      handlePushItem (row, index) {
-        this.$refs.dialogChannel.show(row, index)
-      },
-      async handleChooseJump (form, index) {
-        await this.$nextTick()
-        this.$refs[`item${index}`].onFieldChange()
-      },
       handleDeleteItem (index) {
         this.formData.wgt_channel.items.splice(index + 1, 1)
         for (let i = 0; i < this.formData.wgt_channel.items.length - 1; i++) {
           this.$refs[`item${i}`] && this.$refs[`item${i}`].onFieldChange()
-        }
-      },
-      showChooseItemTitle (row) {
-        if (row.action_tp === CustomPageService.channelCustomTp.all_product.value) {
-          return '全部商品'
-        } else if (row.action_tp === CustomPageService.channelCustomTp.min_page.value) {
-          return `微页面：`
-        } else if (row.action_tp === CustomPageService.channelCustomTp.product_group.value) {
-          return `商品组：`
-        } else if (row.action_tp === CustomPageService.channelCustomTp.tag_group.value) {
-          if (!row.tag_group) {
-            return `标签页`
-          }
-          return `定义标签组：`
-        } else if (row.action_tp === CustomPageService.channelCustomTp.other_app.value) {
-          return `其它小程序`
-        } else if (row.action_tp === CustomPageService.channelCustomTp.product_tag.value) {
-          return `标签商品页：`
-        }
-        return ''
-      },
-      showChooseItem (row) {
-        if (row.action_tp === CustomPageService.channelCustomTp.min_page.value) {
-          return row.min_page.name
-        } else if (row.action_tp === CustomPageService.channelCustomTp.product_group.value) {
-          return row.product_group.name
-        } else if (row.action_tp === CustomPageService.channelCustomTp.tag_group.value) {
-          if (!row.tag_group) {
-            return null
-          }
-          return row.tag_group.name
-        } else if (row.action_tp === CustomPageService.channelCustomTp.product_tag.value) {
-          if (row.product_tag_tp === CustomPageService.productTagTp.product_tag_group_id.value && row.product_tag_group) {
-            return row.product_tag_group.name
-          } else if (row.product_tag_tp === CustomPageService.productTagTp.product_tag_id.value && row.product_tag) {
-            return `${row.product_tag.tag_group.name}-${row.product_tag.name}`
-          } else {
-            return null
-          }
-        }
-        return null
-      },
-      previewMinPage (row) {
-        if (row.action_tp === CustomPageService.channelCustomTp.min_page.value) {
-          this.$refs.minPreview.show(row.min_page.id)
-        } else if (row.action_tp === CustomPageService.allCustomTp.product_tag.value) {
-          this.$refs.dlgTagPreview.show(row)
         }
       },
       formValidate () {

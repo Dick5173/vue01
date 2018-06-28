@@ -53,33 +53,16 @@
         return this.isProductGroup && this.queryParams.wgt_product.product_group.tp === CustomPageService.allGroupTp.buy_group.value
       },
       showMore () {
-        if (this.queryParams.wgt_product.s_tp === CustomPageService.allProductTp.product_group.value) {
-          return this.queryParams.wgt_product.product_group.pc > 6
-        } else {
-          return this.queryParams.wgt_product.products.length >= 6
-        }
+        return this.queryParams.wgt_product.products.length >= 6
       },
       getProducts () {
-        let products = []
-        if (this.isProductGroup) {
-          products = this.R.clone(this.queryParams.wgt_product.product_group.products)
-          if (products && products.length > 6) {
-            products = products.slice(0, 6)
-          }
-        } else {
-          products = this.R.clone(this.queryParams.wgt_product.products)
-        }
-        return products
+        return this.R.clone(this.queryParams.wgt_product.products)
       },
       getTitle () {
         return this.queryParams.wgt_product.name
       },
       isEmpty () {
-        if (this.isProductGroup) {
-          return !this.queryParams.wgt_product.product_group || !this.queryParams.wgt_product.product_group.id
-        } else {
-          return !this.queryParams.wgt_product.products || this.queryParams.wgt_product.products.length === 0
-        }
+        return !this.queryParams.wgt_product.products || this.queryParams.wgt_product.products.length === 0
       },
       emptyText () {
         if (this.isEmpty) {

@@ -248,6 +248,81 @@ export const channelCustomTp = {
   }
 }
 
+export const productDemo = [
+  {
+    name: '此处显示商品名称',
+    sell_point: '此处显示买点',
+    min_price: 88800,
+    st_price: 99900,
+    cover: {
+      url: ''
+    },
+    prop: {
+      stock: 1
+    }
+  },
+  {
+    name: '此处显示商品名称',
+    sell_point: '此处显示买点',
+    min_price: 88800,
+    st_price: 99900,
+    cover: {
+      url: ''
+    },
+    prop: {
+      stock: 1
+    }
+  },
+  {
+    name: '此处显示商品名称',
+    sell_point: '此处显示买点',
+    min_price: 88800,
+    st_price: 99900,
+    cover: {
+      url: ''
+    },
+    prop: {
+      stock: 1
+    }
+  },
+  {
+    name: '此处显示商品名称',
+    sell_point: '此处显示买点',
+    min_price: 88800,
+    st_price: 99900,
+    cover: {
+      url: ''
+    },
+    prop: {
+      stock: 1
+    }
+  },
+  {
+    name: '此处显示商品名称',
+    sell_point: '此处显示买点',
+    min_price: 88800,
+    st_price: 99900,
+    cover: {
+      url: ''
+    },
+    prop: {
+      stock: 1
+    }
+  },
+  {
+    name: '此处显示商品名称',
+    sell_point: '此处显示买点',
+    min_price: 88800,
+    st_price: 99900,
+    cover: {
+      url: ''
+    },
+    prop: {
+      stock: 1
+    }
+  }
+]
+
 const rndNum = () => {
   return getRndNum(3)
 }
@@ -287,9 +362,8 @@ export const createProduct = () => {
       name: '',
       s_tp: 1, //  1 - 自定义选择商品，2 - 商品组，3 - 全部商品 ,
       style_tp: 2, // 样式：1 - 半幅，2 - 通栏， 3 - 两列，4 - 三列，5 - 横向滚动 ,
-      products: [],
-      product_group: {},
-      min_page: {}
+      products: productDemo,
+      product_group: {}
     }
   }
 }
@@ -359,7 +433,7 @@ export const createBuyGroup = () => {
       name: '拼团',
       s_tp: 1, //  1 - 自定义选择商品，2 - 商品组，3 - 全部商品 ,
       style_tp: 2, // 样式：1 - 半幅，2 - 通栏， 3 - 两列，4 - 三列，5 - 横向滚动 ,
-      products: [],
+      products: productDemo,
       product_group: {}
     }
   }
@@ -686,28 +760,6 @@ export const checkInputInfo = (dataList) => {
     })
   }
 
-  const checkEmptyCustomData = (item) => {
-    if (item.action_tp === 0) {
-      return true
-    } else if (item.action_tp === allCustomTp.product.value && (!item.product || !item.product.id)) {
-      return true
-    } else if (item.action_tp === allCustomTp.product_group.value && (!item.product_group || !item.product_group.id)) {
-      return true
-    } else if (item.action_tp === allCustomTp.min_page.value && (!item.min_page || !item.min_page.id)) {
-      return true
-    } else if (item.action_tp === allCustomTp.product_tag.value) {
-      if (item.product_tag_tp === productTagTp.product_tag_group_id.value) {
-        if (!item.product_tag_group || !item.product_tag_group.id) {
-          return true
-        }
-      } else if (item.product_tag_tp === productTagTp.product_tag_id.value) {
-        if (!item.product_tag || !item.product_tag.id) {
-          return true
-        }
-      }
-    }
-    return false
-  }
   if (!dataList || dataList.length === 0) {
     showError('没有任何内容')
     return -2
@@ -726,39 +778,8 @@ export const checkInputInfo = (dataList) => {
       const emptyTitle = item.wgt_channel.items.some((item) => {
         return !item.name || item.name === ''
       })
-      const emptyData = item.wgt_channel.items.some((item, index) => {
-        return (index !== 0 && item.action_tp === 0) || (item.action_tp === channelCustomTp.min_page.value && (!item.min_page || !item.min_page.id)) || (item.action_tp === channelCustomTp.product_group.value && (!item.product_group || !item.product_group.id))
-      })
-      const emptyAppid = item.wgt_channel.items.some((item) => {
-        return item.action_tp === allCustomTp.other_app.value && (!item.app_id || item.app_id === '')
-      })
-      const emptyProductTag = item.wgt_channel.items.some((item) => {
-        if (item.action_tp === allCustomTp.product_tag.value) {
-          if (item.product_tag_tp === productTagTp.product_tag_group_id.value) {
-            if (!item.product_tag_group || !item.product_tag_group.id) {
-              return true
-            }
-          } else if (item.product_tag_tp === productTagTp.product_tag_id.value) {
-            if (!item.product_tag || !item.product_tag.id) {
-              return true
-            }
-          }
-        }
-      })
       if (emptyTitle) {
         showError('频道：频道名称不能为空')
-        position = index
-        return true
-      } else if (emptyData) {
-        showError('频道：请选择跳转方式')
-        position = index
-        return true
-      } else if (emptyAppid) {
-        showError('频道：请输入目标小程序appid')
-        position = index
-        return true
-      } else if (emptyProductTag) {
-        showError('频道：请选择跳转方式')
         position = index
         return true
       }
@@ -1119,44 +1140,12 @@ export const convertPageContentModelToForm = (page) => {
       item.show_id = item.id
       if (item.wgt_tp === allContentTp.product.value) {
         item.wgt_product.old_s_tp = item.wgt_product.s_tp
-        if (item.wgt_product.s_tp === allProductTp.product_group.value) {
-          const productGroups = R.map((item) => {
-            return item.product_group
-          })(item.wgt_product.items)
-          item.wgt_product.product_group = productGroups[0] || {}
-          item.wgt_product.products = []
-        } else if (item.wgt_product.s_tp === allProductTp.product.value) {
-          item.wgt_product.products = R.map((item) => {
-            return item.product
-          })(item.wgt_product.items)
-          item.wgt_product.product_group = {}
-        } else {
-          item.wgt_product.products = []
-          item.wgt_product.items.forEach((pro) => {
-            item.wgt_product.products = item.wgt_product.products.concat(pro.products)
-          })
-          item.wgt_product.product_group = {}
-        }
+        item.wgt_product.products = productDemo
+        item.wgt_product.product_group = {}
       } else if (item.wgt_tp === allContentTp.buy_group.value) {
         item.wgt_buy_group.old_s_tp = item.wgt_buy_group.s_tp
-        if (item.wgt_buy_group.s_tp === allBuyGroupTp.product_group.value) {
-          const productGroups = R.map((item) => {
-            return item.product_group
-          })(item.wgt_buy_group.items)
-          item.wgt_buy_group.product_group = productGroups[0] || {}
-          item.wgt_buy_group.products = []
-        } else if (item.wgt_buy_group.s_tp === allBuyGroupTp.product.value) {
-          item.wgt_buy_group.products = R.map((item) => {
-            return item.product
-          })(item.wgt_buy_group.items)
-          item.wgt_buy_group.product_group = {}
-        } else {
-          item.wgt_buy_group.products = []
-          item.wgt_buy_group.items.forEach((pro) => {
-            item.wgt_buy_group.products = item.wgt_buy_group.products.concat(pro.products)
-          })
-          item.wgt_buy_group.product_group = {}
-        }
+        item.wgt_buy_group.products = productDemo
+        item.wgt_buy_group.product_group = {}
       } else if (item.wgt_tp === allContentTp.channel.value) {
         item.wgt_channel.items.forEach((item) => {
           item.show_id = rndNum()

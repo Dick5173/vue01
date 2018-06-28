@@ -339,6 +339,7 @@
             this.addIndex = mixIndex
           }
         }
+        console.log(CustomPageService.createWgtCell(contentTp))
         this.dataList.splice(this.addIndex, 0, CustomPageService.createWgtCell(contentTp))
         this.showEditWithIndex(this.addIndex, this.addIndex === 0 || this.addIndex === 1)
       },
@@ -433,6 +434,7 @@
           const res = await TmplApi.getTmplDetail(this.$route.params.id)
           if (res.data) {
             this.minPage = CustomPageService.convertPageContentModelToForm(res.data.data || {})
+            console.log('=======getMinPageList========', this.minPage)
             this.serverNow = res.data.now
             if (!this.minPage.items || this.minPage.items.length === 0) {
               await this.$nextTick()
