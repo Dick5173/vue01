@@ -1,30 +1,33 @@
 <template lang="pug">
-  div.form-content
-    div.left(ref="parentTree")
-      div.navigation(ref="navBar", @click="handleClickTitleBar")
-        div.title(v-if="minPage.tp===allPageTp.min.value") {{minPage.name}}
-        div.title(v-else) {{$tname}}
-        div.more ● ● ●
-      draggable(ref="draggableTree", :list="dataList", :move="handleMove", :options="{animation: 200, ghostClass: 'ghost', chosenClass: 'can-move', handle: '.can-move'}")
-        div.info-content(v-for="item, index in dataList", @mouseenter="handleMouseenter(item)", @mouseleave="handleMouseleave", @click="handleClickItem(item, index)")
-          div.info-show-content(:class="{selected: index === editIndex}", v-show="isShowItem(item)")
-            div.add.top(v-if="showTopAdd(item)")
-              div.btn(@click.stop="handleAdd(true, index)") +
-            component(class="can-move", :queryParams.sync!="item", :is="getCompByColumn(item)")
-            div.error-content(v-if="item.error && isErrorItem(item)") {{item.error}}
-            el-popover.delete-popover(ref="`popoverDelete${index}`", placement="left", width="160", v-model="item.showPopover")
-              p 确定删除？
-              div(style="text-align: right; margin: 0")
-                el-button(size="mini", type="text", @click="item.showPopover = false") 取消
-                el-button(size="mini", type="primary", @click="handleClickDelete(item, index)") 确定
-            div.delete(v-if="showDelete(item)", v-popover="`popoverDelete${index}`", @click.stop="showDeletePopover(item)") X
-            div.add.bottom(v-if="showBottomAdd(item)")
-              div.btn(@click.stop="handleAdd(false, index)") +
-    div.right
-      div(:style="rightEmptyHeight")
-      share-text(ref="shareText", v-if="isShowShareText", :queryParams.sync="minPage")
-      component(:ref="`editComponent${editIndex}`", v-if="editIndex >= 0", :queryParams.sync!="dataList[editIndex]", :is="getCompByEdit(dataList[editIndex])")
-      select-category(ref="selectCategory", :isMinPage="minPage.tp===allPageTp.min.value", :hasNavigate="hasNavigate", :hasChannel="hasChannel", @selectCategory="handleCategory")
+  div
+    div
+      el-input(v-model="minPage.name", placeholder="模板名称", style="width: 300px")
+    div.form-content
+      div.left(ref="parentTree")
+        div.navigation(ref="navBar", @click="handleClickTitleBar")
+          div.title(v-if="minPage.tp===allPageTp.min.value") {{minPage.name}}
+          div.title(v-else) {{$tname}}
+          div.more ● ● ●
+        draggable(ref="draggableTree", :list="dataList", :move="handleMove", :options="{animation: 200, ghostClass: 'ghost', chosenClass: 'can-move', handle: '.can-move'}")
+          div.info-content(v-for="item, index in dataList", @mouseenter="handleMouseenter(item)", @mouseleave="handleMouseleave", @click="handleClickItem(item, index)")
+            div.info-show-content(:class="{selected: index === editIndex}", v-show="isShowItem(item)")
+              div.add.top(v-if="showTopAdd(item)")
+                div.btn(@click.stop="handleAdd(true, index)") +
+              component(class="can-move", :queryParams.sync!="item", :is="getCompByColumn(item)")
+              div.error-content(v-if="item.error && isErrorItem(item)") {{item.error}}
+              el-popover.delete-popover(ref="`popoverDelete${index}`", placement="left", width="160", v-model="item.showPopover")
+                p 确定删除？
+                div(style="text-align: right; margin: 0")
+                  el-button(size="mini", type="text", @click="item.showPopover = false") 取消
+                  el-button(size="mini", type="primary", @click="handleClickDelete(item, index)") 确定
+              div.delete(v-if="showDelete(item)", v-popover="`popoverDelete${index}`", @click.stop="showDeletePopover(item)") X
+              div.add.bottom(v-if="showBottomAdd(item)")
+                div.btn(@click.stop="handleAdd(false, index)") +
+      div.right
+        div(:style="rightEmptyHeight")
+        share-text(ref="shareText", v-if="isShowShareText", :queryParams.sync="minPage")
+        component(:ref="`editComponent${editIndex}`", v-if="editIndex >= 0", :queryParams.sync!="dataList[editIndex]", :is="getCompByEdit(dataList[editIndex])")
+        select-category(ref="selectCategory", :isMinPage="minPage.tp===allPageTp.min.value", :hasNavigate="hasNavigate", :hasChannel="hasChannel", @selectCategory="handleCategory")
     bottom-container.bottom
       el-button(type="primary", @click="save", :loading="loading", :disabled="saveDisabled") 提交
 </template>
@@ -80,12 +83,6 @@
       EditVoucher
     },
     props: {
-      minPage: {
-        type: Object,
-        default () {
-          return {}
-        }
-      },
       showAll: {
         type: Boolean,
         default: true
@@ -97,8 +94,10 @@
     },
     data () {
       return {
+        minPage: {},
         loading: false,
         firstIn: true,
+        titleName: '',
         saveDisabled: true,
         diffNow: 0,
         hoverShowId: 0,

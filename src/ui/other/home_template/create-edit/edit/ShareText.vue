@@ -2,12 +2,7 @@
   div.share-content
     left-arrow
     div.info-content
-      el-form(ref="form", :model="formData", :rules="formRules", label-position="right")
-        el-form-item(label="标题：", prop="name")
-          el-input(v-if="queryParams.tp === allPageTp.min.value", clearable v-model.trim="formData.name", :maxlength="20", style="width: 300px")
-          div.share-text(v-else) {{$tname}}
-        el-form-item(label="分享语：")
-          el-input(v-model.trim="formData.share_text", clearable :maxlength="25", style="width: 300px")
+      div.share-text 标题{{formData.name}}
 </template>
 
 <script>
@@ -79,7 +74,7 @@
     display: flex;
 
     .info-content {
-      color: $font-color-common;
+      color: $home-color-common;
       font-size: $home-size-title;
       flex: 1;
       width: 100%;
@@ -88,7 +83,7 @@
       border: 1px solid #DFDFDF;
       position: relative;
       background: #F5F5F5;
-      line-height: 30px;
+      line-height: 40px;
       border-radius: 10px;
 
       &:after {
