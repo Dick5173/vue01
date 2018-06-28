@@ -13,8 +13,8 @@
 </template>
 
 <script>
-  import { convertFenToYuan } from 'src/util/moneyUtil'
-  import * as VoucherService from 'src/service/voucher'
+  import { convertFenToYuan } from 'src/util/money'
+  // import * as VoucherService from 'src/service/voucher'
 
   export default {
     components: {},
@@ -74,7 +74,8 @@
         }
       },
       showNewUser (item) {
-        return item.voucher_activ && item.voucher_activ.user_scope === VoucherService.userScopeType.newUser.value
+        return true
+        // return item.voucher_activ && item.voucher_activ.user_scope === VoucherService.userScopeType.newUser.value
       }
     }
   }
@@ -126,7 +127,7 @@
           background: #f00;
           width: 16px;
           height: 16px;
-          background: url("../../../assets/image/more_home.png") center center;
+          background: url("~@/assets/image/more_home.png") center center;
           background-size: contain;
           top: -3px;
         }

@@ -94,7 +94,7 @@
     .left {
       width: 320px;
       margin-left: 20px;
-      color: $font-color-common;
+      color: $home-color-common;
       font-size: $home-size-title;
 
       .title-content {
@@ -127,7 +127,7 @@
     }
 
     .name {
-      color: $font-color-common;
+      color: $home-color-common;
       font-size: $home-size-title;
       line-height: 50px;
       min-width: 0;

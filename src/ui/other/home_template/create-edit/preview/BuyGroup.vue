@@ -148,7 +148,7 @@
           background: #f00;
           width: 16px;
           height: 16px;
-          background: url("../../../assets/image/more_home.png") center center;
+          background: url("~@/assets/image/more_home.png") center center;
           background-size: contain;
           top: -3px;
         }

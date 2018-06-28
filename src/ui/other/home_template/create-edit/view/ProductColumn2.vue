@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import { showCover } from 'src/service/product/index'
+  import { showCover, showBuyGroupPrice, minPrice, showSTPrice } from 'src/service/product/index'
 
   export default {
     components: {},
@@ -56,16 +56,13 @@
         return `${item.buy_groups[0].member_count}人团`
       },
       price (item) {
-        return ''
-        // return this.buyGroup ? `¥${showBuyGroupPrice(item)}` : `¥${minPrice(item)}`
+        return this.buyGroup ? `¥${showBuyGroupPrice(item)}` : `¥${minPrice(item)}`
       },
       stPrice (item) {
         if (this.buyGroup) {
-          return ''
-          // return `单购价¥${minPrice(item)}`
+          return `单购价¥${minPrice(item)}`
         } else {
-          const st = 1
-          // const st = showSTPrice(item)
+          const st = showSTPrice(item)
           if (st && st !== '') {
             return `¥${st}`
           }

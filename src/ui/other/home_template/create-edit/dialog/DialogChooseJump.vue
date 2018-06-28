@@ -7,11 +7,11 @@
             el-radio(v-for="item in allCustomTp", :key="item.value", :label="item.value", v-model="formData.action_tp", @change="radioChange") {{item.text}}
           el-form-item(v-if="showChooseBtnText || showOtherApp || showTags", ref="fIContent", prop="content")
             el-button(v-if="showChooseBtnText", style="margin-bottom:10px", type="primary", plain, @click="handleChooseContent") {{showChooseBtnText}}
-            product-cell(v-if="showProduct", :product="showProduct")
-            product-group-cell(v-if="showProductGroup", :productGroup="showProductGroup")
-            tags-group-cell(ref="productTag", v-if="showTags", :model="showTags")
-            micro-page-cell(v-if="showMicroPage", :micropage="showMicroPage")
-            other-app-cell(v-if="showOtherApp", :model="formData")
+            <!--product-cell(v-if="showProduct", :product="showProduct")-->
+            <!--product-group-cell(v-if="showProductGroup", :productGroup="showProductGroup")-->
+            <!--tags-group-cell(ref="productTag", v-if="showTags", :model="showTags")-->
+            <!--micro-page-cell(v-if="showMicroPage", :micropage="showMicroPage")-->
+            <!--other-app-cell(v-if="showOtherApp", :model="formData")-->
           el-form-item(v-if="showChooseTime", label="上线时间", prop="online_tp")
             el-radio-group(v-model="formData.online_tp")
               div
@@ -22,35 +22,35 @@
       div(slot="footer", class="dialog-footer")
         el-button(size="mini", @click="dialogVisible = false") 取 消
         el-button(size="mini", type="primary", @click="submitForm", :disabled="loading") 确 定
-    choose-product-dialog(ref="dlgChooseProduct", @choose="handleChooseProductComplete")
-    choose-product-group-dialog(ref="dlgChooseProductGroup", @choose="handleChooseProductGroupComplete")
-    choose-micro-page-dialog(ref="dlgChooseMicroPage", @choose="handleChooseMicroPageComplete")
+    <!--choose-product-dialog(ref="dlgChooseProduct", @choose="handleChooseProductComplete")-->
+    <!--choose-product-group-dialog(ref="dlgChooseProductGroup", @choose="handleChooseProductGroupComplete")-->
+    <!--choose-micro-page-dialog(ref="dlgChooseMicroPage", @choose="handleChooseMicroPageComplete")-->
 </template>
 
 <script>
   import * as CustomPageService from 'src/service/home_template/index'
-  import ProductCell from 'src/ui/common/cell/Product'
-  import TagsGroupCell from 'src/ui/common/cell/TagsGroup'
-  import ProductGroupCell from 'src/ui/common/cell/ProductGroup'
-  import MicroPageCell from 'src/ui/common/cell/MicroPage'
-  import ChooseProductDialog from 'src/ui/common/choose-product-dialog/Index.vue'
-  import ChooseProductGroupDialog from 'src/ui/common/choose-product-group-dialog/Index.vue'
-  import ChooseMicroPageDialog from 'src/ui/common/choose-micropage-dialog/Index.vue'
+  // import ProductCell from 'src/ui/common/cell/Product'
+  // import TagsGroupCell from 'src/ui/common/cell/TagsGroup'
+  // import ProductGroupCell from 'src/ui/common/cell/ProductGroup'
+  // import MicroPageCell from 'src/ui/common/cell/MicroPage'
+  // import ChooseProductDialog from 'src/ui/common/choose-product-dialog/Index.vue'
+  // import ChooseProductGroupDialog from 'src/ui/common/choose-product-group-dialog/Index.vue'
+  // import ChooseMicroPageDialog from 'src/ui/common/choose-micropage-dialog/Index.vue'
   import { DateRangePicker } from '@baibao/zeratul'
   import * as ElUtil from 'src/util/el'
-  import OtherAppCell from 'src/ui/common/cell/OtherApp'
+  // import OtherAppCell from 'src/ui/common/cell/OtherApp'
 
   export default {
     components: {
-      ProductCell,
-      ProductGroupCell,
-      MicroPageCell,
-      ChooseProductDialog,
-      ChooseProductGroupDialog,
-      ChooseMicroPageDialog,
+      // ProductCell,
+      // ProductGroupCell,
+      // MicroPageCell,
+      // ChooseProductDialog,
+      // ChooseProductGroupDialog,
+      // ChooseMicroPageDialog,
       DateRangePicker,
-      OtherAppCell,
-      TagsGroupCell
+      // OtherAppCell,
+      // TagsGroupCell
     },
     props: {},
     data () {

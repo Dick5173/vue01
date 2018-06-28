@@ -22,19 +22,19 @@
             el-button(style="width:100px; margin-left:0", type="primary", plain, size="small", v-clipboard:copy="getAppUrl(scope.row)", v-clipboard:success="onCopy", v-clipboard:error="onError", :disabled="itemEmpty(scope.row)") 小程序链接
             el-button(style="width:100px; margin-left:0; margin-top:5px", type="primary", plain, size="small", @click="handleQrItem(scope.row)", :disabled="itemEmpty(scope.row)") 小程序码
             el-button(style="width:100px; margin-left:0; margin-top:5px", type="danger", size="small", @click="handleDeleteItem(scope.index)") 删除
-    minprog-qr(ref="dlgMinprogQr")
+    <!--minprog-qr(ref="dlgMinprogQr")-->
 </template>
 
 <script>
   import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
-  import { convertFenToYuan } from 'src/util/moneyUtil'
-  import MinprogQr from 'src/ui/common/minprog_qr/Index'
+  import { convertFenToYuan } from 'src/util/money'
+  // import MinprogQr from 'src/ui/common/minprog_qr/Index'
 
   export default {
     components: {
       SmartTable,
-      SmartTableColumn,
-      MinprogQr
+      SmartTableColumn
+      // MinprogQr
     },
     watch: {
       queryParams (val) {

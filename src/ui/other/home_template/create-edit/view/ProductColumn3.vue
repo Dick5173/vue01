@@ -22,8 +22,7 @@
 </template>
 
 <script>
-  // import { showCover, showBuyGroupPrice, minPrice, showSTPrice } from 'src/service/product/index'
-  import { showCover } from 'src/service/product/index'
+  import { showCover, showBuyGroupPrice, minPrice, showSTPrice } from 'src/service/product/index'
 
   export default {
     components: {},

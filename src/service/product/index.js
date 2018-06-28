@@ -404,3 +404,27 @@ export const convertFormToParams = R.curry(form => {
     return val
   })(form)
 })
+
+export const showBuyGroupPrice = (product) => {
+  if (!product || !product.buy_groups || product.buy_groups.length === 0) {
+    return '--'
+  }
+  return `${R_.convertFenToYuan(product.buy_groups[0].price)}`
+}
+
+export const minPrice = (product) => {
+  if (!product) {
+    return ''
+  }
+  return `${R_.convertFenToYuan(product.min_price)}`
+}
+
+export const showSTPrice = (product) => {
+  if (!product) {
+    return ''
+  }
+  if (product.st_price) {
+    return `${R_.convertFenToYuan(product.st_price)}`
+  }
+  return ''
+}

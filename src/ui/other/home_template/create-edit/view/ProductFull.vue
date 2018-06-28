@@ -139,7 +139,7 @@
 
           .price {
             color: $home-color-price;
-            font-size: $font-size-title-large;
+            font-size: $home-size-title-large;
           }
 
           .old {

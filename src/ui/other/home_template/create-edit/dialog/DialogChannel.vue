@@ -7,38 +7,38 @@
             el-radio(v-for="item in channelCustomTp", :key="item.value", :label="item.value", v-model="formData.action_tp", @change="radioChange") {{item.text}}
           el-form-item(ref="fIContent", prop="content")
             el-button(v-if="showChooseBtn", style="margin-bottom:10px", type="primary", plain, @click="clickChooseMicroPage") {{selectBtnText}}
-            product-group-cell(v-if="showProductGroup", :productGroup="showProductGroup")
-            micro-page-cell(v-if="showMicroPage", :micropage="showMicroPage")
-            tag-group(ref="showTagPage", v-if="isShowTag", @selected="selectedTag", :tag="showTagPage")
-            other-app-cell(v-if="showOtherApp", :model="formData")
-            tags-group-cell(ref="productTag", v-if="showTags", :model="showTags")
+            <!--product-group-cell(v-if="showProductGroup", :productGroup="showProductGroup")-->
+            <!--micro-page-cell(v-if="showMicroPage", :micropage="showMicroPage")-->
+            <!--tag-group(ref="showTagPage", v-if="isShowTag", @selected="selectedTag", :tag="showTagPage")-->
+            <!--other-app-cell(v-if="showOtherApp", :model="formData")-->
+            <!--tags-group-cell(ref="productTag", v-if="showTags", :model="showTags")-->
       div(slot="footer", class="dialog-footer")
         el-button(size="mini", @click="dialogVisible = false") 取 消
         el-button(size="mini", type="primary", @click="submitForm", :disabled="loading") 确 定
-    dialog-micro-page(ref="dialogMicroPage", @choose="handleChooseMicroPage")
-    choose-product-group-dialog(ref="dlgChooseProductGroup", @choose="handleChooseProductGroupComplete")
+    <!--dialog-micro-page(ref="dialogMicroPage", @choose="handleChooseMicroPage")-->
+    <!--choose-product-group-dialog(ref="dlgChooseProductGroup", @choose="handleChooseProductGroupComplete")-->
 </template>
 
 <script>
   import * as CustomPageService from 'src/service/home_template/index'
-  import DialogMicroPage from 'src/ui/common/choose-micropage-dialog/Index'
+  // import DialogMicroPage from 'src/ui/common/choose-micropage-dialog/Index'
   import * as ElUtil from 'src/util/el'
-  import ProductGroupCell from 'src/ui/common/cell/ProductGroup'
-  import MicroPageCell from 'src/ui/common/cell/MicroPage'
-  import TagGroup from 'src/ui/common/cell/TagGroup'
-  import ChooseProductGroupDialog from 'src/ui/common/choose-product-group-dialog/Index.vue'
-  import OtherAppCell from 'src/ui/common/cell/OtherApp'
-  import TagsGroupCell from 'src/ui/common/cell/TagsGroup'
+  // import ProductGroupCell from 'src/ui/common/cell/ProductGroup'
+  // import MicroPageCell from 'src/ui/common/cell/MicroPage'
+  // import TagGroup from 'src/ui/common/cell/TagGroup'
+  // import ChooseProductGroupDialog from 'src/ui/common/choose-product-group-dialog/Index.vue'
+  // import OtherAppCell from 'src/ui/common/cell/OtherApp'
+  // import TagsGroupCell from 'src/ui/common/cell/TagsGroup'
 
   export default {
     components: {
-      DialogMicroPage,
-      ChooseProductGroupDialog,
-      ProductGroupCell,
-      MicroPageCell,
-      TagGroup,
-      OtherAppCell,
-      TagsGroupCell
+      // DialogMicroPage,
+      // ChooseProductGroupDialog,
+      // ProductGroupCell,
+      // MicroPageCell,
+      // TagGroup,
+      // OtherAppCell,
+      // TagsGroupCell
     },
     data () {
       const actionValidator = (rule, value, callback) => {
