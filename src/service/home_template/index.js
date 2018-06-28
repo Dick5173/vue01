@@ -777,26 +777,8 @@ export const checkInputInfo = (dataList) => {
       const emptyImage = item.wgt_img.items.some((item) => {
         return !item.cover || !item.cover.url || item.cover.url === ''
       })
-      const emptyData = item.wgt_img.items.some((item) => {
-        return checkEmptyCustomData(item)
-      })
-      const emptyAppid = item.wgt_img.items.some((item) => {
-        return item.action_tp === allCustomTp.other_app.value && (!item.app_id || item.app_id === '')
-      })
       if (emptyImage) {
         showError('图片：图片不能为空')
-        position = index
-        return true
-      } else if (emptyData) {
-        showError('图片：请选择跳转方式')
-        position = index
-        return true
-      } else if (item.wgt_img.online_tp === allShowTp.show_limit.value && (item.wgt_img.online_start === 0 || item.wgt_img.online_end === 0)) {
-        showError('图片：请选择上线时间')
-        position = index
-        return true
-      } else if (emptyAppid) {
-        showError('图片：请输入目标小程序appid')
         position = index
         return true
       }
@@ -806,18 +788,6 @@ export const checkInputInfo = (dataList) => {
         showError('拼团：请输入标题')
         position = index
         return true
-      } else if (item.wgt_buy_group.online_tp === allShowTp.show_limit.value && (item.wgt_buy_group.online_start === 0 || item.wgt_buy_group.online_end === 0)) {
-        showError('拼团：请选择上线时间')
-        position = index
-        return true
-      } else if (item.wgt_buy_group.s_tp === allBuyGroupTp.product.value && (!item.wgt_buy_group.products || item.wgt_buy_group.products.length === 0)) {
-        showError('拼团：请选择拼团商品')
-        position = index
-        return true
-      } else if (item.wgt_buy_group.s_tp === allBuyGroupTp.product_group.value && (!item.wgt_buy_group.product_group || !item.wgt_buy_group.product_group.id)) {
-        showError('拼团：请选择拼团商品组')
-        position = index
-        return true
       }
       return false
     } else if (item.wgt_tp === allContentTp.text.value) {
@@ -825,40 +795,6 @@ export const checkInputInfo = (dataList) => {
         showError('文本：请输入文本')
         position = index
         return true
-      } else if (item.wgt_txt.online_tp === allShowTp.show_limit.value && (item.wgt_txt.online_start === 0 || item.wgt_txt.online_end === 0)) {
-        showError('文本：请选择上线时间')
-        position = index
-        return true
-      } else if (item.wgt_txt.action_tp === allCustomTp.product.value && (!item.wgt_txt.product || !item.wgt_txt.product.id)) {
-        showError('文本：请选择商品')
-        position = index
-        return true
-      } else if (item.wgt_txt.action_tp === allCustomTp.product_group.value && (!item.wgt_txt.product_group || !item.wgt_txt.product_group.id)) {
-        showError('文本：请选择商品组')
-        position = index
-        return true
-      } else if (item.wgt_txt.action_tp === allCustomTp.min_page.value && (!item.wgt_txt.min_page || !item.wgt_txt.min_page.id)) {
-        showError('文本：请选择微页面')
-        position = index
-        return true
-      } else if (item.wgt_txt.action_tp === allCustomTp.other_app.value && (!item.wgt_txt.app_id || item.wgt_txt.app_id === '')) {
-        showError('文本：请输入目标小程序appid')
-        position = index
-        return true
-      } else if (item.wgt_txt.action_tp === allCustomTp.product_tag.value) {
-        if (item.wgt_txt.product_tag_tp === productTagTp.product_tag_group_id.value) {
-          if (!item.wgt_txt.product_tag_group || !item.wgt_txt.product_tag_group.id) {
-            showError('文本：请选择标签商品页')
-            position = index
-            return true
-          }
-        } else if (item.wgt_txt.product_tag_tp === productTagTp.product_tag_id.value) {
-          if (!item.wgt_txt.product_tag || !item.wgt_txt.product_tag.id) {
-            showError('文本：请选择标签商品页')
-            position = index
-            return true
-          }
-        }
       }
       return false
     } else if (item.wgt_tp === allContentTp.fast_in.value) {
@@ -884,48 +820,13 @@ export const checkInputInfo = (dataList) => {
       }
       return false
     } else if (item.wgt_tp === allContentTp.product.value) {
-      if (item.wgt_product.online_tp === allShowTp.show_limit.value && (item.wgt_product.online_start === 0 || item.wgt_product.online_end === 0)) {
-        showError('商品：请选择上线时间')
-        position = index
-        return true
-      } else if (item.wgt_product.s_tp === allProductTp.product.value && (!item.wgt_product.products || item.wgt_product.products.length === 0)) {
-        showError('商品：请选择商品')
-        position = index
-        return true
-      } else if (item.wgt_product.s_tp === allProductTp.product_group.value && (!item.wgt_product.product_group || !item.wgt_product.product_group.id)) {
-        showError('商品：请选择商品组')
-        position = index
-        return true
-      } else if (item.wgt_product.s_tp === allProductTp.product_group.value && (!item.wgt_product.name || item.wgt_product.name === '')) {
-        showError('商品：请输入择商品组标题')
-        position = index
-        return true
-      } else if (item.wgt_product.s_tp === allProductTp.all_product.value && (!item.wgt_product.name || item.wgt_product.name === '')) {
-        showError('商品：请输入择标题')
+      if (item.wgt_product.s_tp === allProductTp.all_product.value && (!item.wgt_product.name || item.wgt_product.name === '')) {
+        showError('商品：请输入标题')
         position = index
         return true
       }
       return false
     } else if (item.wgt_tp === allContentTp.voucher.value) {
-      if (item.wgt_voucher.online_tp === allShowTp.show_limit.value && (item.wgt_voucher.online_start === 0 || item.wgt_voucher.online_end === 0)) {
-        showError('优惠券：请选择上线时间')
-        position = index
-        return true
-      } else {
-        if (!item.wgt_voucher.items || item.wgt_voucher.items.length === 0) {
-          showError('优惠券：请选择优惠券')
-          position = index
-          return true
-        }
-        const emptyItem = item.wgt_voucher.items.some(actItem => {
-          return !actItem.voucher_activ_item
-        })
-        if (emptyItem) {
-          showError('优惠券：优惠券缺失')
-          position = index
-          return true
-        }
-      }
       return false
     }
   })
