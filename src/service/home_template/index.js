@@ -339,7 +339,7 @@ export const createText = () => {
       online_end: 0,
       show_logo: true,
       txt: '',
-      action_tp: 1,
+      action_tp: 0,
       product: {},
       product_group: {},
       min_page: {}
