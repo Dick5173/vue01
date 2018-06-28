@@ -39,6 +39,15 @@ const router = new Router({
       },
       children: [
         {
+          path: '/err',
+          name: 'PageErr',
+          component: () => import('src/ui/err/Index.vue'),
+          meta: {
+            title: '错误',
+            showInSide: false
+          }
+        },
+        {
           path: '/',
           name: 'Dashboard',
           component: () => import('src/ui/home/dashboard/Index.vue'),
@@ -783,6 +792,10 @@ router.beforeEach(async (to, from, next) => {
   // 处理角色权限
   // 超管无视权限
   if (Vue.$store.getters.isSuper) {
+    next()
+    return
+  }
+  if (to.name === 'PageErr') {
     next()
     return
   }

@@ -54,6 +54,10 @@
     },
     data () {
       const pathsValidator = (rule, value, callback) => {
+        if (this.formData.s_tp === 2) {
+          callback()
+          return
+        }
         if (this.formData.paths.length === 0) {
           callback(new Error('请添加权限路径'))
           return
@@ -71,13 +75,7 @@
           tp: 1,
           s_tp: 1,
           auth_group_id: 0,
-          paths: [{
-            id: 0,
-            name: '',
-            path: '',
-            method_tp: 1,
-            match_tp: 1
-          }]
+          paths: []
         },
         initialData: null,
         formRules: {
@@ -120,7 +118,9 @@
         this.formData.paths.push({
           id: 0,
           name: '',
-          path: ''
+          path: '',
+          method_tp: 1,
+          match_tp: 1
         })
       },
       deletePath (row) {
@@ -138,11 +138,7 @@
           tp: 1,
           s_tp: 1,
           auth_group_id: 0,
-          paths: [{
-            id: 0,
-            name: '',
-            path: ''
-          }]
+          paths: []
         }
         if (this.$refs['form']) {
           this.$refs['form'].resetFields()
@@ -166,11 +162,7 @@
           let res = await AuthorizationManagementApi.getAuthItem(id)
           this.formData = res.data
           if (!this.formData.paths) {
-            this.formData.paths = [{
-              id: 0,
-              name: '',
-              path: ''
-            }]
+            this.formData.paths = []
           }
         } finally {
           this.loading = false
