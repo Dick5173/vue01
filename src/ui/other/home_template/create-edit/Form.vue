@@ -13,7 +13,7 @@
               div.add.top(v-if="showTopAdd(item)")
                 div.btn(@click.stop="handleAdd(true, index)") +
               component(class="can-move", :queryParams.sync!="item", :is="getCompByColumn(item)")
-              div.error-content(v-if="item.error && isErrorItem(item)") {{item.error}}
+              <!--div.error-content(v-if="item.error && isErrorItem(item)") {{item.error}}-->
               el-popover.delete-popover(ref="`popoverDelete${index}`", placement="left", width="160", v-model="item.showPopover")
                 p 确定删除？
                 div(style="text-align: right; margin: 0")
@@ -196,9 +196,9 @@
           }
         }
       },
-      isErrorItem (item) {
-        return CustomPageService.isErrorItem(item)
-      },
+      // isErrorItem (item) {
+      //   return CustomPageService.isErrorItem(item)
+      // },
       emptyShowCategory () {
         this.$refs.selectCategory.show(0)
       },
@@ -457,7 +457,7 @@
             message: '提交成功',
             type: 'success'
           })
-          this.getMinPageList()
+          this.$router.back()
         } finally {
           this.loading = false
         }

@@ -873,43 +873,12 @@ export const checkInputInfo = (dataList) => {
       const emptyTitle = item.wgt_short_entry.items.some((item) => {
         return !item.name || item.name === ''
       })
-      const emptyJump = item.wgt_short_entry.items.some((item) => {
-        return item.action_tp === 0
-      })
-      const emptyAppid = item.wgt_short_entry.items.some((item) => {
-        return item.action_tp === allCustomTp.other_app.value && (!item.app_id || item.app_id === '')
-      })
-      const emptyProductTag = item.wgt_short_entry.items.some((item) => {
-        if (item.action_tp === allCustomTp.product_tag.value) {
-          if (item.product_tag_tp === productTagTp.product_tag_group_id.value) {
-            if (!item.product_tag_group || !item.product_tag_group.id) {
-              return true
-            }
-          } else if (item.product_tag_tp === productTagTp.product_tag_id.value) {
-            if (!item.product_tag || !item.product_tag.id) {
-              return true
-            }
-          }
-        }
-      })
       if (emptyImage) {
         showError('快捷入口：图片不能为空')
         position = index
         return true
       } else if (emptyTitle) {
         showError('快捷入口：标题不能为空')
-        position = index
-        return true
-      } else if (emptyJump) {
-        showError('快捷入口：请选择跳转方式')
-        position = index
-        return true
-      } else if (emptyAppid) {
-        showError('快捷入口：请输入目标小程序appid')
-        position = index
-        return true
-      } else if (emptyProductTag) {
-        showError('快捷入口：请选择跳转方式')
         position = index
         return true
       }
@@ -987,6 +956,10 @@ export const convertHomePageFormToParam = (minPage) => {
   page.share_text = minPage.share_text
   page.sys_remark = minPage.sys_remark
   page.capture_image = minPage.capture_image
+  page.tmpl_id = minPage.tmpl_id
+  page.data_tp = minPage.data_tp
+  page.sys_tp = minPage.sys_tp
+  page.tp = minPage.tp
   page.id = minPage.id
 
   if (minPage.items && minPage.items.length > 0) {
