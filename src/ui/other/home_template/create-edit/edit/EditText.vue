@@ -46,7 +46,7 @@
   export default {
     components: {
       LeftArrow,
-      DateRangePicker,
+      DateRangePicker
       // ProductCell,
       // ProductGroupCell,
       // MicroPageCell,

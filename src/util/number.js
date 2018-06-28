@@ -18,3 +18,11 @@ export const getShowCount = (num) => {
     return `${(num / 10000).toFixed(2)}万`
   }
 }
+
+export const getRndNum = (count) => {
+  var rnd = ''
+  for (var i = 0; i < count; i++) {
+    rnd += Math.floor(Math.random() * 10)
+  }
+  return rnd
+}

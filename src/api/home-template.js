@@ -18,8 +18,6 @@ export const updateTmpl = (id, formData) => {
   return Axios.post(`/admin/min_page/home/tmpl/s/${id}`, formData)
 }
 
-
-
 export const getList = () => {
   return Axios.get(`/admin/page/home`)
 }

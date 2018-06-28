@@ -5,8 +5,7 @@
     div.form-content
       div.left(ref="parentTree")
         div.navigation(ref="navBar", @click="handleClickTitleBar")
-          div.title(v-if="minPage.tp===allPageTp.min.value") {{minPage.name}}
-          div.title(v-else) {{$tname}}
+          div.title {{minPage.name}}
           div.more ● ● ●
         draggable(ref="draggableTree", :list="dataList", :move="handleMove", :options="{animation: 200, ghostClass: 'ghost', chosenClass: 'can-move', handle: '.can-move'}")
           div.info-content(v-for="item, index in dataList", @mouseenter="handleMouseenter(item)", @mouseleave="handleMouseleave", @click="handleClickItem(item, index)")
@@ -118,6 +117,7 @@
       },
       minPage: {
         handler (val) {
+          console.log('=======minPage=====', val)
           if (!val.items || val.items.length === 0) {
             this.emptyShowCategory()
           } else if (!this.firstIn) {
@@ -137,6 +137,7 @@
           return this.minPage.items
         },
         set (val) {
+          console.log('=======dataList=====', val)
           this.minPage.items = val
         }
       },

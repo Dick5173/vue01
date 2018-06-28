@@ -37,7 +37,7 @@
   // import ChooseProductGroupDialog from 'src/ui/common/choose-product-group-dialog/Index.vue'
   import ProductGroupCell from '../view/ProductGroup.vue'
   import ProductCell from '../view/Product.vue'
-  import { getOwnProductList } from 'src/api/product'
+  // import { getOwnProductList } from 'src/api/product'
   import { DateRangePicker } from '@baibao/zeratul'
   import * as ElUtil from 'src/util/el'
 
@@ -185,8 +185,8 @@
           this.formData.wgt_product.style_tp = CustomPageService.allProductGroupStyleTp.cross_slip.value
           if (this.formData.wgt_product.s_tp === CustomPageService.allProductTp.all_product.value) {
             this.formData.wgt_product.name = '全部商品'
-            const res = await getOwnProductList(this.$tid, {page: 1, limit: 6})
-            this.formData.wgt_product.products = res.data.data
+            // const res = await getOwnProductList(this.$tid, {page: 1, limit: 6})
+            // this.formData.wgt_product.products = res.data.data
           }
         }
       },

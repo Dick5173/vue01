@@ -18,7 +18,7 @@
 
 <script>
   import { showCover, showBuyGroupPrice, minPrice, showSTPrice } from 'src/service/product/index'
-  import * as ProductApi from 'src/api/product'
+  // import * as ProductApi from 'src/api/product'
   import * as CustomPageService from 'src/service/home_template/index'
 
   export default {
@@ -48,9 +48,9 @@
         } else if (row.product_tag_tp === CustomPageService.productTagTp.product_tag_id.value) {
           this.queryParams.tenant_tags = [row.product_tag.id]
         }
-        var data = await ProductApi.getOwnProductList(this.$tid, this.queryParams)
-        this.dataList = data.data.data
-        this.dialogVisible = true
+        // var data = await ProductApi.getOwnProductList(this.$tid, this.queryParams)
+        // this.dataList = data.data.data
+        // this.dialogVisible = true
       },
       price (item) {
         return this.buyGroup ? `¥${showBuyGroupPrice(item)}` : `¥${minPrice(item)}`

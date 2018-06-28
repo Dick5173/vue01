@@ -33,7 +33,7 @@
   // import ChooseProductGroupDialog from 'src/ui/common/choose-product-group-dialog/Index.vue'
   import ProductGroupCell from '../view/ProductGroup.vue'
   import ProductCell from '../view/Product.vue'
-  import { getOwnProductList } from 'src/api/product'
+  // import { getOwnProductList } from 'src/api/product'
   import { DateRangePicker } from '@baibao/zeratul'
   import * as ElUtil from 'src/util/el'
 
@@ -151,8 +151,8 @@
         this.cleanData()
         this.formData.wgt_buy_group.style_tp = CustomPageService.allProductGroupStyleTp.cross_slip.value
         if (this.formData.wgt_buy_group.s_tp === CustomPageService.allBuyGroupTp.all_product.value) {
-          const res = await getOwnProductList(this.$tid, {page: 1, limit: 6, group: true})
-          this.formData.wgt_buy_group.products = res.data.data
+          // const res = await getOwnProductList(this.$tid, {page: 1, limit: 6, group: true})
+          // this.formData.wgt_buy_group.products = res.data.data
         }
       },
       chooseProductCompleted (items) {

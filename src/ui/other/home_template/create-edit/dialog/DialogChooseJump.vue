@@ -48,7 +48,7 @@
       // ChooseProductDialog,
       // ChooseProductGroupDialog,
       // ChooseMicroPageDialog,
-      DateRangePicker,
+      DateRangePicker
       // OtherAppCell,
       // TagsGroupCell
     },
@@ -195,13 +195,13 @@
         this.$set(this.formData, 'app_page', '')
       },
       handleChooseContent () {
-        if (this.formData.action_tp === CustomPageService.allCustomTp.product.value) {
-          this.$refs.dlgChooseProduct.show(ChooseProductDialog.MODE_SINGLE)
-        } else if (this.formData.action_tp === CustomPageService.allCustomTp.product_group.value) {
-          this.$refs.dlgChooseProductGroup.show()
-        } else if (this.formData.action_tp === CustomPageService.allCustomTp.min_page.value) {
-          this.$refs.dlgChooseMicroPage.show()
-        }
+        // if (this.formData.action_tp === CustomPageService.allCustomTp.product.value) {
+        //   this.$refs.dlgChooseProduct.show(ChooseProductDialog.MODE_SINGLE)
+        // } else if (this.formData.action_tp === CustomPageService.allCustomTp.product_group.value) {
+        //   this.$refs.dlgChooseProductGroup.show()
+        // } else if (this.formData.action_tp === CustomPageService.allCustomTp.min_page.value) {
+        //   this.$refs.dlgChooseMicroPage.show()
+        // }
       },
       async handleChooseProductComplete (products) {
         this.formData.product = products[0]
