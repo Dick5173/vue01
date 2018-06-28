@@ -12,7 +12,9 @@ export const clearAuthCookie = () => {
 export const getRolesInterNames = (roles, allRoles) => {
   const tenantRoles = []
   R.forEach(item => {
-    tenantRoles.push(...item.auths)
+    if (item.auths) {
+      tenantRoles.push(...item.auths)
+    }
   })(roles || [])
   const inter = R.intersection(R.map(item => item.id)(tenantRoles), R.map(item => item.id)(allRoles))
   const interNames = []
@@ -29,7 +31,7 @@ export const canUseRolesNames = (interNames, routeList) => {
   const routeTitles = []
   R.forEach(item => {
     routeTitles.push(item.meta.title)
-  })(routeList)
+  })(routeList || [])
   return R.intersection(interNames, routeTitles)
 }
 
@@ -38,13 +40,17 @@ export const getAuthRoute = (routeList, roles, allRoles) => {
   if (roles && roles.length !== 0) {
     const interNames = getRolesInterNames(roles, allRoles)
     const canUseInterNames = canUseRolesNames(interNames, routeList)
-    authName = canUseInterNames[0]
+    if (canUseInterNames && canUseInterNames.length > 0) {
+      authName = canUseInterNames[0]
+    }
   }
-  let routeName = 'Dashboard'
-  for (let i = 0; i < routeList.length; i++) {
-    if (routeList[i].meta.title === authName) {
-      routeName = routeList[i].name
-      break
+  let routeName = 'PageErr'
+  if (authName) {
+    for (let i = 0; i < routeList.length; i++) {
+      if (routeList[i].meta.title === authName) {
+        routeName = routeList[i].name
+        break
+      }
     }
   }
   return routeName
