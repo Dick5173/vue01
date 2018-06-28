@@ -248,120 +248,75 @@ export const channelCustomTp = {
   }
 }
 
-export const productDemo = [
-  {
-    name: '此处显示商品名称',
-    sell_point: '此处显示买点',
-    min_price: 88800,
-    st_price: 99900,
-    cover: {
-      url: ''
-    },
-    prop: {
-      stock: 1
-    },
-    buy_groups: [
-      {
-        price: 88800,
-        scope_tp: 2,
-        member_count: 5
+export const productsModel = () => {
+  const arr = []
+  for (let i = 0; i < 6; i++) {
+    arr.push({
+      name: '此处显示商品名称',
+      sell_point: '此处显示买点',
+      min_price: 88800,
+      st_price: 99900,
+      cover: {
+        url: ''
+      },
+      prop: {
+        stock: 1
       }
-    ]
+    })
+  }
+  return arr
+}
+
+export const buyGroupsModel = () => {
+  const arr = []
+  for (let i = 0; i < 6; i++) {
+    arr.push({
+      name: '此处显示商品名称',
+      sell_point: '此处显示买点',
+      min_price: 99900,
+      st_price: 99900,
+      cover: {
+        url: ''
+      },
+      prop: {
+        stock: 1
+      },
+      buy_groups: [
+        {
+          price: 88800,
+          scope_tp: 1,
+          member_count: 3
+        }
+      ]
+    })
+  }
+  return arr
+}
+
+export const voucherModel = [
+  {
+    voucher_activ_item: {
+      voucher: {
+        full_num: 0,
+        reduce_num: 1000
+      }
+    }
   },
   {
-    name: '此处显示商品名称',
-    sell_point: '此处显示买点',
-    min_price: 88800,
-    st_price: 99900,
-    cover: {
-      url: ''
-    },
-    prop: {
-      stock: 1
-    },
-    buy_groups: [
-      {
-        price: 88800,
-        scope_tp: 2,
-        member_count: 5
+    voucher_activ_item: {
+      voucher: {
+        full_num: 10000,
+        reduce_num: 1000
       }
-    ]
+    }
   },
   {
-    name: '此处显示商品名称',
-    sell_point: '此处显示买点',
-    min_price: 88800,
-    st_price: 99900,
-    cover: {
-      url: ''
-    },
-    prop: {
-      stock: 1
-    },
-    buy_groups: [
-      {
-        price: 88800,
-        scope_tp: 2,
-        member_count: 5
+    voucher_activ_item: {
+      voucher: {
+        full_num: 20000,
+        reduce_num: 3000
       }
-    ]
-  },
-  {
-    name: '此处显示商品名称',
-    sell_point: '此处显示买点',
-    min_price: 88800,
-    st_price: 99900,
-    cover: {
-      url: ''
-    },
-    prop: {
-      stock: 1
-    },
-    buy_groups: [
-      {
-        price: 88800,
-        scope_tp: 2,
-        member_count: 5
-      }
-    ]
-  },
-  {
-    name: '此处显示商品名称',
-    sell_point: '此处显示买点',
-    min_price: 88800,
-    st_price: 99900,
-    cover: {
-      url: ''
-    },
-    prop: {
-      stock: 1
-    },
-    buy_groups: [
-      {
-        price: 88800,
-        scope_tp: 2,
-        member_count: 5
-      }
-    ]
-  },
-  {
-    name: '此处显示商品名称',
-    sell_point: '此处显示买点',
-    min_price: 88800,
-    st_price: 99900,
-    cover: {
-      url: ''
-    },
-    prop: {
-      stock: 1
-    },
-    buy_groups: [
-      {
-        price: 88800,
-        scope_tp: 2,
-        member_count: 5
-      }
-    ]
+    }
   }
 ]
 
@@ -404,7 +359,7 @@ export const createProduct = () => {
       name: '商品',
       s_tp: 1, //  1 - 自定义选择商品，2 - 商品组，3 - 全部商品 ,
       style_tp: 2, // 样式：1 - 半幅，2 - 通栏， 3 - 两列，4 - 三列，5 - 横向滚动 ,
-      products: productDemo,
+      products: productsModel(),
       product_group: {}
     }
   }
@@ -475,7 +430,7 @@ export const createBuyGroup = () => {
       name: '拼团',
       s_tp: 1, //  1 - 自定义选择商品，2 - 商品组，3 - 全部商品 ,
       style_tp: 2, // 样式：1 - 半幅，2 - 通栏， 3 - 两列，4 - 三列，5 - 横向滚动 ,
-      products: productDemo,
+      products: buyGroupsModel(),
       product_group: {}
     }
   }
@@ -532,7 +487,7 @@ export const createVoucher = () => {
       online_tp: 1, //  1 - 长期，2 - 限时
       online_start: 0,
       online_end: 0,
-      items: []
+      items: voucherModel
     }
   }
 }
@@ -1182,11 +1137,11 @@ export const convertPageContentModelToForm = (page) => {
       item.show_id = item.id
       if (item.wgt_tp === allContentTp.product.value) {
         item.wgt_product.old_s_tp = item.wgt_product.s_tp
-        item.wgt_product.products = productDemo
+        item.wgt_product.products = productsModel()
         item.wgt_product.product_group = {}
       } else if (item.wgt_tp === allContentTp.buy_group.value) {
         item.wgt_buy_group.old_s_tp = item.wgt_buy_group.s_tp
-        item.wgt_buy_group.products = productDemo
+        item.wgt_buy_group.products = buyGroupsModel()
         item.wgt_buy_group.product_group = {}
       } else if (item.wgt_tp === allContentTp.channel.value) {
         item.wgt_channel.items.forEach((item) => {
@@ -1258,6 +1213,8 @@ export const convertPageContentModelToForm = (page) => {
             height: 0
           }
         }
+      } else if (item.wgt_tp === allContentTp.voucher.value) {
+        item.wgt_voucher.items = voucherModel
       }
       item.error = isErrorItem(item)
       return item || {}

@@ -74,7 +74,7 @@
         }
       },
       showNewUser (item) {
-        return true
+        return false
         // return item.voucher_activ && item.voucher_activ.user_scope === VoucherService.userScopeType.newUser.value
       }
     }
