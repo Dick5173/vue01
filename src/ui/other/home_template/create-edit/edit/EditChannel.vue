@@ -33,15 +33,13 @@
   import LeftArrow from '../view/LeftArrow'
   import { SmartTable, SmartTableColumn } from '@baibao/zeratul'
   import * as CustomPageService from 'src/service/home_template/index'
-  import DialogChannel from '../dialog/DialogChannel'
   import * as ElUtil from 'src/util/el'
 
   export default {
     components: {
       LeftArrow,
       SmartTable,
-      SmartTableColumn,
-      DialogChannel
+      SmartTableColumn
     },
     props: {
       queryParams: {

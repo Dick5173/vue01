@@ -18,6 +18,16 @@ export const updateTmpl = (id, formData) => {
   return Axios.post(`/admin/min_page/home/tmpl/s/${id}`, formData)
 }
 
+export const deleteTmpl = (id) => {
+  return Axios.delete(`/admin/min_page/home/tmpl/s/${id}`)
+}
+
+export const getUseTmplTenant = (id, formData) => {
+  return Axios.get(`/admin/min_page/home/tmpl/s/${id}/tenant`, {
+    params: formData
+  })
+}
+
 export const getList = () => {
   return Axios.get(`/admin/page/home`)
 }

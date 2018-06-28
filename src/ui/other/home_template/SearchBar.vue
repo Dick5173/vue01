@@ -2,7 +2,7 @@
   div
     el-form(:inline="true")
       el-form-item
-        el-input.medium-el-input(v-model.trim="formData.name", placeholder="模板名称", clearable)
+        el-input(v-model.trim="formData.text", placeholder="模板名称", clearable)
       el-form-item
         el-button(type="primary", icon="el-icon-search", @click="submit") 搜&nbsp索
         el-button(@click="handleReset") 重&nbsp置
@@ -18,7 +18,7 @@
       return {
         initialData: null,
         formData: {
-          name: ''
+          text: ''
         }
       }
     },
@@ -38,7 +38,7 @@
       },
       convertQueryParamsToForm () {
         this.formData = {
-          name: this.queryParams.name
+          text: this.queryParams.text
         }
       }
     },

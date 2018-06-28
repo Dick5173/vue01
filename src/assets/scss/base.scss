@@ -53,3 +53,31 @@ body {
   clear: both
 }
 
+.img-cover {
+  background-size: cover;
+  background-position: center;
+}
+
+.home-price {
+  color: $home-color-price;
+  font-size: $home-size-price;
+  font-family: DIN;
+}
+
+.home-price-small {
+  color: $home-color-price;
+  font-size: $home-size-price-small;
+  font-family: DIN;
+}
+
+.home-title {
+  color: $home-color-title;
+  font-size: $home-size-title;
+  line-height: 20px;
+}
+
+.home-title-small {
+  color: $home-color-title;
+  font-size: $home-size-title-small;
+}
+

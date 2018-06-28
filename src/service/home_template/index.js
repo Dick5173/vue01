@@ -3,6 +3,7 @@ import Vue from 'vue'
 import { dateFormat } from 'src/util/format'
 import { getRndNum } from 'src/util/number'
 import { allTp } from '../resource'
+import defaultProductImg from 'src/assets/image/default_product_img.jpg'
 
 export const productTagTp = {
   product_tag_group_id: {
@@ -257,7 +258,7 @@ export const productsModel = () => {
       min_price: 88800,
       st_price: 99900,
       cover: {
-        url: ''
+        url: defaultProductImg
       },
       prop: {
         stock: 1
@@ -276,7 +277,7 @@ export const buyGroupsModel = () => {
       min_price: 99900,
       st_price: 99900,
       cover: {
-        url: ''
+        url: defaultProductImg
       },
       prop: {
         stock: 1

@@ -19,22 +19,25 @@
             el-button(size="mini", @click="clickEditItem(scope.row)", type="primary", plain) 编辑
             el-button(size="mini", @click="clickDeleteItem(scope.row)", type="danger", plain) 删除
       el-pagination(:currentPage="queryPager.page", :pageSize="queryPager.limit", :total="dataListTotal",  @current-change="changePage")
+    dialog-tenant(ref="dlgShowTenant")
 </template>
 
 <script>
   import SearchBar from './SearchBar'
   import * as HomeTmplApi from 'src/api/home-template'
   import LoadPagerData from 'src/mixins/load-pager-data'
+  import DialogTenant from './create-edit/dialog/DialogTenant'
 
   export default {
     components: {
-      SearchBar
+      SearchBar,
+      DialogTenant
     },
     mixins: [LoadPagerData],
     data () {
       return {
         queryParams: {
-          name: ''
+          text: ''
         }
       }
     },
@@ -59,11 +62,27 @@
           }
         })
       },
-      clickDeleteItem (row) {
-        //
+      async clickDeleteItem (row) {
+        await this.$confirm('确认删除吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        try {
+          this.loading = true
+          await HomeTmplApi.deleteTmpl(row.id)
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.loadDataList()
+        } catch (err) {
+          console.log(err)
+        }
+        this.loading = false
       },
       clickUseTenant (row) {
-        //
+        this.$refs.dlgShowTenant.show(row)
       }
     }
   }
