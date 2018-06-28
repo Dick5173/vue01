@@ -1,10 +1,7 @@
 <template lang="pug">
   div.product-column-two-content
     div.item(v-for="item in dataList")
-      div.cover.img-cover(v-lazy:background-image="showCover(item)")
-        div.sold-out(v-if="!item.prop.stock")
-          div.sold-out-top 售罄
-          div.sold-out-bottom SOLD OUT
+      img(class="cover", :src="showCover(item)")
       div.name.home-title-small.single-line {{item.name}}
       div.not-buy-group-content(v-if="!buyGroup")
         div.sell-point.single-line {{item.sell_point}}

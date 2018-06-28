@@ -1,7 +1,7 @@
 <template lang="pug">
   div.product-column-scroll-content
     div.item(v-for="item in showDataList")
-      div.cover.img-cover(v-lazy:background-image="showCover(item)")
+      img(class="cover", :src="showCover(item)")
       div.name.home-title-small.single-line {{item.name}}
       div.not-buy-group-content(v-if="!buyGroup")
         div.sell-point.single-line {{item.sell_point}}

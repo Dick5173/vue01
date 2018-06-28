@@ -2,7 +2,7 @@
   div.text-content
     div.left
       div.text
-        div.broadcast(v-show="queryParams.wgt_txt.show_logo", v-lazy:background-image="broadcastImage")
+        img.broadcast(v-show="queryParams.wgt_txt.show_logo", :src="broadcastImage")
         div.info {{queryParams.wgt_txt.txt}}
 </template>
 

@@ -1,10 +1,7 @@
 <template lang="pug">
   div.product-full-content
     div.item(:class="{'buy-group': buyGroup}", v-for="item in dataList")
-      div.img-cover.image(:class="{'buy-group': buyGroup}", v-lazy:background-image="showCover(item)")
-        div.sold-out(v-if="!item.prop.stock")
-          div.sold-out-top 售罄
-          div.sold-out-bottom SOLD OUT
+      img.image(:class="{'buy-group': buyGroup}", :src="showCover(item)")
       div.bottom
         div.name.home-title.single-line {{item.name}}
         div.sell-point.single-line(v-if="!buyGroup") {{item.sell_point}}
@@ -94,6 +91,7 @@
       width: 100%;
       height: 188px;
       position: relative;
+
       &.buy-group {
         height: 164px;
       }

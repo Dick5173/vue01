@@ -2,7 +2,7 @@
   div.product-half-content
     div.item(v-for="item in dataList")
       div.cover-content
-        div.cover.img-cover(v-lazy:background-image="showCover(item)")
+        img(class="cover", :src="showCover(item)")
       div.right-content
         div.name.home-title {{item.name}}
         div.sell-point {{item.sell_point}}

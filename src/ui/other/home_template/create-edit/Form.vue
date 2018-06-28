@@ -415,12 +415,12 @@
         this.loading = true
         this.$nextTick(async () => {
           const canvas = await html2canvas(this.$refs.parentTree, {
-            useCORS: true,
+            // useCORS: true,
             width: this.$refs.parentTree.offsetWidth,
             height: this.$refs.parentTree.offsetHeight
           })
-          const image = canvas.toDataURL('image/jpg')
-          this.minPage.capture_image.url = await UploadApi.uploadImage(UploadApi.imageBase64toBlob(image), `${this.minPage.name}.jpg`)
+          const image = canvas.toDataURL('image/png')
+          this.minPage.capture_image.url = await UploadApi.uploadImage(UploadApi.imageBase64toBlob(image), `${this.minPage.name}.png`)
           this.minPage.capture_image.width = this.$refs.parentTree.offsetWidth
           this.minPage.capture_image.height = this.$refs.parentTree.offsetHeight
           this.saveApi(this.minPage)

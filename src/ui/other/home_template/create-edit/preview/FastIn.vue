@@ -2,7 +2,7 @@
   div.fast-in-content
     div.empty(v-if="emptyText") {{emptyText}}
     div.item-content(v-else, v-for="item in queryParams.wgt_short_entry.items")
-      div.cover(v-lazy:background-image="item.cover.url || emptyImage")
+      img.cover(:src="item.cover.url || emptyImage")
       div.name {{item.name}}
 </template>
 
