@@ -1,7 +1,9 @@
 <template lang="pug">
   div
     div
-      el-input(v-model="minPage.name", placeholder="模板名称", style="width: 300px")
+      el-form(:model="minPage")
+        el-form-item(label="模板名称", prop="name", :rules="[{required: true, message: '不能为空', trigger: 'blur'}]", label-width="80px")
+          el-input(v-model="minPage.name", style="width: 300px")
     div.form-content
       div.left(ref="parentTree")
         div.navigation(ref="navBar", @click="handleClickTitleBar")

@@ -2,7 +2,7 @@
   div.share-content
     left-arrow
     div.info-content
-      div.share-text 标题{{formData.name}}
+      div.share-text 标题：{{formData.name}}
 </template>
 
 <script>
