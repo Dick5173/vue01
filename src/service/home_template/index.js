@@ -259,7 +259,14 @@ export const productDemo = [
     },
     prop: {
       stock: 1
-    }
+    },
+    buy_groups: [
+      {
+        price: 88800,
+        scope_tp: 2,
+        member_count: 5
+      }
+    ]
   },
   {
     name: '此处显示商品名称',
@@ -271,7 +278,14 @@ export const productDemo = [
     },
     prop: {
       stock: 1
-    }
+    },
+    buy_groups: [
+      {
+        price: 88800,
+        scope_tp: 2,
+        member_count: 5
+      }
+    ]
   },
   {
     name: '此处显示商品名称',
@@ -283,7 +297,14 @@ export const productDemo = [
     },
     prop: {
       stock: 1
-    }
+    },
+    buy_groups: [
+      {
+        price: 88800,
+        scope_tp: 2,
+        member_count: 5
+      }
+    ]
   },
   {
     name: '此处显示商品名称',
@@ -295,7 +316,14 @@ export const productDemo = [
     },
     prop: {
       stock: 1
-    }
+    },
+    buy_groups: [
+      {
+        price: 88800,
+        scope_tp: 2,
+        member_count: 5
+      }
+    ]
   },
   {
     name: '此处显示商品名称',
@@ -307,7 +335,14 @@ export const productDemo = [
     },
     prop: {
       stock: 1
-    }
+    },
+    buy_groups: [
+      {
+        price: 88800,
+        scope_tp: 2,
+        member_count: 5
+      }
+    ]
   },
   {
     name: '此处显示商品名称',
@@ -319,7 +354,14 @@ export const productDemo = [
     },
     prop: {
       stock: 1
-    }
+    },
+    buy_groups: [
+      {
+        price: 88800,
+        scope_tp: 2,
+        member_count: 5
+      }
+    ]
   }
 ]
 
@@ -359,7 +401,7 @@ export const createProduct = () => {
       online_tp: 1, //  1 - 长期，2 - 限时 ,
       online_start: 0,
       online_end: 0,
-      name: '',
+      name: '商品',
       s_tp: 1, //  1 - 自定义选择商品，2 - 商品组，3 - 全部商品 ,
       style_tp: 2, // 样式：1 - 半幅，2 - 通栏， 3 - 两列，4 - 三列，5 - 横向滚动 ,
       products: productDemo,

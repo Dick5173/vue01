@@ -50,33 +50,16 @@
         return this.queryParams.wgt_buy_group.s_tp === CustomPageService.allProductTp.product_group.value
       },
       showMore () {
-        if (this.queryParams.wgt_buy_group.s_tp === CustomPageService.allProductTp.product_group.value) {
-          return this.queryParams.wgt_buy_group.product_group.pc > 6
-        } else {
-          return this.queryParams.wgt_buy_group.products.length >= 6
-        }
+        return this.queryParams.wgt_buy_group.products.length >= 6
       },
       getProducts () {
-        let products = []
-        if (this.isProductGroup) {
-          products = this.R.clone(this.queryParams.wgt_buy_group.product_group.products)
-        } else {
-          products = this.R.clone(this.queryParams.wgt_buy_group.products)
-        }
-        if (products && products.length > 6) {
-          return products.slice(0, 6)
-        }
-        return products
+        return this.R.clone(this.queryParams.wgt_buy_group.products)
       },
       getTitle () {
         return this.queryParams.wgt_buy_group.name
       },
       isEmpty () {
-        if (this.isProductGroup) {
-          return !this.queryParams.wgt_buy_group.product_group || !this.queryParams.wgt_buy_group.product_group.id
-        } else {
-          return !this.queryParams.wgt_buy_group.products || this.queryParams.wgt_buy_group.products.length === 0
-        }
+        return !this.queryParams.wgt_buy_group.products || this.queryParams.wgt_buy_group.products.length === 0
       },
       emptyText () {
         if (this.isEmpty) {
@@ -142,7 +125,7 @@
         font-size: $home-size-more;
         padding-right: 15px;
         position: relative;
-        &:after{
+        &:after {
           content: '';
           position: absolute;
           background: #f00;
