@@ -767,22 +767,8 @@ export const checkInputInfo = (dataList) => {
       const emptyImage = item.wgt_carousel.items.some((item) => {
         return !item.cover || !item.cover.url || item.cover.url === ''
       })
-      const emptyData = item.wgt_carousel.items.some((item) => {
-        return item.action_tp === 0 || isCustomError(item)
-      })
-      const emptyAppid = item.wgt_carousel.items.some((item) => {
-        return item.action_tp === allCustomTp.other_app.value && (!item.app_id || item.app_id === '')
-      })
       if (emptyImage) {
         showError('轮播图：图片不能为空')
-        position = index
-        return true
-      } else if (emptyData) {
-        showError('轮播图：请选择跳转方式')
-        position = index
-        return true
-      } else if (emptyAppid) {
-        showError('轮播图：请输入目标小程序appid')
         position = index
         return true
       }
@@ -1000,6 +986,7 @@ export const convertHomePageFormToParam = (minPage) => {
   page.name = minPage.name
   page.share_text = minPage.share_text
   page.sys_remark = minPage.sys_remark
+  page.capture_image = minPage.capture_image
   page.id = minPage.id
 
   if (minPage.items && minPage.items.length > 0) {

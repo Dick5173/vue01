@@ -8,12 +8,12 @@
       el-table.list-el-table(:data="dataList.data", @sort-change="sortChanged", :defaultSort!='dataListSortInfo', border)
         el-table-column(prop="id", label="ID")
         el-table-column(prop="name", label="名称")
-        el-table-column(prop="count", label="使用店铺")
+        el-table-column(prop="tenant_count", label="使用店铺")
           template(slot-scope="scope")
-            el-button(type="text", @click="clickUseTenant") 1
+            el-button(type="text", @click="clickUseTenant(scope.row)") {{scope.row.tenant_count}}
         el-table-column(prop="ct", label="更新时间")
           template(slot-scope="scope")
-            div {{scope.row.ct | datatime}}
+            div {{scope.row.ct | datetime}}
         el-table-column(width="170px" label="操作")
           template(slot-scope="scope")
             el-button(size="mini", @click="clickEditItem(scope.row)", type="primary", plain) 编辑
@@ -60,6 +60,9 @@
         })
       },
       clickDeleteItem (row) {
+        //
+      },
+      clickUseTenant (row) {
         //
       }
     }

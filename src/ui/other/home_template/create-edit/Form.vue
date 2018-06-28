@@ -27,6 +27,7 @@
         share-text(ref="shareText", v-if="isShowShareText", :queryParams.sync="minPage")
         component(:ref="`editComponent${editIndex}`", v-if="editIndex >= 0", :queryParams.sync!="dataList[editIndex]", :is="getCompByEdit(dataList[editIndex])")
         select-category(ref="selectCategory", :isMinPage="minPage.tp===allPageTp.min.value", :hasNavigate="hasNavigate", :hasChannel="hasChannel", @selectCategory="handleCategory")
+    div(style="height: 80px")
     bottom-container.bottom
       el-button(type="primary", @click="save", :loading="loading", :disabled="saveDisabled") 提交
 </template>
@@ -56,6 +57,8 @@
   import EditText from './edit/EditText'
   import EditImage from './edit/EditImage'
   import EditVoucher from './edit/EditVoucher'
+  import html2canvas from 'html2canvas'
+  import * as UploadApi from 'src/api/upload'
 
   export default {
     components: {
@@ -85,15 +88,21 @@
       showAll: {
         type: Boolean,
         default: true
-      },
-      serverNow: {
-        type: Number,
-        default: 0
       }
     },
     data () {
       return {
-        minPage: {},
+        minPage: {
+          name: '',
+          capture_image: {
+            tp: 1,
+            url: '',
+            width: 0,
+            height: 0
+          },
+          items: []
+        },
+        serverNow: 0,
         loading: false,
         firstIn: true,
         titleName: '',
@@ -117,7 +126,6 @@
       },
       minPage: {
         handler (val) {
-          console.log('=======minPage=====', val)
           if (!val.items || val.items.length === 0) {
             this.emptyShowCategory()
           } else if (!this.firstIn) {
@@ -137,7 +145,6 @@
           return this.minPage.items
         },
         set (val) {
-          console.log('=======dataList=====', val)
           this.minPage.items = val
         }
       },
@@ -382,21 +389,18 @@
         }
       },
       async save () {
-        if (this.minPage.tp === CustomPageService.allPageTp.min.value) {
-          if (!this.minPage.name || this.minPage.name === '') {
-            this.$message({
-              message: '请输入标题',
-              type: 'error'
-            })
-            this.hiddenAllEdit()
-            this.showShareText = true
-            await this.$nextTick()
-            this.$refs.shareText.formValidate()
-            return
-          }
+        if (!this.minPage.name || this.minPage.name === '') {
+          this.$message({
+            message: '请输入标题',
+            type: 'error'
+          })
+          this.hiddenAllEdit()
+          this.showShareText = true
+          await this.$nextTick()
+          this.$refs.shareText.formValidate()
+          return
         }
-        const errIndex = CustomPageService.checkInputInfo(this.dataList)
-        this.editIndex = errIndex
+        this.editIndex = CustomPageService.checkInputInfo(this.dataList)
         if (this.editIndex > -1) {
           this.showEditWithIndex(this.editIndex, true)
           await this.$nextTick()
@@ -405,27 +409,39 @@
         } else {
           this.hiddenAllEdit()
         }
-        this.saveApi(this.minPage)
+
+        this.loading = true
+        this.$nextTick(async () => {
+          const canvas = await html2canvas(this.$refs.parentTree, {
+            useCORS: true,
+            width: this.$refs.parentTree.offsetWidth,
+            height: this.$refs.parentTree.offsetHeight
+          })
+          const image = canvas.toDataURL('image/jpg')
+          this.minPage.capture_image.url = await UploadApi.uploadImage(UploadApi.imageBase64toBlob(image), `${this.minPage.name}.jpg`)
+          this.minPage.capture_image.width = this.$refs.parentTree.offsetWidth
+          this.minPage.capture_image.height = this.$refs.parentTree.offsetHeight
+          this.saveApi(this.minPage)
+          this.loading = false
+        })
       },
       async getMinPageList () {
         if (!this.isEditMode) {
           return
         }
         try {
-          this.loading = true
           const res = await TmplApi.getTmplDetail(this.$route.params.id)
           if (res.data) {
             this.minPage = CustomPageService.convertPageContentModelToForm(res.data.data || {})
             this.serverNow = res.data.now
             if (!this.minPage.items || this.minPage.items.length === 0) {
               await this.$nextTick()
-              this.$refs.homeForm.emptyShowCategory()
+              this.emptyShowCategory()
             }
             await this.$nextTick()
-            this.$refs.homeForm.setSaveDisabled(true)
+            this.setSaveDisabled(true)
           }
         } finally {
-          this.loading = false
         }
       },
       async saveApi (minPage) {
