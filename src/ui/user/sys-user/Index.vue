@@ -69,7 +69,7 @@
         this.$refs.dlgForm.show()
       },
       handleSuccess () {
-        this.resetQuery()
+        this.loadDataList()
       },
       handleSearch (result) {
         this.queryChange(result)
