@@ -11,3 +11,12 @@
     justify-content: center;
   }
 }
+
+@mixin maxLine($count) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $count;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}

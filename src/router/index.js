@@ -107,7 +107,7 @@ const router = new Router({
           }
         },
         {
-          path: 'pfproduct/create',
+          path: 'pfproduct/create-edit',
           name: 'PlatformProductCreate',
           component: () => import('src/ui/product/platform/Create.vue'),
           meta: {
@@ -219,7 +219,7 @@ const router = new Router({
           }
         },
         {
-          path: 'afterservice/create',
+          path: 'afterservice/create-edit',
           name: 'AfterServiceCreate',
           component: () => import('src/ui/product/after-service/Create.vue'),
           meta: {
@@ -302,7 +302,7 @@ const router = new Router({
           }
         },
         {
-          path: 'deliveryregion/create',
+          path: 'deliveryregion/create-edit',
           name: 'DeliveryRegioncCreate',
           component: () => import('src/ui/product/delivery-region/Create.vue'),
           meta: {
@@ -333,7 +333,7 @@ const router = new Router({
           }
         },
         {
-          path: 'freight/create',
+          path: 'freight/create-edit',
           name: 'FreightCreate',
           component: () => import('src/ui/product/freight/Create.vue'),
           meta: {
@@ -448,7 +448,7 @@ const router = new Router({
           }
         },
         {
-          path: 'tenantuser/create',
+          path: 'tenantuser/create-edit',
           name: 'CreateTenantUser',
           component: () => import('src/ui/other/tenant-user/Create.vue'),
           meta: {
@@ -546,6 +546,46 @@ const router = new Router({
           }
         },
         {
+          path: 'hometemplate',
+          name: 'HomeTemplate',
+          component: () => import('src/ui/other/home_template/Index.vue'),
+          meta: {
+            group: 'Other',
+            title: '首页模板',
+            showInSide: true
+          }
+        },
+        {
+          path: 'hometemplate/create',
+          name: 'HomeTemplateCreate',
+          component: () => import('src/ui/other/home_template/create-edit/Create.vue'),
+          meta: {
+            title: '创建',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '首页模板',
+              to: {name: 'HomeTemplate'}
+            }, {
+              text: '创建'
+            }]
+          }
+        },
+        {
+          path: 'hometemplate/edit/:id',
+          name: 'HomeTemplateEdit',
+          component: () => import('src/ui/other/home_template/create-edit/Edit.vue'),
+          meta: {
+            title: '编辑',
+            showInSide: false,
+            breadcrumbItems: [{
+              text: '首页模板',
+              to: {name: 'HomeTemplate'}
+            }, {
+              text: '编辑'
+            }]
+          }
+        },
+        {
           path: 'sysuser',
           name: 'SysUserIndex',
           component: () => import('src/ui/user/sys-user/Index.vue'),
@@ -566,7 +606,7 @@ const router = new Router({
           }
         },
         {
-          path: 'characterauth/create',
+          path: 'characterauth/create-edit',
           name: 'CreateCharacter',
           component: () => import('src/ui/user/character-auth/Create.vue'),
           meta: {
@@ -673,7 +713,7 @@ const router = new Router({
           }
         },
         {
-          path: 'version/create',
+          path: 'version/create-edit',
           name: 'VersionCreate',
           component: () => import('src/ui/maintain/version/Create.vue'),
           meta: {
