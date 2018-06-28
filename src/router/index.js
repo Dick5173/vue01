@@ -44,7 +44,7 @@ const router = new Router({
           component: () => import('src/ui/err/Index.vue'),
           meta: {
             title: '错误',
-            showInSide: true
+            showInSide: false
           }
         },
         {
