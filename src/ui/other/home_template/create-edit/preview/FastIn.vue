@@ -78,11 +78,9 @@
       .name {
         color: $home-color-common;
         font-size: $home-size-title;
-        @include maxLine(1);
         margin-top: 5px;
         text-align: center;
       }
-
     }
 
   }

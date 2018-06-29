@@ -415,7 +415,8 @@
         this.loading = true
         this.$nextTick(async () => {
           const canvas = await html2canvas(this.$refs.parentTree, {
-            // useCORS: true,
+            useCORS: true,
+            logging: true,
             width: this.$refs.parentTree.offsetWidth,
             height: this.$refs.parentTree.offsetHeight
           })

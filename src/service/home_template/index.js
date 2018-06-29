@@ -891,36 +891,14 @@ export const convertHomePageFormToParam = (minPage) => {
         newItem.wgt_product = {}
         newItem.wgt_product.name = item.wgt_product.name
         newItem.wgt_product.online_tp = item.wgt_product.online_tp
-        if (newItem.wgt_product.online_tp === allShowTp.show_limit.value) {
-          newItem.wgt_product.online_start = dateFormat(item.wgt_product.online_start)
-          newItem.wgt_product.online_end = dateFormat(item.wgt_product.online_end)
-        }
         newItem.wgt_product.s_tp = item.wgt_product.s_tp
         newItem.wgt_product.style_tp = item.wgt_product.style_tp
-        if (newItem.wgt_product.s_tp === allProductTp.product_group.value) {
-          newItem.wgt_product.product_group_id = item.wgt_product.product_group.id
-        } else {
-          newItem.wgt_product.products = R.map((item) => {
-            return item.id
-          })(item.wgt_product.products)
-        }
       } else if (item.wgt_tp === allContentTp.buy_group.value) {
         newItem.wgt_buy_group = {}
         newItem.wgt_buy_group.name = item.wgt_buy_group.name
         newItem.wgt_buy_group.online_tp = item.wgt_buy_group.online_tp
-        if (newItem.wgt_buy_group.online_tp === allShowTp.show_limit.value) {
-          newItem.wgt_buy_group.online_start = dateFormat(item.wgt_buy_group.online_start)
-          newItem.wgt_buy_group.online_end = dateFormat(item.wgt_buy_group.online_end)
-        }
         newItem.wgt_buy_group.s_tp = item.wgt_buy_group.s_tp
         newItem.wgt_buy_group.style_tp = item.wgt_buy_group.style_tp
-        if (newItem.wgt_buy_group.s_tp === allProductTp.product_group.value) {
-          newItem.wgt_buy_group.product_group_id = item.wgt_buy_group.product_group.id
-        } else {
-          newItem.wgt_buy_group.products = R.map((item) => {
-            return item.id
-          })(item.wgt_buy_group.products)
-        }
       } else if (item.wgt_tp === allContentTp.navigate.value) {
         newItem.wgt_search = {}
         newItem.wgt_search.online_tp = 1
@@ -935,87 +913,20 @@ export const convertHomePageFormToParam = (minPage) => {
         newItem.wgt_channel = {}
         newItem.wgt_channel.online_tp = 1
         newItem.wgt_channel.items = R.map((item) => {
-          let minPageId = 0
-          let productGroupId = 0
-          let tagGroupId = 0
-          if (item.action_tp === channelCustomTp.min_page.value) {
-            minPageId = item.min_page.id
-          }
-          if (item.action_tp === channelCustomTp.product_group.value) {
-            productGroupId = item.product_group.id
-          }
-          if (item.action_tp === channelCustomTp.tag_group.value) {
-            const tg = item.tag_group
-            tagGroupId = tg ? tg.id : 0
-          }
-          if (item.product_tag_tp === productTagTp.product_tag_group_id.value && item.product_tag_group) {
-            return {
-              action_tp: item.action_tp,
-              badge: item.badge,
-              min_page_id: minPageId,
-              product_group_id: productGroupId,
-              name: item.name,
-              tag_group_id: tagGroupId,
-              app_id: item.app_id,
-              app_page: item.app_page,
-              product_tag_tp: item.product_tag_tp,
-              product_tag_group_id: item.product_tag_group.id
-            }
-          } else if (item.product_tag_tp === productTagTp.product_tag_id.value) {
-            return {
-              action_tp: item.action_tp,
-              badge: item.badge,
-              min_page_id: minPageId,
-              product_group_id: productGroupId,
-              name: item.name,
-              tag_group_id: tagGroupId,
-              app_id: item.app_id,
-              app_page: item.app_page,
-              product_tag_tp: item.product_tag_tp,
-              product_tag_id: item.product_tag.id
-            }
-          } else {
-            return {
-              action_tp: item.action_tp,
-              badge: item.badge,
-              min_page_id: minPageId,
-              product_group_id: productGroupId,
-              name: item.name,
-              tag_group_id: tagGroupId,
-              app_id: item.app_id,
-              app_page: item.app_page
-            }
+          return {
+            action_tp: item.action_tp,
+            badge: item.badge,
+            name: item.name
           }
         })(item.wgt_channel.items)
       } else if (item.wgt_tp === allContentTp.image.value) {
         newItem.wgt_img = {}
         newItem.wgt_img.online_tp = item.wgt_img.online_tp
-        if (newItem.wgt_img.online_tp === allShowTp.show_limit.value) {
-          newItem.wgt_img.online_start = dateFormat(item.wgt_img.online_start)
-          newItem.wgt_img.online_end = dateFormat(item.wgt_img.online_end)
-        }
         newItem.wgt_img.style_tp = item.wgt_img.style_tp
         newItem.wgt_img.margin_bottom_tp = item.wgt_img.margin_bottom ? 0 : 1
         newItem.wgt_img.items = R.map((item) => {
           const backItem = {}
           backItem.action_tp = item.action_tp
-          if (backItem.action_tp === allCustomTp.product.value) {
-            backItem.product_id = item.product.id
-          } else if (backItem.action_tp === allCustomTp.product_group.value) {
-            backItem.product_group_id = item.product_group.id
-          } else if (backItem.action_tp === allCustomTp.min_page.value) {
-            backItem.min_page_id = item.min_page.id
-          } else if (backItem.action_tp === allCustomTp.other_app.value) {
-            backItem.app_id = item.app_id
-            backItem.app_page = item.app_page
-          } else if (backItem.action_tp === allCustomTp.product_tag.value) {
-            backItem.product_tag_tp = item.product_tag_tp
-            if (item.product_tag_tp === productTagTp.product_tag_group_id.value) {
-              backItem.product_tag_group_id = item.product_tag_group.id
-            } else {
-              backItem.product_tag_id = item.product_tag.id
-            }
-          }
           backItem.cover = item.cover
           if (backItem.cover.url && backItem.cover.url !== '') {
             backItem.cover.tp = allTp.img.value
@@ -1027,23 +938,6 @@ export const convertHomePageFormToParam = (minPage) => {
         newItem.wgt_carousel.items = R.map((item) => {
           const backItem = {}
           backItem.action_tp = item.action_tp
-          if (backItem.action_tp === allCustomTp.product.value) {
-            backItem.product_id = item.product.id
-          } else if (backItem.action_tp === allCustomTp.product_group.value) {
-            backItem.product_group_id = item.product_group.id
-          } else if (backItem.action_tp === allCustomTp.min_page.value) {
-            backItem.min_page_id = item.min_page.id
-          } else if (backItem.action_tp === allCustomTp.other_app.value) {
-            backItem.app_id = item.app_id
-            backItem.app_page = item.app_page
-          } else if (backItem.action_tp === allCustomTp.product_tag.value) {
-            backItem.product_tag_tp = item.product_tag_tp
-            if (item.product_tag_tp === productTagTp.product_tag_group_id.value) {
-              backItem.product_tag_group_id = item.product_tag_group.id
-            } else {
-              backItem.product_tag_id = item.product_tag.id
-            }
-          }
           backItem.cover = item.cover
           if (backItem.cover.url && backItem.cover.url !== '') {
             backItem.cover.tp = allTp.img.value
@@ -1062,23 +956,6 @@ export const convertHomePageFormToParam = (minPage) => {
           const backItem = {}
           backItem.name = item.name
           backItem.action_tp = item.action_tp
-          if (backItem.action_tp === allCustomTp.product.value) {
-            backItem.product_id = item.product.id
-          } else if (backItem.action_tp === allCustomTp.product_group.value) {
-            backItem.product_group_id = item.product_group.id
-          } else if (backItem.action_tp === allCustomTp.min_page.value) {
-            backItem.min_page_id = item.min_page.id
-          } else if (backItem.action_tp === allCustomTp.other_app.value) {
-            backItem.app_id = item.app_id
-            backItem.app_page = item.app_page
-          } else if (backItem.action_tp === allCustomTp.product_tag.value) {
-            backItem.product_tag_tp = item.product_tag_tp
-            if (item.product_tag_tp === productTagTp.product_tag_group_id.value) {
-              backItem.product_tag_group_id = item.product_tag_group.id
-            } else if (item.product_tag_tp === productTagTp.product_tag_id.value) {
-              backItem.product_tag_id = item.product_tag.id
-            }
-          }
           backItem.cover = item.cover
           if (backItem.cover.url && backItem.cover.url !== '') {
             backItem.cover.tp = allTp.img.value
@@ -1090,38 +967,13 @@ export const convertHomePageFormToParam = (minPage) => {
         newItem.wgt_txt.txt = item.wgt_txt.txt
         newItem.wgt_txt.logo_tp = item.wgt_txt.show_logo ? 2 : 1
         newItem.wgt_txt.action_tp = item.wgt_txt.action_tp
-        if (newItem.wgt_txt.action_tp === allCustomTp.product.value) {
-          newItem.wgt_txt.product_id = item.wgt_txt.product.id
-        } else if (newItem.wgt_txt.action_tp === allCustomTp.product_group.value) {
-          newItem.wgt_txt.product_group_id = item.wgt_txt.product_group.id
-        } else if (newItem.wgt_txt.action_tp === allCustomTp.min_page.value) {
-          newItem.wgt_txt.min_page_id = item.wgt_txt.min_page.id
-        } else if (newItem.wgt_txt.action_tp === allCustomTp.other_app.value) {
-          newItem.wgt_txt.app_id = item.wgt_txt.app_id
-          newItem.wgt_txt.app_page = item.wgt_txt.app_page
-        } else if (newItem.wgt_txt.action_tp === allCustomTp.product_tag.value) {
-          newItem.wgt_txt.product_tag_tp = item.wgt_txt.product_tag_tp
-          if (item.wgt_txt.product_tag_tp === productTagTp.product_tag_group_id.value) {
-            newItem.wgt_txt.product_tag_group_id = item.wgt_txt.product_tag_group.id
-          } else if (item.wgt_txt.product_tag_tp === productTagTp.product_tag_id.value) {
-            newItem.wgt_txt.product_tag_id = item.wgt_txt.product_tag.id
-          }
-        }
         newItem.wgt_txt.online_tp = item.wgt_txt.online_tp
-        if (newItem.wgt_txt.online_tp === allShowTp.show_limit.value) {
-          newItem.wgt_txt.online_start = dateFormat(item.wgt_txt.online_start)
-          newItem.wgt_txt.online_end = dateFormat(item.wgt_txt.online_end)
-        }
       } else if (item.wgt_tp === allContentTp.voucher.value) {
         newItem.wgt_voucher = {}
         newItem.wgt_voucher.name = item.wgt_voucher.name
         newItem.wgt_voucher.s_tp = item.wgt_voucher.s_tp
-        newItem.wgt_voucher.voucher_activ_items = R.map((item) => item.voucher_activ_item.id)(item.wgt_voucher.items || [])
+        newItem.wgt_voucher.voucher_activ_items = []
         newItem.wgt_voucher.online_tp = item.wgt_voucher.online_tp
-        if (newItem.wgt_voucher.online_tp === allShowTp.show_limit.value) {
-          newItem.wgt_voucher.online_start = dateFormat(item.wgt_voucher.online_start)
-          newItem.wgt_voucher.online_end = dateFormat(item.wgt_voucher.online_end)
-        }
       }
       return newItem
     })(minPage.items)

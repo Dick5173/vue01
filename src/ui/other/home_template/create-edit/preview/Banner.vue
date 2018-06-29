@@ -3,7 +3,7 @@
     div.empty(v-if="emptyText") {{emptyText}}
     div(v-else, @mouseenter="showLeftRightBtn = true", @mouseleave="showLeftRightBtn = false")
       div.image-content(ref="imageContent")
-        img.cover(:src!="showImage")
+        img.cover(:src="showImage")
         div.left(v-if="showLeftRightBtn", @click.stop="clickLeft")
         div.right(v-if="showLeftRightBtn", @click.stop="clickRight")
 </template>
